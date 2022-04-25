@@ -1,0 +1,209 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #000000;
+  height: 100px;
+  padding: 35px;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navigation {
+  background: #000000;
+  color: blanchedalmond;
+  height: 0px;
+  font-size: 35px;
+  font-family: URW Chancery L, cursive;
+}
+
+.navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation a:link,
+.navigation a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+  color: red !important;
+}
+
+.error {
+  font-weight: bold;
+  color: red !important;
+}
+
+.forgotPassword {
+  background: none !important;
+  border: none !important;
+  text-decoration: underline;
+  margin-left: 5px;
+  color: #069;
+}
+
+.forgotPassword:hover {
+  text-decoration: none;
+  color: red;
+}
+
+.center {
+  width: 13.5vw;
+  padding: 12px 10px;
+  justify-content: center;
+  scroll-margin-left: 46vw;
+  margin-left: 43vw;
+}
+
+.centertest {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  border: 2px solid grey; 
+  border-radius: 10px;
+  padding: 40px; 
+}
+
+.input {
+  border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: blanchedalmond;
+  padding: 12px;
+  border-color: rgb(0, 0, 0);
+  border-radius: 5px;
+  width: 200px;
+  font-size: 14px;
+  color: black;
+}
+
+.button {
+  border-radius: 4px;
+  background-color: #000000;
+  border: none;
+  border-color: blanchedalmond;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 14px;
+  padding: 12px 12px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 10px;
+  font-weight: bold;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button1 {
+  border-radius: 4px;
+  background-color: blanchedalmond;
+  border: none;
+  border-color: rgb(48, 47, 47);
+  text-decoration: none;
+  color: #888484;
+  display: inline-block;
+  font-size: 14px;
+  padding: 12px 12px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 10px;
+  font-weight: bold;
+}
+
+.button1:hover {
+  background-color: black;
+  color: rgb(255, 255, 255);
+}
+
+.button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1 span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1:hover span {
+  padding-right: 25px;
+}
+
+.button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.linktext {
+  text-decoration: none;
+  color: white;
+}
+
+.linktext:hover {
+  color: white;
+  text-decoration: none;
+}
