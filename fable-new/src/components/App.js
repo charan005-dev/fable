@@ -21,7 +21,9 @@ function App() {
           </header>
         </div>
         <Routes>
-          <Route path='/' element={<Splash />} />
+          <Route path='/' element={<Home />} /> 
+          <Route path='/splash' element={<Splash />} /> 
+        
           <Route path='/home' element={<PrivateRoute />}>
             <Route path='/home' element={<Home />} />
           </Route>
