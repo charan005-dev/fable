@@ -64,7 +64,7 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
- 
+
 .navigation1 {
   background: #000000;
   color: blanchedalmond;
@@ -84,7 +84,6 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
-
 
 .navigation2 {
   background: #000000;
@@ -280,8 +279,8 @@ h1 {
   text-decoration: none;
 }
 .bg {
-  height: 100vh;
-  padding: 50px;
+  height: "auto";
+  width: "auto";
   overflow: hidden;
   transition: 0.2s all linear;
 }
@@ -296,8 +295,8 @@ h1 {
   transition: 0.2s all linear;
 }
 
-.bg-light {
-  background-color: #ffebcd;
+.light {
+  background-color: #ffffff;
 }
 
 .heading-light {
@@ -308,8 +307,8 @@ h1 {
   color: #222;
 }
 
-.bg-dark {
-  background-color: rgb(3, 29, 69);
+.dark {
+  background-color: rgb(2, 33, 53);
 }
 
 .heading-dark {
@@ -338,6 +337,6 @@ h1 {
   background-color: #222;
   color: #ffffff;
 }
-.right{
+.right {
   float: right;
 }
