@@ -1,3 +1,4 @@
+import { ThemeContext } from "./ThemeContext";
 import React from 'react';
 import '../App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
@@ -12,6 +13,8 @@ import PrivateRoute from './PrivateRoute';
 import SignOutButton from './SignOut'; 
 import Splash from './Splash';
 function App() {
+  const context = useContext(ThemeContext);
+  const darkMode = context.theme.darkMode;
   return (
     <AuthProvider>
       <Router>
@@ -25,8 +28,8 @@ function App() {
           <Route path='/home' element={<PrivateRoute />}>
             <Route path='/home' element={<Home />} />
           </Route>
-          <Route path='/account' element={<PrivateRoute />}>
-            <Route path='/account' element={<Account />} />
+          <Route path="/account" element={<PrivateRoute />}>
+            <Route path="/account" element={<Account />} />
           </Route>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} /> 
