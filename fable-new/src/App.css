@@ -64,7 +64,7 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
- 
+
 .navigation1 {
   background: #000000;
   color: blanchedalmond;
@@ -84,7 +84,6 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
-
 
 .navigation2 {
   background: #000000;
@@ -338,6 +337,6 @@ h1 {
   background-color: #222;
   color: #ffffff;
 }
-.right{
+.right {
   float: right;
 }
