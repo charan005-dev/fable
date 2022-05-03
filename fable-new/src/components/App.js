@@ -19,12 +19,14 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="container">
-          <header className="App-header">
-            <Navigation />
-          </header>
-        </div>
         <div className={`bg ${darkMode ? "dark" : "light"}`}>
+          <Theme />
+          <div className="container">
+            <header className="App-header">
+              <Navigation />
+            </header>
+          </div>
+
           <Routes>
             <Route path="/" element={<Splash />} />
             <Route path="/home" element={<PrivateRoute />}>
@@ -36,7 +38,6 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
-          <Theme />
         </div>
       </Router>
     </AuthProvider>

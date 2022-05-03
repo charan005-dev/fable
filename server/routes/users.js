@@ -1,5 +1,4 @@
 const express = require("express");
-const { default: xss } = require("xss");
 const router = express.Router();
 const users = require("../data/users");
 

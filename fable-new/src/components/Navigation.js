@@ -11,7 +11,7 @@ const Navigation = () => {
 
 const NavigationAuth = () => {
   return (
-    <nav className="navigation">
+    <nav class="navigation">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <code>F A B L E</code>
       <SignOutButton />
@@ -21,7 +21,8 @@ const NavigationAuth = () => {
 
 const NavigationNonAuth = () => {
   return (
-    <nav className="navigation">
+    <nav class="navigation">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <code>F A B L E</code>
     </nav>
   );
