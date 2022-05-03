@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+body {
+  background-color: rgb(255, 254, 254);
+}
+
 .container {
   margin-right: auto;
   margin-left: auto;
@@ -138,6 +142,52 @@ h1 {
   margin-left: 43vw;
 }
 
+.h2 {
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-weight: bolder;
+  font-style: italic;
+  font-size: 50px;
+}
+
+.h3 {
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-style: italic;
+  font-size: 25px;
+}
+
+.h4 {
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 1000;
+}
+
+.b1 {
+  position: absolute;
+  left: 25%;
+  top: 68%;
+  scroll-margin-left: 26vw;
+  margin-left: 0vw;
+}
+.b2 {
+  position: absolute;
+  left: 25%;
+  top: 75%;
+  scroll-margin-left: 26vw;
+  margin-left: 0vw;
+}
+
+.i1 {
+  max-width: 300px;
+  min-width: 100px;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  left: 68%;
+  top: 30%;
+  scroll-margin-right: 26vw;
+  margin-left: 0vw;
+}
 .centertest {
   position: absolute;
   left: 50%;
@@ -154,7 +204,7 @@ h1 {
   -ms-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: blanchedalmond;
+  background: rgb(255, 255, 255);
   padding: 12px;
   border-color: rgb(0, 0, 0);
   border-radius: 5px;
