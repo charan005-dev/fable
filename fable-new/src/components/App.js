@@ -19,7 +19,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="container">
+        <div className="navigation">
           <header className="App-header">
             <Navigation />
           </header>
@@ -28,8 +28,8 @@ function App() {
           <Route path='/' element={<Home />} /> 
           <Route path='/splash' element={<Splash />} /> 
         
-          <Route path='/home' element={<PrivateRoute />}>
-            <Route path='/home' element={<Home />} />
+          <Route path='/home' element={<PrivateRoute />}> 
+          
           </Route>
           <Route path="/account" element={<PrivateRoute />}>
             <Route path="/account" element={<Account />} />
