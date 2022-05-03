@@ -89,9 +89,9 @@
   left: 50%;
   top: 52%;
   transform: translate(-50%, -50%);
-  border: 2px solid grey; 
+  border: 2px solid grey;
   border-radius: 10px;
-  padding: 40px; 
+  padding: 40px;
 }
 
 .input {
@@ -206,4 +206,63 @@
 .linktext:hover {
   color: white;
   text-decoration: none;
+}
+.bg {
+  height: 100vh;
+  padding: 50px;
+  overflow: hidden;
+  transition: 0.2s all linear;
+}
+
+.heading {
+  text-transform: uppercase;
+  transition: 0.2s all linear;
+}
+
+.para {
+  width: 70vw;
+  transition: 0.2s all linear;
+}
+
+.bg-light {
+  background-color: #fff;
+}
+
+.heading-light {
+  color: #222;
+}
+
+.para-light {
+  color: #222;
+}
+
+.bg-dark {
+  background-color: #222;
+}
+
+.heading-dark {
+  color: #fff;
+}
+
+.para-dark {
+  color: #fff;
+}
+
+.button {
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s all linear;
+}
+
+.darkTheme {
+  background-color: #000000;
+  color: #069;
+}
+.lightTheme {
+  background-color: #222;
+  color: #ffffff;
 }
