@@ -7,7 +7,17 @@
   pointer-events: none;
 }
 
+body {
+  background-color: rgb(255, 254, 254);
+}
 
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -35,14 +45,16 @@
   }
 }
 
+h1 {
+  margin-top: 0;
+}
+
 .navigation {
   background: #000000;
-  color: rgb(255, 255, 255);
+  color: blanchedalmond;
   height: 0px;
   font-size: 35px;
-  font-family: URW Chancery L, cursive;  
-  width:100%
-  
+  font-family: URW Chancery L, cursive;
 }
 
 .navigation ul {
@@ -63,7 +75,6 @@
   height: 0px;
   font-size: 35px;
   font-family: URW Chancery L, cursive;
-  width: 1400px;
 }
 
 .navigation1 ul {
@@ -131,16 +142,6 @@
   margin-left: 43vw;
 }
 
-.centertest {
-  position: absolute;
-  left: 60%;
-  top: 52%;
-  transform: translate(-50%, -50%);
-  border: 2px solid grey;
-  border-radius: 10px;
-  padding: 60px;
-}
-
 .h2 {
   font-family: "Lucida Console", "Courier New", monospace;
   font-weight: bolder;
@@ -203,7 +204,7 @@
   -ms-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: blanchedalmond;
+  background: rgb(255, 255, 255);
   padding: 12px;
   border-color: rgb(0, 0, 0);
   border-radius: 5px;
@@ -316,7 +317,6 @@
   cursor: pointer;
   margin: 10px;
   font-weight: bold;
-  font-family:Arial, Helvetica, sans-serif;
 }
 
 .linktext {
@@ -345,8 +345,8 @@
   transition: 0.2s all linear;
 }
 
-.bg-light {
-  background-color: #ffebcd;
+.light {
+  background-color: #ffffff;
 }
 
 .heading-light {
@@ -357,8 +357,8 @@
   color: #222;
 }
 
-.bg-dark {
-  background-color: rgb(3, 29, 69);
+.dark {
+  background-color: rgb(31, 34, 39);
 }
 
 .heading-dark {
@@ -369,7 +369,7 @@
   color: #ffebcd;
 }
 
-.button {
+.buttonDark {
   border: none;
   padding: 10px 30px;
   border-radius: 4px;
@@ -378,7 +378,9 @@
   cursor: pointer;
   transition: 0.2s all linear;
 }
-
+.typography {
+  color: white;
+}
 .darkTheme {
   background-color: #000000;
   color: #069;
@@ -387,6 +389,33 @@
   background-color: #222;
   color: #ffffff;
 }
+
+.row_posters {
+  display: flex;
+}
+
+.row_poster {
+  object-fit: contain;
+  width: 100%;
+  max-height: 100px;
+}
+
+.row_poster::-webkit-scrollbar {
+  display: none;
+}
+
+.row_posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 50px;
+  padding-right: 10px;
+}
+
+.row_poster:hover {
+  transform: scale(1.08);
+}
+
 .right {
   float: right;
 }
