@@ -1,17 +1,17 @@
 import { ThemeContext } from "./ThemeContext";
-import React from 'react';
-import '../App.css';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Account from './Account';
-import Home from './Home';
-import Landing from './Landing';
-import Navigation from './Navigation';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import {AuthProvider} from '../firebase/Auth';
-import PrivateRoute from './PrivateRoute';
-import SignOutButton from './SignOut'; 
-import Splash from './Splash';
+import React, { useContext } from "react";
+import "../App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Account from "./Account";
+import Home from "./Home";
+import Landing from "./Landing";
+import Navigation from "./Navigation";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import { AuthProvider } from "../firebase/Auth";
+import PrivateRoute from "./PrivateRoute";
+import SignOutButton from "./SignOut";
+import Splash from "./Splash";
 
 function App() {
   const context = useContext(ThemeContext);
