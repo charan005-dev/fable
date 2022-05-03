@@ -64,7 +64,7 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
- 
+
 .navigation1 {
   background: #000000;
   color: blanchedalmond;
@@ -84,7 +84,6 @@ h1 {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
-
 
 .navigation2 {
   background: #000000;
@@ -279,7 +278,65 @@ h1 {
   color: white;
   text-decoration: none;
 }
+.bg {
+  height: 100vh;
+  padding: 50px;
+  overflow: hidden;
+  transition: 0.2s all linear;
+}
 
+.heading {
+  text-transform: uppercase;
+  transition: 0.2s all linear;
+}
+
+.para {
+  width: 70vw;
+  transition: 0.2s all linear;
+}
+
+.bg-light {
+  background-color: #ffebcd;
+}
+
+.heading-light {
+  color: #222;
+}
+
+.para-light {
+  color: #222;
+}
+
+.bg-dark {
+  background-color: rgb(3, 29, 69);
+}
+
+.heading-dark {
+  color: #fff;
+}
+
+.para-dark {
+  color: #ffebcd;
+}
+
+.button {
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s all linear;
+}
+
+.darkTheme {
+  background-color: #000000;
+  color: #069;
+}
+.lightTheme {
+  background-color: #222;
+  color: #ffffff;
+}
 .right {
   float: right;
 }
