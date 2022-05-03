@@ -225,7 +225,7 @@
 }
 
 .bg-light {
-  background-color: #fff;
+  background-color: #ffebcd;
 }
 
 .heading-light {
@@ -237,7 +237,7 @@
 }
 
 .bg-dark {
-  background-color: #222;
+  background-color: rgb(3, 29, 69);
 }
 
 .heading-dark {
@@ -245,7 +245,7 @@
 }
 
 .para-dark {
-  color: #fff;
+  color: #ffebcd;
 }
 
 .button {
