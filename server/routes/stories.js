@@ -5,7 +5,7 @@ const stories = require("../data/stories");
 
 const firebaseApp = initializeApp();
 
-router.get("/stories/all", async (req, res) => {
+router.get("/all", async (req, res) => {
   try {
     let currentUser = req.body.userId;
     if (!currentUser) {
