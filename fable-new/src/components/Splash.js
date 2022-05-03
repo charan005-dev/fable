@@ -1,21 +1,17 @@
-import React from 'react'; 
-import {Typography} from "@material-ui/core"
+import React from "react";
+import { Typography } from "@material-ui/core";
 
-import '../App.css';
+import "../App.css";
 
 function Splash() {
-  return ( 
-      <div>
-    <nav className='navigation'>
-      <h1></h1>
-    </nav>  
- 
- <Typography>HI</Typography>
+  return (
+    <div>
+      <nav className="navigation">
+        <h1></h1>
+      </nav>
 
-
-
-    </div> 
-    
+      <Typography>HI</Typography>
+    </div>
   );
 }
 

@@ -1,7 +1,10 @@
+const users = require("./users");
+
 const constructorMethod = (app) => {
-  app.use("/");
+  app.use("/api/users", users);
   app.use("*", async (req, res) => {
-    // TODO fill in incorrect route information
+    console.log(req);
+    return;
   });
 };
 

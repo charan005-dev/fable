@@ -4,9 +4,14 @@ import { doCreateUserWithEmailAndPassword } from "../firebase/FirebaseFunctions"
 import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
 import SocialSignIn from "./SocialSignIn";
+import firebase from "firebase";
+const axios = require("axios").default;
+axios.defaults.baseURL = "http://localhost:4000";
+
 function SignUp() {
   const { currentUser } = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState("");
+  const [token, setToken] = useState("");
   const handleSignUp = async (e) => {
     e.preventDefault();
     const { displayName, email, passwordOne, passwordTwo } = e.target.elements;
@@ -14,13 +19,17 @@ function SignUp() {
       setPwMatch("Passwords do not match");
       return false;
     }
-
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName
-      );
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
+      let userId = firebase.auth().currentUser.uid;
+      let emailAddress = firebase.auth().currentUser.email;
+      let username = displayName.value;
+      const { data } = await axios.post(`/api/users`, {
+        userId,
+        emailAddress,
+        displayName: username,
+      });
+      console.log(data);
     } catch (error) {
       alert(error);
     }
@@ -37,25 +46,13 @@ function SignUp() {
       <form onSubmit={handleSignUp}>
         <div className="form-group">
           <label>
-            <input
-              className="input"
-              required
-              name="displayName"
-              type="text"
-              placeholder="Name"
-            />
+            <input className="input" required name="displayName" type="text" placeholder="Name" />
           </label>
         </div>
         <br />
         <div className="form-group">
           <label>
-            <input
-              className="input"
-              required
-              name="email"
-              type="email"
-              placeholder="Email"
-            />
+            <input className="input" required name="email" type="email" placeholder="Email" />
           </label>
         </div>
         <br />
@@ -87,12 +84,7 @@ function SignUp() {
         </div>
         <br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button
-          id="submitButton"
-          name="submitButton"
-          type="submit"
-          class="button"
-        >
+        <button id="submitButton" name="submitButton" type="submit" class="button">
           Sign Up
         </button>
         <br />

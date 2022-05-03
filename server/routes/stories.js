@@ -10,3 +10,5 @@ router.get("/stories", async (req, res) => {
   try {
   } catch (e) {}
 });
+
+module.exports = router;
