@@ -13,12 +13,15 @@ import PrivateRoute from "./PrivateRoute";
 import SignOutButton from "./SignOut";
 import Splash from "./Splash";
 import Theme from "./Theme";
+import NavBar from "./NavBar"; 
+
 function App() {
   const context = useContext(ThemeContext);
   const darkMode = context.theme.darkMode;
   return (
     <AuthProvider>
       <Router>
+
         {/* <div className={`bg ${darkMode ? "dark" : "light"}`}>
           <Theme /> */}
         <div className="container">
@@ -27,6 +30,7 @@ function App() {
           </header>
         </div>
         <div className="App-body">
+
           <Routes>
             <Route path="/" element={<Splash />} />
             <Route path="/home" element={<PrivateRoute />}>
