@@ -14,15 +14,17 @@ import "../App.css";
 const useStyles = makeStyles({
   card: {
     top: "10px",
-    maxWidth: "900px",
+    width: "900px",
+    maxWidth: "1200px",
     height: "auto",
-    marginLeft: "100px",
+    marginLeft: "190px",
     marginRight: "auto",
+    marginTop: "2px",
     borderRadius: 15,
     border: "0px solid #000000",
     fontFamily: "'Encode Sans Semi Expanded', sans-serif",
     fontSize: "30px",
-
+    paddingLeft: "50px",
     backgroundColor: "white",
   },
 
@@ -30,8 +32,9 @@ const useStyles = makeStyles({
     width: "600px",
     maxWidth: "900px",
     height: "auto",
-    marginLeft: "10px",
-    marginRight: "auto",
+    marginLeft: "40px",
+    marginRight: "50px",
+    marginTop: "10px",
     borderRadius: 15,
     border: "0px solid #000000",
     textAlign: "center",
@@ -48,7 +51,7 @@ const useStyles = makeStyles({
   media: {
     height: "auto",
     width: "450px",
-  }, 
+  },
   media1: {
     height: "auto",
     width: "150px",
@@ -69,21 +72,24 @@ const useStyles = makeStyles({
 const Splash = () => {
   const classes = useStyles();
   return (
-    <Stack direction="row"> 
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <Stack direction="row">
       <div>
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
         <br />
         <br />
         <Card className={classes.card} variant="outlined">
           <CardContent>
+            <img
+              src="fablelogofinal.png"
+              alt="image"
+              className={classes.media1}
+            ></img>
             <br />
             <br />
-            <img src="fablelogofinal.png" className={classes.media1}></img>
 
             <h2 class="h2">Hi, we're Fable </h2>
             <h3 class="h3"> One Stop Destination for Story lovers</h3>
@@ -111,7 +117,6 @@ const Splash = () => {
         </Card>
       </div>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   
       <div>
         <br />
         <br />
@@ -122,8 +127,8 @@ const Splash = () => {
         <Card className={classes.card1} variant="outlined">
           <img src="undraw1.png" className={classes.media}></img>
           <br />
-          <br/>
-          <br/>
+          <br />
+          <br />
           <img src="undraw2.png" className={classes.media}></img>
         </Card>
       </div>

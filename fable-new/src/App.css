@@ -7,18 +7,6 @@
   pointer-events: none;
 }
 
-body {
-  background-color: rgb(255, 254, 254);
-}
-
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 0px;
-  padding-right: 0px;
-  text-align: center;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -45,16 +33,13 @@ body {
   }
 }
 
-h1 {
-  margin-top: 0;
-}
-
 .navigation {
   background: #000000;
-  color: blanchedalmond;
+  color: rgb(255, 255, 255);
   height: 0px;
   font-size: 35px;
   font-family: URW Chancery L, cursive;
+  width: 100%;
 }
 
 .navigation ul {
@@ -75,6 +60,7 @@ h1 {
   height: 0px;
   font-size: 35px;
   font-family: URW Chancery L, cursive;
+  width: 1400px;
 }
 
 .navigation1 ul {
@@ -142,6 +128,16 @@ h1 {
   margin-left: 43vw;
 }
 
+.centertest {
+  position: absolute;
+  left: 60%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  border: 2px solid grey;
+  border-radius: 10px;
+  padding: 60px;
+}
+
 .h2 {
   font-family: "Lucida Console", "Courier New", monospace;
   font-weight: bolder;
@@ -204,7 +200,7 @@ h1 {
   -ms-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: rgb(255, 255, 255);
+  background: blanchedalmond;
   padding: 12px;
   border-color: rgb(0, 0, 0);
   border-radius: 5px;
@@ -284,6 +280,10 @@ h1 {
   transition: 0.5s;
 }
 
+.App-body {
+  padding-top: 7%;
+}
+
 .button1 span:after {
   content: "\00bb";
   position: absolute;
@@ -317,6 +317,7 @@ h1 {
   cursor: pointer;
   margin: 10px;
   font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .linktext {
@@ -389,4 +390,8 @@ h1 {
 }
 .right {
   float: right;
+}
+
+.new-story-form-els {
+  margin-bottom: 13%;
 }
