@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 import SignOutButton from "./SignOut";
 import "../App.css";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import NavBar from "./NavBar";
+import NavBarloggedout from "./NavBarloggedout";
 
 const Navigation = () => {
   const { currentUser } = useContext(AuthContext);
@@ -12,11 +13,9 @@ const Navigation = () => {
 
 const NavigationAuth = () => {
   return (
-    <nav class="navigation">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <code>F A B L E</code>
-      <SignOutButton />
-    </nav>
+    <div>
+      <NavBar />
+    </div>
   );
   // return (
   //   <div>
@@ -33,10 +32,9 @@ const NavigationAuth = () => {
 
 const NavigationNonAuth = () => {
   return (
-    <nav class="navigation">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <code>F A B L E</code>
-    </nav>
+    <div>
+      <NavBarloggedout />
+    </div>
   );
 };
 
