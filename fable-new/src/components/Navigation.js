@@ -12,9 +12,11 @@ const Navigation = () => {
 const NavigationAuth = () => {
   return (
     <nav class="navigation">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <code>F A B L E</code>
-      <SignOutButton />
+      <span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <code>F A B L E</code>
+        <SignOutButton />
+      </span>
     </nav>
   );
 };
