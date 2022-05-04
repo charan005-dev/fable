@@ -16,6 +16,7 @@ import CreateStory from "./stories/CreateStory";
 import { Button } from "@mui/material";
 import Login from "./Login";
 
+import Footer from "./Footer";
 function App() {
   const context = useContext(ThemeContext);
   const darkMode = context.theme.darkMode;
