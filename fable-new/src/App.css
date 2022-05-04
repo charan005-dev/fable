@@ -396,7 +396,7 @@ h1 {
 
 .row_poster {
   object-fit: contain;
-  width: 100%;
+  width: "auto";
   max-height: 100px;
 }
 

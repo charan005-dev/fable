@@ -7,10 +7,11 @@ import {
   Grid,
   Typography,
   makeStyles,
+  Paper,
   CircularProgress,
 } from "@material-ui/core";
-import "../App.css";
-import { ThemeContext } from "./ThemeContext";
+import { ThemeContext } from "../ThemeContext";
+import { Stack } from "@mui/material";
 
 const useStyles = makeStyles({
   card: {
@@ -34,30 +35,50 @@ const useStyles = makeStyles({
     height: "100%",
     width: "100%",
   },
+  paper: {
+    height: "auto",
+    width: "auto",
+  },
+  image: {
+    height: "auto",
+  },
 });
 
-function Home() {
+function HomeImage() {
   const context = useContext(ThemeContext);
   const darkMode = context.theme.darkMode;
+  const classes = useStyles();
   //--------------------------------------------------------------------------------------------------------------------------------//
 
-  let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 
   return (
     <>
       <Grid item xs={120} sm={70} md={60} lg={50} xl={100}>
         <div className="row">
           <h2 className={`heading ${darkMode ? "heading-dark" : "heading-light"}`}>Images</h2>
+
+          {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}> */}
+          <br />
+          <br />
+          <br />
           <div className="row_posters">
-            {data &&
-              data.map((image, idx) => {
-                return <img key={idx} src={`/images/${image}.jpg`} className="row_poster" alt="images" />;
-              })}
+            <Stack direction={"row"} spacing={3}>
+              {data &&
+                data.map((image, idx) => {
+                  return (
+                    <Paper className={classes.paper}>
+                      <img key={idx} src={`/images/${image}.jpg`} className="row_poster" alt="images" />
+                    </Paper>
+                  );
+                })}
+            </Stack>
           </div>
+          {/* </div> */}
         </div>
       </Grid>
     </>
   );
 }
 
-export default Home;
+export default HomeImage;

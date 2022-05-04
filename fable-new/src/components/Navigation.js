@@ -13,6 +13,7 @@ const Navigation = () => {
 
 const NavigationAuth = () => {
   return (
+
       <div>
     <NavBar/>
       </div>
