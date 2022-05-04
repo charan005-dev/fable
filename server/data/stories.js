@@ -2,7 +2,7 @@ const { stories } = require("../config/mongoCollections");
 const uuid = require("uuid");
 const { convert } = require("html-to-text");
 
-const createStory = async (creatorId, title, shortDescription, contentHtml, genres) => {
+const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
   let story = {
     _id: uuid.v4(),
     creatorId,
@@ -11,6 +11,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     contentText: convert(contentHtml, { wordwrap: 130 }),
     contentHtml,
     genres,
+    coverImage: filePath,
     likedBy: [],
     comments: [],
     createdAt: Date.now(),
