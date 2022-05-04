@@ -11,6 +11,13 @@ body {
   background-color: rgb(255, 254, 254);
 }
 
+a {
+  text-decoration: 'none'; 
+  color: 'black'
+} 
+a:hover{
+  text-decoration: 'none';
+}
 .container {
   margin-right: auto;
   margin-left: auto;
@@ -113,7 +120,11 @@ h1 {
 
 .active {
   font-weight: bold;
-  color: red !important;
+  color: rgb(0, 0, 0) !important;
+} 
+.active:hover {
+  color: blanchedalmond !important; 
+  text-decoration: none;
 }
 
 .error {
