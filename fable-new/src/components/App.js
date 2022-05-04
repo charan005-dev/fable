@@ -1,22 +1,19 @@
-import { ThemeContext, ThemeProvider } from "./ThemeContext";
-import { createTheme } from "@mui/material/styles";
+import { ThemeContext } from "./ThemeContext";
 import React, { useContext } from "react";
 import "../App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Account from "./Account";
 import Home from "./Home/HomeImage";
-import Landing from "./Landing";
 import Navigation from "./Navigation";
 import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
-import SignOutButton from "./SignOut";
 import Splash from "./Splash";
-import CreateStory from "./stories/CreateStory";
-import { Button } from "@mui/material";
+import CreateStory from "./Stories/CreateStory";
 import Login from "./Login";
 
-import Footer from "./Footer";
+import Story from "./Stories/Story";
+
 function App() {
   const context = useContext(ThemeContext);
   const darkMode = context.theme.darkMode;
@@ -39,7 +36,12 @@ function App() {
             <Route path="/account" element={<PrivateRoute />}>
               <Route path="/account" element={<Account />} />
             </Route>
-            <Route path="/stories/create_story" element={<PrivateRoute element={<CreateStory />} />} />
+            <Route path="/stories/create_story" element={<PrivateRoute />}>
+              <Route path="/stories/create_story" element={<CreateStory />} />
+            </Route>
+            <Route path="/stories/:id" element={<PrivateRoute />}>
+              <Route path="/stories/:id" element={<Story />} />
+            </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
           </Routes>
