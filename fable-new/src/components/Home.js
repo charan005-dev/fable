@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import '../App.css';
+import "../App.css";
 
 function Home() {
   return (
-    <nav className='navigation'>
+    <nav className="navigation">
       <h1></h1>
     </nav>
   );
