@@ -13,7 +13,7 @@ import SignOutButton from "./SignOut";
 import Splash from "./Splash";
 import Theme from "./Theme";
 import NavBar from "./NavBar";  
-import Login from "./Login";
+import Login from "./Login"; 
 
 function App() {
   const context = useContext(ThemeContext);
@@ -37,7 +37,8 @@ function App() {
               <Route path="/account" element={<Account />} />
             </Route>
             <Route path="/signup" element={<SignUp />} /> 
-            <Route path="/login" element={<Login/>}/>
+            <Route path="/login" element={<Login/>}/> 
+      
           </Routes>
         </div>
       </Router>
