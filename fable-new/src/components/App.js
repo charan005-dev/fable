@@ -14,6 +14,7 @@ import SignOutButton from "./SignOut";
 import Splash from "./Splash";
 import CreateStory from "./stories/CreateStory";
 import { Button } from "@mui/material";
+import Login from "./Login";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -30,13 +31,16 @@ function App() {
         </div>
         <div className="App-body">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/splash" element={<Splash />} />
-            <Route path="/home" element={<PrivateRoute element={<Home />} />} />
-            <Route path="/account" element={<PrivateRoute element={<Account />} />} />
+            <Route path="/" element={<Splash />} />
+            <Route path="/home" element={<PrivateRoute />}>
+              <Route path="/home" element={<Home />} />
+            </Route>
+            <Route path="/account" element={<PrivateRoute />}>
+              <Route path="/account" element={<Account />} />
+            </Route>
             <Route path="/stories/create_story" element={<PrivateRoute element={<CreateStory />} />} />
-            <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </Router>

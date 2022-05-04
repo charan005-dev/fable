@@ -19,19 +19,9 @@ import { NavLink } from "react-router-dom";
 import SocialSignIn from "./SocialSignIn";
 import firebase from "firebase";
 import { create } from "@mui/material/styles/createTransitions";
-import {
-  Card,
-  CardContent,
-  Grid,
-  makeStyles,
-  Typography,
-  TextField,
-} from "@material-ui/core";
+import { Card, CardContent, Grid, makeStyles, Typography, TextField } from "@material-ui/core";
 
-import {
-  doSignInWithEmailAndPassword,
-  doPasswordReset,
-} from "../firebase/FirebaseFunctions";
+import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
 axios.defaults.baseURL = "http://localhost:4000";
 
@@ -109,11 +99,7 @@ function SignUp() {
       return false;
     }
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        name.value
-      );
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
       console.log(email.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
@@ -153,12 +139,7 @@ function SignUp() {
             Sign-Up
           </Typography>
           {pwMatch && <h4 className="error">{pwMatch}</h4>}
-          <Box
-            component="form"
-            onSubmit={handleSignUp}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -209,19 +190,13 @@ function SignUp() {
               variant="outlined"
               sx={{ border: "4px bold black" }}
             />
-            <Button
-              className={classes.button}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign-Up
             </Button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Typography component="h11" variant="h11">
               Already Have an Account?
-            </Typography> 
+            </Typography>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button className={classes.button1} sx={{ mt: 3, mb: 2 }}>
               &nbsp;
