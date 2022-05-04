@@ -30,7 +30,14 @@ const getAllStories = async () => {
   return result;
 };
 
+const getStoryById = async (storyId) => {
+  const storiesCollection = await stories();
+  const story = await storiesCollection.findOne({ _id: storyId });
+  return story;
+};
+
 module.exports = {
   createStory,
   getAllStories,
+  getStoryById,
 };

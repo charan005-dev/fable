@@ -23,7 +23,7 @@ import { Card, CardContent, Grid, makeStyles, Typography, TextField } from "@mat
 
 import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
-axios.defaults.baseURL = "http://localhost:4000";
+// axios.defaults.baseURL = "http://localhost:4000";
 
 const theme = createTheme();
 

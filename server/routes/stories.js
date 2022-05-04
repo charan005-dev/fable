@@ -66,4 +66,16 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    console.log("getting a story");
+    let storyId = req.params.id;
+    let story = await stories.getStoryById(storyId);
+    res.status(200).json({ success: true, story });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false });
+  }
+});
+
 module.exports = router;

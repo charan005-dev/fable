@@ -1,12 +1,15 @@
 const express = require("express");
 const app = express();
 const routes = require("./routes");
+const path = require("path");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+console.log(__dirname + "/public");
+app.use("/public", express.static(__dirname + "/public/"));
 
 app.use("/", (req, res, next) => {
-  console.log("Into the app!");
+  console.log("Into the app!" + req.originalUrl);
   next();
 });
 
