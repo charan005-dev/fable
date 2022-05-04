@@ -91,7 +91,7 @@ function SignUp() {
         <br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button class="button">
-          <NavLink to="/signin">
+          <NavLink>
             <span class="linktext">Sign-In</span>
           </NavLink>
         </button>
