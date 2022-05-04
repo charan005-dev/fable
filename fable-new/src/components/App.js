@@ -6,14 +6,14 @@ import Account from "./Account";
 import Home from "./Home";
 import Landing from "./Landing";
 import Navigation from "./Navigation";
-import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
 import SignOutButton from "./SignOut";
 import Splash from "./Splash";
 import Theme from "./Theme";
-import NavBar from "./NavBar"; 
+import NavBar from "./NavBar";  
+import Login from "./Login";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -36,8 +36,8 @@ function App() {
             <Route path="/account" element={<PrivateRoute />}>
               <Route path="/account" element={<Account />} />
             </Route>
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup" element={<SignUp />} /> 
+            <Route path="/login" element={<Login/>}/>
           </Routes>
         </div>
       </Router>
