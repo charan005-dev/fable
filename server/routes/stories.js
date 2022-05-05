@@ -47,7 +47,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     }
     const { title, shortDescription, contentHtml, genres } = req.body;
     // TODO validate incoming parameters
-    const filePath = "/covers/" + req.file.filename;
+    const filePath = "/public/covers/" + req.file.filename;
     const { success, story } = await stories.createStory(
       currentUser,
       title,
