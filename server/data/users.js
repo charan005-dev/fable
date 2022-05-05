@@ -30,7 +30,23 @@ const getPublicProfile = async (userId) => {
   return findUser;
 };
 
+const updateUser = async (userId, displayName, filePath) => {
+  const usersCollection = await users();
+  const findUser = await usersCollection.findOne({ _id: userId });
+  if (!findUser) {
+    throw `User does not exist with id ${userId}`;
+  }
+  let updatedUser = {
+    displayName,
+    userAvatar: filePath,
+  };
+  const performedUpdate = await usersCollection.updateOne({ _id: userId }, { $set: updatedUser });
+  const updateUser = await usersCollection.findOne({ _id: userId });
+  return updateUser;
+};
+
 module.exports = {
   createUser,
   getPublicProfile,
+  updateUser,
 };
