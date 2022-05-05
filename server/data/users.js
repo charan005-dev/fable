@@ -1,4 +1,4 @@
-const { users } = require("../config/mongoCollections");
+const { users, stories } = require("../config/mongoCollections");
 
 const createUser = async (userId, emailAddress, displayName) => {
   const usersCollection = await users();
@@ -17,6 +17,20 @@ const createUser = async (userId, emailAddress, displayName) => {
   return await usersCollection.findOne({ _id: insertUser.insertedId });
 };
 
+const getPublicProfile = async (userId) => {
+  const usersCollection = await users();
+  const storiesCollection = await stories();
+  const findUser = await usersCollection.findOne({ _id: userId });
+  if (!findUser) {
+    throw `User does not exist with id ${userId}`;
+  }
+  const userStories = await storiesCollection.find({ creatorId: findUser._id }).toArray();
+  // TODO get user liked stories
+  findUser.storiesCreated = userStories;
+  return findUser;
+};
+
 module.exports = {
   createUser,
+  getPublicProfile,
 };

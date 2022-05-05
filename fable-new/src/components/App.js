@@ -11,8 +11,8 @@ import PrivateRoute from "./PrivateRoute";
 import Splash from "./Splash";
 import CreateStory from "./Stories/CreateStory";
 import Login from "./Login";
-
 import Story from "./Stories/Story";
+import PublicProfile from "./Users/PublicProfile";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -41,6 +41,9 @@ function App() {
             </Route>
             <Route path="/stories/:id" element={<PrivateRoute />}>
               <Route path="/stories/:id" element={<Story />} />
+            </Route>
+            <Route path="/users/:profileUserId" element={<PrivateRoute />}>
+              <Route path="/users/:profileUserId" element={<PublicProfile />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
