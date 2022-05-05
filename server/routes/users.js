@@ -21,4 +21,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/public_profile/:userId", async (req, res) => {
+  try {
+    let userId = req.params.userId;
+    if (!userId) {
+      res.status(400).json({ success: false, error: "User id not provided. " });
+      return;
+    }
+    const userProfile = await users.getPublicProfile(userId);
+    res.status(200).json({ success: true, profile: userProfile });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, message: "Sorry, something went wrong. " });
+  }
+});
+
 module.exports = router;
