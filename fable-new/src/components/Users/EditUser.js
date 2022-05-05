@@ -22,6 +22,7 @@ const EditUser = () => {
 
   const performEditUser = async () => {
     const formData = new FormData();
+    formData.append("userId", currentUser.uid);
     formData.append("displayName", displayName);
     formData.append("userAvatar", userAvatar);
     const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {

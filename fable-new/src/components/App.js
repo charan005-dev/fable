@@ -14,6 +14,7 @@ import Login from "./Login";
 import Story from "./Stories/Story";
 import PublicProfile from "./Users/PublicProfile";
 import EditUser from "./Users/EditUser";
+import StoryBook from "./Stories/StoryBook";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -48,6 +49,9 @@ function App() {
             </Route>
             <Route path="/users/:userId/edit" element={<PrivateRoute />}>
               <Route path="/users/:userId/edit" element={<EditUser />} />
+            </Route>
+            <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
+              <Route path="/stories/:storyId/book" element={<StoryBook />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />

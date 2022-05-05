@@ -71,7 +71,9 @@ router.get("/:id", async (req, res) => {
     console.log("getting a story");
     let storyId = req.params.id;
     let story = await stories.getStoryById(storyId);
+    console.log(story);
     res.status(200).json({ success: true, story });
+    return;
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false });
