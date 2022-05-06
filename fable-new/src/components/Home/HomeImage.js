@@ -42,6 +42,10 @@ const useStyles = makeStyles({
   image: {
     height: "auto",
   },
+  media: {
+    height: "auto",
+    width: "450px",
+  },
 });
 
 function HomeImage() {
