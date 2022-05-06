@@ -9,12 +9,12 @@ import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
 import Splash from "./Splash";
-import CreateStory from "./Stories/CreateStory";
+import CreateStory from "./stories/CreateStory";
 import Login from "./Login";
-import Story from "./Stories/Story";
+import Story from "./stories/Story";
 import PublicProfile from "./Users/PublicProfile";
 import EditUser from "./Users/EditUser";
-import StoryBook from "./Stories/StoryBook";
+import StoryBook from "./stories/StoryBook";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -22,8 +22,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        {/* <div className={`bg ${darkMode ? "dark" : "light"}`}>
-          <Theme /> */}
+        
         <div className="container">
           <header className="App-header">
             <Navigation />
