@@ -56,7 +56,7 @@ function HomeImage() {
     <>
       <Grid item xs={120} sm={70} md={60} lg={50} xl={100}>
         <div className="row">
-          <h2 className={`heading ${darkMode ? "heading-dark" : "heading-light"}`}>Images</h2>
+          <h2 className={`heading ${darkMode ? "heading-dark" : "heading-light"}`}> Images</h2>
 
           {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}> */}
           <br />
