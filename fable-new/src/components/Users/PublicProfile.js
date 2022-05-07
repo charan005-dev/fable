@@ -44,14 +44,6 @@ const PublicProfile = () => {
   let { profileUserId } = useParams();
   let [profileData, setProfileData] = useState(null);
   const classes = useStyles();
-  //   if (profileUserId !== currentUser) {
-  //     return (
-  //       <div>
-  //         <Alert severity="error">You don't have access to this resource!</Alert>
-  //         {/* <Navigate to={"/login"}/>; */}
-  //       </div>
-  //     );
-  //   }
 
   useEffect(() => {
     async function getProfileData() {
