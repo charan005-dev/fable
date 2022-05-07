@@ -19,11 +19,11 @@ const firebaseApp = initializeApp();
 
 router.get("/all", async (req, res) => {
   try {
-    let currentUser = req.body.userId;
-    if (!currentUser) {
-      res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
-      return;
-    }
+    // let currentUser = req.body.userId;
+    // if (!currentUser) {
+    //   res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
+    //   return;
+    // }
     const { success, allStories } = await stories.getAllStories();
     if (success) {
       res.status(200).json({ success, stories: allStories });
@@ -72,7 +72,7 @@ router.get("/:id", async (req, res) => {
     let storyId = req.params.id;
     let story = await stories.getStoryById(storyId);
     console.log(story);
-    res.status(200).json({ success: true, story });
+    res.status(200).json({ success: true, story: story.story, creator: story.creator });
     return;
   } catch (e) {
     console.log(e);
