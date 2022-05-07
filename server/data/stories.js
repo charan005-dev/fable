@@ -4,12 +4,9 @@ const { convert } = require("html-to-text");
 const axios = require("axios").default;
 const AppSearchClient = require("@elastic/app-search-node");
 
-// console.log(process.env);
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
-
-const DOCUMENT_INDEX_URL = "http://localhost:3002/api/as/v1/engines/fable-search-engine/documents";
 
 const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
   let story = {
@@ -29,29 +26,19 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
   console.log(story);
   const storiesCollection = await stories();
   await storiesCollection.insertOne(story);
-  // let indexed = await client.index({
-  //   index: "fable-stories",
-  //   document: {
-  //     title: title,
-  //     content: story.contentText,
-  //   },
-  // });
-  // console.log(indexed);
-  const { data } = await axios.post(
-    DOCUMENT_INDEX_URL,
-    {
+  try {
+    let tokenizedKeywords = story.contentText.split(" ").map((word) => {
+      if (word.length > 3) return word;
+    });
+    const indexedData = await client.indexDocument("fable-search-engine", {
       id: story._id,
-      content: story.contentText,
+      content: tokenizedKeywords.join(" "),
       title: story.title,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + apiKey,
-      },
-    }
-  );
-  console.log(data);
+    });
+  } catch (e) {
+    // errors in pushing to elastic search could be caught here. logging them for reference
+    console.log(e);
+  }
   let result = { success: true, createdStory: story };
   return result;
 };
@@ -75,7 +62,13 @@ const getStoryById = async (storyId) => {
 };
 
 const searchStory = async (searchTerm) => {
-  const searchResults = await client.search("fable-search-engine", searchTerm);
+  let searchResults = [];
+  try {
+    searchResults = await client.search("fable-search-engine", searchTerm);
+  } catch (e) {
+    // logging errors in elasticsearch retrieval.
+    console.log(e);
+  }
   let results = [];
   searchResults.results.forEach((result) => {
     let newObj = {};
