@@ -9,12 +9,12 @@ import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
 import Splash from "./Splash";
-import CreateStory from "./stories/CreateStory";
+import CreateStory from "./Stories/CreateStory";
 import Login from "./Login";
-import Story from "./stories/Story";
+import Story from "./Stories/Story";
 import PublicProfile from "./Users/PublicProfile";
 import EditUser from "./Users/EditUser";
-import StoryBook from "./stories/StoryBook";
+import StoryBook from "./Stories/StoryBook";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -22,7 +22,6 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        
         <div className="container">
           <header className="App-header">
             <Navigation />
