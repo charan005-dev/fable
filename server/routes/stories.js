@@ -39,7 +39,7 @@ router.get("/all", async (req, res) => {
 router.post("/", upload.single("coverImage"), async (req, res) => {
   try {
     console.log(req.body);
-    console.log(req.file.path);
+    // console.log(req.file.path);
     const currentUser = req.body.creatorId;
     if (!currentUser) {
       res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
@@ -47,7 +47,11 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     }
     const { title, shortDescription, contentHtml, genres } = req.body;
     // TODO validate incoming parameters
-    const filePath = "/public/covers/" + req.file.filename;
+    let filePath = null;
+    if (req.file) {
+      filePath = "/public/covers/" + req.file.filename;
+    }
+
     const { success, story } = await stories.createStory(
       currentUser,
       title,
@@ -74,6 +78,21 @@ router.get("/:id", async (req, res) => {
     console.log(story);
     res.status(200).json({ success: true, story: story.story, creator: story.creator });
     return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false });
+  }
+});
+
+router.post("/search", async (req, res) => {
+  try {
+    let q = req.query.q;
+    if (!q) {
+      res.status(200).json({ success: true, results: [] });
+      return;
+    }
+    let results = await stories.searchStory(q);
+    res.status(200).json({ success: true, results });
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false });
