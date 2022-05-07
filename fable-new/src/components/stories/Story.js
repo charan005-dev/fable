@@ -32,7 +32,8 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Typography variant="h1">{storyData.story.title}</Typography>
             <Card>
-              <img src={"/public" + storyData.story.coverImage} />
+              {storyData.story.coverImage && <img src={"/public" + storyData.story.coverImage} />}
+              {!storyData.story.coverImage && <img src={"/covers/default-cover.jpg"} />}
             </Card>
           </Grid>
         </Paper>
