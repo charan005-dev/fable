@@ -46,9 +46,15 @@ const useStyles = makeStyles({
   image: {
     height: "auto",
   },
+
   text1: {
     marginLeft: "20px",
     marginRight: "auto",
+
+  media: {
+    height: "auto",
+    width: "450px",
+
   },
 });
 

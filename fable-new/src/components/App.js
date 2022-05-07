@@ -22,8 +22,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        {/* <div className={`bg ${darkMode ? "dark" : "light"}`}>
-          <Theme /> */}
+        
         <div className="container">
           <header className="App-header">
             <Navigation />

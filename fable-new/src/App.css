@@ -461,4 +461,49 @@ h1 {
   flex: 1;
 }
 
-/* ------------------------ */
+/* ------------------------ */ 
+
+.tox {
+  box-shadow: black;
+  box-sizing: content-box;
+  color: #222f3e;
+  cursor: auto;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  vertical-align: initial;
+  white-space: normal;
+  border: 5px solid rgb(0, 0, 0);
+}
+.tox-tinymce {
+  border: 5px solid rgb(0, 0, 0);
+  border-radius: 10px; 
+  width:50%; 
+  margin-left: auto; 
+  margin-right:auto;
+
+  box-shadow: black 5px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  overflow: hidden;
+  position: relative;
+  visibility: inherit!important;
+}
+
+.MuiOutlinedInput-root {
+  position: relative;
+  border-radius: 4px;
+  width: 30%; 
+  margin-left: auto; 
+  margin-right:auto;
+
+} 
+
