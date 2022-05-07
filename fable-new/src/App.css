@@ -408,6 +408,8 @@ h1 {
 }
 
 .row_posters {
+  margin-right: auto;
+  padding-left: 5px;
   display: flex;
 }
 

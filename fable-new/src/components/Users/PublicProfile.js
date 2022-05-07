@@ -1,4 +1,4 @@
-import { Alert } from "@mui/material";
+import { Alert, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -37,6 +37,17 @@ const useStyles = makeStyles({
     width: 150,
     height: 150,
   },
+  title: {
+    border: " 0px #fff",
+    width: "auto",
+    paddingRight: "100%",
+  },
+  stack: {
+    width: "auto",
+    height: "auto",
+    paddingRight: "auto",
+  },
+  media: { paddingRight: "auto", paddingLeft: "auto" },
 });
 
 const PublicProfile = () => {
@@ -81,23 +92,54 @@ const PublicProfile = () => {
             {profileData.profile &&
               profileData.profile.storiesCreated.map((createdStory) => {
                 return (
-                  <Card>
-                    <CardContent>
-                      <CardActionArea>
-                        <Link to={`/stories/${createdStory._id}`}>
-                          <CardHeader className={classes.storyLink} title={createdStory.title}></CardHeader>
-                          <Divider />
-                          <br />
-                          <CardMedia
-                            sx={{ width: 50 }}
-                            component={"img"}
-                            alt={"book cover image"}
-                            image={createdStory.coverImage}
-                          />
-                        </Link>
-                      </CardActionArea>
-                    </CardContent>
-                  </Card>
+                  <>
+                    <Paper
+                      elevation={20}
+                      sx={{
+                        bgcolor: "background.default",
+                        display: "grid",
+                        width: "400px",
+                        gridTemplateColumns: { md: "1fr 1fr" },
+                        gap: 2,
+                      }}
+                    >
+                      <Grid container justifyContent="center">
+                        <div>
+                          <Stack className={classes.stack} direction={"row"} spacing={10}>
+                            <span>
+                              <Card>
+                                <CardContent>
+                                  <CardActionArea>
+                                    <Link to={`/stories/${createdStory._id}`}>
+                                      <Divider />
+                                      <br />
+                                      <CardMedia
+                                        className={classes.media}
+                                        component={"img"}
+                                        alt={"book cover image"}
+                                        image={createdStory.coverImage}
+                                      />
+                                    </Link>
+                                  </CardActionArea>
+                                </CardContent>
+                              </Card>
+                            </span>
+                            <span>
+                              <Card className={classes.title}>
+                                <CardContent>
+                                  <Link to={`/stories/${createdStory._id}`}>
+                                    <CardHeader className={classes.storyLink} title={createdStory.title}></CardHeader>
+                                    <Divider />
+                                  </Link>
+                                  <Typography variant="h5">{createdStory.shortDescription}</Typography>
+                                </CardContent>
+                              </Card>
+                            </span>
+                          </Stack>
+                        </div>
+                      </Grid>
+                    </Paper>
+                  </>
                 );
               })}
           </Grid>
