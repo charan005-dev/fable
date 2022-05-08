@@ -1,16 +1,41 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography } from "@material-ui/core";
+import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent, CardActionArea } from "@material-ui/core";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
+const useStyles = makeStyles({
+  card: {
+    maxWidth: 250,
+    height: "auto",
+    width: "auto",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 5,
+    border: "1px solid #000",
+  },
+  media: {
+    height: "300px",
+    width: "100%",
+  },
+  title: {
+    border: " 0px #fff",
+    width: "300px",
+  },
+  nameBox: {
+    marginRight: "1000px",
+  },
+});
 
 const Story = () => {
   const { id } = useParams();
   const [storyData, setStoryData] = useState(null);
+  const classes = useStyles();
 
   useEffect(() => {
     async function getStoryData() {
       const { data } = await axios.get(`/api/stories/${id}`);
+      console.log(data);
       setStoryData(data);
     }
     getStoryData();
@@ -18,32 +43,35 @@ const Story = () => {
 
   if (storyData) {
     console.log(storyData);
-    return (
-      <div>
-        <Paper
-          elevation={10}
-          sx={{
-            bgcolor: "background.default",
-            display: "grid",
-            gridTemplateColumns: { md: "1fr 1fr" },
-            gap: 2,
-          }}
-        >
-          <Grid container justifyContent="center">
-            <Typography variant="h1">{storyData.story.title}</Typography>
-            <Card>
-              <img src={"/public" + storyData.story.coverImage} />
-            </Card>
-          </Grid>
-        </Paper>
-        <Grid container justifyContent="center">
-          <Stack direction={"row"} spacing={4}>
-            <Box>
-              <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>
-            </Box>
-          </Stack>
-        </Grid>
-      </div>
+    return ( 
+ 
+      <Grid item xs={12} md={6}>
+      <CardActionArea component="a" href="#">
+        <Card sx={{ display: 'flex' }}>
+          <CardContent sx={{ flex: 1 }}>
+            <Typography component="h2" variant="h5">
+              {storyData.story.title}
+            </Typography>
+            {/* <Typography variant="subtitle1" color="text.secondary">
+              {post.date}
+            </Typography> */}
+            <Typography variant="subtitle1" paragraph>
+              {storyData.creator.displayName}
+            </Typography>
+            <Typography variant="subtitle1" color="primary">
+            {storyData.story.shortDescription}
+            </Typography>
+          </CardContent>
+          <CardMedia
+            component="img"
+            sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+            image={storyData.story.coverImage} 
+            alt="image"
+          />
+        </Card>
+      </CardActionArea>
+    </Grid>
+     
     );
   }
 };

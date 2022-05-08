@@ -23,6 +23,7 @@
     "axios": "^0.27.2",
     "dompurify": "^2.3.6",
     "firebase": "^7.23.0",
+    "mdb-react-ui-kit": "^3.0.0",
     "react": "^18.0.0",
     "react-bootstrap": "^2.3.1",
     "react-dom": "^18.0.0",
