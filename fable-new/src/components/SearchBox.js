@@ -64,6 +64,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const isValidSearchTerm = (q) => {
+  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0) return false;
+  return true;
+};
+
 export default function SearchBox() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -74,14 +79,19 @@ export default function SearchBox() {
   };
 
   const performSearch = async () => {
-    const { data } = await axios.post(`/api/stories/search?q=${searchTerm}`);
-    console.log(data);
-    setSearchResults(data.results);
-    setOpen(true);
+    if (isValidSearchTerm(searchTerm)) {
+      const { data } = await axios.post(`/api/stories/search?q=${searchTerm}`);
+      console.log(data);
+      setSearchResults(data.results);
+      setOpen(true);
+    } else {
+      setSearchTerm("");
+    }
   };
 
   const handleDialogClose = () => {
     setOpen(false);
+    setSearchTerm("");
   };
 
   const handleLinkClick = () => {
@@ -98,27 +108,38 @@ export default function SearchBox() {
         inputProps={{ "aria-label": "search" }}
         onChange={(e) => handleSearchInput(e)}
         onBlur={performSearch}
+        value={searchTerm}
       />
       {/* <SearchResults /> */}
       <Dialog onClose={handleDialogClose} open={open}>
         <DialogTitle>Search Results</DialogTitle>
-        <List sx={{ pt: 0 }}>
-          {searchResults &&
-            searchResults.map((res) => {
-              return (
-                <Card>
-                  <CardContent>
-                    <CardActionArea>
-                      <Link onClick={handleLinkClick} to={`/stories/${res.id}`}>
-                        <CardHeader title={res.title}></CardHeader>
-                        <br />
-                      </Link>
-                    </CardActionArea>
-                  </CardContent>
-                </Card>
-              );
-            })}
-        </List>
+        {searchResults && searchResults.length === 0 && (
+          <div>
+            <Typography sx={{ p: 2 }} variant="body1">
+              Sorry, no search results available. Please try again.
+            </Typography>
+            <br />
+          </div>
+        )}
+        {searchResults && searchResults.length > 0 && (
+          <List sx={{ pt: 0 }}>
+            {searchResults &&
+              searchResults.map((res) => {
+                return (
+                  <Card>
+                    <CardContent>
+                      <CardActionArea>
+                        <Link onClick={handleLinkClick} to={`/stories/${res.id}`}>
+                          <CardHeader title={res.title}></CardHeader>
+                          <br />
+                        </Link>
+                      </CardActionArea>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+          </List>
+        )}
       </Dialog>
     </Search>
   );

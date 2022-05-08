@@ -99,4 +99,23 @@ router.post("/search", async (req, res) => {
   }
 });
 
+router.post("/:id/like", async (req, res) => {
+  try {
+    let userId = req.body.userId;
+    let storyId = req.params.id;
+    if (!userId) {
+      res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
+      return;
+    }
+    let afterLike = await stories.toggleLike(storyId, userId);
+    if (afterLike.success) {
+      res.status(200).json(afterLike);
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false });
+  }
+});
+
 module.exports = router;
