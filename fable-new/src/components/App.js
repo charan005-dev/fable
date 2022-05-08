@@ -9,12 +9,14 @@ import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
 import Splash from "./Splash";
-import CreateStory from "./stories/CreateStory";
+import CreateStory from "./Stories/CreateStory";
 import Login from "./Login";
-import Story from "./stories/Story";
+import Story from "./Stories/Story";
 import PublicProfile from "./Users/PublicProfile";
 import EditUser from "./Users/EditUser";
-import StoryBook from "./stories/StoryBook";
+import StoryBook from "./Stories/StoryBook";
+import CreateLibrary from "./Libraries/CreateLibrary";
+import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -22,7 +24,6 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        
         <div className="container">
           <header className="App-header">
             <Navigation />
@@ -51,6 +52,12 @@ function App() {
             </Route>
             <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/book" element={<StoryBook />} />
+            </Route>
+            <Route path="/libraries/create" element={<PrivateRoute />}>
+              <Route path="/libraries/create" element={<CreateLibrary />} />
+            </Route>
+            <Route path="/libraries/me" element={<PrivateRoute />}>
+              <Route path="/libraries/me" element={<ViewLibrariesList />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
