@@ -84,9 +84,28 @@ const searchStory = async (searchTerm) => {
   return results;
 };
 
+const toggleLike = async (storyId, userId) => {
+  const storiesCollection = await stories();
+  const usersCollection = await users();
+  const findStory = await storiesCollection.findOne({ _id: storyId });
+  if (!findStory) throw `No story found with the given id.`;
+  const findUser = await usersCollection.findOne({ _id: userId });
+  if (!findUser) throw `No user found with the given id.`;
+  if (findStory.likedBy.includes(userId)) {
+    await storiesCollection.updateOne({ _id: storyId }, { $pull: { likedBy: userId } });
+  } else {
+    await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { likedBy: userId } });
+  }
+  return {
+    success: true,
+    story: await storiesCollection.findOne({ _id: storyId }),
+  };
+};
+
 module.exports = {
   createStory,
   getAllStories,
   getStoryById,
   searchStory,
+  toggleLike,
 };
