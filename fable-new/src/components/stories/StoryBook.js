@@ -6,6 +6,7 @@ import Hero from "../Hero";
 import DOMPurify from "dompurify";
 import { makeStyles } from "@material-ui/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 
@@ -44,17 +45,22 @@ const StoryBook = () => {
         <Hero title={story.title} />
         <br />
         {!story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="primary" onClick={handleLike}>
+          <Fab variant="circular" color="default" onClick={handleLike}>
             {/* Liked the story? */}
             <FavoriteIcon />
           </Fab>
         )}
         {story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="secondary" onClick={handleLike}>
+          <Fab variant="circular" color="secondary" onClick={handleLike}>
             {/* Did not like the story? Let us know! */}
             <FavoriteIcon />
           </Fab>
         )}
+        {"   "}
+        <Fab variant="extended" color="inherit">
+          <AddIcon />
+          Add to my library
+        </Fab>
         <Divider />
         <br />
         <div className={classes.storyBook}>
