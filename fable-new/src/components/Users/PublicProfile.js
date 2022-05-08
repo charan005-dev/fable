@@ -14,7 +14,17 @@ import {
   Typography,
   Paper,
   Divider,
+  TextField,
 } from "@material-ui/core";
+import {
+  MDBCard,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBRow,
+  MDBCol,
+} from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { makeStyles } from "@material-ui/styles";
 import { maxHeight } from "@mui/system";
@@ -47,7 +57,40 @@ const useStyles = makeStyles({
     height: "auto",
     paddingRight: "auto",
   },
-  media: { paddingRight: "auto", paddingLeft: "auto" },
+  media: {
+    width: '50%',
+    height: '120px',
+    height: 'auto',
+    float: 'left',
+    margin: '3px',
+    padding: '3px'
+  },
+
+  cards: {
+    width: "500px",
+    height: "600px",
+    marginLeft: "100%",
+    marginRight: "100%",
+    border: "3px solid black",
+    borderRadius: "5px",
+  },
+  text: {
+    color: "grey",
+    justifyContent: "center",
+    marginLeft: "44%",
+    marginRight: "auto",
+  },
+  box: {
+    paddingLeft: "auto",
+    marginLeft: "44%",
+    marginRight: "100%",
+  },
+  title: {
+    color: "black",
+    justifyContent: "center",
+    fontSize: "30px",
+    paddingLeft: "43.5%",
+  },
 });
 
 const PublicProfile = () => {
@@ -55,94 +98,93 @@ const PublicProfile = () => {
   let { profileUserId } = useParams();
   let [profileData, setProfileData] = useState(null);
   const classes = useStyles();
-  //   if (profileUserId !== currentUser) {
-  //     return (
-  //       <div>
-  //         <Alert severity="error">You don't have access to this resource!</Alert>
-  //         {/* <Navigate to={"/login"}/>; */}
-  //       </div>
-  //     );
-  //   }
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`);
+      const { data } = await axios.get(
+        `/api/users/public_profile/${profileUserId}`
+      );
       setProfileData(data);
       console.log(data);
     }
     getProfileData();
   }, [profileUserId]);
 
+  const [scrollX, setScrollX] = useState(0);
+
   const buildUserProfile = (profileData) => {
     return (
       <div>
         <div>
-          <Hero title={profileData.profile.displayName} subtitle={""} />
-
-          <div className={classes.imageWrapper}>
-            <img className={classes.images} src={profileData.profile.userAvatar} alt="user" />
-          </div>
+          <Typography className={classes.title} subtitle={""}>
+            {profileData.profile.displayName}
+          </Typography>
         </div>
         <br />
-        <Typography variant="h3" component={"h2"}>
+        <Typography variant="h3" component={"h2"} className={classes.text}>
           Stories written
         </Typography>
-        <Box sx={{ width: 200 }}>
-          <Grid container justifyContent="left">
-            {profileData.profile &&
-              profileData.profile.storiesCreated.map((createdStory) => {
-                return (
-                  <>
-                    <Paper
-                      elevation={20}
-                      sx={{
-                        bgcolor: "background.default",
-                        display: "grid",
-                        width: "400px",
-                        gridTemplateColumns: { md: "1fr 1fr" },
-                        gap: 2,
-                      }}
-                    >
-                      <Grid container justifyContent="center">
-                        <div>
-                          <Stack className={classes.stack} direction={"row"} spacing={10}>
-                            <span>
-                              <Card>
-                                <CardContent>
-                                  <CardActionArea>
-                                    <Link to={`/stories/${createdStory._id}`}>
-                                      <Divider />
-                                      <br />
-                                      <CardMedia
-                                        className={classes.media}
-                                        component={"img"}
-                                        alt={"book cover image"}
-                                        image={createdStory.coverImage}
-                                      />
-                                    </Link>
-                                  </CardActionArea>
-                                </CardContent>
-                              </Card>
-                            </span>
-                            <span>
-                              <Card className={classes.title}>
-                                <CardContent>
-                                  <Link to={`/stories/${createdStory._id}`}>
-                                    <CardHeader className={classes.storyLink} title={createdStory.title}></CardHeader>
-                                    <Divider />
-                                  </Link>
-                                  <Typography variant="h5">{createdStory.shortDescription}</Typography>
-                                </CardContent>
-                              </Card>
-                            </span>
-                          </Stack>
-                        </div>
-                      </Grid>
-                    </Paper>
-                  </>
-                );
-              })}
-          </Grid>
+        <br />
+        <br />
+
+        <div className="movieRow"></div>
+        <Box className={classes.box}>
+          {profileData.profile &&
+            profileData.profile.storiesCreated.map((createdStory) => {
+              return (
+                <>
+                  <MDBCard >
+                    <MDBRow className={classes.cards}>
+                      <MDBCol>
+                        <MDBCardImage
+                          src={createdStory.coverImage}
+                          alt="..."
+                          fluid
+                        />
+                      </MDBCol>
+                      <MDBCard>
+                        <MDBCardBody>
+                          <MDBCardText className="text">
+                            {createdStory.title}
+                          </MDBCardText>
+
+                          <MDBCardText>
+                            <small className="text">
+                              {createdStory.shortDescription}
+                            </small>
+                          </MDBCardText>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </MDBRow>
+                  </MDBCard>
+
+                  {/* <Grid className={classes.cards} direction="column">
+                    <CardActionArea component="a" href="#">
+                      <Card sx={{ display: "flex" }}>
+                        <CardMedia
+                          component="img"
+                          image={createdStory.coverImage}
+                          alt="image"
+                          className={classes.media}
+                        />
+
+                        <CardContent sx={{ flex: 1 }}>
+                          <Typography component="h2" variant="h5">
+                            {createdStory.title}
+                          </Typography>
+
+                          <Typography variant="subtitle1" color="primary">
+                            {createdStory.shortDescription}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </CardActionArea>
+                    <br />
+                  </Grid> */}
+                  <br />
+                </>
+              );
+            })}
         </Box>
       </div>
     );

@@ -48,6 +48,7 @@ const useStyles = makeStyles({
   },
   text1: {
     marginLeft: "20px",
+
     marginRight: "auto",
   },
   media: {
