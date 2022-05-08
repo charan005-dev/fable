@@ -7,6 +7,7 @@ const AppSearchClient = require("@elastic/app-search-node");
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
+const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
 
 const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
   let story = {
@@ -30,7 +31,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     let tokenizedKeywords = story.contentText.split(" ").map((word) => {
       if (word.length > 3) return word;
     });
-    const indexedData = await client.indexDocument("fable-search-engine", {
+    const indexedData = await client.indexDocument(elasticEngineName, {
       id: story._id,
       content: tokenizedKeywords.join(" "),
       title: story.title,
@@ -64,7 +65,7 @@ const getStoryById = async (storyId) => {
 const searchStory = async (searchTerm) => {
   let searchResults = [];
   try {
-    searchResults = await client.search("fable-search-engine", searchTerm);
+    searchResults = await client.search(elasticEngineName, searchTerm);
   } catch (e) {
     // logging errors in elasticsearch retrieval.
     console.log(e);
