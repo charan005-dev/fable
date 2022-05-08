@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardMedia,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -32,13 +33,13 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing("70vw"),
     width: "auto",
   },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(0, 1),
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
@@ -56,9 +57,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "12ch",
+      width: "39ch",
       "&:focus": {
-        width: "20ch",
+        width: "40ch",
       },
     },
   },
@@ -99,17 +100,22 @@ export default function SearchBox() {
   };
 
   return (
-    <Search>
+    <Search sx={{ marginX: 40 }}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Search…"
-        inputProps={{ "aria-label": "search" }}
-        onChange={(e) => handleSearchInput(e)}
-        onBlur={performSearch}
-        value={searchTerm}
-      />
+      <Tooltip
+        title="Click outside after typing to search. Enter atleast 3 characters for a more relevant result."
+        placement="bottom-start"
+      >
+        <StyledInputBase
+          placeholder="Click here to search…"
+          inputProps={{ "aria-label": "search" }}
+          onChange={(e) => handleSearchInput(e)}
+          onBlur={performSearch}
+          value={searchTerm}
+        />
+      </Tooltip>
       {/* <SearchResults /> */}
       <Dialog onClose={handleDialogClose} open={open}>
         <DialogTitle>Search Results</DialogTitle>

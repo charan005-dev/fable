@@ -92,8 +92,8 @@ export default function NavBar() {
       </FormGroup>
       <AppBar position="absolute" className={classes.card}>
         <Toolbar>
-          <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
-            F A B L E
+          <Typography variant="h3" component="div" sx={{ flexGrow: 0 }}>
+            Fable
           </Typography>
           <SearchBox />
           {auth && (
