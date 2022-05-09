@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import {
   Card,
   CardActionArea,
@@ -9,6 +11,7 @@ import {
   makeStyles,
   Paper,
   CircularProgress,
+  Button,
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
 import { Stack } from "@mui/material";
@@ -16,6 +19,7 @@ import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
+import { doSignOut } from "../../firebase/FirebaseFunctions";
 
 const useStyles = makeStyles({
   card: {
@@ -36,8 +40,8 @@ const useStyles = makeStyles({
     flexGrow: 5,
   },
   media: {
-    height: "100px",
-    width: "100px",
+    height: "100%",
+    width: "100%",
   },
   paper: {
     height: "auto",
@@ -68,6 +72,14 @@ function HomeImage() {
   const [storyData, setStoryData] = useState(null);
   const classes = useStyles();
 
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
   useEffect(() => {
     async function getAllStories() {
       const { data } = await axios.get(`/api/stories/all`, {
@@ -90,23 +102,28 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item xs={120} sm={70} md={60} lg={50} xl={100}>
+          <Grid item xs={10} sm={10} md={10} lg={20} xl={120}>
             <div>
               <h2 className={classes.text1}>New and Hot</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}> */}
               <br />
               <br />
               <br />
+
               <div className="row_posters">
-                <Stack direction={"row"} spacing={3}>
+                <Stack direction={"row"} spacing={4}>
                   {storyData &&
                     storyData.map((image) => {
                       return (
                         <Paper className={classes.paper}>
-                          {/* <img key={idx} src={`/images/${image}.jpg`} className="row_poster" alt="images" /> */}
+                         
                           <CardActionArea>
                             <Link to={`/stories/${image._id}`}>
-                              <CardMedia className={classes.media} component="img" image={image.coverImage} />
+                              <CardMedia
+                                className={classes.media}
+                                component="img"
+                                image={image.coverImage}
+                              />
                             </Link>
                           </CardActionArea>
                         </Paper>

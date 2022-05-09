@@ -10,13 +10,13 @@ import { AuthProvider } from "../firebase/Auth";
 import PrivateRoute from "./PrivateRoute";
 import Splash from "./Splash";
 import CreateStory from "./Stories/CreateStory";
-import Login from "./Login";
 import Story from "./Stories/Story";
 import PublicProfile from "./Users/PublicProfile";
 import EditUser from "./Users/EditUser";
 import StoryBook from "./Stories/StoryBook";
 import CreateLibrary from "./Libraries/CreateLibrary";
 import ViewLibrariesList from "./Libraries/ViewLibrariesList";
+import Signin from "./Signin";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -60,7 +60,7 @@ function App() {
               <Route path="/libraries/me" element={<ViewLibrariesList />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/signin" element={<Signin />} />
           </Routes>
         </div>
       </Router>
