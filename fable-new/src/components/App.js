@@ -17,7 +17,7 @@ import StoryBook from "./Stories/StoryBook";
 import CreateLibrary from "./Libraries/CreateLibrary";
 import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
-//import Story1 from "./Stories/Story1";
+import ManageMyStories from "./Stories/ManageMyStories";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -53,6 +53,9 @@ function App() {
             </Route>
             <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/book" element={<StoryBook />} />
+            </Route>
+            <Route path="/stories/manage" element={<PrivateRoute />}>
+              <Route path="/stories/manage" element={<ManageMyStories />} />
             </Route>
             <Route path="/libraries/create" element={<PrivateRoute />}>
               <Route path="/libraries/create" element={<CreateLibrary />} />

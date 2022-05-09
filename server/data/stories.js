@@ -17,7 +17,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     shortDescription,
     contentText: convert(contentHtml, { wordwrap: 130 }),
     contentHtml,
-    genres,
+    genres: genres.length > 0 ? genres.split(",") : [],
     coverImage: filePath,
     likedBy: [],
     comments: [],
@@ -103,10 +103,17 @@ const toggleLike = async (storyId, userId) => {
   };
 };
 
+const getNRandom = async (n) => {
+  const storiesCollection = await stories();
+  let nRandom = await storiesCollection.aggregate([{ $match: {} }, { $sample: { size: n } }]).toArray();
+  return { randomStories: nRandom };
+};
+
 module.exports = {
   createStory,
   getAllStories,
   getStoryById,
   searchStory,
   toggleLike,
+  getNRandom,
 };
