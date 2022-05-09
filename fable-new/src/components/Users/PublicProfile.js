@@ -16,18 +16,9 @@ import {
   Divider,
   TextField,
 } from "@material-ui/core";
-import {
-  MDBCard,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardBody,
-  MDBCardImage,
-  MDBRow,
-  MDBCol,
-} from "mdb-react-ui-kit";
+import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { makeStyles } from "@material-ui/styles";
-import { maxHeight } from "@mui/system";
 
 /* This component will take care of displaying
     - a user's public profile
@@ -122,9 +113,9 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(
-        `/api/users/public_profile/${profileUserId}`
-      );
+      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       setProfileData(data);
       console.log(data);
     }
@@ -134,7 +125,10 @@ const PublicProfile = () => {
   const [scrollX, setScrollX] = useState(0);
   const buildUserProfile = (profileData) => {
     return (
-      <Paper >
+      <Grid>
+        <Typography variant="h2" component={"h2"} className={classes.text}>
+          {profileData.profile.displayName}
+        </Typography>
         <br />
         <Typography variant="h3" component={"h2"} className={classes.text}>
           Stories written
@@ -142,18 +136,14 @@ const PublicProfile = () => {
         <br />
         <br />
         <br />
-        <Stack direction="column" >
+        <Stack direction="column">
           {profileData.profile &&
             profileData.profile.storiesCreated.map((createdStory) => {
               return (
-                <Paper>
+                <Grid>
                   <Stack direction="row">
                     <Card className={classes.card1} elevation={15}>
-                      <CardMedia
-                        className={classes.media}
-                        component="img"
-                        image={createdStory.coverImage}
-                      />
+                      <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
                     </Card>
                     <Card className={classes.card2} elevation={0}>
                       <CardContent>
@@ -162,18 +152,17 @@ const PublicProfile = () => {
                       <CardContent>
                         <Typography>
                           {createdStory.shortDescription.length > 200
-                            ? createdStory.shortDescription.substring(0, 197) +
-                              "..."
+                            ? createdStory.shortDescription.substring(0, 197) + "..."
                             : createdStory.shortDescription}
                         </Typography>
                       </CardContent>
                     </Card>
                   </Stack>
-                </Paper>
+                </Grid>
               );
             })}
         </Stack>
-      </Paper>
+      </Grid>
     );
   };
   return <div>{profileData && <div>{buildUserProfile(profileData)}</div>}</div>;

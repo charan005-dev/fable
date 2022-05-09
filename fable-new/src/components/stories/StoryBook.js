@@ -109,11 +109,15 @@ const StoryBook = () => {
   const addToLibrary = async () => {
     async function addToMyLibrary() {
       if (currentUser.uid && selectedLib.length > 0) {
-        const { data } = await axios.post(`/api/libraries/add`, {
-          owner: currentUser.uid,
-          libraryId: selectedLib,
-          storyId: storyId,
-        });
+        const { data } = await axios.post(
+          `/api/libraries/add`,
+          {
+            owner: currentUser.uid,
+            libraryId: selectedLib,
+            storyId: storyId,
+          },
+          { headers: { authtoken: await currentUser.getIdToken() } }
+        );
         console.log(data);
         setLibSelectModal(false);
         setAdded(added + 1);

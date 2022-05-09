@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const libraries = require("../data/libraries");
 const path = require("path");
-
 router.post("/", async (req, res) => {
   try {
     let creatorId = req.body.userId;
@@ -10,6 +9,10 @@ router.post("/", async (req, res) => {
     let private = req.body.private;
     if (!creatorId) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
+      return;
+    }
+    if (req.authenticatedUser !== creatorId) {
+      res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
       return;
     }
     const createdLibrary = await libraries.createLibrary(creatorId, libraryName, private);
@@ -24,7 +27,8 @@ router.get("/me", async (req, res) => {
   try {
     let owner = req.query.owner;
     let storyId = req.query.storyId;
-    if (!owner) {
+    const idToken = req.headers.authtoken;
+    if (req.authenticatedUser !== owner) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
       return;
     }
@@ -65,6 +69,18 @@ router.post("/add", async (req, res) => {
     let owner = req.body.owner;
     let storyId = req.body.storyId;
     let libraryId = req.body.libraryId;
+    const idToken = req.headers.authtoken;
+    try {
+      let { uid, name, email, auth_time } = await firebaseAdmin.auth().verifyIdToken(idToken);
+      console.info(`Authenticated user ${name}, with email ${email}. Authenticated on: ${new Date(auth_time * 1000)}`);
+      if (uid !== owner) {
+        res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      res.status(401).json({ success: false, message: "You must be logged in to perform this action" });
+    }
     if (!owner) {
       res.status(401).json({ success: false, message: "You must be logged in to perform this action." });
       return;

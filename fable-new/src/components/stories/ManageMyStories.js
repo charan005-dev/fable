@@ -57,14 +57,16 @@ const ManageMyStories = () => {
     async function getMyStoriesByGenres() {
       if (!doExactMatch) {
         const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=false`
+          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=false`,
+          { headers: { authtoken: await currentUser.getIdToken() } }
         );
         console.log("Data ", data);
         setMyStories(data.stories);
       }
       if (doExactMatch) {
         const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=true`
+          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=true`,
+          { headers: { authtoken: await currentUser.getIdToken() } }
         );
         console.log("Data ", data);
         setMyStories(data.stories);

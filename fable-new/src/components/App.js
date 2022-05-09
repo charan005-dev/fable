@@ -43,8 +43,8 @@ function App() {
             <Route path="/stories/create_story" element={<PrivateRoute />}>
               <Route path="/stories/create_story" element={<CreateStory />} />
             </Route>
-            <Route path="/stories/:id" element={<PrivateRoute />}>
-              <Route path="/stories/:id" element={<Story />} />
+            <Route exact path="/stories/:id" element={<PrivateRoute />}>
+              <Route exact path="/stories/:id" element={<Story />} />
             </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
