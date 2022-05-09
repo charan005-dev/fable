@@ -33,7 +33,7 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing("70vw"),
+    marginLeft: theme.spacing("50vw"),
     width: "auto",
   },
 }));
@@ -55,18 +55,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    width: "100%",
+    width: "100%", 
+    paddingRight:"10px",
     [theme.breakpoints.up("sm")]: {
-      width: "39ch",
+      width: "100%",
       "&:focus": {
-        width: "40ch",
+        width: "30ch",
       },
     },
   },
 }));
 
 const isValidSearchTerm = (q) => {
-  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0) return false;
+  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0)
+    return false;
   return true;
 };
 
@@ -135,7 +137,10 @@ export default function SearchBox() {
                   <Card>
                     <CardContent>
                       <CardActionArea>
-                        <Link onClick={handleLinkClick} to={`/stories/${res.id}`}>
+                        <Link
+                          onClick={handleLinkClick}
+                          to={`/stories/${res.id}`}
+                        >
                           <CardHeader title={res.title}></CardHeader>
                           <br />
                         </Link>
