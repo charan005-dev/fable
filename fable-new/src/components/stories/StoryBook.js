@@ -14,6 +14,20 @@ const useStyles = makeStyles({
   storyBook: {
     margin: 100,
   },
+  fab: {
+    marginLeft: "40%",
+  },
+  fab1: {
+    marginLeft: "1%",
+    marginBottom: "2%",
+    marginTop: "2%", 
+    backgroundColor:"black", 
+    color: "blanchedalmond", 
+    "&:hover": {
+      backgroundColor: "blanchedalmond",
+      color: "black",
+    },
+  },
 });
 
 const StoryBook = () => {
@@ -44,27 +58,39 @@ const StoryBook = () => {
       <div>
         <Hero title={story.title} />
         <br />
-        {!story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="circular" color="default" onClick={handleLike}>
-            {/* Liked the story? */}
-            <FavoriteIcon />
-          </Fab>
-        )}
-        {story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="circular" color="secondary" onClick={handleLike}>
-            {/* Did not like the story? Let us know! */}
-            <FavoriteIcon />
-          </Fab>
-        )}
-        {"   "}
-        <Fab variant="extended" color="inherit">
+        <span className={classes.fab}>
+          {!story.likedBy.includes(currentUser.uid) && (
+            <Fab variant="circular" color="default" onClick={handleLike}>
+              {/* Liked the story? */}
+              <FavoriteIcon />
+            </Fab>
+          )}
+          {story.likedBy.includes(currentUser.uid) && (
+            <Fab
+              variant="circular"
+              color="secondary"
+              onClick={handleLike}
+              elevation={11}
+            >
+              {/* Did not like the story? Let us know! */}
+              <FavoriteIcon />
+            </Fab>
+          )}
+          {"   "}
+        </span>
+
+        <Fab variant="extended" color="inherit" className={classes.fab1}>
           <AddIcon />
           Add to my library
         </Fab>
         <Divider />
         <br />
         <div className={classes.storyBook}>
-          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.contentHtml) }}></div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(story.contentHtml),
+            }}
+          ></div>
         </div>
       </div>
     );

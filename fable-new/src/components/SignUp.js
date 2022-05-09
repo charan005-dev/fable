@@ -200,7 +200,7 @@ function SignUp() {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button className={classes.button1} sx={{ mt: 3, mb: 2 }}>
               &nbsp;
-              <NavLink to="/login" className={classes.textdecoration}>
+              <NavLink to="/signin" className={classes.textdecoration}>
                 {" "}
                 Login{" "}
               </NavLink>{" "}
