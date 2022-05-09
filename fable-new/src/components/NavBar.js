@@ -32,6 +32,7 @@ const useStyles = makeStyles({
   },
   menuItem: {
     textDecoration: "none",
+    background: "black",
     "&:hover": {
       textDecoration: "none",
     },
@@ -95,17 +96,8 @@ export default function NavBar() {
           <Typography variant="h3" component="div" sx={{ flexGrow: 0 }}>
             Fable
           </Typography>
-          <SearchBox />
-          {auth && (
-            <div>
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px", paddingLeft: "300px" }}
+          <Menu
+                  sx={{ mt: "45px", paddingLeft: "300px", backgroundColor: "black" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -125,6 +117,17 @@ export default function NavBar() {
                   </MenuItem>
                   <MenuItem onClick={doSignOut}>Logout</MenuItem>
                 </Menu>
+          <SearchBox /> 
+       
+          {auth && (
+            <div>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Tooltip>
+                
               </Box>
             </div>
           )}
