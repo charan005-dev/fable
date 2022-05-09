@@ -23,13 +23,40 @@ router.post("/", async (req, res) => {
 router.get("/me", async (req, res) => {
   try {
     let owner = req.query.owner;
+    let storyId = req.query.storyId;
     if (!owner) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
       return;
     }
-    let allMyLibraries = await libraries.getAllMyLibraries(owner);
-    res.status(200).json({ success: true, libraries: allMyLibraries });
-    return;
+    // if storyId is not present - get the user's libraries alone
+    if (!storyId) {
+      let allMyLibraries = await libraries.getAllMyLibraries(owner);
+      res.status(200).json({ success: true, libraries: allMyLibraries });
+      return;
+    }
+    // if I provide storyId - get the user's libraries to which this story was not added to
+    if (storyId) {
+      console.log("Getting the user's libraries to which this story was not added to.");
+      let allNonAddedLibs = await libraries.getMyNonAddedLibraries(owner, storyId);
+      res.status(200).json({ success: true, libraries: allNonAddedLibs });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
+  }
+});
+
+router.post("/add", async (req, res) => {
+  try {
+    let owner = req.body.owner;
+    let storyId = req.body.storyId;
+    let libraryId = req.body.libraryId;
+    if (!owner) {
+      res.status(401).json({ success: false, message: "You must be logged in to perform this action." });
+      return;
+    }
+    const addedToLib = await libraries.addStoryToUserLibrary(owner, storyId, libraryId);
+    res.status(200).json({ success: true, library: addedToLib });
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
