@@ -1,20 +1,12 @@
-import {
-  AppBar,
-  Box,
-  Card,
-  CardMedia,
-  Grid,
-  Paper,
-  Typography,
-  makeStyles,
-  CardContent,
-} from "@material-ui/core";
+import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { useContext } from "react";
+import { AuthContext } from "../../firebase/Auth";
 
 const useStyles = makeStyles({
   card: {
@@ -55,9 +47,9 @@ const useStyles = makeStyles({
     width: "90%",
     marginLeft: "10%",
     paddingTop: "5%",
-    paddingBottom: "5%", 
-    paddingRight:"5%", 
-    paddingLeft:"5%",
+    paddingBottom: "5%",
+    paddingRight: "5%",
+    paddingLeft: "5%",
     borderRadius: "35px",
     fontWeight: "bold",
     fontSize: "16px",
@@ -84,10 +76,13 @@ const Story = () => {
   const { id } = useParams();
   const [storyData, setStoryData] = useState(null);
   const classes = useStyles();
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     async function getStoryData() {
-      const { data } = await axios.get(`/api/stories/${id}`);
+      const { data } = await axios.get(`/api/stories/${id}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data);
     }
@@ -98,8 +93,8 @@ const Story = () => {
     console.log(storyData);
     return (
       <div>
-        <br/> 
-        <br/>
+        <br />
+        <br />
         <Paper
           elevation={10}
           sx={{
@@ -112,11 +107,7 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia
-                  className={classes.media}
-                  component="img"
-                  image={storyData.story.coverImage}
-                />
+                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
@@ -153,41 +144,30 @@ const Story = () => {
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>
-                    {storyData.creator.displayName}
-                  </Link>
+                  <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
                 </CardContent>{" "}
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">
-                    {storyData.story.shortDescription}
-                  </Typography>{" "}
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>
               </Card>
 
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
                   <Typography variant="subtitle">
-                    Each time I refer to one of them, I make it a point to
-                    stress to my students they are not universally true and
-                    should always be challenged. My discomfort with these 3–5–7
-                    models (as I like to call them) is not just from the
-                    absurdity of trying to distill the complexity of the world’s
-                    eternally evolving heritage of stories into single models,
-                    which invariably are littered with caveats and exceptions.
-                    No. My bigger concern is that the 3–5–7 models have largely
-                    also become foundations for exclusion of certain stories—and
-                    the focus on models is somewhat akin to the way in which
-                    global economists spend years arguing about which capitalist
-                    models work better, without giving any attention to the fact
-                    that all successful capitalist nations were built on
-                    inhumane exploitation of serfs, women, occupied lands,
-                    slaves, children—and in more recent success stories like
-                    Singapore and South Korea, underpaid labor and suppression
-                    of civil liberties. Just as it is within the world of
-                    fiction, focusing on the economic models and not the
-                    historic biases and nuances is misleading.
+                    Each time I refer to one of them, I make it a point to stress to my students they are not
+                    universally true and should always be challenged. My discomfort with these 3–5–7 models (as I like
+                    to call them) is not just from the absurdity of trying to distill the complexity of the world’s
+                    eternally evolving heritage of stories into single models, which invariably are littered with
+                    caveats and exceptions. No. My bigger concern is that the 3–5–7 models have largely also become
+                    foundations for exclusion of certain stories—and the focus on models is somewhat akin to the way in
+                    which global economists spend years arguing about which capitalist models work better, without
+                    giving any attention to the fact that all successful capitalist nations were built on inhumane
+                    exploitation of serfs, women, occupied lands, slaves, children—and in more recent success stories
+                    like Singapore and South Korea, underpaid labor and suppression of civil liberties. Just as it is
+                    within the world of fiction, focusing on the economic models and not the historic biases and nuances
+                    is misleading.
                   </Typography>
                 </CardContent>
               </Card>

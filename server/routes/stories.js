@@ -15,15 +15,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const firebaseApp = initializeApp();
-
 router.get("/all", async (req, res) => {
   try {
-    // let currentUser = req.body.userId;
-    // if (!currentUser) {
-    //   res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
-    //   return;
-    // }
     const { success, allStories } = await stories.getAllStories();
     if (success) {
       res.status(200).json({ success, stories: allStories });
@@ -41,11 +34,11 @@ router.get("/me", async (req, res) => {
     let selectedGenres = req.query.genres;
     let authorId = req.query.authorId;
     let exact = req.query.exact === "true";
-    console.log(exact, typeof exact);
-    if (!authorId) {
-      res.status(400).json({
+    console.log(authorId, req.authenticatedUser);
+    if (!authorId || authorId !== req.authenticatedUser) {
+      res.status(403).json({
         success: false,
-        error: "The required parameter should only be a number, greater than 0 and less than 20",
+        error: "You don't have permission to access this resource.",
       });
       return;
     }
@@ -70,8 +63,11 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     console.log(req.body);
     // console.log(req.file.path);
     const currentUser = req.body.creatorId;
-    if (!currentUser) {
-      res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
+    if (!currentUser || currentUser !== req.authenticatedUser) {
+      res.status(403).json({
+        success: false,
+        error: "You don't have permission to access this resource.",
+      });
       return;
     }
     const { title, shortDescription, contentHtml, genres } = req.body;
@@ -121,7 +117,6 @@ router.get("/random", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    console.log("getting a story");
     let storyId = req.params.id;
     let story = await stories.getStoryById(storyId);
     console.log(story);
@@ -151,6 +146,18 @@ router.post("/search", async (req, res) => {
 router.post("/:id/like", async (req, res) => {
   try {
     let userId = req.body.userId;
+    const idToken = req.headers.authtoken;
+    try {
+      let { uid, name, email, auth_time } = await firebaseAdmin.auth().verifyIdToken(idToken);
+      console.info(`Authenticated user ${name}, with email ${email}. Authenticated on: ${new Date(auth_time * 1000)}`);
+      if (uid !== userId) {
+        res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      res.status(401).json({ success: false, message: "You must be logged in to perform this action" });
+    }
     let storyId = req.params.id;
     if (!userId) {
       res.status(403).json({ success: false, message: "You must be logged in to perform this action." });

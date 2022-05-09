@@ -17,7 +17,6 @@ const upload = multer({ storage: storage });
 
 router.post("/", async (req, res) => {
   try {
-    console.log("here");
     let userId = req.body.userId;
     let emailAddress = req.body.emailAddress;
     let displayName = req.body.displayName;
