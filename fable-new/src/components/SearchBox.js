@@ -105,7 +105,7 @@ export default function SearchBox() {
         <SearchIcon />
       </SearchIconWrapper>
       <Tooltip
-        title="Click outside after typing to search. Enter atleast 3 characters for a more relevant result."
+        title="To search, click outside after typing. Enter at least 3 characters for relevant results."
         placement="bottom-start"
       >
         <StyledInputBase
