@@ -42,9 +42,9 @@ const useStyles = makeStyles({
   fab1: {
     marginLeft: "1%",
     marginBottom: "2%",
-    marginTop: "2%", 
-    backgroundColor:"black", 
-    color: "blanchedalmond", 
+    marginTop: "2%",
+    backgroundColor: "black",
+    color: "blanchedalmond",
     "&:hover": {
       backgroundColor: "blanchedalmond",
       color: "black",
@@ -129,21 +129,21 @@ const StoryBook = () => {
       <div>
         <Hero title={story.title} />
         <br />
-  <span className={classes.fab}>
-        {!story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="circular" color="default" onClick={handleLike}>
-            {/* Liked the story? */}
-            <FavoriteIcon />
-          </Fab>
-        )}
-        {story.likedBy.includes(currentUser.uid) && (
-          <Fab variant="circular" color="secondary" onClick={handleLike} elevation={11}>
-            {/* Did not like the story? Let us know! */}
-            <FavoriteIcon />
-          </Fab>
-        )}
-        {"   "}
-  </span>
+        <span className={classes.fab}>
+          {!story.likedBy.includes(currentUser.uid) && (
+            <Fab variant="circular" color="default" onClick={handleLike}>
+              {/* Liked the story? */}
+              <FavoriteIcon />
+            </Fab>
+          )}
+          {story.likedBy.includes(currentUser.uid) && (
+            <Fab variant="circular" color="secondary" onClick={handleLike} elevation={11}>
+              {/* Did not like the story? Let us know! */}
+              <FavoriteIcon />
+            </Fab>
+          )}
+          {"   "}
+        </span>
         <Fab variant="extended" color="inherit" onClick={openLibrarySelectModal}>
           <AddIcon />
           Add to my library

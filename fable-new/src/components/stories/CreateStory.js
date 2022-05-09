@@ -145,6 +145,7 @@ const CreateStory = () => {
     formData.append("creatorId", currentUser.uid);
     formData.append("title", title);
     formData.append("shortDescription", desc);
+    formData.append("genres", selectedGenres);
     formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", coverImage);
     const { data } = await axios.post("/api/stories", formData, {

@@ -70,6 +70,25 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
   }
 });
 
+// will receive a query string param that specifies the list of items needed (0 <= required <= 20)
+router.get("/random", async (req, res) => {
+  try {
+    let required = parseInt(req.query.required);
+    if (required <= 0 || required > 20 || isNaN(required)) {
+      res.status(400).json({
+        success: false,
+        error: "The required parameter should only be a number, greater than 0 and less than 20",
+      });
+    }
+    const { randomStories } = await stories.getNRandom(required);
+    res.status(200).json({ success: true, randomStories: randomStories });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     console.log("getting a story");
@@ -114,7 +133,7 @@ router.post("/:id/like", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
   }
 });
 
