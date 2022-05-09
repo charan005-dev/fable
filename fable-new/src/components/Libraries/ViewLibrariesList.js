@@ -40,29 +40,38 @@ const ViewLibrariesList = () => {
         Create a new library
       </Fab>
       <Grid container justifyContent="center">
+        <div className={classes.libTitle}>
+          <Typography variant="h2">Library</Typography>
+        </div>
         {libraryData &&
           libraryData.length > 0 &&
           libraryData.map((lib) => {
             return (
-              <Card>
-                <CardContent>
-                  <CardActionArea>
-                    <Stack spacing={2} direction={"row"}>
-                      <Badge
-                        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                        badgeContent={lib.stories.length === 0 ? "0" : lib.stories.length}
-                      >
-                        <LibraryBooksIcon />
-                      </Badge>
-                      <Link to={`/libraries/${lib._id}`}>
-                        <Typography variant="body2">
-                          {lib.libraryName.length > 20 ? lib.libraryName.length.substring(16) + "..." : lib.libraryName}
-                        </Typography>
-                      </Link>
-                    </Stack>
-                  </CardActionArea>
-                </CardContent>
-              </Card>
+              <div>
+                <span>
+                  <Card>
+                    <CardContent>
+                      <CardActionArea>
+                        <Stack spacing={2} direction={"row"}>
+                          <Badge
+                            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                            badgeContent={lib.stories.length === 0 ? "0" : lib.stories.length}
+                          >
+                            <LibraryBooksIcon />
+                          </Badge>
+                          <Link to={`/libraries/${lib._id}`}>
+                            <Typography variant="body2">
+                              {lib.libraryName.length > 20
+                                ? lib.libraryName.length.substring(16) + "..."
+                                : lib.libraryName}
+                            </Typography>
+                          </Link>
+                        </Stack>
+                      </CardActionArea>
+                    </CardContent>
+                  </Card>
+                </span>
+              </div>
             );
           })}
         {libraryData && libraryData.length === 0 && (

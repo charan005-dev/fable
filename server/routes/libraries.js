@@ -46,6 +46,20 @@ router.get("/me", async (req, res) => {
   }
 });
 
+router.get("/library_stories/:libraryId", async (req, res) => {
+  try {
+    let owner = req.query.owner;
+    // let storyId = req.query.storyId;
+    let library = req.params.libraryId;
+    let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library);
+    res.status(200).json({ success: true, libraries: allLibraryStories });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ succes: false, error: "Sorry, something went wrong" });
+  }
+});
+
 router.post("/add", async (req, res) => {
   try {
     let owner = req.body.owner;

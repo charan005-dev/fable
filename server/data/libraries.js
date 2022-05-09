@@ -38,6 +38,23 @@ const getAllMyLibraries = async (owner) => {
   return allLibraries;
 };
 
+const getAllMyLibraryStories = async (userId, libraryId) => {
+  const usersCollection = await users();
+  const librariesCollection = await libraries();
+  const storiesCollection = await stories();
+  const owner = await usersCollection.findOne({ _id: userId });
+  if (!owner) throw `No such user exists.`;
+  let libraryStories = await librariesCollection.findOne({ _id: libraryId });
+  console.log(libraryStories);
+  let allLibStory = [];
+  for (const libStories of libraryStories.stories) {
+    allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
+  }
+  libraryStories.stories = allLibStory;
+  console.log(libraryStories);
+  return libraryStories;
+};
+
 const getMyNonAddedLibraries = async (owner, storyId) => {
   const librariesCollection = await libraries();
   const allNonAddedLibs = await librariesCollection.find({ owner, stories: { $nin: [storyId] } }).toArray();
@@ -49,5 +66,6 @@ module.exports = {
   createLibrary,
   addStoryToUserLibrary,
   getAllMyLibraries,
+  getAllMyLibraryStories,
   getMyNonAddedLibraries,
 };
