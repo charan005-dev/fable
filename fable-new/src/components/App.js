@@ -12,6 +12,8 @@ import PrivateRoute from "./PrivateRoute";
 import SignOutButton from "./SignOut";
 import Splash from "./Splash";
 import Footer from "./Footer";
+import Carousel from "./Corausel/Corausel";
+//import {Carousel} from "react-carousel-minimal";
 function App() {
   return (
     <AuthProvider>
@@ -31,6 +33,7 @@ function App() {
               <Route path="/home" element={<PrivateRoute />}>
                 <Route path="/home" element={<Home />} />
               </Route>
+              <Route  path="/carousel" element={<Carousel />} />
               <Route path="/account" element={<PrivateRoute />}>
                 <Route path="/account" element={<Account />} />
               </Route>
