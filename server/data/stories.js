@@ -10,6 +10,25 @@ const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
 const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
 
 const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
+  const validGenres = [
+    "Horror",
+    "Romance",
+    "Mystery",
+    "Thriller",
+    "Sci-fi",
+    "Crime",
+    "Drama",
+    "Fantasy",
+    "Adventure",
+    "Comedy",
+    "Tragedy",
+    "Adult",
+  ];
+  genres = genres.length > 0 ? genres.split(",") : [];
+  for (const genre of genres) {
+    if (!validGenres.includes(genre))
+      throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
+  }
   let story = {
     _id: uuid.v4(),
     creatorId,
@@ -17,7 +36,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     shortDescription,
     contentText: convert(contentHtml, { wordwrap: 130 }),
     contentHtml,
-    genres: genres.length > 0 ? genres.split(",") : [],
+    genres: genres,
     coverImage: filePath,
     likedBy: [],
     comments: [],
@@ -31,7 +50,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     let tokenizedKeywords = story.contentText.split(" ").map((word) => {
       if (word.length > 3) return word;
     });
-    const indexedData = await client.indexDocument(elasticEngineName, {
+    await client.indexDocument(elasticEngineName, {
       id: story._id,
       content: tokenizedKeywords.join(" "),
       title: story.title,
@@ -109,6 +128,24 @@ const getNRandom = async (n) => {
   return { randomStories: nRandom };
 };
 
+const getUserStoriesByGenres = async (genres, authorId) => {
+  const storiesCollection = await stories();
+  console.log(genres);
+  let myStories = await storiesCollection
+    .find({ creatorId: authorId, genres: { $size: genres.length, $all: genres } })
+    .toArray();
+  console.log(myStories);
+  return { selectStories: myStories, success: true };
+};
+
+const getUserStoriesByGenresNonExact = async (genres, authorId) => {
+  const storiesCollection = await stories();
+  console.log(genres);
+  let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $all: genres } }).toArray();
+  console.log(myStories);
+  return { selectStories: myStories, success: true };
+};
+
 module.exports = {
   createStory,
   getAllStories,
@@ -116,4 +153,6 @@ module.exports = {
   searchStory,
   toggleLike,
   getNRandom,
+  getUserStoriesByGenres,
+  getUserStoriesByGenresNonExact,
 };

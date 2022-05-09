@@ -36,6 +36,35 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/me", async (req, res) => {
+  try {
+    let selectedGenres = req.query.genres;
+    let authorId = req.query.authorId;
+    let exact = req.query.exact === "true";
+    console.log(exact, typeof exact);
+    if (!authorId) {
+      res.status(400).json({
+        success: false,
+        error: "The required parameter should only be a number, greater than 0 and less than 20",
+      });
+      return;
+    }
+    selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
+    if (exact) {
+      const { selectStories } = await stories.getUserStoriesByGenres(selectedGenres, authorId);
+      res.status(200).json({ success: true, stories: selectStories });
+      return;
+    } else {
+      const { selectStories } = await stories.getUserStoriesByGenresNonExact(selectedGenres, authorId);
+      res.status(200).json({ success: true, stories: selectStories });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, message: "Sorry, something went wrong." });
+  }
+});
+
 router.post("/", upload.single("coverImage"), async (req, res) => {
   try {
     console.log(req.body);
@@ -79,6 +108,7 @@ router.get("/random", async (req, res) => {
         success: false,
         error: "The required parameter should only be a number, greater than 0 and less than 20",
       });
+      return;
     }
     const { randomStories } = await stories.getNRandom(required);
     res.status(200).json({ success: true, randomStories: randomStories });
