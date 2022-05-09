@@ -1,4 +1,4 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent, CardActionArea } from "@material-ui/core";
+import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -43,35 +43,42 @@ const Story = () => {
 
   if (storyData) {
     console.log(storyData);
-    return ( 
- 
-      <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="#">
-        <Card sx={{ display: 'flex' }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
-              {storyData.story.title}
-            </Typography>
-            {/* <Typography variant="subtitle1" color="text.secondary">
-              {post.date}
-            </Typography> */}
-            <Typography variant="subtitle1" paragraph>
-              {storyData.creator.displayName}
-            </Typography>
-            <Typography variant="subtitle1" color="primary">
-            {storyData.story.shortDescription}
-            </Typography>
-          </CardContent>
-          <CardMedia
-            component="img"
-            sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={storyData.story.coverImage} 
-            alt="image"
-          />
-        </Card>
-      </CardActionArea>
-    </Grid>
-     
+    return (
+      <div>
+        <Paper
+          elevation={20}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid container justifyContent="center">
+            <Stack direction={"row"} spacing={1}>
+              <Card className={classes.card}>
+                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+              </Card>
+              <Card className={classes.title}>
+                <CardContent>
+                  <Typography variant="h5">{storyData.story.title}</Typography>
+                </CardContent>
+              </Card>
+            </Stack>
+          </Grid>
+        </Paper>
+        <br />
+        <br />
+        <Grid container justifyContent="center">
+          <Stack direction={"column"} spacing={4}>
+            {/* <Typography variant="h6">{storyData.creator}</Typography> */}
+            <Box className={classes.nameBox}>
+              <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
+            </Box>
+            <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>
+          </Stack>
+        </Grid>
+      </div>
     );
   }
 };
