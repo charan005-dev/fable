@@ -135,7 +135,7 @@ export default function NavBar() {
 
       <AppBar position="absolute" className={classes.card}>
         <Toolbar>
-  3
+  
           <Typography variant="h3" component="div" sx={{ flexGrow: 0 }}>
             FABLE
           </Typography>
