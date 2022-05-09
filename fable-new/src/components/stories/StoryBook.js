@@ -1,5 +1,7 @@
 import {
   Button,
+  Card,
+  CardMedia,
   Divider,
   Fab,
   FormControl,
@@ -129,6 +131,9 @@ const StoryBook = () => {
       <div>
         <Hero title={story.title} />
         <br />
+        <Card>
+          <CardMedia className={classes.media} component="img" image={story.coverImage} />
+        </Card>
         <span className={classes.fab}>
           {!story.likedBy.includes(currentUser.uid) && (
             <Fab variant="circular" color="default" onClick={handleLike}>
