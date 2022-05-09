@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import {
   Card,
   CardActionArea,
@@ -9,13 +11,15 @@ import {
   makeStyles,
   Paper,
   CircularProgress,
+  Button
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
-import { Stack } from "@mui/material";
+import {  Stack } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
+import { doSignOut } from "../../firebase/FirebaseFunctions"
 
 const useStyles = makeStyles({
   card: {
@@ -66,7 +70,15 @@ function HomeImage() {
   // const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [storyData, setStoryData] = useState(null);
-  const classes = useStyles();
+  const classes = useStyles(); 
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   useEffect(() => {
     async function getAllStories() {
@@ -96,7 +108,10 @@ function HomeImage() {
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}> */}
               <br />
               <br />
-              <br />
+              <br /> 
+             
+                  <Button onClick={doSignOut}>Logout</Button>
+                
               <div className="row_posters">
                 <Stack direction={"row"} spacing={3}>
                   {storyData &&

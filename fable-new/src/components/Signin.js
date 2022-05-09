@@ -88,7 +88,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Login() {
+function Signin() {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
   console.log(currentUser);
@@ -211,4 +211,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signin;
