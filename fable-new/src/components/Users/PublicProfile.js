@@ -58,12 +58,12 @@ const useStyles = makeStyles({
     paddingRight: "auto",
   },
   media: {
-    width: '50%',
-    height: '120px',
-    height: 'auto',
-    float: 'left',
-    margin: '3px',
-    padding: '3px'
+    width: "50%",
+    height: "120px",
+    height: "auto",
+    float: "left",
+    margin: "3px",
+    padding: "3px",
   },
 
   cards: {
@@ -77,7 +77,7 @@ const useStyles = makeStyles({
   text: {
     color: "grey",
     justifyContent: "center",
-    marginLeft: "44%",
+    marginLeft: "11.5%",
     marginRight: "auto",
   },
   box: {
@@ -90,6 +90,27 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "30px",
     paddingLeft: "43.5%",
+  },
+  card1: {
+    width: "auto",
+    height: "8%",
+    marginLeft: "10%",
+    paddingLeft: "0%",
+    paddingRight: "0%",
+    marginRight: "2%",
+    paddingBottom: "0%",
+    marginBottom: "1%",
+    fontSize: "25px",
+  },
+  card2: {
+    width: "15%",
+    marginBottom: "100px",
+    paddingBottom: "2%",
+    height: "2%",
+  },
+  media: {
+    height: "300px",
+    width: "200px",
   },
 });
 
@@ -111,85 +132,50 @@ const PublicProfile = () => {
   }, [profileUserId]);
 
   const [scrollX, setScrollX] = useState(0);
-
   const buildUserProfile = (profileData) => {
     return (
-      <div>
-        <div>
-          <Typography className={classes.title} subtitle={""}>
-            {profileData.profile.displayName}
-          </Typography>
-        </div>
+      <Paper >
         <br />
         <Typography variant="h3" component={"h2"} className={classes.text}>
           Stories written
         </Typography>
         <br />
         <br />
-
-        <div className="movieRow"></div>
-        <Box className={classes.box}>
+        <br />
+        <Stack direction="column" >
           {profileData.profile &&
             profileData.profile.storiesCreated.map((createdStory) => {
               return (
-                <>
-                  <MDBCard >
-                    <MDBRow className={classes.cards}>
-                      <MDBCol>
-                        <MDBCardImage
-                          src={createdStory.coverImage}
-                          alt="..."
-                          fluid
-                        />
-                      </MDBCol>
-                      <MDBCard>
-                        <MDBCardBody>
-                          <MDBCardText className="text">
-                            {createdStory.title}
-                          </MDBCardText>
-
-                          <MDBCardText>
-                            <small className="text">
-                              {createdStory.shortDescription}
-                            </small>
-                          </MDBCardText>
-                        </MDBCardBody>
-                      </MDBCard>
-                    </MDBRow>
-                  </MDBCard>
-
-                  {/* <Grid className={classes.cards} direction="column">
-                    <CardActionArea component="a" href="#">
-                      <Card sx={{ display: "flex" }}>
-                        <CardMedia
-                          component="img"
-                          image={createdStory.coverImage}
-                          alt="image"
-                          className={classes.media}
-                        />
-
-                        <CardContent sx={{ flex: 1 }}>
-                          <Typography component="h2" variant="h5">
-                            {createdStory.title}
-                          </Typography>
-
-                          <Typography variant="subtitle1" color="primary">
-                            {createdStory.shortDescription}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </CardActionArea>
-                    <br />
-                  </Grid> */}
-                  <br />
-                </>
+                <Paper>
+                  <Stack direction="row">
+                    <Card className={classes.card1} elevation={15}>
+                      <CardMedia
+                        className={classes.media}
+                        component="img"
+                        image={createdStory.coverImage}
+                      />
+                    </Card>
+                    <Card className={classes.card2} elevation={0}>
+                      <CardContent>
+                        <Typography>{createdStory.title}</Typography>
+                      </CardContent>
+                      <CardContent>
+                        <Typography>
+                          {createdStory.shortDescription.length > 200
+                            ? createdStory.shortDescription.substring(0, 197) +
+                              "..."
+                            : createdStory.shortDescription}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Stack>
+                </Paper>
               );
             })}
-        </Box>
-      </div>
+        </Stack>
+      </Paper>
     );
   };
-
   return <div>{profileData && <div>{buildUserProfile(profileData)}</div>}</div>;
 };
 
