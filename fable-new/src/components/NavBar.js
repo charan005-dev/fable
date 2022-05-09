@@ -44,6 +44,15 @@ const useStyles = makeStyles({
     backgroundColor: "blanchedalmond",
     color: "black",
     border: "4px solid",
+  }, 
+
+  title1:{
+textDecoration:"none", 
+color: "black",
+"&:hover": {
+  textDecoration: "none", 
+  color: "black"
+},
   },
 
   menuItem: {
@@ -184,9 +193,9 @@ export default function NavBar() {
       <AppBar position="absolute" className={classes.card}>
         <Toolbar>
   
-          <Typography variant="h3" component="div" sx={{ flexGrow: 0 }}>
+        <Link to='/home' className={classes.title1}>  <Typography variant="h3" component="div" sx={{ flexGrow: 0 , textDecoration: 'none'}}>
             FABLE
-          </Typography>
+          </Typography> </Link>
           <SearchBox />
           {auth && (
             <div>

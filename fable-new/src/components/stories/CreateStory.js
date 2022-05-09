@@ -163,7 +163,7 @@ const CreateStory = () => {
 
   return (
     <div>
-      {creationSuccess && <Alert severity="success">Successfully created the story!</Alert>}(
+      {creationSuccess && <Alert severity="success">Successfully created the story!</Alert>}
       <div>
         <Paper elevation={3}>
           <br />
@@ -273,7 +273,6 @@ const CreateStory = () => {
           </FormControl>
         </Paper>
       </div>
-      )
     </div>
   );
 };
