@@ -79,6 +79,29 @@ const useStyles = makeStyles({
       },
     },
   },
+  button1: {
+    backgroundColor: "black",
+    color: "blanchedalmond",
+    width: "100rm",
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingDown: 7,
+    borderRadius: "4px",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
+      backgroundColor: "blanchedalmond",
+      color: "black",
+    },
+    textbox: {
+      border: "5px black",
+      "&:hover": {
+        backgroundColor: "#5dc2a6",
+        border: "5px bold black",
+      },
+    },
+  }
 });
 
 const StyledMenu = styled((props) => (
@@ -86,11 +109,11 @@ const StyledMenu = styled((props) => (
     elevation={0}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "right",
+      horizontal: "right"
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "right",
+      horizontal: "right"
     }}
     {...props}
   />
@@ -103,7 +126,7 @@ const StyledMenu = styled((props) => (
     boxShadow:
       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     "& .MuiMenu-list": {
-      padding: "4px 0",
+      padding: "0px 0"
     },
     "& .MuiMenuItem-root": {
       "& .MuiSvgIcon-root": {
@@ -166,7 +189,7 @@ export default function NavBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
           control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
@@ -195,7 +218,7 @@ export default function NavBar() {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
               >
-                Write
+                ACCOUNT
               </Button>
               <StyledMenu
                 id="demo-customized-menu"
@@ -206,32 +229,62 @@ export default function NavBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose} disableRipple>
-                  <FileCopyIcon />
-                  <Link to="/stories/create_story">Create a New Story</Link>
-                </MenuItem>
-              </StyledMenu>
+                <Button 
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    variant="contained"
+                    textDecoration="none"
+                    disableElevationonClick={handleClose} disableRipple
+                    component= {Link} to={`/stories/create_story`}
+                >
+                  CREATE A NEW STORY
+                </Button>
+                <br />
+                <Button 
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    variant="contained"
+                    textDecoration="none"
+                    disableElevationonClick={handleClose} disableRipple
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                  </IconButton>
-                </Tooltip>
-                <Button component={Link} to={`/users/${currentUser.uid}/`} className={classes.button}>
+                  component={Link} to={`/users/${currentUser.uid}/`} >
                   Profile
                 </Button>
-                <Button onClick={doSignOut} className={classes.button}>
+                <br />
+                <Button 
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    variant="contained"
+                    textDecoration="none"
+                    disableElevationonClick={handleClose} disableRipple
+
+                  onClick={doSignOut} >
                   Logout
                 </Button>{" "}
-                <Button component={Link} to={`libraries/me`} className={classes.button}>
+                <br />
+                <Button 
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    variant="contained"
+                    textDecoration="none"
+                    disableElevationonClick={handleClose} disableRipple
+
+                  component={Link} to={`libraries/me`} >
                   Library
                 </Button>
-              </Box>
+              </StyledMenu>
             </div>
           )}
         </Toolbar>
       </AppBar>
-    </Box>
+      </Box>
   );
 }
