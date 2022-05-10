@@ -111,7 +111,7 @@ const Story = () => {
                   </Typography>{" "}
                   <br />
                   <br />
-                  <Link to="/libraries/me">
+                  <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       {" "}
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
