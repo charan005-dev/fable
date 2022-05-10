@@ -1,5 +1,5 @@
 import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -70,11 +70,15 @@ const useStyles = makeStyles({
     width: "15%",
     marginBottom: "100px",
   },
+  similarStories: {
+    padding: 12,
+  },
 });
 
 const Story = () => {
   const { id } = useParams();
   const [storyData, setStoryData] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
 
@@ -88,6 +92,24 @@ const Story = () => {
     }
     getStoryData();
   }, [id]);
+
+  useEffect(() => {
+    async function getRecommendations() {
+      if (storyData) {
+        const { data } = await axios.get(
+          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
+          {
+            headers: {
+              authtoken: await currentUser.getIdToken(),
+            },
+          }
+        );
+        console.log(data);
+        setRecommendations(data.recommendations);
+      }
+    }
+    getRecommendations();
+  }, [storyData]);
 
   if (storyData) {
     console.log(storyData);
@@ -118,7 +140,6 @@ const Story = () => {
                   <br />
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
-                      {" "}
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
                     </Button>
                   </Link>
@@ -152,23 +173,24 @@ const Story = () => {
                   <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>
               </Card>
-
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="subtitle">
-                    Each time I refer to one of them, I make it a point to stress to my students they are not
-                    universally true and should always be challenged. My discomfort with these 3–5–7 models (as I like
-                    to call them) is not just from the absurdity of trying to distill the complexity of the world’s
-                    eternally evolving heritage of stories into single models, which invariably are littered with
-                    caveats and exceptions. No. My bigger concern is that the 3–5–7 models have largely also become
-                    foundations for exclusion of certain stories—and the focus on models is somewhat akin to the way in
-                    which global economists spend years arguing about which capitalist models work better, without
-                    giving any attention to the fact that all successful capitalist nations were built on inhumane
-                    exploitation of serfs, women, occupied lands, slaves, children—and in more recent success stories
-                    like Singapore and South Korea, underpaid labor and suppression of civil liberties. Just as it is
-                    within the world of fiction, focusing on the economic models and not the historic biases and nuances
-                    is misleading.
-                  </Typography>
+                  <Typography variant="h4">Similar stories that you might like</Typography>
+                  <Divider />
+                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
+                  {recommendations &&
+                    recommendations.map((recommendation) => {
+                      return (
+                        <div>
+                          <Grid className={classes.similarStories}>
+                            <Typography variant="subtitle">
+                              <img src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"} />
+                              <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
+                            </Typography>
+                          </Grid>
+                        </div>
+                      );
+                    })}
                 </CardContent>
               </Card>
             </Stack>
