@@ -79,7 +79,9 @@ const StoryBook = () => {
   const classes = useStyles();
   useEffect(() => {
     async function getStoryData() {
-      const { data } = await axios.get(`/api/stories/${storyId}`);
+      const { data } = await axios.get(`/api/stories/${storyId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       if (data.success) {
         setStory(data.story);
@@ -90,7 +92,9 @@ const StoryBook = () => {
 
   useEffect(() => {
     async function getMyLibraries() {
-      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`);
+      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setMyLibraries(data.libraries);
     }
@@ -98,9 +102,13 @@ const StoryBook = () => {
   }, [added]);
 
   const handleLike = async () => {
-    const { data } = await axios.post(`/api/stories/${storyId}/like`, {
-      userId: currentUser.uid,
-    });
+    const { data } = await axios.post(
+      `/api/stories/${storyId}/like`,
+      {
+        userId: currentUser.uid,
+      },
+      { headers: { authtoken: await currentUser.getIdToken() } }
+    );
     setStory(data.story);
   };
 

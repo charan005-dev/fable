@@ -146,21 +146,9 @@ router.post("/search", async (req, res) => {
 router.post("/:id/like", async (req, res) => {
   try {
     let userId = req.body.userId;
-    const idToken = req.headers.authtoken;
-    try {
-      let { uid, name, email, auth_time } = await firebaseAdmin.auth().verifyIdToken(idToken);
-      console.info(`Authenticated user ${name}, with email ${email}. Authenticated on: ${new Date(auth_time * 1000)}`);
-      if (uid !== userId) {
-        res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
-        return;
-      }
-    } catch (e) {
-      console.log(e);
-      res.status(401).json({ success: false, message: "You must be logged in to perform this action" });
-    }
     let storyId = req.params.id;
-    if (!userId) {
-      res.status(403).json({ success: false, message: "You must be logged in to perform this action." });
+    if (req.authenticatedUser !== userId) {
+      res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
       return;
     }
     let afterLike = await stories.toggleLike(storyId, userId);
