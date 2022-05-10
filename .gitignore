@@ -105,3 +105,6 @@ dist
 
 # Public Directory
 public/
+
+# Firebase Service Account details
+firebase_service_account.json

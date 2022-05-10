@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { useContext } from "react";
+import { AuthContext } from "../../firebase/Auth";
 
 const useStyles = makeStyles({
   card: {
@@ -74,10 +76,13 @@ const Story = () => {
   const { id } = useParams();
   const [storyData, setStoryData] = useState(null);
   const classes = useStyles();
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     async function getStoryData() {
-      const { data } = await axios.get(`/api/stories/${id}`);
+      const { data } = await axios.get(`/api/stories/${id}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data);
     }

@@ -82,9 +82,7 @@ function HomeImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, {
-        userId: currentUser.uid,
-      });
+      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
       console.log(data);
       setStoryData(data.stories);
     }
@@ -116,14 +114,9 @@ function HomeImage() {
                     storyData.map((image) => {
                       return (
                         <Paper className={classes.paper}>
-                         
                           <CardActionArea>
                             <Link to={`/stories/${image._id}`}>
-                              <CardMedia
-                                className={classes.media}
-                                component="img"
-                                image={image.coverImage}
-                              />
+                              <CardMedia className={classes.media} component="img" image={image.coverImage} />
                             </Link>
                           </CardActionArea>
                         </Paper>

@@ -7,7 +7,6 @@ import { Alert } from "@mui/material";
 import Input from "@mui/material/Input";
 import { makeStyles } from "@material-ui/core";
 
-
 const useStyles = makeStyles({
   card1: {
     width: "30%",
@@ -30,7 +29,7 @@ const useStyles = makeStyles({
   button2: {
     backgroundColor: "black",
     color: "blanchedalmond",
-    width: "auto", 
+    width: "auto",
     fontSize: "20px",
     marginLeft: "auto",
     marginRight: "auto",
@@ -51,7 +50,7 @@ const useStyles = makeStyles({
       backgroundColor: "black",
       color: "blanchedalmond",
     },
-  }, 
+  },
   media: {
     height: "auto",
     width: "450px",
@@ -60,8 +59,6 @@ const useStyles = makeStyles({
     height: "auto",
     width: "150px",
   },
-
-
 });
 
 const EditUser = () => {
@@ -85,15 +82,12 @@ const EditUser = () => {
     formData.append("userId", currentUser.uid);
     formData.append("displayName", displayName);
     formData.append("userAvatar", userAvatar);
-    const { data } = await axios.put(
-      `/api/users/${currentUser.uid}/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        authtoken: await currentUser.getIdToken(),
+      },
+    });
     if (data.success) {
       setUpdateSuccess(true);
     }
@@ -102,9 +96,7 @@ const EditUser = () => {
   if (userId !== currentUser.uid) {
     return (
       <div>
-        <Alert severity="error">
-          {"You don't have access to perform this action."}
-        </Alert>
+        <Alert severity="error">{"You don't have access to perform this action."}</Alert>
       </div>
     );
   }
@@ -120,20 +112,12 @@ const EditUser = () => {
   return (
     <div>
       <br />
-      <FormGroup >
-        <Typography
-          variant="h3"
-          component={"h4"}
-          className={classes.headertext1}
-        >
+      <FormGroup>
+        <Typography variant="h3" component={"h4"} className={classes.headertext1}>
           Edit Your Details Here!
         </Typography>
         <br /> <br /> <br /> <br /> <br />
-        <Typography
-          variant="h3"
-          component={"h4"}
-          className={classes.headertext}
-        >
+        <Typography variant="h3" component={"h4"} className={classes.headertext}>
           Display Name
         </Typography>
         <Input
@@ -152,37 +136,20 @@ const EditUser = () => {
         />
         <br />
         <br />
-        <Typography
-          variant="h3"
-          component={"h4"}
-          className={classes.headertext}
-        >
+        <Typography variant="h3" component={"h4"} className={classes.headertext}>
           Upload Your Avatar
         </Typography>
         <br />
-        <Button
-          variant="contained"
-          component="label"
-          className={classes.button3}
-        >
-          <input
-            type="file"
-            accept="image/jpeg, image/png, .jpeg, .jpg, .png"
-            onChange={(e) => handleFileUpload(e)}
-          />
+        <Button variant="contained" component="label" className={classes.button3}>
+          <input type="file" accept="image/jpeg, image/png, .jpeg, .jpg, .png" onChange={(e) => handleFileUpload(e)} />
         </Button>
         <br />
         <br />
         <br />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={performEditUser}
-          className={classes.button2}
-        >
+        <Button variant="contained" color="primary" onClick={performEditUser} className={classes.button2}>
           Update User
-        </Button> 
-        <br/>
+        </Button>
+        <br />
         <img src="undraw2.png" className={classes.media}></img>
       </FormGroup>
     </div>

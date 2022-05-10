@@ -151,6 +151,7 @@ const CreateStory = () => {
     const { data } = await axios.post("/api/stories", formData, {
       headers: {
         "Content-Type": `multipart/form-data`,
+        authtoken: await currentUser.getIdToken(),
       },
     });
     if (data.success) {

@@ -25,7 +25,9 @@ const ViewLibrariesList = () => {
 
   useEffect(() => {
     async function getOwnerLibraries() {
-      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}`);
+      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setLibraryData(data.libraries);
     }
