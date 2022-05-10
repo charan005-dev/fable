@@ -82,13 +82,7 @@ function HomeImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(
-        `/api/stories/all`,
-        {
-          userId: currentUser.uid,
-        },
-        { headers: { authtoken: await currentUser.getIdToken() } }
-      );
+      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
       console.log(data);
       setStoryData(data.stories);
     }
