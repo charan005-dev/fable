@@ -140,7 +140,6 @@ const Story = () => {
                   <br />
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
-                      {" "}
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
                     </Button>
                   </Link>
@@ -176,8 +175,9 @@ const Story = () => {
               </Card>
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="subtitle1">Similar stories that you might like</Typography>
+                  <Typography variant="h4">Similar stories that you might like</Typography>
                   <Divider />
+                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
                   {recommendations &&
                     recommendations.map((recommendation) => {
                       return (

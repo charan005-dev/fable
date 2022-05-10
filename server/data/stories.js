@@ -64,6 +64,57 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
   return result;
 };
 
+const updateStory = async (storyId, owner, title, shortDescription, contentHtml, genres, coverImage) => {
+  const validGenres = [
+    "Horror",
+    "Romance",
+    "Mystery",
+    "Thriller",
+    "Sci-fi",
+    "Crime",
+    "Drama",
+    "Fantasy",
+    "Adventure",
+    "Comedy",
+    "Tragedy",
+    "Adult",
+  ];
+  genres = genres.length > 0 ? genres.split(",") : [];
+  for (const genre of genres) {
+    if (!validGenres.includes(genre))
+      throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
+  }
+  const storiesCollection = await stories();
+  const findUpdatable = await storiesCollection.findOne({ _id: storyId, creatorId: owner });
+  if (!findUpdatable) throw `Either the story does not exist or you do not have permission to perform this action.`;
+  let updatedStory = {
+    title,
+    shortDescription,
+    contentText: convert(contentHtml, { wordwrap: 130 }),
+    contentHtml,
+    genres,
+    coverImage,
+    updatedAt: Date.now(),
+  };
+  await storiesCollection.updateOne({ _id: storyId, creatorId: owner }, { $set: updatedStory });
+  try {
+    let tokenizedKeywords = updatedStory.contentText.split(" ").map((word) => {
+      if (word.length > 3) return word;
+    });
+    await client.updateDocuments(elasticEngineName, [
+      {
+        id: findUpdatable._id,
+        content: tokenizedKeywords.join(" "),
+        title: updatedStory.title,
+      },
+    ]);
+  } catch (e) {
+    // errors in pushing to elastic search could be caught here. logging them for reference
+    console.log(e);
+  }
+  return { success: true, updatedStory: await storiesCollection.findOne({ _id: storyId, creatorId: owner }) };
+};
+
 const getAllStories = async () => {
   const storiesCollection = await stories();
   const allStories = await storiesCollection.find({}).toArray();
@@ -176,4 +227,5 @@ module.exports = {
   getUserStoriesByGenres,
   getUserStoriesByGenresNonExact,
   getRecommendations,
+  updateStory,
 };

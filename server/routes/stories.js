@@ -162,6 +162,41 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", upload.single("coverImage"), async (req, res) => {
+  try {
+    let owner = req.authenticatedUser;
+    let storyId = req.params.id;
+    let { title, shortDescription, genres, contentHtml } = req.body;
+    let filePath = null;
+    if (req.file) {
+      filePath = "/public/covers/" + req.file.filename;
+    }
+    try {
+      const { success, updatedStory } = await stories.updateStory(
+        storyId,
+        owner,
+        title,
+        shortDescription,
+        contentHtml,
+        genres,
+        filePath
+      );
+      if (success) {
+        res.status(200).json({ success: true, updatedStory });
+        return;
+      }
+    } catch (e) {
+      // valid errors
+      console.log(e);
+      res.status(400).json({ success: false, error: e });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
+  }
+});
+
 router.post("/search", async (req, res) => {
   try {
     let q = req.query.q;
