@@ -39,6 +39,7 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     genres: genres,
     coverImage: filePath,
     likedBy: [],
+    visitedBy: [],
     comments: [],
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -70,11 +71,14 @@ const getAllStories = async () => {
   return result;
 };
 
-const getStoryById = async (storyId) => {
+const getStoryById = async (storyId, accessor) => {
   const storiesCollection = await stories();
   const usersCollection = await users();
+  console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
   const creator = await usersCollection.findOne({ _id: story.creatorId });
+  // recording user visits
+  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   return {
     story,
     creator: creator,
@@ -142,8 +146,25 @@ const getUserStoriesByGenresNonExact = async (genres, authorId) => {
   const storiesCollection = await stories();
   console.log(genres);
   let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $all: genres } }).toArray();
-  console.log(myStories);
   return { selectStories: myStories, success: true };
+};
+
+const getRecommendations = async (userId, genres) => {
+  const storiesCollection = await stories();
+  genres = genres.length > 0 ? genres.split(",") : [];
+  console.log(genres);
+  let recommendations = await storiesCollection
+    .aggregate([{ $match: { visitedBy: { $nin: [userId] }, genres: { $in: genres } } }, { $sample: { size: 5 } }])
+    .toArray();
+  // if recommendations are empty, we simply send in some random 5 stories
+  if (recommendations.length === 0) {
+    console.log("Recommendations are empty");
+    recommendations = await storiesCollection.aggregate([
+      { $match: { genres: { $in: genres } } },
+      { $sample: { size: 5 } },
+    ]);
+  }
+  return { success: true, recommendations };
 };
 
 module.exports = {
@@ -155,4 +176,5 @@ module.exports = {
   getNRandom,
   getUserStoriesByGenres,
   getUserStoriesByGenresNonExact,
+  getRecommendations,
 };

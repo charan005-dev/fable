@@ -4,6 +4,7 @@ const { initializeApp } = require("firebase-admin/app");
 const stories = require("../data/stories");
 const multer = require("multer");
 const path = require("path");
+const xss = require("xss");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../public/covers/"));
@@ -14,6 +15,20 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+const validGenres = [
+  "Horror",
+  "Romance",
+  "Mystery",
+  "Thriller",
+  "Sci-fi",
+  "Crime",
+  "Drama",
+  "Fantasy",
+  "Adventure",
+  "Comedy",
+  "Tragedy",
+  "Adult",
+];
 
 router.get("/all", async (req, res) => {
   try {
@@ -79,10 +94,10 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
 
     const { success, story } = await stories.createStory(
       currentUser,
-      title,
-      shortDescription,
-      contentHtml,
-      genres,
+      xss(title),
+      xss(shortDescription),
+      xss(contentHtml),
+      xss(genres),
       filePath
     );
     if (success) {
@@ -115,10 +130,29 @@ router.get("/random", async (req, res) => {
   }
 });
 
+router.get("/recommendations", async (req, res) => {
+  try {
+    // let userIdTest = req.query.testUser;
+    let genres = req.query.genres;
+    let userId = req.authenticatedUser;
+    if (!userId) {
+      res.status(401).json({ success: false, message: "You'd have to be logged in to perform this action." });
+      return;
+    }
+    const { recommendations } = await stories.getRecommendations(userId, genres);
+    res.status(200).json({ success: true, recommendations });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     let storyId = req.params.id;
-    let story = await stories.getStoryById(storyId);
+    let accessor = req.authenticatedUser;
+    let story = await stories.getStoryById(storyId, accessor);
     console.log(story);
     res.status(200).json({ success: true, story: story.story, creator: story.creator });
     return;

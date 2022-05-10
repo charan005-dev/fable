@@ -72,8 +72,8 @@ const useStyles = makeStyles({
     paddingRight: "0%",
     textIndent: "0px",
     fontSize: "25px",
-    lineHeight: "35px", 
-    paddingTop: "1px"
+    lineHeight: "35px",
+    paddingTop: "1px",
   },
   card2: {
     width: "15%",
@@ -100,6 +100,9 @@ const useStyles = makeStyles({
   },
   background: {
     backgroundColor: "blanchedalmond",
+  },
+  h1: {
+    color: "#ee3413",
   },
 });
 
@@ -143,7 +146,6 @@ const StoryBook = () => {
 
   useEffect(() => {
     async function getMyLibraries() {
-
       const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
@@ -203,11 +205,7 @@ const StoryBook = () => {
         >
           <Grid container justifyContent="center">
             <Card className={classes.card} elevation={15}>
-              <CardMedia
-                className={classes.media}
-                component="img"
-                image={story.coverImage}
-              />
+              <CardMedia className={classes.media} component="img" image={story.coverImage} />
             </Card>
           </Grid>
         </Paper>
@@ -222,12 +220,7 @@ const StoryBook = () => {
             </Fab>
           )}
           {story.likedBy.includes(currentUser.uid) && (
-            <Fab
-              variant="circular"
-              color="secondary"
-              onClick={handleLike}
-              elevation={11}
-            >
+            <Fab variant="circular" color="secondary" onClick={handleLike} elevation={11}>
               {/* Did not like the story? Let us know! */}
               <FavoriteIcon />
             </Fab>
@@ -235,11 +228,7 @@ const StoryBook = () => {
           {"   "}
         </span>
         &nbsp; &nbsp; &nbsp; &nbsp;
-        <Fab
-          variant="extended"
-          color="inherit"
-          onClick={openLibrarySelectModal}
-        >
+        <Fab variant="extended" color="inherit" onClick={openLibrarySelectModal}>
           <AddIcon />
           Add to my library
         </Fab>
@@ -247,7 +236,7 @@ const StoryBook = () => {
         <br />
         {/* story component */}
         <Card elevation={0} className={classes.card1}>
-          <div className={classes.storyBook}>
+          <div className={classes.storyBook + " story_content"}>
             <div
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(story.contentHtml),
@@ -267,12 +256,10 @@ const StoryBook = () => {
               Select a library
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You can add this story to one of your libraries and share it with
-              others...
+              You can add this story to one of your libraries and share it with others...
               <br />
               <Typography className={classes.inModalHead} variant="overline">
-                Want to create a new library?{" "}
-                <Link to={`/libraries/create`}>Click here</Link>
+                Want to create a new library? <Link to={`/libraries/create`}>Click here</Link>
               </Typography>
             </Typography>
             <br />
@@ -294,23 +281,19 @@ const StoryBook = () => {
                 label={"Libraries"}
                 onChange={selectLibrary}
               >
-                {myLibraries.length === 0 && (
-                  <MenuItem disabled>No libraries available.</MenuItem>
-                )}
+                {myLibraries.length === 0 && <MenuItem disabled>No libraries available.</MenuItem>}
                 {myLibraries.length > 0 &&
                   myLibraries.map((lib, idx) => {
                     if (idx === 0)
                       return (
                         <MenuItem key={idx} selected value={lib._id}>
-                          {lib.libraryName} (
-                          {lib.private ? "Private" : "Public"})
+                          {lib.libraryName} ({lib.private ? "Private" : "Public"})
                         </MenuItem>
                       );
                     else
                       return (
                         <MenuItem key={idx} value={lib._id}>
-                          {lib.libraryName} (
-                          {lib.private ? "Private" : "Public"})
+                          {lib.libraryName} ({lib.private ? "Private" : "Public"})
                         </MenuItem>
                       );
                   })}
@@ -318,11 +301,7 @@ const StoryBook = () => {
               <br />
 
               {myLibraries.length > 0 && (
-                <Button
-                  className={classes.libSubmitBtn}
-                  variant="contained"
-                  onClick={addToLibrary}
-                >
+                <Button className={classes.libSubmitBtn} variant="contained" onClick={addToLibrary}>
                   Add To Library
                 </Button>
               )}

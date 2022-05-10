@@ -49,8 +49,8 @@ function App() {
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
             </Route>
-            <Route path="/users/:userId/edit" element={<PrivateRoute />}>
-              <Route path="/users/:userId/edit" element={<EditUser />} />
+            <Route exact path="/users/:userId/edit" element={<PrivateRoute />}>
+              <Route exact path="/users/:userId/edit" element={<EditUser />} />
             </Route>
             <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/book" element={<StoryBook />} />
