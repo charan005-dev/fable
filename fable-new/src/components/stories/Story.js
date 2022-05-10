@@ -90,7 +90,6 @@ const Story = () => {
       console.log(data);
       setStoryData(data);
     }
-
     getStoryData();
   }, [id]);
 
