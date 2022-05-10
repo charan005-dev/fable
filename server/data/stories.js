@@ -159,10 +159,9 @@ const getRecommendations = async (userId, genres) => {
   // if recommendations are empty, we simply send in some random 5 stories
   if (recommendations.length === 0) {
     console.log("Recommendations are empty");
-    recommendations = await storiesCollection.aggregate([
-      { $match: { genres: { $in: genres } } },
-      { $sample: { size: 5 } },
-    ]);
+    recommendations = await storiesCollection
+      .aggregate([{ $match: { genres: { $in: genres } } }, { $sample: { size: 5 } }])
+      .toArray();
   }
   return { success: true, recommendations };
 };

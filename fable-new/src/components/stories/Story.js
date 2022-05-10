@@ -96,11 +96,14 @@ const Story = () => {
   useEffect(() => {
     async function getRecommendations() {
       if (storyData) {
-        const { data } = await axios.get(`/api/stories/recommendations?genres=${storyData.story.genres}`, {
-          headers: {
-            authtoken: await currentUser.getIdToken(),
-          },
-        });
+        const { data } = await axios.get(
+          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
+          {
+            headers: {
+              authtoken: await currentUser.getIdToken(),
+            },
+          }
+        );
         console.log(data);
         setRecommendations(data.recommendations);
       }
@@ -181,6 +184,7 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
+                              <img src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"} />
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
                             </Typography>
                           </Grid>
