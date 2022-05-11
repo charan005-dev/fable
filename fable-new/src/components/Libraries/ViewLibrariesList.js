@@ -38,25 +38,28 @@ const useStyles = makeStyles({
     marginLeft: "0px",
   },
   card3: {
-    width: "200%",
+    width: "700%",
   },
   card4: {
-    width: "500%",
+    paddingRight: "3%",
+    width: "100%",
+  },
+  card5: {
+    width: "100%",
   },
   edit: {
     paddingLeft: "70%",
   },
   create: {
-    marginLeft: "32%",
+    marginLeft: "50%",
     height: "35px",
     borderRadius: "0px",
   },
   create1: {
-    marginLeft: "62%",
+    marginLeft: "50%",
     height: "auto",
-    width: "auto",
-    minWidth: "auto",
-    maxWidth: "200%",
+    width: "60%",
+    maxWidth: "100%",
     borderRadius: "0px",
   },
   paper: { width: "80%", marginRight: "10%", paddingRight: "20%", paddingLeft: "0%", position: "absolute" },
@@ -92,7 +95,7 @@ const ViewLibrariesList = () => {
       <br />
       <br />
       <Paper
-        elevation={6}
+        elevation={0}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -117,61 +120,58 @@ const ViewLibrariesList = () => {
         </Stack>
         <br />
 
-        <Grid container elevation={5}>
-          <Stack direction={"column"} spacing={2}>
-            {libraryData &&
-              libraryData.length > 0 &&
-              libraryData.map((lib) => {
-                return (
-                  <div>
-                    <span>
-                      <Card className={classes.create1} elevation={5}>
-                        <CardContent>
-                          <CardActionArea>
-                            <Stack spacing={2} direction={"row"}>
-                              <Card className={classes.card3} elevation={0}>
-                                <Badge
-                                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                                  badgeContent={lib.stories.length === 0 ? "0" : lib.stories.length}
-                                >
-                                  <LibraryBooksIcon />
-                                </Badge>
-                                <Link to={`/libraries/${lib._id}`}>
-                                  <Typography variant="body2">
-                                    {lib.libraryName.length > 20
-                                      ? lib.libraryName.length.substring(16) + "..."
-                                      : lib.libraryName}
-                                  </Typography>
-                                </Link>
-                              </Card>
-                              <Stack spacing={2} direction={"row"}>
-                                <Card className={classes.card4} elevation={0}>
-                                  <Badge className={classes.edit}>
-                                    <EditIcon />
-                                  </Badge>
-                                </Card>
-                                <Card className={classes.card5} elevation={0}>
-                                  <Badge className={classes.delete}>
-                                    <DeleteIcon />
-                                  </Badge>
-                                </Card>
-                              </Stack>
-                            </Stack>
-                          </CardActionArea>
-                        </CardContent>
-                      </Card>
-                    </span>
-                  </div>
-                );
-              })}
-            {libraryData && libraryData.length === 0 && (
-              <div>
-                Seems like you're missing out on so much fun! <Link to={`/libraries/create`}>Click here</Link> to create
-                your own library, make it public and much more!
-              </div>
-            )}
-          </Stack>
-        </Grid>
+        <Stack direction={"column"} spacing={2}>
+          {libraryData &&
+            libraryData.length > 0 &&
+            libraryData.map((lib) => {
+              return (
+                <div>
+                  <span>
+                    <Card className={classes.create1} elevation={5}>
+                      <CardContent>
+                        <Stack spacing={0} direction={"row"}>
+                          <Card className={classes.card3} elevation={0}>
+                            <Badge
+                              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                              badgeContent={lib.stories.length === 0 ? "0" : lib.stories.length}
+                            >
+                              <LibraryBooksIcon />
+                            </Badge>
+                            <Link to={`/libraries/${lib._id}`}>
+                              <Typography variant="body2">
+                                {lib.libraryName.length > 20
+                                  ? lib.libraryName.length.substring(16) + "..."
+                                  : lib.libraryName}
+                              </Typography>
+                            </Link>
+                          </Card>
+                          <Card className={classes.card4} elevation={0}>
+                            <Badge className={classes.edit}>
+                              <EditIcon />
+                            </Badge>
+                          </Card>
+                          <Card className={classes.card5} elevation={0}>
+                            <Badge className={classes.delete}>
+                              <DeleteIcon />
+                            </Badge>
+                          </Card>
+                        </Stack>
+                        <Stack spacing={2} direction={"row"}></Stack>
+                        {/* </Stack> */}
+                      </CardContent>
+                    </Card>
+                  </span>
+                </div>
+              );
+            })}
+          {libraryData && libraryData.length === 0 && (
+            <div>
+              Seems like you're missing out on so much fun! <Link to={`/libraries/create`}>Click here</Link> to create
+              your own library, make it public and much more!
+            </div>
+          )}
+        </Stack>
+
         <br />
       </Paper>
     </div>
