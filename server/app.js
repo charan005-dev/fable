@@ -10,13 +10,22 @@ app.use(express.urlencoded({ extended: true }));
 console.log(__dirname + "/public");
 app.use("/public", express.static(__dirname + "/public/"));
 
+// this middleware authenticates the user based on the authtoken sent in the request
+// no authtoken is required for the "/api/users" route (obviously) as the user wouldn't be created at that point
+// feel free to add exception cases here
 app.use("/", async (req, res, next) => {
   console.log(req.originalUrl, req.method);
+  // if (req.originalUrl.includes("/api/stories/recommendations")) {
+  //   console.log("User creation process. Skipping authentication check.");
+  //   next();
+  //   return;
+  // }
   if (req.originalUrl === "/api/users" && req.method.toLowerCase() === "post") {
     console.log("User creation process. Skipping authentication check.");
     next();
     return;
   }
+
   const idToken = req.headers.authtoken;
   try {
     if (!idToken) {

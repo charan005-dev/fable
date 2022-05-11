@@ -19,6 +19,7 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
+import EditStory from "./Stories/EditStory";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -46,11 +47,14 @@ function App() {
             <Route exact path="/stories/:id" element={<PrivateRoute />}>
               <Route exact path="/stories/:id" element={<Story />} />
             </Route>
+            <Route path="/stories/:storyId/edit" element={<PrivateRoute />}>
+              <Route path="/stories/:storyId/edit" element={<EditStory />} />
+            </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
             </Route>
-            <Route path="/users/:userId/edit" element={<PrivateRoute />}>
-              <Route path="/users/:userId/edit" element={<EditUser />} />
+            <Route exact path="/users/:userId/edit" element={<PrivateRoute />}>
+              <Route exact path="/users/:userId/edit" element={<EditUser />} />
             </Route>
             <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/book" element={<StoryBook />} />

@@ -96,6 +96,11 @@ const EditUser = () => {
   if (userId !== currentUser.uid) {
     return (
       <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <Alert severity="error">{"You don't have access to perform this action."}</Alert>
       </div>
     );

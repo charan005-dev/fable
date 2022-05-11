@@ -85,7 +85,9 @@ const AllLibraryStories = () => {
 
   useEffect(() => {
     async function getLibraryStories() {
-      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`);
+      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data.libraries);
       setLibraryData(data.libraries);
     }
