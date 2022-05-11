@@ -18,10 +18,12 @@ import CreateLibrary from "./Libraries/CreateLibrary";
 import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import ManageMyStories from "./Stories/ManageMyStories";
+import Footer from "./Footer";
+import Carousel from "./Home/Carousel.js"
 
 function App() {
   const context = useContext(ThemeContext);
-  const darkMode = context.theme.darkMode;
+  //const darkMode = context.theme.darkMode;
   return (
     <AuthProvider>
       <Router>
@@ -29,18 +31,25 @@ function App() {
           <header className="App-header">
             <Navigation />
           </header>
-        </div>
+          </div>
+          <div> <Carousel /></div>
+          
+         
         <div className="App-body">
           <Routes>
             <Route path="/" element={<Splash />} />
             <Route path="/home" element={<PrivateRoute />}>
               <Route path="/home" element={<Home />} />
             </Route>
+           
             <Route path="/account" element={<PrivateRoute />}>
               <Route path="/account" element={<Account />} />
             </Route>
             <Route path="/stories/create_story" element={<PrivateRoute />}>
               <Route path="/stories/create_story" element={<CreateStory />} />
+            </Route>
+            <Route path="/carousel" element={<PrivateRoute />}>
+            <Route path="/carousel" element={<Carousel />} />
             </Route>
             <Route path="/stories/:id" element={<PrivateRoute />}>
               <Route path="/stories/:id" element={<Story />} />
@@ -67,7 +76,12 @@ function App() {
             <Route path="/signin" element={<Signin />} />
           </Routes>
         </div>
-      </Router>
+       </Router>
+      <div className="page-container">
+          <footer className="App-footer">
+            <Footer />
+          </footer>
+          </div>
     </AuthProvider>
   );
 }
