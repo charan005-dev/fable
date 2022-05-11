@@ -17,7 +17,13 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Menu from "@mui/material/Menu";
-import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Logout,
+  ListItemIcon,
+  Image,
+} from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
@@ -25,6 +31,7 @@ import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 import { MenuList } from "@mui/material";
 import SearchBox from "./SearchBox";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -46,14 +53,6 @@ const useStyles = makeStyles({
     "&:hover": {
       textDecoration: "none",
       color: "black",
-    },
-  },
-
-  menuItem: {
-    textDecoration: "none",
-
-    "&:hover": {
-      textDecoration: "none",
     },
   },
 
@@ -79,6 +78,22 @@ const useStyles = makeStyles({
       },
     },
   },
+  menuitem: {
+    width: "100%",
+    paddingLeft: "20%",
+    paddingTop: "10%",
+    paddingBottom: "10%",
+    paddingRight: "60px",
+    fontSize: "25px",
+    marginLeft: "0px",
+    marginRight: "0px",
+    textDecoration: "none",
+
+    "&:hover": {
+      textDecoration: "none",
+      color: "black",
+    },
+  },
   button1: {
     backgroundColor: "black",
     color: "blanchedalmond",
@@ -101,45 +116,47 @@ const useStyles = makeStyles({
         border: "5px bold black",
       },
     },
-  }
+  },
 });
 
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "right"
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "right"
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color: theme.palette.mode === "light" ? "rgb(55, 65, 81)" : theme.palette.grey[300],
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-    "& .MuiMenu-list": {
-      padding: "0px 0"
-    },
-    "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      "&:active": {
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-      },
-    },
-  },
-}));
+// const StyledMenu = styled((props) => (
+//   <Menu
+//     elevation={0}
+//     anchorOrigin={{
+//       vertical: "bottom",
+//       horizontal: "right",
+//     }}
+//     transformOrigin={{
+//       vertical: "top",
+//       horizontal: "right",
+//     }}
+//     {...props}
+//   />
+// ))(({ theme }) => ({
+//   "& .MuiPaper-root": {
+//     elevation: 20,
+//     borderRadius: 8,
+//     marginTop: theme.spacing(1),
+//     minWidth: 350,
+//     color: "black",
+//     fontSize:"30px",
+//     boxShadow:
+//       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+//     "& .MuiMenu-list": {
+//       padding: "20px ",
+//     },
+//     "& .MuiMenuItem-root": {
+//       "& .MuiSvgIcon-root": {
+//         fontSize: 18,
+//         color: theme.palette.text.secondary,
+//         marginRight: theme.spacing(1.5),
+//       },
+//       "&:active": {
+//         backgroundColor: "blanchedalmond"
+//       },
+//     },
+//   },
+// }));
 
 export default function NavBar() {
   const [auth, setAuth] = React.useState(true);
@@ -192,7 +209,13 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
@@ -201,90 +224,72 @@ export default function NavBar() {
         <Toolbar>
           <Link to="/home" className={classes.title1}>
             {" "}
-            <Typography variant="h3" component="div" sx={{ flexGrow: 0, textDecoration: "none" }}>
+            <Typography
+              variant="h3"
+              component="div"
+              sx={{ flexGrow: 0, textDecoration: "none" }}
+            >
               FABLE
             </Typography>{" "}
           </Link>
           <SearchBox />
           {auth && (
             <div>
-              <Button
-                id="demo-customized-button"
-                aria-controls={open ? "demo-customized-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
-              >
-                ACCOUNT
-              </Button>
-              <StyledMenu
-                id="demo-customized-menu"
-                MenuListProps={{
-                  "aria-labelledby": "demo-customized-button",
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-              >
-                <Button 
-                    id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    variant="contained"
-                    textDecoration="none"
-                    disableElevationonClick={handleClose} disableRipple
-                    component= {Link} to={`/stories/create_story`}
-                >
-                  CREATE A NEW STORY
-                </Button>
-                <br />
-                <Button 
-                    id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    variant="contained"
-                    textDecoration="none"
-                    disableElevationonClick={handleClose} disableRipple
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <React.Fragment>
+                    <Button variant="contained" {...bindTrigger(popupState)}>
+                      Account
+                    </Button>
+                    <Menu {...bindMenu(popupState)}>
+                      <MenuItem
+                        component={Link}
+                        onClick={handleClick}
+                        className={classes.menuitem}
+                        onClick={popupState.close}
+                        to={`/stories/create_story`}
+                      >
+                        + write
+                      </MenuItem>
+                      <br />
+                      <MenuItem
+                        onClick={handleClick}
+                        className={classes.menuitem}
+                        onClick={popupState.close}
+                        component={Link}
+                        to={`/users/${currentUser.uid}`}
+                      >
+                        My Stories
+                      </MenuItem>
+                      <br />
 
-                  component={Link} to={`/users/${currentUser.uid}/`} >
-                  Profile
-                </Button>
-                <br />
-                <Button 
-                    id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    variant="contained"
-                    textDecoration="none"
-                    disableElevationonClick={handleClose} disableRipple
-
-                  onClick={doSignOut} >
-                  Logout
-                </Button>{" "}
-                <br />
-                <Button 
-                    id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    variant="contained"
-                    textDecoration="none"
-                    disableElevationonClick={handleClose} disableRipple
-
-                  component={Link} to={`libraries/me`} >
-                  Library
-                </Button>
-              </StyledMenu>
+                      <MenuItem
+                        onClick={handleClick} 
+                        onClick={popupState.close}
+                        className={classes.menuitem} 
+                        component={Link}
+                        to={`/libraries/me`}
+                      >
+                        Library
+                      </MenuItem>
+                      <br />
+                      <MenuItem
+                        onClick={doSignOut}
+                        className={classes.menuitem}
+                        
+                      >
+                        Logout
+                      </MenuItem>
+                      <br />
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </PopupState>
+              
             </div>
           )}
         </Toolbar>
       </AppBar>
-      </Box>
+    </Box>
   );
 }
