@@ -14,16 +14,16 @@ function CarouselImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, {
+      const { data } = await axios.get(`/api/stories/random?required=6`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
       console.log(data);
       let dataForCarousel = [];
       let ids = [];
-      for (const story of data.stories) {
+      for (const story of data.randomStories) {
         dataForCarousel.push({
-          image: story.coverImage,
-          caption: `<a onClick={function (e) { e.preventDefault() }} class="carousel-link" href='/stories/${story._id}'>${story.title}</a>`,
+          image: story.coverImage ? story.coverImage : "/fablefinal.png",
+          caption: `<a onclick={function(e) { e.preventDefault(); }} class="carousel-link" href='/stories/${story._id}'>${story.title}</a>`,
         });
         ids.push(story._id);
       }

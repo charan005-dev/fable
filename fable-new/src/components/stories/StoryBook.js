@@ -26,6 +26,7 @@ import { Box } from "@material-ui/core";
 import Backdrop from "@mui/material/Backdrop";
 import { Paper, Stack, CardContent, Grid } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   card: {
@@ -165,6 +166,7 @@ const StoryBook = () => {
       { headers: { authtoken: await currentUser.getIdToken() } }
     );
     setStory(data.story);
+    toast.dark("Thanks for your like!");
   };
 
   const addToLibrary = async () => {

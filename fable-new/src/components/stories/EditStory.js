@@ -9,7 +9,6 @@ import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/cor
 import { Button, MenuItem, TextField, FormControl, Alert, CircularProgress, AlertTitle } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
-import NotificationContainer from "../../NotificationContainer";
 
 const genres = [
   "Horror",
@@ -197,9 +196,9 @@ const EditStory = () => {
     }
   };
 
-  if (error) {
-    return <NotificationContainer title={"Permission Error"} severity={"error"} message={error} />;
-  }
+  //   if (error) {
+  //     return <NotificationContainer title={"Permission Error"} severity={"error"} message={error} />;
+  //   }
 
   if (!storyDetails) {
     return <CircularProgress />;
