@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import "../App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Account from "./Account";
-import Home from "./Home/HomeImage";
+import Home from "../components/Home/Home";
 import Navigation from "./Navigation";
 import SignUp from "./SignUp";
 import { AuthProvider } from "../firebase/Auth";
@@ -21,10 +21,8 @@ import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
 
 import Footer from "./Footer";
-import Carousel from "./Home/Carousel.js"
 
 import EditStory from "./Stories/EditStory";
-
 
 function App() {
   const context = useContext(ThemeContext);
@@ -36,17 +34,14 @@ function App() {
           <header className="App-header">
             <Navigation />
           </header>
-          </div>
-          <div> <Carousel /></div>
-          
-         
+        </div>
         <div className="App-body">
           <Routes>
             <Route path="/" element={<Splash />} />
             <Route path="/home" element={<PrivateRoute />}>
               <Route path="/home" element={<Home />} />
             </Route>
-           
+
             <Route path="/account" element={<PrivateRoute />}>
               <Route path="/account" element={<Account />} />
             </Route>
@@ -54,13 +49,11 @@ function App() {
               <Route path="/stories/create_story" element={<CreateStory />} />
             </Route>
 
-            
             <Route exact path="/stories/:id" element={<PrivateRoute />}>
               <Route exact path="/stories/:id" element={<Story />} />
             </Route>
             <Route path="/stories/:storyId/edit" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/edit" element={<EditStory />} />
-
             </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
@@ -87,12 +80,12 @@ function App() {
             <Route path="/signin" element={<Signin />} />
           </Routes>
         </div>
-       </Router>
+      </Router>
       <div className="page-container">
-          <footer className="App-footer">
-            <Footer />
-          </footer>
-          </div>
+        <footer className="App-footer">
+          <Footer />
+        </footer>
+      </div>
     </AuthProvider>
   );
 }

@@ -413,6 +413,16 @@ h1 {
   display: flex;
 }
 
+.carousel-link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.carousel-link:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
 .row_poster {
   object-fit: contain;
   width: "auto";
