@@ -1,14 +1,15 @@
 import React from "react";
-import Carousel from "./Carousel";
+import CarouselImage from "./CarouselImage";
 import HomeImage from "./HomeImage";
 const Home = () => {
-  return(
-    <div> <Carousel />
-    <HomeImage /></div>
-
-  )
-
-
+  return (
+    <div>
+      <div className="carousel">
+        <CarouselImage />
+      </div>
+      <HomeImage />
+    </div>
+  );
 };
 
 export default Home;
