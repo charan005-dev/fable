@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   text1: {
     marginLeft: "20px",
     marginRight: "auto",
-  }
+  },
 });
 
 function HomeImage() {
@@ -95,7 +95,7 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item xs={10} sm={40} md={10} lg={20} xl={120}>
+          <Grid item>
             <div>
               <br />
               <h2 className={classes.text1}>Upcoming Series</h2>
@@ -105,13 +105,21 @@ function HomeImage() {
                   {storyData &&
                     storyData.map((image) => {
                       return (
-                        <Card sx={{ maxWidth: 345 }} className={classes.card}>
-                          <CardActionArea>
-                            <Link to={`/stories/${image._id}`}>
-                              <CardMedia className={classes.media} component="img" image={image.coverImage} />
-                            </Link>
-                          </CardActionArea>
-                        </Card>
+                        <>
+                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
+                            <CardActionArea>
+                              <Link to={`/stories/${image._id}`}>
+                                <CardMedia className={classes.media} component="img" image={image.coverImage} />
+                              </Link>
+                              <Typography></Typography>
+                            </CardActionArea>
+                          </Card>
+
+                          {image.genres &&
+                            image.genres.map((genre) => {
+                              return <Link to={`/stories/choose/${genre}`}>{genre}</Link>;
+                            })}
+                        </>
                       );
                     })}
                 </Stack>
