@@ -1,6 +1,7 @@
 import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/core";
 import { Button, MenuItem, TextField, FormControl, Alert } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
@@ -10,6 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 import { NavLink } from "react-router-dom";
+import NotificationContainer from "../../NotificationContainer";
+import { useEffect } from "react";
 const axios = require("axios").default;
 
 const genres = [
@@ -108,6 +111,7 @@ const CreateStory = () => {
   const { currentUser } = useContext(AuthContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
   const [desc, setDesc] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [creationSuccess, setCreationSuccess] = useState(false);
@@ -134,11 +138,11 @@ const CreateStory = () => {
     }
   };
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+  useEffect(() => {
+    if (creationSuccess) {
+      navigate(`/stories/me`);
     }
-  };
+  }, [creationSuccess]);
 
   const createStory = async () => {
     let formData = new FormData();
@@ -168,7 +172,6 @@ const CreateStory = () => {
       <div>
         <Paper elevation={3}>
           <br />
-
           <Grid container justifyContent="center" alignItems="center">
             <Typography variant="h3" component={"h1"} className={classes.headertext}>
               Create your story here!
