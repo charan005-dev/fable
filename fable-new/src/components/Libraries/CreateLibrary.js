@@ -91,11 +91,15 @@ const CreateLibrary = () => {
   const classes = useStyles();
 
   const createLibrary = async () => {
-    const { data } = await axios.post(`/api/libraries/`, {
-      userId: currentUser.uid,
-      libraryName: libraryName,
-      private: isPrivate,
-    });
+    const { data } = await axios.post(
+      `/api/libraries/`,
+      {
+        userId: currentUser.uid,
+        libraryName: libraryName,
+        private: isPrivate,
+      },
+      { headers: { authtoken: await currentUser.getIdToken() } }
+    );
     console.log(data);
     if (data.success) {
       setLibraryName("");

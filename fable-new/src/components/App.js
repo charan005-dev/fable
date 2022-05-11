@@ -17,9 +17,14 @@ import StoryBook from "./Stories/StoryBook";
 import CreateLibrary from "./Libraries/CreateLibrary";
 import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
+import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
+
 import Footer from "./Footer";
 import Carousel from "./Home/Carousel.js"
+
+import EditStory from "./Stories/EditStory";
+
 
 function App() {
   const context = useContext(ThemeContext);
@@ -48,17 +53,20 @@ function App() {
             <Route path="/stories/create_story" element={<PrivateRoute />}>
               <Route path="/stories/create_story" element={<CreateStory />} />
             </Route>
-            <Route path="/carousel" element={<PrivateRoute />}>
-            <Route path="/carousel" element={<Carousel />} />
+
+            
+            <Route exact path="/stories/:id" element={<PrivateRoute />}>
+              <Route exact path="/stories/:id" element={<Story />} />
             </Route>
-            <Route path="/stories/:id" element={<PrivateRoute />}>
-              <Route path="/stories/:id" element={<Story />} />
+            <Route path="/stories/:storyId/edit" element={<PrivateRoute />}>
+              <Route path="/stories/:storyId/edit" element={<EditStory />} />
+
             </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
             </Route>
-            <Route path="/users/:userId/edit" element={<PrivateRoute />}>
-              <Route path="/users/:userId/edit" element={<EditUser />} />
+            <Route exact path="/users/:userId/edit" element={<PrivateRoute />}>
+              <Route exact path="/users/:userId/edit" element={<EditUser />} />
             </Route>
             <Route path="/stories/:storyId/book" element={<PrivateRoute />}>
               <Route path="/stories/:storyId/book" element={<StoryBook />} />
@@ -71,6 +79,9 @@ function App() {
             </Route>
             <Route path="/libraries/me" element={<PrivateRoute />}>
               <Route path="/libraries/me" element={<ViewLibrariesList />} />
+            </Route>
+            <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
+              <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<Signin />} />

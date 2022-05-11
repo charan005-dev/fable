@@ -8,31 +8,39 @@ const useStyles = makeStyles({
   fab: {
     marginLeft: "41%", 
     paddingTop:"1%", 
-    paddingBottom: "1%"
+    paddingBottom: "1%",
+    bgcolor:"blanchedalmond"
   },
   
+  background: 
+  {
+    backgroundColor:"blanchedalmond"
+  }
 
 });
 
 const Hero = ({ title, subtitle }) => { 
   const classes = useStyles();
-  return (
+  return (  
+   
     <Paper
-      elevation={11}
+      elevation={5}
       sx={{
-        bgcolor: "background.default",
+        background: "blanchedalmond",
         display: "grid",
         gridTemplateColumns: { md: "1fr 1fr" },
         gap: 16,
-      }}
+      }} 
+      
     >
-      <Typography variant="h3" component={"h2"} className={classes.fab} >
+      <Typography variant="h3" component={"h2"} className={classes.fab}  >
         {title}
       </Typography>
       <Typography variant="subtitle" component={"p"}>
         {subtitle}
       </Typography>
     </Paper>
+
   );
 };
 

@@ -1,5 +1,7 @@
 import {
   Button,
+  Card,
+  CardMedia,
   Divider,
   Fab,
   FormControl,
@@ -22,8 +24,21 @@ import { AuthContext } from "../../firebase/Auth";
 import Modal from "@mui/material/Modal";
 import { Box } from "@material-ui/core";
 import Backdrop from "@mui/material/Backdrop";
+import { Paper, Stack, CardContent, Grid } from "@mui/material";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 const useStyles = makeStyles({
+  card: {
+    maxWidth: 250,
+    height: "auto",
+    width: "auto",
+    marginLeft: "85%",
+    marginRight: "auto",
+    borderRadius: 5,
+    border: "0px solid #000",
+    marginBottom: "1%",
+    marginTop: "1%",
+  },
   storyBook: {
     margin: 100,
   },
@@ -49,6 +64,45 @@ const useStyles = makeStyles({
       backgroundColor: "blanchedalmond",
       color: "black",
     },
+  },
+  card1: {
+    width: "70%",
+    marginLeft: "12%",
+    paddingLeft: "20%",
+    paddingRight: "0%",
+    textIndent: "0px",
+    fontSize: "25px",
+    lineHeight: "35px",
+    paddingTop: "1px",
+  },
+  card2: {
+    width: "15%",
+    marginBottom: "100px",
+  },
+
+  media: {
+    height: "300px",
+    width: "100%",
+  },
+  title: {
+    border: " 0px #fff",
+    width: "auto",
+    height: "auto",
+    marginTop: "1px",
+    paddingTop: "5%",
+    fontFamily: "'Encode Sans Semi Expanded', sans-serif",
+  },
+  title1: {
+    width: "auto",
+    height: "auto",
+
+    fontFamily: "'Encode Sans Semi Expanded', sans-serif",
+  },
+  background: {
+    backgroundColor: "blanchedalmond",
+  },
+  h1: {
+    color: "#ee3413",
   },
 });
 
@@ -79,7 +133,9 @@ const StoryBook = () => {
   const classes = useStyles();
   useEffect(() => {
     async function getStoryData() {
-      const { data } = await axios.get(`/api/stories/${storyId}`);
+      const { data } = await axios.get(`/api/stories/${storyId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       if (data.success) {
         setStory(data.story);
@@ -90,7 +146,10 @@ const StoryBook = () => {
 
   useEffect(() => {
     async function getMyLibraries() {
-      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`);
+      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+
       console.log(data);
       setMyLibraries(data.libraries);
     }
@@ -98,20 +157,28 @@ const StoryBook = () => {
   }, [added]);
 
   const handleLike = async () => {
-    const { data } = await axios.post(`/api/stories/${storyId}/like`, {
-      userId: currentUser.uid,
-    });
+    const { data } = await axios.post(
+      `/api/stories/${storyId}/like`,
+      {
+        userId: currentUser.uid,
+      },
+      { headers: { authtoken: await currentUser.getIdToken() } }
+    );
     setStory(data.story);
   };
 
   const addToLibrary = async () => {
     async function addToMyLibrary() {
       if (currentUser.uid && selectedLib.length > 0) {
-        const { data } = await axios.post(`/api/libraries/add`, {
-          owner: currentUser.uid,
-          libraryId: selectedLib,
-          storyId: storyId,
-        });
+        const { data } = await axios.post(
+          `/api/libraries/add`,
+          {
+            owner: currentUser.uid,
+            libraryId: selectedLib,
+            storyId: storyId,
+          },
+          { headers: { authtoken: await currentUser.getIdToken() } }
+        );
         console.log(data);
         setLibSelectModal(false);
         setAdded(added + 1);
@@ -127,6 +194,22 @@ const StoryBook = () => {
   if (story) {
     return (
       <div>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid container justifyContent="center">
+            <Card className={classes.card} elevation={15}>
+              <CardMedia className={classes.media} component="img" image={story.coverImage} />
+            </Card>
+          </Grid>
+        </Paper>
+        <br />
         <Hero title={story.title} />
         <br />
         <span className={classes.fab}>
@@ -144,19 +227,24 @@ const StoryBook = () => {
           )}
           {"   "}
         </span>
+        &nbsp; &nbsp; &nbsp; &nbsp;
         <Fab variant="extended" color="inherit" onClick={openLibrarySelectModal}>
           <AddIcon />
           Add to my library
         </Fab>
-        <Divider />
         <br />
-        <div className={classes.storyBook}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(story.contentHtml),
-            }}
-          ></div>
-        </div>
+        <br />
+        {/* story component */}
+        <Card elevation={0} className={classes.card1}>
+          <div className={classes.storyBook + " story_content"}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(story.contentHtml),
+              }}
+            ></div>
+          </div>
+        </Card>
+        {/* story component */}
         <Modal
           open={libSelectModal}
           onClose={closeLibrarySelectModal}
@@ -211,6 +299,7 @@ const StoryBook = () => {
                   })}
               </Select>
               <br />
+
               {myLibraries.length > 0 && (
                 <Button className={classes.libSubmitBtn} variant="contained" onClick={addToLibrary}>
                   Add To Library

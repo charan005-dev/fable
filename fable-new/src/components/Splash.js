@@ -102,7 +102,7 @@ const Splash = () => {
           <span>
             <CardContent>
               <button class="button">
-                <NavLink to="/login">
+                <NavLink to="/signin">
                   <span class="linktext">Login</span>
                 </NavLink>
               </button>

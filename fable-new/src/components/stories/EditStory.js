@@ -1,16 +1,15 @@
-import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/core";
-import { Button, MenuItem, TextField, FormControl, Alert } from "@mui/material";
-import { Editor } from "@tinymce/tinymce-react";
-import React, { useState, useRef, useContext } from "react";
+import React from "react";
+import { useContext, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
+import { Editor } from "@tinymce/tinymce-react";
 import { AuthContext } from "../../firebase/Auth";
-import { makeStyles } from "@material-ui/core";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import Stack from "@mui/material/Stack";
-import { NavLink } from "react-router-dom";
-const axios = require("axios").default;
+import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/core";
+import { Button, MenuItem, TextField, FormControl, Alert, CircularProgress, AlertTitle } from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
+import axios from "axios";
+import NotificationContainer from "../../NotificationContainer";
 
 const genres = [
   "Horror",
@@ -26,7 +25,12 @@ const genres = [
   "Tragedy",
   "Adult",
 ];
+
 const useStyles = makeStyles({
+  container: {
+    position: "relative",
+    zIndex: 1,
+  },
   card1: {
     width: "30%",
     paddingLeft: "300px",
@@ -83,7 +87,6 @@ const useStyles = makeStyles({
       color: "blanchedalmond",
     },
   },
-
   headertext: {
     backgroundColor: "black",
     color: "blanchedalmond",
@@ -103,75 +106,121 @@ const useStyles = makeStyles({
   },
 });
 
-const CreateStory = () => {
+const EditStory = () => {
   const editorRef = useRef(null);
-  const { currentUser } = useContext(AuthContext);
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [coverImage, setCoverImage] = useState(null);
-  const [creationSuccess, setCreationSuccess] = useState(false);
+  const [storyDetails, setStoryDetails] = useState(null);
+  const { storyId } = useParams();
+  let { currentUser } = useContext(AuthContext);
   const classes = useStyles();
+  const [changingState, setChangingState] = useState({
+    title: "",
+    desc: "",
+    genres: [],
+    content: "",
+    coverImage: "",
+  });
 
-  const handleGenreSelect = (e) => {
-    const value = e.target.value;
-    setSelectedGenres(typeof value === "string" ? value.split(",") : value);
-  };
+  let existingContent;
+  //   const [title, setTitle] = useState("");
+  //   const [selectedGenres, setSelectedGenres] = useState("");
+  //   const [shortDescription, setShortDescription] = useState("");
+  //   const [coverImage, setCoverImage] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e, identifier) => {
     switch (identifier) {
       case "title":
-        setTitle(e.target.value.length !== 0 ? e.target.value : "");
+        setChangingState({ ...changingState, title: e.target.value.length !== 0 ? e.target.value : "" });
         break;
       case "desc":
-        setDesc(e.target.value.length !== 0 ? e.target.value : "");
+        setChangingState({ ...changingState, desc: e.target.value.length !== 0 ? e.target.value : "" });
         break;
       case "file":
-        setCoverImage(e.target.files[0]);
+        setChangingState({ ...changingState, coverImage: e.target.value.length !== 0 ? e.target.value : "" });
         break;
       case "default":
         break;
     }
   };
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+  useEffect(() => {
+    async function getStoryDetails() {
+      const { data } = await axios.get(`/api/stories/${storyId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+      if (data.story.creatorId !== currentUser.uid) {
+        setError("You don't have access to perform this action!");
+        return;
+      }
+      setStoryDetails(data.story);
+      let newState = {
+        title: data.story.title,
+        desc: data.story.shortDescription,
+        genres: data.story.genres,
+        content: data.story.contentHtml,
+        coverImage: data.story.coverImage,
+      };
+      setChangingState(newState);
+    }
+    getStoryDetails();
+  }, [storyId]);
+
+  const handleGenreSelect = (e) => {
+    const value = e.target.value;
+    setChangingState({ ...changingState, genres: typeof value === "string" ? value.split(",") : value });
+  };
+
+  const updateStory = async () => {
+    let formData = new FormData();
+    formData.append("creatorId", currentUser.uid);
+    formData.append("title", changingState.title);
+    formData.append("shortDescription", changingState.desc);
+    formData.append("genres", changingState.genres);
+    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
+    formData.append("coverImage", changingState.coverImage);
+    try {
+      const { data } = await axios.put(`/api/stories/${storyId}`, formData, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      if (data.success) {
+        setUpdateSuccess(true);
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      setError(e.message);
     }
   };
 
-  const createStory = async () => {
-    let formData = new FormData();
-    formData.append("creatorId", currentUser.uid);
-    formData.append("title", title);
-    formData.append("shortDescription", desc);
-    formData.append("genres", selectedGenres);
-    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
-    formData.append("coverImage", coverImage);
-    const { data } = await axios.post("/api/stories", formData, {
-      headers: {
-        "Content-Type": `multipart/form-data`,
-        authtoken: await currentUser.getIdToken(),
-      },
-    });
-    if (data.success) {
-      setTitle("");
-      setDesc("");
-      setSelectedGenres([]);
-      setCreationSuccess(true);
-    }
-  };
+  if (error) {
+    return <NotificationContainer title={"Permission Error"} severity={"error"} message={error} />;
+  }
+
+  if (!storyDetails) {
+    return <CircularProgress />;
+  }
 
   return (
     <div>
-      {creationSuccess && <Alert severity="success">Successfully created the story!</Alert>}
+      {/* {updateSuccess && <Alert severity="success">Successfully updated the story!</Alert>} */}
       <div>
-        <Paper elevation={3}>
+        <Paper className={classes.container} elevation={3}>
+          {/* {updateSuccess && <NotificationContainer severity={"success"} message={"Successfully updated the story!"} />} */}
+          {updateSuccess && (
+            <Alert severity="success" color="success">
+              <AlertTitle>Success</AlertTitle>
+              Successfully updated the story!
+            </Alert>
+          )}
           <br />
-
           <Grid container justifyContent="center" alignItems="center">
             <Typography variant="h3" component={"h1"} className={classes.headertext}>
-              Create your story here!
+              Use this place to edit and fine-tune your story!
             </Typography>
           </Grid>
           <br />
@@ -191,7 +240,7 @@ const CreateStory = () => {
               id="title"
               label="Title of the story"
               variant="filled"
-              value={title}
+              value={changingState.title}
               required
               onChange={(e) => handleChange(e, "title")}
             />
@@ -212,7 +261,7 @@ const CreateStory = () => {
               label="A short description of the story"
               variant="filled"
               multiline
-              value={desc}
+              value={changingState.desc}
               minRows={4}
               maxRows={4}
               require
@@ -225,6 +274,7 @@ const CreateStory = () => {
             <Editor
               className={classes.card1}
               required
+              initialValue={changingState.content}
               onLoadContent={() => {
                 setTimeout(() => {
                   let close = document.getElementsByClassName("tox-notification__dismiss")[0];
@@ -242,7 +292,7 @@ const CreateStory = () => {
               id="genres"
               label="Genres"
               placeholder="Genres"
-              value={selectedGenres}
+              value={changingState.genres ? changingState.genres : []}
               multiple
               input={<OutlinedInput label="Genre" />}
               onChange={handleGenreSelect}
@@ -259,7 +309,7 @@ const CreateStory = () => {
             <br />
 
             <Button variant="contained" component="label" className={classes.button2}>
-              Upload a cover photo for your story &nbsp;&nbsp;
+              Upload a cover photo for your story
               <input
                 type="file"
                 accept="image/jpeg, image/png, .jpeg, .jpg, .png"
@@ -268,8 +318,8 @@ const CreateStory = () => {
             </Button>
             <br />
             <br />
-            <Button variant="contained" onClick={createStory} className={classes.button1}>
-              Create Story
+            <Button variant="contained" onClick={updateStory} className={classes.button1}>
+              Update Story
             </Button>
           </FormControl>
         </Paper>
@@ -278,4 +328,4 @@ const CreateStory = () => {
   );
 };
 
-export default CreateStory;
+export default EditStory;

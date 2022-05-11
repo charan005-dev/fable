@@ -3,14 +3,42 @@ const express = require("express");
 const app = express();
 const routes = require("./routes");
 const path = require("path");
+const { firebaseApp } = require("./initFirebaseAdmin");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 console.log(__dirname + "/public");
 app.use("/public", express.static(__dirname + "/public/"));
 
-app.use("/", (req, res, next) => {
-  console.log("Into the app!" + req.originalUrl);
+// this middleware authenticates the user based on the authtoken sent in the request
+// no authtoken is required for the "/api/users" route (obviously) as the user wouldn't be created at that point
+// feel free to add exception cases here
+app.use("/", async (req, res, next) => {
+  console.log(req.originalUrl, req.method);
+  // if (req.originalUrl.includes("/api/stories/recommendations")) {
+  //   console.log("User creation process. Skipping authentication check.");
+  //   next();
+  //   return;
+  // }
+  if (req.originalUrl === "/api/users" && req.method.toLowerCase() === "post") {
+    console.log("User creation process. Skipping authentication check.");
+    next();
+    return;
+  }
+
+  const idToken = req.headers.authtoken;
+  try {
+    if (!idToken) {
+      throw `No authtoken in incoming request. Cannot authenticate user.`;
+    }
+    let { uid, email, auth_time } = await firebaseApp.auth().verifyIdToken(idToken);
+    console.info(`Authenticated user with email ${email}. Authenticated on: ${new Date(auth_time * 1000)}`);
+    req["authenticatedUser"] = uid;
+  } catch (e) {
+    console.log(e);
+    res.status(401).json({ success: false, message: "You must be logged in to perform this action." });
+    return;
+  }
   next();
 });
 
