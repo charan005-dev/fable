@@ -23,8 +23,8 @@ import { doSignOut } from "../../firebase/FirebaseFunctions";
 
 const useStyles = makeStyles({
   card: {
-    maxWidth: 250,
-    height: "auto",
+    maxWidth: 200,
+    height: 250,
     marginLeft: "auto",
     marginRight: "auto",
     borderRadius: 5,
@@ -40,8 +40,8 @@ const useStyles = makeStyles({
     flexGrow: 5,
   },
   media: {
-    height: "100%",
-    width: "100%",
+    height: "250px",
+    width: "200px",
   },
   paper: {
     height: "auto",
@@ -52,13 +52,8 @@ const useStyles = makeStyles({
   },
   text1: {
     marginLeft: "20px",
-
     marginRight: "auto",
-  },
-  media: {
-    height: "auto",
-    width: "450px",
-  },
+  }
 });
 
 function HomeImage() {
@@ -100,26 +95,23 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item xs={10} sm={10} md={10} lg={20} xl={120}>
+          <Grid item xs={10} sm={40} md={10} lg={20} xl={120}>
             <div>
-              <h2 className={classes.text1}>New and Hot</h2>
-              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}> */}
               <br />
-              <br />
-              <br />
-
+              <h2 className={classes.text1}>Upcoming Series</h2>
+              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
                   {storyData &&
                     storyData.map((image) => {
                       return (
-                        <Paper className={classes.paper}>
+                        <Card sx={{ maxWidth: 345 }} className={classes.card}>
                           <CardActionArea>
                             <Link to={`/stories/${image._id}`}>
                               <CardMedia className={classes.media} component="img" image={image.coverImage} />
                             </Link>
                           </CardActionArea>
-                        </Paper>
+                        </Card>
                       );
                     })}
                 </Stack>
