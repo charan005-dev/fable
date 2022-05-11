@@ -14,7 +14,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
-import { Stack } from "@mui/material";
+import { CardHeader, Stack, Tooltip } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
@@ -54,6 +54,19 @@ const useStyles = makeStyles({
     marginLeft: "20px",
     marginRight: "auto",
   },
+
+  overlay: {
+    transition: ".5s ease",
+    opacity: 0,
+    position: "absolute",
+    top: "75%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    "&:hover": {
+      opacity: 1,
+    },
+  },
+
 });
 
 function HomeImage() {
@@ -98,13 +111,14 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>Upcoming Series</h2>
+              <h2 className={classes.text1}>New and Hot</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
                   {storyData &&
                     storyData.map((image) => {
                       return (
+
                         <>
                           <Card sx={{ maxWidth: 345 }} className={classes.card}>
                             <CardActionArea>
@@ -120,6 +134,7 @@ function HomeImage() {
                               return <Link to={`/stories/choose/${genre}`}>{genre}</Link>;
                             })}
                         </>
+
                       );
                     })}
                 </Stack>

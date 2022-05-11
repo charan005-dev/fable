@@ -7,12 +7,10 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/core";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import Stack from "@mui/material/Stack";
-import { NavLink } from "react-router-dom";
-import NotificationContainer from "../../NotificationContainer";
 import { useEffect } from "react";
+import { NotificationManager } from "react-notifications";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const axios = require("axios").default;
 
 const genres = [
@@ -138,13 +136,37 @@ const CreateStory = () => {
     }
   };
 
-  useEffect(() => {
-    if (creationSuccess) {
-      navigate(`/stories/me`);
-    }
-  }, [creationSuccess]);
+  // useEffect(() => {
+  //   if (creationSuccess) {
+  //     navigate(`/stories/me`);
+  //   }
+  // }, [creationSuccess]);
+
+  const isStateValid = () => {
+    // checking all the state values to see if they're correct
+    // before allowing story creation
+    if (!title || typeof title !== "string" || title.length === 0 || title.trim().length === 0)
+      return { e: true, message: "Your title value is invalid." };
+    if (!desc || typeof desc !== "string" || desc.length === 0 || desc.trim().length === 0)
+      return { e: true, message: "Your description is invalid." };
+    let content = editorRef.current.getContent();
+    if (!content || typeof content !== "string" || content.length === 0 || content.trim().length === 0)
+      return { e: true, message: "Your story content is invalid." };
+    let genres = selectedGenres;
+    console.log(genres);
+    return { e: false };
+  };
 
   const createStory = async () => {
+    let validity = isStateValid();
+    if (validity.e) {
+      toast.dark(validity.message, {
+        style: {
+          backgroundColor: "#000",
+        },
+      });
+      return;
+    }
     let formData = new FormData();
     formData.append("creatorId", currentUser.uid);
     formData.append("title", title);
@@ -162,14 +184,14 @@ const CreateStory = () => {
       setTitle("");
       setDesc("");
       setSelectedGenres([]);
-      setCreationSuccess(true);
+      toast.dark("Your story has been created successfully!");
     }
   };
 
   return (
     <div>
-      {creationSuccess && <Alert severity="success">Successfully created the story!</Alert>}
       <div>
+        <ToastContainer />
         <Paper elevation={3}>
           <br />
           <Grid container justifyContent="center" alignItems="center">
@@ -240,8 +262,9 @@ const CreateStory = () => {
             <br />
             <Typography className={classes.story}>Select all the Genres that apply! *</Typography>
             <br />
+
             <Select
-              sx={{ width: "30%" }}
+              sx={{ width: "40%" }}
               id="genres"
               label="Genres"
               placeholder="Genres"
@@ -250,13 +273,11 @@ const CreateStory = () => {
               input={<OutlinedInput label="Genre" />}
               onChange={handleGenreSelect}
             >
-              {genres.map((genre) => {
-                return (
-                  <MenuItem key={genre} value={genre}>
-                    {genre}
-                  </MenuItem>
-                );
-              })}
+              {genres.map((genre, idx) => (
+                <MenuItem key={idx} value={genre}>
+                  {genre}
+                </MenuItem>
+              ))}
             </Select>
             <br />
             <br />

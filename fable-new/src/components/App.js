@@ -22,9 +22,9 @@ import ManageMyStories from "./Stories/ManageMyStories";
 import ManageAllStories from "./Stories/ManageAllStories";
 
 import Footer from "./Footer";
-
 import EditStory from "./Stories/EditStory";
-import NotificationContainer from "../NotificationContainer";
+import { ToastContainer } from "react-toastify";
+import ShowByGenres from "./Stories/ShowByGenres";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -34,6 +34,7 @@ function App() {
       <Router>
         <div className="container">
           <header className="App-header">
+            <ToastContainer autoClose={1000} />
             <Navigation />
           </header>
         </div>
@@ -80,6 +81,9 @@ function App() {
             </Route>
             <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
               <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
+            </Route>
+            <Route path="/stories/choose/:genre" element={<PrivateRoute />}>
+              <Route path="/stories/choose/:genre" element={<ShowByGenres />} />
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<Signin />} />

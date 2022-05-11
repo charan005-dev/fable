@@ -132,11 +132,7 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia
-                  className={classes.media}
-                  component="img"
-                  image={storyData.story.coverImage}
-                />
+                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
@@ -174,22 +170,16 @@ const Story = () => {
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>
-                    {storyData.creator.displayName}
-                  </Link>
+                  <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
                 </CardContent>{" "}
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">
-                    {storyData.story.shortDescription}
-                  </Typography>{" "}
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>
               </Card>
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-
-
                   <Typography variant="h4">Similar stories that you might like</Typography>
                   <Divider />
                   {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
@@ -206,7 +196,6 @@ const Story = () => {
                         </div>
                       );
                     })}
-
                 </CardContent>
               </Card>
             </Stack>

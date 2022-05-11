@@ -1,7 +1,7 @@
 import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
@@ -127,31 +127,40 @@ const useStyles = makeStyles({
 const ManageMyStories = () => {
   const [myStories, setMyStories] = useState([]);
   const { currentUser } = useContext(AuthContext);
+  let { genre } = useParams();
+  if (!genres.includes(genre)) genre = "";
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [doExactMatch, setDoExactMatch] = useState(false);
   const classes = useStyles();
 
+  //   useEffect(() => {
+  //     let genreCopy = [];
+  //     for (const sg of selectedGenres) {
+  //       genreCopy.push(sg);
+  //     }
+  //     genreCopy.push(genre);
+  //     setSelectedGenres(genreCopy);
+  //   }, []);
+
   useEffect(() => {
     setMyStories([]);
-    setSelectedGenres([]);
+    setSelectedGenres([genre]);
   }, [doExactMatch]);
 
   useEffect(() => {
     console.log("useEffect again");
     async function getMyStoriesByGenres() {
       if (!doExactMatch) {
-        const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=false`,
-          { headers: { authtoken: await currentUser.getIdToken() } }
-        );
+        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
         console.log("Data ", data);
         setMyStories(data.stories);
       }
       if (doExactMatch) {
-        const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=true`,
-          { headers: { authtoken: await currentUser.getIdToken() } }
-        );
+        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
         console.log("Data ", data);
         setMyStories(data.stories);
       }
@@ -202,7 +211,7 @@ const ManageMyStories = () => {
           <br />
           {genres &&
             genres.map((genre, idx) => {
-              //console.log(selectedGenres, genre);
+              console.log(selectedGenres, genre);
               if (selectedGenres.includes(genre)) {
                 return <Chip className={classes.chip} key={genre} label={genre} onDelete={() => chipDeselect(genre)} />;
               } else {
@@ -220,7 +229,7 @@ const ManageMyStories = () => {
         {myStories.length === 0 && (
           <>
             <Grid container justifyContent="center">
-              <Paper sx={{ width: 400 }} variant="outlined" className={classes.refinery}>
+              <Paper variant="outlined" className={classes.refinery}>
                 <Typography variant="body2">
                   Seems like there aren't any stories matching the current filter. Please refine your filters and try
                   again.
