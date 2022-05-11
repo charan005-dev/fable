@@ -1,4 +1,5 @@
-import { Card, CardContent, Chip, Grid, Paper, Switch } from "@material-ui/core";
+import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
+import { Stack } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -38,6 +39,84 @@ const useStyles = makeStyles({
     padding: 3,
     maxWidth: "16%",
   },
+  storyLink: {
+    textDecoration: "none",
+  },
+  imageWrapper: {},
+  images: {
+    margin: 15,
+    border: "solid 1px black",
+    borderRadius: "50%",
+    boxShadow: "2px 2px 2px 2px",
+    width: 150,
+    height: 150,
+  },
+  title: {
+    border: " 0px #fff",
+    width: "auto",
+    paddingRight: "100%",
+  },
+  stack: {
+    width: "auto",
+    height: "auto",
+    paddingRight: "auto",
+  },
+  media: {
+    width: "50%",
+    height: "120px",
+    height: "auto",
+    float: "left",
+    margin: "3px",
+    padding: "3px",
+  },
+
+  cards: {
+    width: "500px",
+    height: "600px",
+    marginLeft: "100%",
+    marginRight: "100%",
+    border: "3px solid black",
+    borderRadius: "5px",
+  },
+  text: {
+    color: "grey",
+    justifyContent: "center",
+    marginLeft: "11.5%",
+    marginRight: "auto",
+  },
+  box: {
+    paddingLeft: "auto",
+    marginLeft: "44%",
+    marginRight: "100%",
+  },
+  title: {
+    color: "black",
+    justifyContent: "center",
+    fontSize: "30px",
+    paddingLeft: "43.5%",
+  },
+  card1: {
+    width: "100%",
+    height: "8%",
+    marginLeft: "10%",
+    paddingLeft: "0%",
+    paddingRight: "0%",
+    marginRight: "2%",
+    paddingBottom: "0%",
+    marginBottom: "1%",
+    fontSize: "25px",
+  },
+  card2: {
+    width: "100%",
+    marginBottom: "100px",
+    paddingBottom: "2%",
+    height: "2%",
+  },
+  media: {
+    height: "300px",
+    width: "200px",
+  },
+  paper: {},
 });
 
 const ManageMyStories = () => {
@@ -131,11 +210,56 @@ const ManageMyStories = () => {
         {myStories.length > 0 &&
           myStories.map((story) => {
             return (
-              <Card>
-                <CardContent>
-                  <Link to={`/stories/${story._id}`}>{story.title}</Link>
-                </CardContent>
-              </Card>
+              <div>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    "& > :not(style)": {
+                      m: 1,
+                      width: "auto",
+                      height: "auto",
+                      marginLeft: 500,
+                    },
+                  }}
+                >
+                  <Paper
+                    elevation={5}
+                    className={classes.paper}
+                    sx={{
+                      bgcolor: "background.default",
+                      display: "grid",
+                      gridTemplateColumns: { md: "1fr 1fr" },
+                      gap: 2,
+                    }}
+                  >
+                    <Grid>
+                      <Stack direction="row">
+                        <Card className={classes.card1} elevation={0}>
+                          <Link to={`/stories/${story._id}`}>
+                            <CardMedia className={classes.media} component="img" image={story.coverImage} />
+                          </Link>
+                        </Card>
+
+                        <Card className={classes.card2} elevation={0}>
+                          <CardContent>
+                            <Link to={`/stories/${story._id}`}>
+                              <Typography>{story.title}</Typography>
+                            </Link>
+                          </CardContent>
+                          <CardContent>
+                            <Typography>
+                              {story.shortDescription.length > 200
+                                ? story.shortDescription.substring(0, 197) + "..."
+                                : story.shortDescription}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Stack>
+                    </Grid>
+                  </Paper>
+                </Box>
+              </div>
             );
           })}
       </div>
