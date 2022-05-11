@@ -1,5 +1,6 @@
 import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   title1: {
     width: "auto",
     height: "auto",
-
+    fontSize: "35px",
     fontFamily: "'Encode Sans Semi Expanded', sans-serif",
   },
   nameBox: {
@@ -44,12 +45,14 @@ const useStyles = makeStyles({
   button: {
     backgroundColor: "black",
     color: "blanchedalmond",
-    width: "90%",
+    width: "auto",
+    maxWidth: "500px",
+    maxHeight: "200px",
     marginLeft: "10%",
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    paddingRight: "5%",
-    paddingLeft: "5%",
+    paddingTop: "20px",
+    paddingBottom: "20px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
     borderRadius: "35px",
     fontWeight: "bold",
     fontSize: "16px",
@@ -129,12 +132,18 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={storyData.story.coverImage}
+                />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
                   <Typography variant="h2" className={classes.title1}>
-                    {storyData.story.title}
+                    {storyData.story.title.length > 35
+                      ? storyData.story.title.substring(0, 40) + "..."
+                      : storyData.story.title}
                   </Typography>{" "}
                   <br />
                   <br />
@@ -165,16 +174,22 @@ const Story = () => {
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
+                  <Link to={`/users/${storyData.creator._id}`}>
+                    {storyData.creator.displayName}
+                  </Link>
                 </CardContent>{" "}
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
+                  <Typography variant="subtitle">
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
                 </CardContent>
               </Card>
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
+
+
                   <Typography variant="h4">Similar stories that you might like</Typography>
                   <Divider />
                   {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
@@ -191,6 +206,7 @@ const Story = () => {
                         </div>
                       );
                     })}
+
                 </CardContent>
               </Card>
             </Stack>

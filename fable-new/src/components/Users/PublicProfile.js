@@ -3,6 +3,10 @@ import axios from "axios";
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
   Box,
   Card,
@@ -16,7 +20,15 @@ import {
   Divider,
   TextField,
 } from "@material-ui/core";
-import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
+import {
+  MDBCard,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBRow,
+  MDBCol,
+} from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { makeStyles } from "@material-ui/styles";
 
@@ -66,9 +78,27 @@ const useStyles = makeStyles({
     borderRadius: "5px",
   },
   text: {
-    color: "grey",
+    color: "Black",
     justifyContent: "center",
     marginLeft: "11.5%",
+    marginRight: "auto",
+  },
+  text1: {
+    color: "grey",
+    justifyContent: "center",
+    marginLeft: "10.5%",
+    marginRight: "auto",
+  },
+  text2: {
+    color: "grey",
+    justifyContent: "center",
+    marginLeft: "0%",
+    marginRight: "auto",
+  },
+  text3: {
+    color: "grey",
+    justifyContent: "center",
+    marginLeft: "0%",
     marginRight: "auto",
   },
   box: {
@@ -99,9 +129,29 @@ const useStyles = makeStyles({
     paddingBottom: "2%",
     height: "2%",
   },
+  card3: {
+    width: "100%",
+    height: "auto",
+    marginLeft: "17%",
+    paddingLeft: "0%",
+    paddingRight: "0%",
+    marginRight: "auto",
+    paddingBottom: "0%",
+    marginBottom: "1%",
+    fontSize: "25px",
+  },
   media: {
     height: "300px",
     width: "200px",
+  },
+  namecard: {
+    paddingLeft: "30%",
+    paddingBottom: "2%",
+    paddingTop: "3%",
+    color: "black",
+  },
+  subcard: {
+    width: "6%",
   },
 });
 
@@ -113,9 +163,12 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/users/public_profile/${profileUserId}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
       setProfileData(data);
       console.log(data);
     }
@@ -126,9 +179,36 @@ const PublicProfile = () => {
   const buildUserProfile = (profileData) => {
     return (
       <Grid>
-        <Typography variant="h2" component={"h2"} className={classes.text}>
-          {profileData.profile.displayName}
-        </Typography>
+        <Card elevation={20} className={classes.namecard}>
+          <Typography variant="h2" component={"h2"} className={classes.text}>
+            {profileData.profile.displayName}
+          </Typography>
+          <br />
+          <br />
+          <Stack direction="row" className={classes.card3} spacing={5}>
+            <Card className={classes.subcard} elevation={0}>
+              <Typography
+                variant="h6"
+                component={"h2"}
+                className={classes.text1}
+              >
+                <MenuBookIcon />
+              </Typography>
+            </Card>
+            &nbsp;
+            
+            &nbsp;
+            <Card className={classes.subcard} elevation={0}>
+              <Typography
+                variant="h6"
+                component={"h2"}
+                className={classes.text1}
+              >
+                <LibraryAddIcon />
+              </Typography>
+            </Card>
+          </Stack>
+        </Card>
         <br />
         <Typography variant="h3" component={"h2"} className={classes.text}>
           Stories written
@@ -143,21 +223,26 @@ const PublicProfile = () => {
                 <Grid>
                   <Stack direction="row">
                     <Card className={classes.card1} elevation={15}>
+
                       <Link to={`/stories/${createdStory._id}`}>
                         <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
                       </Link>
+
                     </Card>
 
                     <Card className={classes.card2} elevation={0}>
                       <CardContent>
+
                         <Link to={`/stories/${createdStory._id}`}>
                           <Typography>{createdStory.title}</Typography>
                         </Link>
+
                       </CardContent>
                       <CardContent>
                         <Typography>
                           {createdStory.shortDescription.length > 200
-                            ? createdStory.shortDescription.substring(0, 197) + "..."
+                            ? createdStory.shortDescription.substring(0, 197) +
+                              "..."
                             : createdStory.shortDescription}
                         </Typography>
                       </CardContent>
