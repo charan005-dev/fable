@@ -1,4 +1,14 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
+  CardContent,
+} from "@material-ui/core";
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -35,7 +45,7 @@ const useStyles = makeStyles({
   title1: {
     width: "auto",
     height: "auto",
-
+    fontSize: "35px",
     fontFamily: "'Encode Sans Semi Expanded', sans-serif",
   },
   nameBox: {
@@ -44,12 +54,14 @@ const useStyles = makeStyles({
   button: {
     backgroundColor: "black",
     color: "blanchedalmond",
-    width: "90%",
+    width: "auto",
+    maxWidth: "500px",
+    maxHeight: "200px",
     marginLeft: "10%",
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    paddingRight: "5%",
-    paddingLeft: "5%",
+    paddingTop: "20px",
+    paddingBottom: "20px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
     borderRadius: "35px",
     fontWeight: "bold",
     fontSize: "16px",
@@ -107,12 +119,18 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={storyData.story.coverImage}
+                />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
                   <Typography variant="h2" className={classes.title1}>
-                    {storyData.story.title}
+                    {storyData.story.title.length > 35
+                      ? storyData.story.title.substring(0, 40) + "..."
+                      : storyData.story.title}
                   </Typography>{" "}
                   <br />
                   <br />
@@ -144,30 +162,41 @@ const Story = () => {
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
+                  <Link to={`/users/${storyData.creator._id}`}>
+                    {storyData.creator.displayName}
+                  </Link>
                 </CardContent>{" "}
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
+                  <Typography variant="subtitle">
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
                 </CardContent>
               </Card>
 
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
                   <Typography variant="subtitle">
-                    Each time I refer to one of them, I make it a point to stress to my students they are not
-                    universally true and should always be challenged. My discomfort with these 3–5–7 models (as I like
-                    to call them) is not just from the absurdity of trying to distill the complexity of the world’s
-                    eternally evolving heritage of stories into single models, which invariably are littered with
-                    caveats and exceptions. No. My bigger concern is that the 3–5–7 models have largely also become
-                    foundations for exclusion of certain stories—and the focus on models is somewhat akin to the way in
-                    which global economists spend years arguing about which capitalist models work better, without
-                    giving any attention to the fact that all successful capitalist nations were built on inhumane
-                    exploitation of serfs, women, occupied lands, slaves, children—and in more recent success stories
-                    like Singapore and South Korea, underpaid labor and suppression of civil liberties. Just as it is
-                    within the world of fiction, focusing on the economic models and not the historic biases and nuances
-                    is misleading.
+                    Each time I refer to one of them, I make it a point to
+                    stress to my students they are not universally true and
+                    should always be challenged. My discomfort with these 3–5–7
+                    models (as I like to call them) is not just from the
+                    absurdity of trying to distill the complexity of the world’s
+                    eternally evolving heritage of stories into single models,
+                    which invariably are littered with caveats and exceptions.
+                    No. My bigger concern is that the 3–5–7 models have largely
+                    also become foundations for exclusion of certain stories—and
+                    the focus on models is somewhat akin to the way in which
+                    global economists spend years arguing about which capitalist
+                    models work better, without giving any attention to the fact
+                    that all successful capitalist nations were built on
+                    inhumane exploitation of serfs, women, occupied lands,
+                    slaves, children—and in more recent success stories like
+                    Singapore and South Korea, underpaid labor and suppression
+                    of civil liberties. Just as it is within the world of
+                    fiction, focusing on the economic models and not the
+                    historic biases and nuances is misleading.
                   </Typography>
                 </CardContent>
               </Card>
