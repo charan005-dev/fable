@@ -19,6 +19,8 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
+import ManageAllStories from "./Stories/ManageAllStories";
+
 import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
@@ -67,6 +69,9 @@ function App() {
             </Route>
             <Route path="/stories/manage" element={<PrivateRoute />}>
               <Route path="/stories/manage" element={<ManageMyStories />} />
+            </Route>
+            <Route path="/stories/filter" element={<ManageAllStories />}>
+              <Route path="stories/filter" element={<PrivateRoute />} />
             </Route>
             <Route path="/libraries/create" element={<PrivateRoute />}>
               <Route path="/libraries/create" element={<CreateLibrary />} />
