@@ -8,7 +8,7 @@ function Footer() {
       <div className="container">
         <hr />
         <div className="row">
-          <p className="col-sm">&copy;{new Date().getFullYear()} | Code Pirates</p>
+          <p className="col-sm">&copy;{new Date().getFullYear()} | Code Pirates </p>
         </div>
       </div>
     </div>
