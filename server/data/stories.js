@@ -195,8 +195,8 @@ const getUserStoriesByGenres = async (genres, authorId) => {
 
 const getUserStoriesByGenresNonExact = async (genres, authorId) => {
   const storiesCollection = await stories();
-  console.log(genres);
-  let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $all: genres } }).toArray();
+  console.log(genres); // [ 'Drama', 'Thriller' ]
+  let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $in: genres } }).toArray();
   return { selectStories: myStories, success: true };
 };
 

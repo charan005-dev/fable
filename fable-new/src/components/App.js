@@ -23,6 +23,7 @@ import ManageMyStories from "./Stories/ManageMyStories";
 import Footer from "./Footer";
 
 import EditStory from "./Stories/EditStory";
+import NotificationContainer from "../NotificationContainer";
 
 function App() {
   const context = useContext(ThemeContext);
