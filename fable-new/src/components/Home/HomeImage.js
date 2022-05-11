@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   text1: {
     marginLeft: "20px",
     marginRight: "auto",
-  }
+  },
 });
 
 function HomeImage() {
@@ -77,7 +77,9 @@ function HomeImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
+      const { data } = await axios.get(`/api/stories/all`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data.stories);
     }
@@ -95,7 +97,7 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item xs={10} sm={40} md={10} lg={20} xl={120}>
+          <Grid>
             <div>
               <br />
               <h2 className={classes.text1}>Upcoming Series</h2>
@@ -108,7 +110,11 @@ function HomeImage() {
                         <Card sx={{ maxWidth: 345 }} className={classes.card}>
                           <CardActionArea>
                             <Link to={`/stories/${image._id}`}>
-                              <CardMedia className={classes.media} component="img" image={image.coverImage} />
+                              <CardMedia
+                                className={classes.media}
+                                component="img"
+                                image={image.coverImage}
+                              />
                             </Link>
                           </CardActionArea>
                         </Card>

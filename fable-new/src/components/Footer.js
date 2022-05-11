@@ -12,8 +12,7 @@ function Footer() {
             <h4>Contact Us</h4>
             <ui className="list-unstyled">
               <li>United States</li>
-              <li>United Kingdom</li>
-              <li>Australia</li>
+             
             </ui>
           </div>
           {/* Column3 */}
