@@ -1,12 +1,12 @@
-import { Alert, Stack } from "@mui/material";
+import { Alert, Avatar, Fab, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Box,
   Card,
@@ -20,17 +20,8 @@ import {
   Divider,
   TextField,
 } from "@material-ui/core";
-import {
-  MDBCard,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardBody,
-  MDBCardImage,
-  MDBRow,
-  MDBCol,
-} from "mdb-react-ui-kit";
-import Hero from "../Hero";
 import { makeStyles } from "@material-ui/styles";
+import Edit from "@mui/icons-material/Edit";
 
 /* This component will take care of displaying
     - a user's public profile
@@ -68,7 +59,6 @@ const useStyles = makeStyles({
     margin: "3px",
     padding: "3px",
   },
-
   cards: {
     width: "500px",
     height: "600px",
@@ -110,7 +100,7 @@ const useStyles = makeStyles({
     color: "black",
     justifyContent: "center",
     fontSize: "30px",
-    paddingLeft: "43.5%",
+    paddingLeft: 40,
   },
   card1: {
     width: "auto",
@@ -145,13 +135,31 @@ const useStyles = makeStyles({
     width: "200px",
   },
   namecard: {
-    paddingLeft: "30%",
-    paddingBottom: "2%",
-    paddingTop: "3%",
-    color: "black",
+    paddingTop: 15,
+    // paddingLeft: 200,
+    // paddingBottom: 20,
+    // paddingTop: "3%",
+    // color: "black",
   },
   subcard: {
     width: "6%",
+  },
+  editButton: {
+    border: "solid 1px",
+    padding: 1,
+    float: "right",
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 50,
+    backgroundColor: "#e4d4a3",
+    "&:hover": {
+      backgroundColor: "#000000",
+      color: "#fff",
+    },
+  },
+  avatar: {
+    marginTop: 6,
+    marginRight: 10,
   },
 });
 
@@ -160,15 +168,13 @@ const PublicProfile = () => {
   let { profileUserId } = useParams();
   let [profileData, setProfileData] = useState(null);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(
-        `/api/users/public_profile/${profileUserId}`,
-        {
-          headers: { authtoken: await currentUser.getIdToken() },
-        }
-      );
+      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       setProfileData(data);
       console.log(data);
     }
@@ -180,30 +186,44 @@ const PublicProfile = () => {
     return (
       <Grid>
         <Card elevation={20} className={classes.namecard}>
-          <Typography variant="h2" component={"h2"} className={classes.text}>
-            {profileData.profile.displayName}
-          </Typography>
+          <Grid container justifyContent="center">
+            {!profileData.profile.userAvatar && (
+              <Avatar sx={{ width: 64, height: 64 }} className={classes.avatar}>
+                {profileData.profile.displayName.substring(0, 2)}
+              </Avatar>
+            )}
+            {profileData.profile.userAvatar && (
+              <Avatar
+                sx={{ width: 64, height: 64 }}
+                src={profileData.profile.userAvatar}
+                className={classes.avatar}
+              ></Avatar>
+            )}
+          </Grid>
+          <br />
+          <Divider />
+          <br />
+          <Grid container justifyContent="center">
+            <Typography variant="h2" component={"h2"}>
+              {profileData.profile.displayName}
+            </Typography>
+            {currentUser.uid === profileData.profile._id && (
+              <Fab className={classes.editButton} onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}>
+                <Edit />
+              </Fab>
+            )}
+          </Grid>
           <br />
           <br />
           <Stack direction="row" className={classes.card3} spacing={5}>
             <Card className={classes.subcard} elevation={0}>
-              <Typography
-                variant="h6"
-                component={"h2"}
-                className={classes.text1}
-              >
+              <Typography variant="h6" component={"h2"} className={classes.text1}>
                 <MenuBookIcon />
               </Typography>
             </Card>
-            &nbsp;
-            
-            &nbsp;
+            &nbsp; &nbsp;
             <Card className={classes.subcard} elevation={0}>
-              <Typography
-                variant="h6"
-                component={"h2"}
-                className={classes.text1}
-              >
+              <Typography variant="h6" component={"h2"} className={classes.text1}>
                 <LibraryAddIcon />
               </Typography>
             </Card>
@@ -218,31 +238,26 @@ const PublicProfile = () => {
         <br />
         <Stack direction="column">
           {profileData.profile &&
-            profileData.profile.storiesCreated.map((createdStory) => {
+            profileData.profile.storiesCreated.map((createdStory, idx) => {
               return (
-                <Grid>
+                <Grid key={idx}>
                   <Stack direction="row">
                     <Card className={classes.card1} elevation={15}>
-
                       <Link to={`/stories/${createdStory._id}`}>
                         <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
                       </Link>
-
                     </Card>
 
                     <Card className={classes.card2} elevation={0}>
                       <CardContent>
-
                         <Link to={`/stories/${createdStory._id}`}>
                           <Typography>{createdStory.title}</Typography>
                         </Link>
-
                       </CardContent>
                       <CardContent>
                         <Typography>
                           {createdStory.shortDescription.length > 200
-                            ? createdStory.shortDescription.substring(0, 197) +
-                              "..."
+                            ? createdStory.shortDescription.substring(0, 197) + "..."
                             : createdStory.shortDescription}
                         </Typography>
                       </CardContent>

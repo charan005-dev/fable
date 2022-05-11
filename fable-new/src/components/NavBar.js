@@ -7,29 +7,12 @@ import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import { styled, alpha } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
-import SendIcon from "@mui/icons-material/Send";
-import EditIcon from "@mui/icons-material/Edit";
-import Divider from "@mui/material/Divider";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Menu from "@mui/material/Menu";
-import {
-  makeStyles,
-  Button,
-  Logout,
-  ListItemIcon,
-  Image,
-} from "@material-ui/core";
+import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
-import Tooltip from "@mui/material/Tooltip";
-import Avatar from "@mui/material/Avatar";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
-import { MenuList } from "@mui/material";
 import SearchBox from "./SearchBox";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
@@ -209,13 +192,7 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
+          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
@@ -224,11 +201,7 @@ export default function NavBar() {
         <Toolbar>
           <Link to="/home" className={classes.title1}>
             {" "}
-            <Typography
-              variant="h3"
-              component="div"
-              sx={{ flexGrow: 0, textDecoration: "none" }}
-            >
+            <Typography variant="h3" component="div" sx={{ flexGrow: 0, textDecoration: "none" }}>
               FABLE
             </Typography>{" "}
           </Link>
@@ -244,18 +217,22 @@ export default function NavBar() {
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         component={Link}
-                        onClick={handleClick}
                         className={classes.menuitem}
-                        onClick={popupState.close}
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
                         to={`/stories/create_story`}
                       >
                         + write
                       </MenuItem>
                       <br />
                       <MenuItem
-                        onClick={handleClick}
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
                         className={classes.menuitem}
-                        onClick={popupState.close}
                         component={Link}
                         to={`/users/${currentUser.uid}`}
                       >
@@ -264,20 +241,18 @@ export default function NavBar() {
                       <br />
 
                       <MenuItem
-                        onClick={handleClick} 
-                        onClick={popupState.close}
-                        className={classes.menuitem} 
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
+                        className={classes.menuitem}
                         component={Link}
                         to={`/libraries/me`}
                       >
                         Library
                       </MenuItem>
                       <br />
-                      <MenuItem
-                        onClick={doSignOut}
-                        className={classes.menuitem}
-                        
-                      >
+                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
                         Logout
                       </MenuItem>
                       <br />
@@ -285,7 +260,6 @@ export default function NavBar() {
                   </React.Fragment>
                 )}
               </PopupState>
-              
             </div>
           )}
         </Toolbar>
