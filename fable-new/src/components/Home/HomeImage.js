@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import {
   Card,
+  Box,
   CardActionArea,
   CardContent,
   CardMedia,
@@ -14,7 +15,8 @@ import {
   Button,
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
-import { CardHeader, Stack, Tooltip, Chip } from "@mui/material";
+import { CardHeader, Stack, Tooltip } from "@mui/material";
+import { Chip } from "@material-ui/core";
 import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
@@ -27,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
-    height: 300,
+    height: 250,
     marginLeft: "auto",
     marginRight: "auto",
     borderRadius: 5,
@@ -137,39 +139,41 @@ function HomeImage() {
                       return (
                         <>
                           {/* <ImageList> */}
-                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
-                            <CardActionArea>
-                              {/* <Typography>{hover && image.title} </Typography> */}
-                              <ImageListItem>
-                                <Link to={`/stories/${image._id}`}>
-                                  <CardMedia
-                                    className={classes.media}
-                                    component="img"
-                                    image={image.coverImage}
-                                    onMouseEnter={onHover}
-                                    onMouseLeave={onHover}
-                                  />
-                                  <ImageListItemBar title={image.title}></ImageListItemBar>
-                                </Link>
-                              </ImageListItem>
-                            </CardActionArea>
 
-                            {image.genres &&
-                              image.genres.map((genre, idx) => {
-                                if (idx > 2) {
-                                  return;
-                                }
-                                return (
-                                  <Chip
-                                    label={genre}
-                                    elevation={5}
-                                    size="small"
-                                    className={classes.chip}
-                                    onClick={() => navigate(`/stories/choose/${genre}`)}
-                                  />
-                                );
-                              })}
-                          </Card>
+                          <Box>
+                            <Card className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                            </Card>
+                            <br />
+                            <Stack direction="row" spacing={0.5}>
+                              {image.genres &&
+                                image.genres.map((genre) => {
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </Box>
+
                           {/* </ImageList> */}
                         </>
                       );

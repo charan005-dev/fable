@@ -61,7 +61,7 @@ const useStyles = makeStyles({
     backgroundColor: "black",
     color: "blanchedalmond",
     width: "auto",
-    marginLeft: "auto",
+    marginLeft: "14%",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "blanchedalmond",
@@ -93,6 +93,7 @@ const useStyles = makeStyles({
   },
 
   headertext: {
+    backgroundColor: "#ececec",
     color: "black",
     width: "auto",
     marginLeft: "auto",
@@ -108,29 +109,34 @@ const useStyles = makeStyles({
     width: "45%",
     marginLeft: "10%",
     paddingRight: "0.7%",
+    maxWidth: 1500,
+    height: "auto",
   },
   paperright: {
     width: "25%",
     marginLeft: "14%",
     paddingLeft: "%",
-    maxHeight: "100px",
+    maxHeight: "100%",
   },
   textfield1: {
-    width: "50em",
+    width: "127vw",
+    marginLeft: "-33%",
   },
   textfield: {
-    width: "93%",
+    width: "38vw",
+    marginLeft: "2.3%",
   },
   title: {
-    marginLeft: "3%",
+    marginLeft: "2.1%",
     fontSize: "25px",
   },
   story: {
     marginLeft: "34%",
     fontSize: "25px",
   },
-  editor: {
-    width: "100px",
+  edit: {
+    width: "100vw",
+    marginLeft: "-80%",
   },
 });
 
@@ -202,7 +208,7 @@ const CreateStory = () => {
     return { e: false };
   };
 
-  const createStory1 = async () => {
+  const createStory = async () => {
     let validity = isStateValid();
     if (validity.e) {
       toast.dark(validity.message, {
@@ -305,7 +311,6 @@ const CreateStory = () => {
                 value={title}
                 variant="outlined"
                 label=" "
-                fullWidth
                 placeholder="untitled story"
                 InputLabelProps={{ shrink: false }}
                 onChange={(e) => handleChange(e, "title")}
@@ -324,7 +329,7 @@ const CreateStory = () => {
                   marginRight: "auto",
                   border: "4px black",
                 }}
-                className={classes.textfield1}
+                className={classes.textfield}
                 id="short_desc"
                 value={desc}
                 variant="outlined"
@@ -345,7 +350,6 @@ const CreateStory = () => {
               </Typography>
               <br />
               <Editor
-                className={classes.editor}
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
@@ -356,7 +360,7 @@ const CreateStory = () => {
                   }, 20);
                 }}
                 onInit={(evt, editor) => (editorRef.current = editor)}
-                init={{ width: 790 }}
+                init={{ max_width: 835, width: "38.5vw" }}
               />
               <br />
               <br />
@@ -389,17 +393,13 @@ const CreateStory = () => {
                   </MenuItem>
                 ))}
               </Select>
-
               <br />
               <br />
 
-              <Button
-                variant="contained"
-                onClick={createStory1}
-                className={classes.button1}
-              >
+              <Button onClick={createStory} className={classes.button1}>
                 Create Story
               </Button>
+
               <br />
             </FormControl>
           </Paper>
