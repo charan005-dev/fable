@@ -149,6 +149,13 @@ const CreateStory = () => {
   const [creationSuccess, setCreationSuccess] = useState(false);
   const classes = useStyles();
 
+  const [errors, setErrors] = useState({
+    title: { error: false, text: "" },
+    desc: { error: false, text: "" },
+    content: { error: false, text: "" },
+    genres: { error: false, text: "" },
+  });
+
   const handleGenreSelect = (e) => {
     const value = e.target.value;
     setSelectedGenres(typeof value === "string" ? value.split(",") : value);
@@ -157,6 +164,21 @@ const CreateStory = () => {
   const handleChange = (e, identifier) => {
     switch (identifier) {
       case "title":
+        let titleValue = e.target.value;
+        if (
+          !titleValue ||
+          typeof titleValue === "string" ||
+          titleValue.length === 0 ||
+          titleValue.trim().length !== 0
+        ) {
+          setErrors({
+            ...errors,
+            title: {
+              error: true,
+              text: "Your title is invalid. Please enter a valid title (between 6 to 20 characters).",
+            },
+          });
+        }
         setTitle(e.target.value.length !== 0 ? e.target.value : "");
         break;
       case "desc":
@@ -172,34 +194,66 @@ const CreateStory = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (creationSuccess) {
-  //     navigate(`/stories/me`);
-  //   }
-  // }, [creationSuccess]);
-
   const isStateValid = () => {
     // checking all the state values to see if they're correct
     // before allowing story creation
-    if (!title || typeof title !== "string" || title.length === 0 || title.trim().length === 0)
-      return { e: true, message: "Your title value is invalid." };
-    if (!desc || typeof desc !== "string" || desc.length === 0 || desc.trim().length === 0)
-      return { e: true, message: "Your description is invalid." };
+    if (
+      !title ||
+      typeof title !== "string" ||
+      title.length === 0 ||
+      title.trim().length === 0 ||
+      title.length < 6 ||
+      title.length > 30
+    )
+      return {
+        e: true,
+        message: "Your title value is invalid or contains more than the expected amount of characters.",
+      };
+    if (
+      !desc ||
+      typeof desc !== "string" ||
+      desc.length === 0 ||
+      desc.trim().length === 0 ||
+      desc.length < 30 ||
+      desc.length > 500
+    )
+      return {
+        e: true,
+        message: "Your description is invalid or contains more than the expected amount of characters.",
+      };
     let content = editorRef.current.getContent();
-    if (!content || typeof content !== "string" || content.length === 0 || content.trim().length === 0)
-      return { e: true, message: "Your story content is invalid." };
-    let genres = selectedGenres;
-    console.log(genres);
+    if (
+      !content ||
+      typeof content !== "string" ||
+      content.length === 0 ||
+      content.trim().length === 0 ||
+      content.length < 200 ||
+      content.length > 1000000
+    )
+      return {
+        e: true,
+        message: "Your story content is invalid or contains more than the expected amount of characters.",
+      };
+    if (
+      !Array.isArray(selectedGenres) ||
+      selectedGenres.length === 0 ||
+      selectedGenres.some((genre) => !genres.includes(genre))
+    ) {
+      return {
+        e: true,
+        message:
+          "The selected genres are invalid. " +
+          (selectedGenres.length === 0 ? "Please select at least one genre for your story" : ""),
+      };
+    }
     return { e: false };
   };
 
   const createStory = async () => {
     let validity = isStateValid();
     if (validity.e) {
-      toast.dark(validity.message, {
-        style: {
-          backgroundColor: "#000",
-        },
+      toast.error(validity.message, {
+        theme: "dark",
       });
       return;
     }
@@ -221,7 +275,10 @@ const CreateStory = () => {
       setDesc("");
       setSelectedGenres([]);
       editorRef.current.setContent("");
-      toast.dark("Your story has been created successfully!");
+      toast.success("Your story has been created successfully!", {
+        theme: "dark",
+      });
+      setTimeout(() => navigate(`/stories/manage`), 1000);
     }
   };
 
@@ -274,11 +331,12 @@ const CreateStory = () => {
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
               <Typography variant={"h4"} className={classes.title}>
-                Title
+                Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
 
               <TextField
+                required
                 sx={{
                   marginLeft: "auto",
                   marginRight: "auto",
@@ -297,7 +355,7 @@ const CreateStory = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story
+                Short Description of the Story <Typography variant="overline">(30 - 500 characters)</Typography>
               </Typography>
               <br />
 
@@ -324,7 +382,7 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Your Story Goes Here!
+                Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
               </Typography>
               <br />
               <Editor
@@ -342,7 +400,7 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Select All Genres that Apply!
+                Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />
 
