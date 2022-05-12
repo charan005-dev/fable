@@ -66,7 +66,6 @@ const useStyles = makeStyles({
       opacity: 1,
     },
   },
-
 });
 
 function HomeImage() {
@@ -90,7 +89,9 @@ function HomeImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
+      const { data } = await axios.get(`/api/stories/all`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data.stories);
     }
@@ -108,7 +109,7 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item>
+          <Grid>
             <div>
               <br />
               <h2 className={classes.text1}>New and Hot</h2>
@@ -118,12 +119,15 @@ function HomeImage() {
                   {storyData &&
                     storyData.map((image) => {
                       return (
-
                         <>
                           <Card sx={{ maxWidth: 345 }} className={classes.card}>
                             <CardActionArea>
                               <Link to={`/stories/${image._id}`}>
-                                <CardMedia className={classes.media} component="img" image={image.coverImage} />
+                                <CardMedia
+                                  className={classes.media}
+                                  component="img"
+                                  image={image.coverImage}
+                                />
                               </Link>
                               <Typography></Typography>
                             </CardActionArea>
@@ -131,10 +135,13 @@ function HomeImage() {
 
                           {image.genres &&
                             image.genres.map((genre) => {
-                              return <Link to={`/stories/choose/${genre}`}>{genre}</Link>;
+                              return (
+                                <Link to={`/stories/choose/${genre}`}>
+                                  {genre}
+                                </Link>
+                              );
                             })}
                         </>
-
                       );
                     })}
                 </Stack>
