@@ -1,11 +1,4 @@
-import {
-  Grid,
-  OutlinedInput,
-  Paper,
-  Select,
-  Typography,
-  MenuItem,
-} from "@material-ui/core";
+import { Grid, OutlinedInput, Paper, Select, Typography, MenuItem } from "@material-ui/core";
 import { Button, TextField, FormControl, Alert, Stack } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -113,10 +106,10 @@ const useStyles = makeStyles({
     height: "auto",
   },
   paperright: {
-    width: "25%",
+    width: "20%",
     marginLeft: "14%",
-    paddingLeft: "%",
-    maxHeight: "100%",
+    height: "10%",
+    maxHeight: "20%",
   },
   textfield1: {
     width: "127vw",
@@ -138,6 +131,10 @@ const useStyles = makeStyles({
     width: "100vw",
     marginLeft: "-80%",
   },
+  imagePreview: {
+    backgroundColor: "#808080",
+    width: "19.8vw",
+  },
 });
 
 const CreateStory = () => {
@@ -147,6 +144,7 @@ const CreateStory = () => {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const [desc, setDesc] = useState("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [creationSuccess, setCreationSuccess] = useState(false);
   const classes = useStyles();
@@ -166,6 +164,8 @@ const CreateStory = () => {
         break;
       case "file":
         setCoverImage(e.target.files[0]);
+        let imageAsBlob = URL.createObjectURL(e.target.files[0]);
+        setUploadedImageUrl(imageAsBlob);
         break;
       case "default":
         break;
@@ -181,27 +181,12 @@ const CreateStory = () => {
   const isStateValid = () => {
     // checking all the state values to see if they're correct
     // before allowing story creation
-    if (
-      !title ||
-      typeof title !== "string" ||
-      title.length === 0 ||
-      title.trim().length === 0
-    )
+    if (!title || typeof title !== "string" || title.length === 0 || title.trim().length === 0)
       return { e: true, message: "Your title value is invalid." };
-    if (
-      !desc ||
-      typeof desc !== "string" ||
-      desc.length === 0 ||
-      desc.trim().length === 0
-    )
+    if (!desc || typeof desc !== "string" || desc.length === 0 || desc.trim().length === 0)
       return { e: true, message: "Your description is invalid." };
     let content = editorRef.current.getContent();
-    if (
-      !content ||
-      typeof content !== "string" ||
-      content.length === 0 ||
-      content.trim().length === 0
-    )
+    if (!content || typeof content !== "string" || content.length === 0 || content.trim().length === 0)
       return { e: true, message: "Your story content is invalid." };
     let genres = selectedGenres;
     console.log(genres);
@@ -223,10 +208,7 @@ const CreateStory = () => {
     formData.append("title", title);
     formData.append("shortDescription", desc);
     formData.append("genres", selectedGenres);
-    formData.append(
-      "contentHtml",
-      editorRef.current ? editorRef.current.getContent() : ""
-    );
+    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", coverImage);
     const { data } = await axios.post("/api/stories", formData, {
       headers: {
@@ -238,6 +220,7 @@ const CreateStory = () => {
       setTitle("");
       setDesc("");
       setSelectedGenres([]);
+      editorRef.current.setContent("");
       toast.dark("Your story has been created successfully!");
     }
   };
@@ -260,11 +243,7 @@ const CreateStory = () => {
         <ToastContainer />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            <Button
-              variant="contained"
-              component="label"
-              className={classes.button2}
-            >
+            <Button variant="contained" component="label" className={classes.button2}>
               Upload a cover photo for your story
               <input
                 type="file"
@@ -272,22 +251,21 @@ const CreateStory = () => {
                 onChange={(e) => handleChange(e, "file")}
               />
             </Button>
+            {uploadedImageUrl && (
+              <Paper elevation={1}>
+                <Grid container justifyContent="center">
+                  <Typography variant="overline">Preview</Typography>
+                  <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
+                </Grid>
+              </Paper>
+            )}
           </Paper>
 
           <Paper className={classes.paper} elevation={20}>
             <br />
 
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              elevation={25}
-            >
-              <Typography
-                variant="h3"
-                component={"h1"}
-                className={classes.headertext}
-              >
+            <Grid container justifyContent="center" alignItems="center" elevation={25}>
+              <Typography variant="h3" component={"h1"} className={classes.headertext}>
                 Create your story here!
               </Typography>
             </Grid>
@@ -353,12 +331,11 @@ const CreateStory = () => {
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
-                    let close = document.getElementsByClassName(
-                      "tox-notification__dismiss"
-                    )[0];
+                    let close = document.getElementsByClassName("tox-notification__dismiss")[0];
                     if (close) close.click();
                   }, 20);
                 }}
+                initialValue={""}
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 init={{ max_width: 835, width: "38.5vw" }}
               />
