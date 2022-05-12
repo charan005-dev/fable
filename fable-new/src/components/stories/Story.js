@@ -1,4 +1,15 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
+  CardContent,
+  Tooltip,
+} from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 
 import axios from "axios";
@@ -8,8 +19,9 @@ import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 const useStyles = makeStyles({
   card: {
@@ -144,11 +156,23 @@ const Story = () => {
                       : storyData.story.title}
                   </Typography>{" "}
                   <br></br>
-                  <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
-
-                  <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
-                 
-      
+                  <Typography variant="h7">
+                    {" "}
+                    <FavoriteIcon />
+                    {" " + storyData.story.likedBy.length}
+                  </Typography>
+                  <Typography variant="h7">
+                    {" "}
+                    <VisibilityIcon />
+                    {" " + storyData.story.visitedBy.length}
+                  </Typography>
+                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
+                    <Typography variant="h7">
+                      {" "}
+                      <AutoStoriesIcon />
+                      {" ~" + storyData.story.accessorReadTime + " min"}
+                    </Typography>
+                  </Tooltip>
                   <br />
                   <br />
                   <Link to={`/stories/${storyData.story._id}/book`}>

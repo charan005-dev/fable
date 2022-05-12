@@ -29,13 +29,16 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     if (!validGenres.includes(genre))
       throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
   }
+  let contentText = convert(contentHtml, { wordwrap: 130 });
+  let timeToRead = Math.ceil(contentText.length / 200); // 200 is the average words per minute read by a person
   let story = {
     _id: uuid.v4(),
     creatorId,
     title,
     shortDescription,
-    contentText: convert(contentHtml, { wordwrap: 130 }),
+    contentText,
     contentHtml,
+    timeToRead,
     genres: genres,
     coverImage: filePath,
     likedBy: [],
@@ -128,6 +131,8 @@ const getStoryById = async (storyId, accessor) => {
   console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
   const creator = await usersCollection.findOne({ _id: story.creatorId });
+  const accessorDetails = await usersCollection.findOne({ _id: accessor });
+  story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   // recording user visits
   await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   return {
