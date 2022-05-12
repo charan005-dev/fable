@@ -90,11 +90,11 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <div className="page-container">
+      {/* <div className="page-container">
         <footer className=" footer App-footer">
           <Footer />
         </footer>
-      </div>
+      </div> */}
     </AuthProvider>
   );
 }

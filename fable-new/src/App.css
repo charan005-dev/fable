@@ -518,15 +518,3 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
-
-body {
-  min-height: 100%;
-  position: relative;
-}
-.footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-}
