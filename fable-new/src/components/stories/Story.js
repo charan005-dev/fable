@@ -89,14 +89,26 @@ const useStyles = makeStyles({
     height: "200%",
     marginBottom: "100%",
   },
+  card3: {
+    width: "22%",
+    height: "22%",
+    marginLeft: "0%",
+    paddingRight: "0%",
+  },
+  card4: {
+    width: "50%",
+    marginLeft: "50%",
+    paddingRight: "50%",
+  },
   // cardempty: {
   //   width: "100%"
   // },
   similarStories: {
-    padding: 4,
+    padding: 6,
   },
   similarImages: {
     maxWidth: 50,
+    maxHeight: 50
   },
 });
 
@@ -241,13 +253,21 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
+                              <Card className={classes.card3}>
                               <img
                                 className={classes.similarImages}
                                 src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
                               />
+                              </Card>
                               &nbsp;
                               &nbsp;
+                              <Card lassName={classes.card4}>
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
+                              <br />
+                              <Typography variant="overline">
+                                {recommendation.shortDescription}
+                              </Typography>
+                              </Card>
                             </Typography>
                           </Grid>
                         </div>
