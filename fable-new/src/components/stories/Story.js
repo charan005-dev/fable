@@ -11,17 +11,17 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
+import { grid } from "@mui/system";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import Edit from "@mui/icons-material/Edit";
 
 const useStyles = makeStyles({
   card: {
@@ -34,6 +34,18 @@ const useStyles = makeStyles({
     border: "0px solid #000",
     marginBottom: "10%",
     marginTop: "7%",
+  },
+  editButton: {
+    border: "solid 1px",
+    padding: 1,
+    float: "left",
+    marginTop: 10,
+    marginRight: 50,
+    backgroundColor: "#e4d4a3",
+    "&:hover": {
+      backgroundColor: "#000000",
+      color: "#fff",
+    },
   },
   media: {
     height: "300px",
@@ -62,7 +74,7 @@ const useStyles = makeStyles({
     width: "auto",
     maxWidth: "500px",
     maxHeight: "200px",
-    marginLeft: "10%",
+    marginTop: "1%",
     paddingTop: "20px",
     paddingBottom: "20px",
     paddingRight: "40px",
@@ -79,16 +91,23 @@ const useStyles = makeStyles({
     },
   },
   card1: {
-    width: "70%",
-    marginLeft: "10%",
-    paddingRight: "10%",
+    width: "80%",
+    marginLeft: "0%",
+    paddingRight: "0%",
   },
   card2: {
-    width: "15%",
-    marginBottom: "100px",
+    width: "120%",
+    height: "200%",
+    marginBottom: "100%",
   },
+  // cardempty: {
+  //   width: "100%"
+  // },
   similarStories: {
-    padding: 12,
+    padding: 4,
+  },
+  similarImages: {
+    maxWidth: 50,
   },
 });
 
@@ -98,6 +117,7 @@ const Story = () => {
   const [recommendations, setRecommendations] = useState([]);
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getStoryData() {
@@ -132,8 +152,6 @@ const Story = () => {
     console.log(storyData);
     return (
       <div>
-        <br />
-        <br />
         <Paper
           elevation={10}
           sx={{
@@ -175,9 +193,20 @@ const Story = () => {
                   </Tooltip>
                   <br />
                   <br />
+                  <span>
+                    {currentUser.uid === storyData.story.creatorId && (
+                      <Fab
+                        className={classes.editButton}
+                        onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}
+                      >
+                        <Edit />
+                      </Fab>
+                    )}
+                  </span>
+
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
-                      <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
+                      <MenuBookIcon /> &nbsp; Start Reading{" "}
                     </Button>
                   </Link>
                 </CardContent>
@@ -198,7 +227,7 @@ const Story = () => {
           }}
         >
           <Grid container justifyContent="center">
-            <Stack direction={"row"} spacing={2}>
+            <Stack direction={"row"} spacing={90}>
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
@@ -210,10 +239,13 @@ const Story = () => {
                   <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>
               </Card>
+              {/* <Card className={classes.cardempty} elevation={10}>
+                </Card> */}
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h4">Similar stories that you might like</Typography>
+                  <Typography variant="h5">Also you might like</Typography>
                   <Divider />
+                  <br />
                   {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
                   {recommendations &&
                     recommendations.map((recommendation) => {
@@ -221,7 +253,12 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
-                              <img src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"} />
+                              <img
+                                className={classes.similarImages}
+                                src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                              />
+                              &nbsp;
+                              &nbsp;
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
                             </Typography>
                           </Grid>

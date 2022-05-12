@@ -185,7 +185,7 @@ const PublicProfile = () => {
   const buildUserProfile = (profileData) => {
     return (
       <Grid>
-        <Card elevation={20} className={classes.namecard}>
+        <Card elevation={15} className={classes.namecard}>
           <Grid container justifyContent="center">
             {!profileData.profile.userAvatar && (
               <Avatar sx={{ width: 64, height: 64 }} className={classes.avatar}>
