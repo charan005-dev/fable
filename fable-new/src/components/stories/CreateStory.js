@@ -254,9 +254,20 @@ const CreateStory = () => {
         <ToastContainer />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            {" "}
-            cwefwbeugbw{" "}
+            <Button
+              variant="contained"
+              component="label"
+              className={classes.button2}
+            >
+              Upload a cover photo for your story
+              <input
+                type="file"
+                accept="image/jpeg, image/png, .jpeg, .jpg, .png"
+                onChange={(e) => handleChange(e, "file")}
+              />
+            </Button>
           </Paper>
+
           <Paper className={classes.paper} elevation={20}>
             <br />
 
