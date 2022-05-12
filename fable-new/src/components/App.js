@@ -19,11 +19,11 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
-
 import Footer from "./Footer";
-
 import EditStory from "./Stories/EditStory";
-import NotificationContainer from "../NotificationContainer";
+import { ToastContainer } from "react-toastify";
+import ShowByGenres from "./Stories/ShowByGenres"; 
+import CreateStory1 from "./Stories/CreateStory1";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -33,6 +33,7 @@ function App() {
       <Router>
         <div className="container">
           <header className="App-header">
+            <ToastContainer autoClose={1000} />
             <Navigation />
           </header>
         </div>
@@ -47,7 +48,7 @@ function App() {
               <Route path="/account" element={<Account />} />
             </Route>
             <Route path="/stories/create_story" element={<PrivateRoute />}>
-              <Route path="/stories/create_story" element={<CreateStory />} />
+              <Route path="/stories/create_story" element={<CreateStory1 />} />
             </Route>
 
             <Route exact path="/stories/:id" element={<PrivateRoute />}>
@@ -77,16 +78,19 @@ function App() {
             <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
               <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
             </Route>
+            <Route path="/stories/choose/:genre" element={<PrivateRoute />}>
+              <Route path="/stories/choose/:genre" element={<ShowByGenres />} />
+            </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<Signin />} />
           </Routes>
         </div>
       </Router>
-      <div className="page-container">
+      {/* <div className="page-container">
         <footer className="App-footer">
           <Footer />
         </footer>
-      </div>
+      </div> */}
     </AuthProvider>
   );
 }

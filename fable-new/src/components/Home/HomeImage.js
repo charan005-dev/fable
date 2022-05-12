@@ -14,7 +14,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
-import { Stack } from "@mui/material";
+import { CardHeader, Stack, Tooltip } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
@@ -100,7 +100,7 @@ function HomeImage() {
           <Grid>
             <div>
               <br />
-              <h2 className={classes.text1}>Upcoming Series</h2>
+              <h2 className={classes.text1}>New and Hot</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
