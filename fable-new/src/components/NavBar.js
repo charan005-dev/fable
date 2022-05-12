@@ -9,7 +9,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Logout,
+  ListItemIcon,
+  Image,
+} from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
@@ -21,8 +27,9 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const useStyles = makeStyles({
   card: {
-    backgroundColor: "blanchedalmond",
-    color: "black",
+    backgroundColor: "black",
+    color: "white",
+   
   },
   button: {
     backgroundColor: "blanchedalmond",
@@ -192,7 +199,13 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
@@ -201,7 +214,11 @@ export default function NavBar() {
         <Toolbar>
           <Link to="/home" className={classes.title1}>
             {" "}
-            <Typography variant="h3" component="div" sx={{ flexGrow: 0, textDecoration: "none" }}>
+            <Typography
+              variant="h3"
+              component="div"
+              sx={{ flexGrow: 0, textDecoration: "none", color: "white" }}
+            >
               FABLE
             </Typography>{" "}
           </Link>
@@ -252,7 +269,10 @@ export default function NavBar() {
                         Library
                       </MenuItem>
                       <br />
-                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
+                      <MenuItem
+                        onClick={doSignOut}
+                        className={classes.menuitem}
+                      >
                         Logout
                       </MenuItem>
                       <br />
