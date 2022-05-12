@@ -1,16 +1,34 @@
-import { AppBar, Box,Fab,Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
+  CardContent,
+  Tooltip,
+} from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, Link , useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
+
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import { Fab } from "@material-ui/core";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import Edit from "@mui/icons-material/Edit";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 const useStyles = makeStyles({
   card: {
@@ -25,16 +43,16 @@ const useStyles = makeStyles({
     marginTop: "7%",
   },
   editButton: {
-    border: "solid 1px",
     padding: 1,
-    float: "right",
+    float: "left",
     marginTop: 10,
-    marginLeft: 20,
-    marginRight: 50,
-    backgroundColor: "#e4d4a3",
+    marginRight: 10,
+    backgroundColor: "black",
+    color: "white",
     "&:hover": {
-      backgroundColor: "#000000",
-      color: "#fff",
+      backgroundColor: "white",
+      color: "black",
+      border: "solid 1px",
     },
   },
   media: {
@@ -60,11 +78,11 @@ const useStyles = makeStyles({
   },
   button: {
     backgroundColor: "black",
-    color: "blanchedalmond",
+    color: "white",
     width: "auto",
     maxWidth: "500px",
     maxHeight: "200px",
-    marginLeft: "10%",
+    marginTop: "1%",
     paddingTop: "20px",
     paddingBottom: "20px",
     paddingRight: "40px",
@@ -74,13 +92,14 @@ const useStyles = makeStyles({
     fontSize: "16px",
     textDecoration: "white",
     "&:hover": {
-      backgroundColor: "blanchedalmond",
+      backgroundColor: "white",
       color: "black",
       textDecoration: "white",
       fontWeight: "bold",
     },
   },
   card1: {
+
     width: "70%",
     marginLeft: "10%",
     paddingRight: "10%",
@@ -88,12 +107,34 @@ const useStyles = makeStyles({
   card2: {
     width: "15%",
     marginBottom: "100px",
+
+    width: "80%",
+    marginLeft: "0%",
+    paddingRight: "0%",
+  },
+  card2: {
+    width: "120%",
+    height: "200%",
+    marginBottom: "100%",
+  },
+  card3: {
+    width: "22%",
+    height: "22%",
+    marginLeft: "0%",
+    paddingRight: "0%",
+  },
+  card4: {
+    width: "50%",
+    marginLeft: "50%",
+    paddingRight: "50%",
+
   },
   similarStories: {
-    padding: 12,
+    padding: 6,
   },
   similarImages: {
     maxWidth: 50,
+    maxHeight: 50,
   },
 });
 
@@ -120,7 +161,9 @@ const Story = () => {
     async function getRecommendations() {
       if (storyData) {
         const { data } = await axios.get(
-          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
+          `/api/stories/recommendations?genres=${
+            storyData.story.genres ? storyData.story.genres : ""
+          }`,
           {
             headers: {
               authtoken: await currentUser.getIdToken(),
@@ -152,7 +195,11 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={storyData.story.coverImage}
+                />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
@@ -161,29 +208,50 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
-                  <br/>
-                  <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
 
-                  <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
-                  <br/>Edit your Story
-                <br/>
-                 <span>
-                  {currentUser.uid === storyData.story.creatorId && (
-              <Fab className={classes.editButton} onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}>
-                <Edit />
-              </Fab> 
-             )} 
-                 </span>
-      
-                  
-                
+                  <br></br> &nbsp;
+                  <Typography variant="h7">
+                    {" "}
+                    <FavoriteIcon /> &nbsp;
+                    {" " + storyData.story.likedBy.length}
+                  </Typography>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;
+                  <Typography variant="h7">
+                    {" "}
+                    <VisibilityIcon />
+                    {" " + storyData.story.visitedBy.length}
+                  </Typography>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;
+                  <Tooltip
+                    placement="right"
+                    title="Average time it'll take for you to read this story"
+                  >
+                    <Typography variant="h7">
+                      {" "}
+                      <AutoStoriesIcon />
+                      {" ~" + storyData.story.accessorReadTime + " min"}
+                    </Typography>
+                  </Tooltip>
+                  <br />
+                  <br />
+
                   <Link to={`/stories/${storyData.story._id}/book`}>
-                    <Button className={classes.button}>
-                      <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
+                    <Button className={classes.button} elevation={20}>
+                      <MenuBookIcon /> &nbsp; Start Reading{" "}
                     </Button>
-                    
-              
                   </Link>
+                  <span>
+                    {currentUser.uid === storyData.story.creatorId && (
+                      <Fab
+                        className={classes.editButton}
+                        onClick={() =>
+                          navigate(`/stories/${storyData.story._id}/edit`)
+                        }
+                      >
+                        <Edit />
+                      </Fab>
+                    )}
+                  </span>
                 </CardContent>
               </Card>
             </Stack>
@@ -202,34 +270,64 @@ const Story = () => {
           }}
         >
           <Grid container justifyContent="center">
+
             <Stack direction={"row"} spacing={2}>
+
+            <Stack direction={"row"} spacing={90}>
+
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
+                  <Link to={`/users/${storyData.creator._id}`}>
+                    {storyData.creator.displayName}
+                  </Link>
                 </CardContent>{" "}
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
+                  <Typography variant="subtitle">
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
                 </CardContent>
               </Card>
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h4">Similar stories that you might like</Typography>
+
+
+                  <Typography variant="h5">Also you might like</Typography>
+
                   <Divider />
-                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
+                  <br />
+                  {recommendations && recommendations.length === 0 && (
+                    <div>No stories available.</div>
+                  )}
                   {recommendations &&
                     recommendations.map((recommendation) => {
                       return (
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
-                              <img
-                                className={classes.similarImages}
-                                src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                              />
-                              <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
+                              <Card className={classes.card3}>
+                                <img
+                                  className={classes.similarImages}
+                                  src={
+                                    recommendation.coverImage
+                                      ? recommendation.coverImage
+                                      : "/fablefinal.png"
+                                  }
+                                />
+                              </Card>
+                              &nbsp; &nbsp;
+                              <Card lassName={classes.card4}>
+                                &nbsp; &nbsp;
+                                <Link to={`/stories/${recommendation._id}`}>
+                                  {recommendation.title}
+                                </Link>
+                                <br />
+                                <Typography variant="overline">
+                                  {recommendation.shortDescription}
+                                </Typography>
+                              </Card>
                             </Typography>
                           </Grid>
                         </div>

@@ -9,20 +9,31 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Logout,
+  ListItemIcon,
+  Image,
+} from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 import SearchBox from "./SearchBox";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CreateIcon from "@mui/icons-material/Create";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import { Avatar } from "@material-ui/core";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const useStyles = makeStyles({
   card: {
-    backgroundColor: "blanchedalmond",
-    color: "black",
+    backgroundColor: "black",
+    color: "white",
   },
   button: {
     backgroundColor: "blanchedalmond",
@@ -66,8 +77,8 @@ const useStyles = makeStyles({
     paddingLeft: "20%",
     paddingTop: "10%",
     paddingBottom: "10%",
-    paddingRight: "60px",
-    fontSize: "25px",
+    paddingRight: "30px",
+    fontSize: "20px",
     marginLeft: "0px",
     marginRight: "0px",
     textDecoration: "none",
@@ -99,47 +110,11 @@ const useStyles = makeStyles({
         border: "5px bold black",
       },
     },
+    accountbutton: {
+      marginLeft: "-100%",
+    },
   },
 });
-
-// const StyledMenu = styled((props) => (
-//   <Menu
-//     elevation={0}
-//     anchorOrigin={{
-//       vertical: "bottom",
-//       horizontal: "right",
-//     }}
-//     transformOrigin={{
-//       vertical: "top",
-//       horizontal: "right",
-//     }}
-//     {...props}
-//   />
-// ))(({ theme }) => ({
-//   "& .MuiPaper-root": {
-//     elevation: 20,
-//     borderRadius: 8,
-//     marginTop: theme.spacing(1),
-//     minWidth: 350,
-//     color: "black",
-//     fontSize:"30px",
-//     boxShadow:
-//       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-//     "& .MuiMenu-list": {
-//       padding: "20px ",
-//     },
-//     "& .MuiMenuItem-root": {
-//       "& .MuiSvgIcon-root": {
-//         fontSize: 18,
-//         color: theme.palette.text.secondary,
-//         marginRight: theme.spacing(1.5),
-//       },
-//       "&:active": {
-//         backgroundColor: "blanchedalmond"
-//       },
-//     },
-//   },
-// }));
 
 export default function NavBar() {
   const [auth, setAuth] = React.useState(true);
@@ -192,7 +167,13 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
@@ -201,19 +182,25 @@ export default function NavBar() {
         <Toolbar>
           <Link to="/home" className={classes.title1}>
             {" "}
-            <Typography variant="h3" component="div" sx={{ flexGrow: 0, textDecoration: "none" }}>
+            <Typography
+              variant="h3"
+              component="div"
+              sx={{ flexGrow: 0, textDecoration: "none", color: "white" }}
+            >
               FABLE
             </Typography>{" "}
           </Link>
           <SearchBox />
           {auth && (
-            <div>
+            <div className={classes.accountbutton}>
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
                   <React.Fragment>
-                    <Button variant="contained" {...bindTrigger(popupState)}>
-                      Account
-                    </Button>
+                    <Avatar
+                      sx={{ width: 64, height: 64 }}
+                      {...bindTrigger(popupState)}
+                      variant="contained"
+                    ></Avatar>
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         component={Link}
@@ -224,7 +211,7 @@ export default function NavBar() {
                         }}
                         to={`/stories/create_story`}
                       >
-                        + write
+                        Write &nbsp; <CreateIcon />
                       </MenuItem>
                       <br />
                       <MenuItem
@@ -236,7 +223,7 @@ export default function NavBar() {
                         component={Link}
                         to={`/users/${currentUser.uid}`}
                       >
-                        My Stories
+                        Profile &nbsp; <AccountCircleIcon />
                       </MenuItem>
                       <br />
 
@@ -249,11 +236,14 @@ export default function NavBar() {
                         component={Link}
                         to={`/libraries/me`}
                       >
-                        Library
+                        Library &nbsp; <LibraryAddIcon />
                       </MenuItem>
                       <br />
-                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
-                        Logout
+                      <MenuItem
+                        onClick={doSignOut}
+                        className={classes.menuitem}
+                      >
+                        Logout &nbsp; <LogoutIcon />
                       </MenuItem>
                       <br />
                     </Menu>

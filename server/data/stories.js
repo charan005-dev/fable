@@ -29,12 +29,13 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     if (!validGenres.includes(genre))
       throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
   }
+  let contentText = convert(contentHtml, { wordwrap: 130 });
   let story = {
     _id: uuid.v4(),
     creatorId,
     title,
     shortDescription,
-    contentText: convert(contentHtml, { wordwrap: 130 }),
+    contentText,
     contentHtml,
     genres: genres,
     coverImage: filePath,
@@ -128,6 +129,9 @@ const getStoryById = async (storyId, accessor) => {
   console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
   const creator = await usersCollection.findOne({ _id: story.creatorId });
+  const accessorDetails = await usersCollection.findOne({ _id: accessor });
+  if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
+  else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   // recording user visits
   await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   return {
@@ -231,6 +235,23 @@ const getRecommendations = async (userId, genres) => {
   return { success: true, recommendations };
 };
 
+const deleteStory = async (accessor, storyId) => {
+  const storiesCollection = await stories();
+  const findStoryToDelete = await storiesCollection.findOne({ _id: storyId, creatorId: accessor });
+  if (!findStoryToDelete) {
+    throw `Either the story does not exist or the user does not have access to perform this action.`;
+  }
+  let deleted = await storiesCollection.deleteOne({ _id: storyId, creatorId: accessor });
+  // performing deletion on elasticsearch
+  try {
+    await client.destroyDocuments(elasticEngineName, [storyId]);
+  } catch (e) {
+    // logging elasticsearch errors for reference
+    console.log(e);
+  }
+  return { success: true };
+};
+
 module.exports = {
   createStory,
   getAllStories,
@@ -244,4 +265,5 @@ module.exports = {
   getAllStoriesByGenresNonExact,
   getRecommendations,
   updateStory,
+  deleteStory,
 };
