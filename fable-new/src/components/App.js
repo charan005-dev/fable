@@ -95,7 +95,9 @@ function App() {
         </div>
       </Router>
       {/* <div className="page-container">
+
         <footer className="App-footer">
+
           <Footer />
         </footer>
       </div> */}

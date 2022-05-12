@@ -78,6 +78,9 @@ const useStyles = makeStyles({
   similarStories: {
     padding: 12,
   },
+  similarImages: {
+    maxWidth: 50,
+  },
 });
 
 const Story = () => {
@@ -197,7 +200,10 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
-                              <img src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"} />
+                              <img
+                                className={classes.similarImages}
+                                src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                              />
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
                             </Typography>
                           </Grid>
