@@ -1,15 +1,16 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import { AppBar, Box,Fab,Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link , useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Edit from "@mui/icons-material/Edit";
 
 const useStyles = makeStyles({
   card: {
@@ -22,6 +23,19 @@ const useStyles = makeStyles({
     border: "0px solid #000",
     marginBottom: "10%",
     marginTop: "7%",
+  },
+  editButton: {
+    border: "solid 1px",
+    padding: 1,
+    float: "right",
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 50,
+    backgroundColor: "#e4d4a3",
+    "&:hover": {
+      backgroundColor: "#000000",
+      color: "#fff",
+    },
   },
   media: {
     height: "300px",
@@ -86,6 +100,7 @@ const Story = () => {
   const [recommendations, setRecommendations] = useState([]);
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getStoryData() {
@@ -147,14 +162,26 @@ const Story = () => {
                   <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
 
                   <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
-                 
+                  <br> </br>
+
+                 Edit your Story
+                <br></br>
+                 <span>
+                  {currentUser.uid === storyData.story.creatorId && (
+              <Fab className={classes.editButton} onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}>
+                <Edit />
+              </Fab> 
+             )} 
+                 </span>
       
-                  <br />
-                  <br />
+                  
+                
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
                     </Button>
+                    
+              
                   </Link>
                 </CardContent>
               </Card>
