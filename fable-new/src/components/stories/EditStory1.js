@@ -70,10 +70,21 @@ const useStyles = makeStyles({
     backgroundColor: "black",
     color: "white",
     width: "auto",
-    marginLeft: "14%",
+    marginLeft: "12%",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
+      color: "white",
+    },
+  },
+  buttondelete: {
+    backgroundColor: "red",
+    color: "white",
+    width: "auto",
+    marginLeft: "1%",
+    marginRight: "auto",
+    "&:hover": {
+      backgroundColor: "red",
       color: "white",
     },
   },
@@ -405,11 +416,13 @@ const EditStory1 = () => {
               </Select>
               <br />
               <br />
+              <span>
+                <Button onClick={updateStory} className={classes.button1}>
+                  Update Story
+                </Button>
 
-              <Button onClick={updateStory} className={classes.button1}>
-                Update Story
-              </Button>
-
+                <Button className={classes.buttondelete}>Delete Story</Button>
+              </span>
               <br />
             </FormControl>
           </Paper>
