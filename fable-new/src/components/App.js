@@ -25,6 +25,7 @@ import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
 import ShowByGenres from "./Stories/ShowByGenres";
+import CreateStory1 from "./Stories/CreateStory";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -80,7 +81,10 @@ function App() {
               <Route path="/libraries/me" element={<ViewLibrariesList />} />
             </Route>
             <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
-              <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
+              <Route
+                path="/libraries/:libraryId"
+                element={<AllLibraryStories />}
+              />
             </Route>
             <Route path="/stories/choose/:genre" element={<PrivateRoute />}>
               <Route path="/stories/choose/:genre" element={<ShowByGenres />} />
@@ -90,11 +94,13 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <div className="page-container">
-        <footer className=" footer App-footer">
+      {/* <div className="page-container">
+
+        <footer className="App-footer">
+
           <Footer />
         </footer>
-      </div>
+      </div> */}
     </AuthProvider>
   );
 }

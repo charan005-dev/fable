@@ -1,13 +1,16 @@
-import { AppBar, Box, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import { AppBar, Box,Fab,Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link , useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { grid } from "@mui/system";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Edit from "@mui/icons-material/Edit";
 
 const useStyles = makeStyles({
   card: {
@@ -20,6 +23,19 @@ const useStyles = makeStyles({
     border: "0px solid #000",
     marginBottom: "10%",
     marginTop: "7%",
+  },
+  editButton: {
+    border: "solid 1px",
+    padding: 1,
+    float: "right",
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 50,
+    backgroundColor: "#e4d4a3",
+    "&:hover": {
+      backgroundColor: "#000000",
+      color: "#fff",
+    },
   },
   media: {
     height: "300px",
@@ -79,6 +95,9 @@ const useStyles = makeStyles({
   similarStories: {
     padding: 12,
   },
+  similarImages: {
+    maxWidth: 50,
+  },
 });
 
 const Story = () => {
@@ -87,6 +106,7 @@ const Story = () => {
   const [recommendations, setRecommendations] = useState([]);
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getStoryData() {
@@ -142,12 +162,30 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
-                  <br />
-                  <br />
+                  <br></br>
+                  <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
+
+                  <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
+                  <br> </br>
+
+                 Edit your Story
+                <br></br>
+                 <span>
+                  {currentUser.uid === storyData.story.creatorId && (
+              <Fab className={classes.editButton} onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}>
+                <Edit />
+              </Fab> 
+             )} 
+                 </span>
+      
+                  
+                
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
                     </Button>
+                    
+              
                   </Link>
                 </CardContent>
               </Card>
@@ -192,7 +230,10 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
-                              <img src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"} />
+                              <img
+                                className={classes.similarImages}
+                                src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                              />
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
                             </Typography>
                           </Grid>

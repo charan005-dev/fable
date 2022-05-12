@@ -14,23 +14,27 @@ import {
   Button,
 } from "@material-ui/core";
 import { ThemeContext } from "../ThemeContext";
-import { CardHeader, Stack, Tooltip } from "@mui/material";
+import { CardHeader, Stack, Tooltip, Chip } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import { useTabContext } from "@mui/base";
 import axios from "axios";
 import { AuthContext } from "../../firebase/Auth";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { doSignOut } from "../../firebase/FirebaseFunctions";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
     maxWidth: 200,
-    height: 250,
+    height: 300,
     marginLeft: "auto",
     marginRight: "auto",
     borderRadius: 5,
     background: "#0000",
-    border: "1px solid #1e8678",
-    boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);",
+    border: "1px solid #ffff",
+    boxShadow: "0 19px 38px rgba(0,0,0,0.5), 0 15px 12px rgba(0,0,0,0);",
   },
   titleHead: {
     fontWeight: "bold",
@@ -42,10 +46,15 @@ const useStyles = makeStyles({
   media: {
     height: "250px",
     width: "200px",
+    "&hover": {
+      opacity: 0,
+    },
   },
   paper: {
     height: "auto",
     width: "auto",
+    marginBottom: "40%",
+    height: "80%",
   },
   image: {
     height: "auto",
@@ -78,7 +87,9 @@ function HomeImage() {
   // const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [storyData, setStoryData] = useState(null);
+  const [hover, setHover] = useState(false);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -86,11 +97,17 @@ function HomeImage() {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
+  const onHover = () => {
+    setHover(!hover);
+  };
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
+      const { data } = await axios.get(`/api/stories/all`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data.stories);
     }
@@ -101,6 +118,7 @@ function HomeImage() {
       <>
         <Paper
           elevation={20}
+          className={classes.paper}
           sx={{
             bgcolor: "background.default",
             display: "grid",
@@ -108,33 +126,70 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item>
+
+          <Grid>
+
             <div>
               <br />
               <h2 className={classes.text1}>New and Hot</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
-                <Stack direction={"row"} spacing={4}>
+                <Stack direction={"row"} spacing={0}>
                   {storyData &&
                     storyData.map((image) => {
                       return (
-
                         <>
-                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
-                            <CardActionArea>
-                              <Link to={`/stories/${image._id}`}>
-                                <CardMedia className={classes.media} component="img" image={image.coverImage} />
-                              </Link>
-                              <Typography></Typography>
-                            </CardActionArea>
-                          </Card>
 
-                          {image.genres &&
-                            image.genres.map((genre) => {
-                              return <Link to={`/stories/choose/${genre}`}>{genre}</Link>;
-                            })}
+                          {/* <Stack direction="row"> */}
+                          <ImageList>
+                            <Card sx={{ maxWidth: 345 }} className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                              <br />
+
+                              {image.genres &&
+                                image.genres.map((genre) => {
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      elevation={5}
+                                      size="small"
+                                      className={classes.chip}
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Card>
+                            {/* {image.genres &&
+                              image.genres.map((genre) => {
+                                return (
+                                  <Chip
+                                    label={genre}
+                                    elevation={5}
+                                    size="small"
+                                    className={classes.chip}
+                                    onClick={() => navigate(`/stories/choose/${genre}`)}
+                                  />
+                                );
+                              })} */}
+                          </ImageList>
+
+                          {/* </Stack> */}
+
                         </>
-
                       );
                     })}
                 </Stack>
