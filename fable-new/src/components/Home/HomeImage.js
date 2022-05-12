@@ -155,7 +155,10 @@ function HomeImage() {
                             </CardActionArea>
 
                             {image.genres &&
-                              image.genres.map((genre) => {
+                              image.genres.map((genre, idx) => {
+                                if (idx > 2) {
+                                  return;
+                                }
                                 return (
                                   <Chip
                                     label={genre}
