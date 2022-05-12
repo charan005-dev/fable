@@ -139,6 +139,7 @@ function HomeImage() {
                       return (
                         <>
                           {/* <ImageList> */}
+
                           <Box>
                             <Card className={classes.card}>
                               <CardActionArea>
@@ -172,6 +173,7 @@ function HomeImage() {
                                 })}
                             </Stack>
                           </Box>
+
                           {/* </ImageList> */}
                         </>
                       );
