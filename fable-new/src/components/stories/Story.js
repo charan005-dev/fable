@@ -167,8 +167,7 @@ const Story = () => {
 
                   <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
                   <br> </br>
-
-                 Edit your Story
+                  Edit your Story
                 <br></br>
                  <span>
                   {currentUser.uid === storyData.story.creatorId && (
