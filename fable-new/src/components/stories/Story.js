@@ -1,15 +1,15 @@
-import { AppBar, Box,Fab,Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import { AppBar, Box, Fab, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, Link , useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { grid } from "@mui/system";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Edit from "@mui/icons-material/Edit";
 
 const useStyles = makeStyles({
@@ -87,7 +87,7 @@ const useStyles = makeStyles({
   },
   card2: {
     width: "70%",
-    marginBottom: "100%"
+    marginBottom: "100%",
   },
   // cardempty: {
   //   width: "100%"
@@ -162,29 +162,36 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
-                  <br></br>
-                  <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
 
-                  <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
-                  <br> </br>
+                  <br />
+                  <Typography variant="h7">
+                    {" "}
+                    <FavoriteIcon />
+                    {storyData.story.likedBy.length} Liked By
+                  </Typography>
+                  <Typography variant="h7">
+                    {" "}
+                    <VisibilityIcon />
+                    {storyData.story.visitedBy.length} Visited By{" "}
+                  </Typography>
+                  <br />
                   Edit your Story
-                <br></br>
-                 <span>
-                  {currentUser.uid === storyData.story.creatorId && (
-              <Fab className={classes.editButton} onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}>
-                <Edit />
-              </Fab> 
-             )} 
-                 </span>
-      
-                  
-                
+                  <br />
+                  <span>
+                    {currentUser.uid === storyData.story.creatorId && (
+                      <Fab
+                        className={classes.editButton}
+                        onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}
+                      >
+                        <Edit />
+                      </Fab>
+                    )}
+                  </span>
+
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
                     </Button>
-                    
-              
                   </Link>
                 </CardContent>
               </Card>
@@ -203,10 +210,10 @@ const Story = () => {
             height: "auto",
           }}
         >
-          <Grid container justifyContent="center" >
+          <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={80}>
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
-              <Card className={classes.card1} elevation={0} >
+              <Card className={classes.card1} elevation={0}>
                 <CardContent>
                   <Link to={`/users/${storyData.creator._id}`}>{storyData.creator.displayName}</Link>
                 </CardContent>{" "}
