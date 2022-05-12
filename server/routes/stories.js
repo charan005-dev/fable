@@ -236,6 +236,8 @@ router.post("/:id/like", async (req, res) => {
   try {
     let userId = req.body.userId;
     let storyId = req.params.id;
+    // this tells us that the logged in user is the one who is asking to be added to the like list
+    // redundant - can be retrieved from req.authenticatedUser directly and not rely on the client
     if (req.authenticatedUser !== userId) {
       res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
       return;
@@ -243,6 +245,21 @@ router.post("/:id/like", async (req, res) => {
     let afterLike = await stories.toggleLike(storyId, userId);
     if (afterLike.success) {
       res.status(200).json(afterLike);
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
+router.delete("/:storyId", async (req, res) => {
+  try {
+    let accessor = req.authenticatedUser;
+    let { storyId } = req.params;
+    let { success } = await stories.deleteStory(accessor, storyId);
+    if (success) {
+      res.status(204).json({ success: true });
       return;
     }
   } catch (e) {

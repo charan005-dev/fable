@@ -77,14 +77,20 @@ const EditUser = () => {
   const handleDispNameChange = async (e) => {
     // make sure the entered value is valid
     let displayName = e.target.value;
-    if (!displayName || typeof displayName !== "string" || displayName.length === 0) {
-      setNameError({
-        error: false,
-        text: "",
-      });
-      return;
-    }
-    if (displayName.trim().length === 0 || displayName.length < 6) {
+    // if (!displayName || typeof displayName !== "string" || displayName.length === 0) {
+    //   setNameError({
+    //     error: false,
+    //     text: "",
+    //   });
+    //   return;
+    // }
+    if (
+      !displayName ||
+      typeof displayName !== "string" ||
+      displayName.length === 0 ||
+      displayName.trim().length === 0 ||
+      displayName.length < 6
+    ) {
       setNameError({
         error: true,
         text: "Please make sure the username exceeds 6 characters.",
@@ -208,8 +214,9 @@ const EditUser = () => {
         <br />
         <br />
         <Tooltip
+          arrow
           placement="right"
-          title="Enter the number of words that you'll read per minute. The human average is 200. Enter something within 30 and 500. If you leave this empty, we'll assume that you read at a rate of 200 words per minute."
+          title="Number of words that you usually read per minute. Enter a value within 30 and 500 (the human average is 200). If you leave this empty, we'll assume that you're an average human 😁"
         >
           <Typography variant="h3" component={"h4"} className={classes.headertext}>
             Words Per Minute ⓘ
