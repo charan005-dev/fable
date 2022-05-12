@@ -162,6 +162,7 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
+
                   <br />
                   <Typography variant="h7">
                     {" "}
@@ -186,6 +187,7 @@ const Story = () => {
                       </Fab>
                     )}
                   </span>
+
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       <MenuBookIcon /> &nbsp;&nbsp;Start Reading{" "}
