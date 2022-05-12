@@ -67,7 +67,7 @@ const useStyles = makeStyles({
   card1: {
     width: "70%",
     marginLeft: "12%",
-    paddingLeft: "20%",
+    paddingLeft: "10%",
     paddingRight: "0%",
     textIndent: "0px",
     fontSize: "25px",
@@ -88,8 +88,8 @@ const useStyles = makeStyles({
   },
 
   media: {
-    height: "auto",
-    width: "100%",
+    height: "100%",
+    maxWidth: "100%",
   },
   title: {
     border: " 0px #fff",
@@ -205,6 +205,7 @@ const StoryBook = () => {
   if (story) {
     return (
       <div>
+        <br />
         <Paper
           elevation={0}
           sx={{
@@ -223,7 +224,6 @@ const StoryBook = () => {
               />
             </Card>
           </Grid>
-
           <Grid container justifyContent="center" direction="row">
             <Card className={classes.cardnew} elevation={0}>
               <Typography variant={"h3"}>{story.title}</Typography>
