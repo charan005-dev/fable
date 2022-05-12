@@ -1,9 +1,9 @@
-import { FormGroup, TextField, Button, Typography, FormHelperText, FormControl } from "@material-ui/core";
+import { FormGroup, TextField, Button, Typography, FormHelperText, FormControl, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { Alert, ButtonGroup } from "@mui/material";
+import { Alert, ButtonGroup, InputLabel } from "@mui/material";
 import Input from "@mui/material/Input";
 import { makeStyles } from "@material-ui/core";
 import { toast } from "react-toastify";
@@ -67,6 +67,8 @@ const EditUser = () => {
   const { userId } = useParams();
   const [displayName, setDisplayName] = useState("");
   const [nameError, setNameError] = useState({ error: false, text: "" });
+  const [wpm, setWpm] = useState(200);
+  const [wpmError, setWpmError] = useState({ error: false, text: "" });
   const [userAvatar, setUserAvatar] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const classes = useStyles();
@@ -119,14 +121,38 @@ const EditUser = () => {
     setUserAvatar(e.target.files[0]);
   };
 
+  const handleWpmChange = (e) => {
+    let value = parseInt(e.target.value);
+    console.log(value);
+    if (!value) {
+      setWpmError({ error: false, text: "Start entering your input" });
+      return;
+    }
+    if (isNaN(value)) {
+      setWpmError({ error: true, text: "Invalid input value for wpm." });
+      return;
+    }
+    if (value < 30) {
+      setWpmError({ error: true, text: "Surely, you don't read that slow! Enter a value between 30 and 500." });
+      return;
+    }
+    if (value > 500) {
+      setWpmError({ error: true, text: "Surely, you don't read that fast! Enter a value between 30 and 500." });
+      return;
+    }
+    setWpmError({ error: false, text: "Good Input!" });
+    setWpm(value);
+  };
+
   const performEditUser = async () => {
-    if (nameError.error) {
+    if (nameError.error || wpmError.error) {
       toast.dark("Your inputs are invalid. Please check them before performing the action.");
       return;
     }
     const formData = new FormData();
     formData.append("userId", currentUser.uid);
     formData.append("displayName", displayName);
+    formData.append("wpm", wpm);
     formData.append("userAvatar", userAvatar);
     const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
       headers: {
@@ -178,6 +204,33 @@ const EditUser = () => {
           InputLabelProps={{ shrink: false }}
           required
           onChange={(e) => handleDispNameChange(e)}
+        />
+        <br />
+        <br />
+        <Tooltip
+          placement="right"
+          title="Enter the number of words that you'll read per minute. The human average is 200. Enter something within 30 and 500. If you leave this empty, we'll assume that you read at a rate of 200 words per minute."
+        >
+          <Typography variant="h3" component={"h4"} className={classes.headertext}>
+            Words Per Minute ⓘ
+          </Typography>
+        </Tooltip>
+        <TextField
+          sx={{
+            width: "20%",
+            marginLeft: "auto",
+            marginRight: "auto",
+            paddingTop: "35px",
+            border: "4px black",
+          }}
+          type={"number"}
+          error={wpmError.error}
+          helperText={wpmError.error ? wpmError.text : ""}
+          id="wordsPerMinute"
+          variant="outlined"
+          InputLabelProps={{ shrink: false }}
+          required
+          onChange={(e) => handleWpmChange(e)}
         />
         <br />
         <br />

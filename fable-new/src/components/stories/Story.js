@@ -1,4 +1,15 @@
-import { AppBar, Box, Fab, Card, CardMedia, Grid, Paper, Typography, makeStyles, CardContent } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
+  CardContent,
+  Tooltip,
+} from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -162,23 +173,24 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
-
-                  <br />
+                  <br></br>
                   <Typography variant="h7">
                     {" "}
                     <FavoriteIcon />
-                    &nbsp;
-                    {storyData.story.likedBy.length} &nbsp; Liked
+                    {" " + storyData.story.likedBy.length}
                   </Typography>
-                  &nbsp;
-                  <span> | </span>
-                  &nbsp;
                   <Typography variant="h7">
                     {" "}
                     <VisibilityIcon />
-                    &nbsp;
-                    {storyData.story.visitedBy.length} &nbsp; Visited{" "}
+                    {" " + storyData.story.visitedBy.length}
                   </Typography>
+                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
+                    <Typography variant="h7">
+                      {" "}
+                      <AutoStoriesIcon />
+                      {" ~" + storyData.story.accessorReadTime + " min"}
+                    </Typography>
+                  </Tooltip>
                   <br />
                   <br />
                   <span>
