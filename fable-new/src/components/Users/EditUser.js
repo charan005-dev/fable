@@ -2,10 +2,11 @@ import { FormGroup, TextField, Button, Typography } from "@material-ui/core";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../firebase/Auth";
-import { Navigate, useParams } from "react-router-dom";
-import { Alert } from "@mui/material";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Alert, ButtonGroup } from "@mui/material";
 import Input from "@mui/material/Input";
 import { makeStyles } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   card1: {
@@ -68,6 +69,7 @@ const EditUser = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const handleDispNameChange = (e) => {
     setDisplayName(e.target.value);
@@ -94,16 +96,8 @@ const EditUser = () => {
   };
 
   if (userId !== currentUser.uid) {
-    return (
-      <div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <Alert severity="error">{"You don't have access to perform this action."}</Alert>
-      </div>
-    );
+    toast.dark("You don't have access to perform this action!");
+    setTimeout(() => navigate(`/users/${currentUser.uid}`), 100);
   }
 
   if (updateSuccess) {
@@ -151,11 +145,16 @@ const EditUser = () => {
         <br />
         <br />
         <br />
-        <Button variant="contained" color="primary" onClick={performEditUser} className={classes.button2}>
-          Update User
-        </Button>
+        <ButtonGroup>
+          <Button variant="contained" color="primary" onClick={performEditUser} className={classes.button2}>
+            Update User
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => window.history.back()} className={classes.button2}>
+            Back
+          </Button>
+        </ButtonGroup>
         <br />
-        <img src="undraw2.png" className={classes.media}></img>
+        <img src="/undraw2.png" className={classes.media} alt="edit text"></img>
       </FormGroup>
     </div>
   );

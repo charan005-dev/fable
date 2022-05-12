@@ -200,6 +200,20 @@ const getUserStoriesByGenresNonExact = async (genres, authorId) => {
   return { selectStories: myStories, success: true };
 };
 
+const getALLStoriesByGenres = async (genres) => {
+  const storiesCollection = await stories();
+  console.log(genres);
+  let allStories = await storiesCollection.find({ genres: { $size: genres.length, $all: genres } }).toArray();
+  console.log(allStories);
+  return { selectStories: allStories, success: true };
+};
+const getAllStoriesByGenresNonExact = async (genres) => {
+  const storiesCollection = await stories();
+  console.log(genres);
+  let allStories = await storiesCollection.find({ genres: { $in: genres } }).toArray();
+  return { selectStories: allStories, success: true };
+};
+
 const getRecommendations = async (userId, genres) => {
   const storiesCollection = await stories();
   genres = genres.length > 0 ? genres.split(",") : [];
@@ -226,6 +240,8 @@ module.exports = {
   getNRandom,
   getUserStoriesByGenres,
   getUserStoriesByGenresNonExact,
+  getALLStoriesByGenres,
+  getAllStoriesByGenresNonExact,
   getRecommendations,
   updateStory,
 };

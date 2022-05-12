@@ -54,6 +54,18 @@ const useStyles = makeStyles({
     marginLeft: "20px",
     marginRight: "auto",
   },
+
+  overlay: {
+    transition: ".5s ease",
+    opacity: 0,
+    position: "absolute",
+    top: "75%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    "&:hover": {
+      opacity: 1,
+    },
+  },
 });
 
 function HomeImage() {
@@ -107,17 +119,29 @@ function HomeImage() {
                   {storyData &&
                     storyData.map((image) => {
                       return (
-                        <Card sx={{ maxWidth: 345 }} className={classes.card}>
-                          <CardActionArea>
-                            <Link to={`/stories/${image._id}`}>
-                              <CardMedia
-                                className={classes.media}
-                                component="img"
-                                image={image.coverImage}
-                              />
-                            </Link>
-                          </CardActionArea>
-                        </Card>
+                        <>
+                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
+                            <CardActionArea>
+                              <Link to={`/stories/${image._id}`}>
+                                <CardMedia
+                                  className={classes.media}
+                                  component="img"
+                                  image={image.coverImage}
+                                />
+                              </Link>
+                              <Typography></Typography>
+                            </CardActionArea>
+                          </Card>
+
+                          {image.genres &&
+                            image.genres.map((genre) => {
+                              return (
+                                <Link to={`/stories/choose/${genre}`}>
+                                  {genre}
+                                </Link>
+                              );
+                            })}
+                        </>
                       );
                     })}
                 </Stack>
