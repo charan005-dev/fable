@@ -78,7 +78,7 @@ const useStyles = makeStyles({
   text1: {
     color: "grey",
     justifyContent: "center",
-    marginLeft: "10.5%",
+    marginLeft: "80%",
     marginRight: "auto",
   },
   text2: {
@@ -152,16 +152,24 @@ const useStyles = makeStyles({
   },
   editButton: {
     border: "solid 1px",
-    padding: 1,
+    padding: "1px",
     float: "right",
-    marginTop: 10,
+    marginTop: 23,
     marginLeft: 20,
-    marginRight: 50,
-    backgroundColor: "#e4d4a3",
+    marginRight: 5,
+    height: 8,
+    width: 35,
+    backgroundColor: "black",
+    color: "white",
+
     "&:hover": {
-      backgroundColor: "#000000",
-      color: "#fff",
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
     },
+  },
+  editicon: {
+    fontSize: "medium",
   },
   avatar: {
     marginTop: 6,
@@ -181,9 +189,12 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/users/public_profile/${profileUserId}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
       setProfileData(data);
       console.log(data);
     }
@@ -244,6 +255,8 @@ const PublicProfile = () => {
             Stories written
           </Typography>
           <br />
+
+           
           <br />
           <br />
           <Stack direction="column">
