@@ -84,7 +84,7 @@ const ViewLibrariesList = () => {
 
   return (
     <div>
-      <Hero title={""} />
+      {/* <Hero title={""} /> */}
       <br />
       <br />
 
@@ -145,7 +145,7 @@ const ViewLibrariesList = () => {
                               </Typography>
                             </Link>
                           </Card>
-                          <Card className={classes.card4} elevation={0}>
+                          {/* <Card className={classes.card4} elevation={0}>
                             <Badge className={classes.edit}>
                               <EditIcon />
                             </Badge>
@@ -154,7 +154,7 @@ const ViewLibrariesList = () => {
                             <Badge className={classes.delete}>
                               <DeleteIcon />
                             </Badge>
-                          </Card>
+                          </Card> */}
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}

@@ -72,16 +72,21 @@ router.get("/public_profile/:userId", async (req, res) => {
 router.put("/:userId", upload.single("userAvatar"), async (req, res) => {
   try {
     let userId = req.params.userId;
-    const { displayName } = req.body;
+    let { displayName, wpm } = req.body;
+    wpm = parseInt(wpm);
     let filePath = null;
     if (req.file) {
       filePath = "/public/userImages/" + req.file.filename;
+    }
+    if (isNaN(wpm) || wpm < 30 || wpm > 500) {
+      res.status(400).json({ success: false, error: "Invalid wpm count. Should be more than 30 and less than 500." });
+      return;
     }
     if (!userId) {
       res.status(400).json({ success: false, error: "User id not provided " });
       return;
     }
-    const updatedUser = await users.updateUser(userId, displayName, filePath);
+    const updatedUser = await users.updateUser(userId, displayName, wpm, filePath);
     res.status(200).json({ success: true, user: updatedUser });
     return;
   } catch (e) {

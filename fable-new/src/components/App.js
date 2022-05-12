@@ -19,7 +19,8 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
-import ManageAllStories from "./Stories/ManageAllStories";
+import ManageAllStories from "./Stories/ManageAllStories"; 
+import EditStory1 from "./Stories/EditStory1";
 
 import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
@@ -57,7 +58,7 @@ function App() {
               <Route exact path="/stories/:id" element={<Story />} />
             </Route>
             <Route path="/stories/:storyId/edit" element={<PrivateRoute />}>
-              <Route path="/stories/:storyId/edit" element={<EditStory />} />
+              <Route path="/stories/:storyId/edit" element={<EditStory1 />} />
             </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />

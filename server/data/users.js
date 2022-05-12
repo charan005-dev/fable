@@ -9,11 +9,12 @@ const createUser = async (userId, emailAddress, displayName) => {
   let user = {
     _id: userId,
     emailAddress,
+    wpm: 200,
     displayName,
     storiesPosted: [],
   };
   const insertUser = await usersCollection.insertOne(user);
-  if (insertUser.insertedCount === 0) throw `Couldn't insert user to database`;
+  if (insertUser.insertedCount === 0) throw `Couldn't insert user to database.`;
   return await usersCollection.findOne({ _id: insertUser.insertedId });
 };
 
@@ -30,8 +31,11 @@ const getPublicProfile = async (userId) => {
   return findUser;
 };
 
-const updateUser = async (userId, displayName, filePath) => {
+const updateUser = async (userId, displayName, wpm, filePath) => {
   const usersCollection = await users();
+  if (wpm < 30 || wpm > 500) {
+    throw "Invalid wpm count. Should be more than 30 and less than 500.";
+  }
   const findUser = await usersCollection.findOne({ _id: userId });
   if (!findUser) {
     throw `User does not exist with id ${userId}`;
@@ -44,6 +48,7 @@ const updateUser = async (userId, displayName, filePath) => {
   }
   let updatedUser = {
     displayName,
+    wpm,
     userAvatar: filePath ? filePath : null,
   };
   const performedUpdate = await usersCollection.updateOne({ _id: userId }, { $set: updatedUser });
