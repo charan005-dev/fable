@@ -33,6 +33,26 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/check", async (req, res) => {
+  try {
+    let displayName = req.query.tentative;
+    try {
+      const { isAvailable } = await users.checkDisplayName(displayName);
+      if (isAvailable) {
+        res.status(200).json({ success: true, isAvailable: true });
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      res.status(409).json({ success: false, isAvailable: false, message: e });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, message: "Sorry, something went wrong. " });
+  }
+});
+
 router.get("/public_profile/:userId", async (req, res) => {
   try {
     let userId = req.params.userId;
@@ -53,7 +73,10 @@ router.put("/:userId", upload.single("userAvatar"), async (req, res) => {
   try {
     let userId = req.params.userId;
     const { displayName } = req.body;
-    const filePath = "/public/userImages/" + req.file.filename;
+    let filePath = null;
+    if (req.file) {
+      filePath = "/public/userImages/" + req.file.filename;
+    }
     if (!userId) {
       res.status(400).json({ success: false, error: "User id not provided " });
       return;

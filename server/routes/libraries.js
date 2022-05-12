@@ -15,8 +15,13 @@ router.post("/", async (req, res) => {
       res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
       return;
     }
-    const createdLibrary = await libraries.createLibrary(creatorId, libraryName, private);
-    res.status(200).json({ success: true, library: createdLibrary.library });
+    try {
+      const createdLibrary = await libraries.createLibrary(creatorId, libraryName, private);
+      res.status(200).json({ success: true, library: createdLibrary.library });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, error: e });
+    }
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
@@ -72,8 +77,13 @@ router.post("/add", async (req, res) => {
       res.status(401).json({ success: false, message: "You must be logged in to perform this action." });
       return;
     }
-    const addedToLib = await libraries.addStoryToUserLibrary(owner, storyId, libraryId);
-    res.status(200).json({ success: true, library: addedToLib });
+    try {
+      const addedToLib = await libraries.addStoryToUserLibrary(owner, storyId, libraryId);
+      res.status(200).json({ success: true, library: addedToLib });
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, error: e });
+    }
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });

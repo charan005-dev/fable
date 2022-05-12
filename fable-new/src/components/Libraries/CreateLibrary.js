@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -91,20 +92,25 @@ const CreateLibrary = () => {
   const classes = useStyles();
 
   const createLibrary = async () => {
-    const { data } = await axios.post(
-      `/api/libraries/`,
-      {
-        userId: currentUser.uid,
-        libraryName: libraryName,
-        private: isPrivate,
-      },
-      { headers: { authtoken: await currentUser.getIdToken() } }
-    );
-    console.log(data);
-    if (data.success) {
-      setLibraryName("");
-      setIsPrivate(true);
-      setCreationSuccess(true);
+    try {
+      const { data } = await axios.post(
+        `/api/libraries/`,
+        {
+          userId: currentUser.uid,
+          libraryName: libraryName,
+          private: isPrivate,
+        },
+        { headers: { authtoken: await currentUser.getIdToken() } }
+      );
+      console.log(data);
+      if (data.success) {
+        setLibraryName("");
+        setIsPrivate(true);
+        setCreationSuccess(true);
+      }
+    } catch (e) {
+      console.log(e);
+      toast.dark(e.response.data.error);
     }
   };
 

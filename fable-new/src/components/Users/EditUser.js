@@ -1,4 +1,4 @@
-import { FormGroup, TextField, Button, Typography } from "@material-ui/core";
+import { FormGroup, TextField, Button, Typography, FormHelperText, FormControl } from "@material-ui/core";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../firebase/Auth";
@@ -66,12 +66,52 @@ const EditUser = () => {
   const { currentUser } = useContext(AuthContext);
   const { userId } = useParams();
   const [displayName, setDisplayName] = useState("");
+  const [nameError, setNameError] = useState({ error: false, text: "" });
   const [userAvatar, setUserAvatar] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const handleDispNameChange = (e) => {
+  const handleDispNameChange = async (e) => {
+    // make sure the entered value is valid
+    let displayName = e.target.value;
+    if (!displayName || typeof displayName !== "string" || displayName.length === 0) {
+      setNameError({
+        error: false,
+        text: "",
+      });
+      return;
+    }
+    if (displayName.trim().length === 0 || displayName.length < 6) {
+      setNameError({
+        error: true,
+        text: "Please make sure the username exceeds 6 characters.",
+      });
+      return;
+    }
+    let dnameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+    if (!dnameRegex.test(displayName)) {
+      setNameError({
+        error: true,
+        text: "It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).",
+      });
+      return;
+    }
+    // and then - if valid, constantly poll the backend to check if displayName is available
+    try {
+      const { data } = await axios.get(`/api/users/check?tentative=${e.target.value}`, {
+        headers: {
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      setNameError({ error: false, text: "Available!" });
+    } catch (e) {
+      // server throws a 409 when the username already exists in the database
+      setNameError({
+        error: true,
+        text: `🎸You can't always get what you want!🎸 This username is taken.`,
+      });
+    }
     setDisplayName(e.target.value);
   };
 
@@ -80,6 +120,10 @@ const EditUser = () => {
   };
 
   const performEditUser = async () => {
+    if (nameError.error) {
+      toast.dark("Your inputs are invalid. Please check them before performing the action.");
+      return;
+    }
     const formData = new FormData();
     formData.append("userId", currentUser.uid);
     formData.append("displayName", displayName);
@@ -119,7 +163,7 @@ const EditUser = () => {
         <Typography variant="h3" component={"h4"} className={classes.headertext}>
           Display Name
         </Typography>
-        <Input
+        <TextField
           sx={{
             width: "20%",
             marginLeft: "auto",
@@ -127,9 +171,11 @@ const EditUser = () => {
             paddingTop: "35px",
             border: "4px black",
           }}
+          error={nameError.error}
+          helperText={nameError.error ? nameError.text : ""}
           id="displayName"
-          label="Display Name"
-          variant="filled"
+          variant="outlined"
+          InputLabelProps={{ shrink: false }}
           required
           onChange={(e) => handleDispNameChange(e)}
         />
