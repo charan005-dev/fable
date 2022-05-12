@@ -161,7 +161,10 @@ function HomeImage() {
                             <br />
                             <Stack direction="row" spacing={0.5}>
                               {image.genres &&
-                                image.genres.map((genre) => {
+                                image.genres.map((genre, idx) => {
+                                  if (idx > 2) {
+                                    return;
+                                  }
                                   return (
                                     <Chip
                                       label={genre}

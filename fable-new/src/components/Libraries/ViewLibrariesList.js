@@ -84,7 +84,7 @@ const ViewLibrariesList = () => {
 
   return (
     <div>
-      <Hero title={""} />
+      {/* <Hero title={""} /> */}
       <br />
       <br />
 
