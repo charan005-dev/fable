@@ -27,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
-    maxWidth: 200,
     height: 300,
     marginLeft: "auto",
     marginRight: "auto",
@@ -53,6 +52,7 @@ const useStyles = makeStyles({
   paper: {
     height: "auto",
     width: "auto",
+
     marginBottom: "40%",
     height: "80%",
   },
@@ -75,7 +75,6 @@ const useStyles = makeStyles({
       opacity: 1,
     },
   },
-
 });
 
 function HomeImage() {
@@ -126,54 +125,36 @@ function HomeImage() {
             gap: 2,
           }}
         >
-
-          <Grid>
-
+          <Grid item>
             <div>
               <br />
               <h2 className={classes.text1}>New and Hot</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
-                <Stack direction={"row"} spacing={0}>
+                <Stack direction={"row"} spacing={4}>
                   {storyData &&
                     storyData.map((image) => {
                       return (
                         <>
+                          {/* <ImageList> */}
+                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
+                            <CardActionArea>
+                              {/* <Typography>{hover && image.title} </Typography> */}
+                              <ImageListItem>
+                                <Link to={`/stories/${image._id}`}>
+                                  <CardMedia
+                                    className={classes.media}
+                                    component="img"
+                                    image={image.coverImage}
+                                    onMouseEnter={onHover}
+                                    onMouseLeave={onHover}
+                                  />
+                                  <ImageListItemBar title={image.title}></ImageListItemBar>
+                                </Link>
+                              </ImageListItem>
+                            </CardActionArea>
 
-                          {/* <Stack direction="row"> */}
-                          <ImageList>
-                            <Card sx={{ maxWidth: 345 }} className={classes.card}>
-                              <CardActionArea>
-                                {/* <Typography>{hover && image.title} </Typography> */}
-                                <ImageListItem>
-                                  <Link to={`/stories/${image._id}`}>
-                                    <CardMedia
-                                      className={classes.media}
-                                      component="img"
-                                      image={image.coverImage}
-                                      onMouseEnter={onHover}
-                                      onMouseLeave={onHover}
-                                    />
-                                    <ImageListItemBar title={image.title}></ImageListItemBar>
-                                  </Link>
-                                </ImageListItem>
-                              </CardActionArea>
-                              <br />
-
-                              {image.genres &&
-                                image.genres.map((genre) => {
-                                  return (
-                                    <Chip
-                                      label={genre}
-                                      elevation={5}
-                                      size="small"
-                                      className={classes.chip}
-                                      onClick={() => navigate(`/stories/choose/${genre}`)}
-                                    />
-                                  );
-                                })}
-                            </Card>
-                            {/* {image.genres &&
+                            {image.genres &&
                               image.genres.map((genre) => {
                                 return (
                                   <Chip
@@ -184,11 +165,9 @@ function HomeImage() {
                                     onClick={() => navigate(`/stories/choose/${genre}`)}
                                   />
                                 );
-                              })} */}
-                          </ImageList>
-
-                          {/* </Stack> */}
-
+                              })}
+                          </Card>
+                          {/* </ImageList> */}
                         </>
                       );
                     })}
