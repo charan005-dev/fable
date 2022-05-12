@@ -19,10 +19,12 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
+import ManageAllStories from "./Stories/ManageAllStories";
+
 import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
-import ShowByGenres from "./Stories/ShowByGenres"; 
+import ShowByGenres from "./Stories/ShowByGenres";
 import CreateStory1 from "./Stories/CreateStory";
 
 function App() {
@@ -69,6 +71,9 @@ function App() {
             <Route path="/stories/manage" element={<PrivateRoute />}>
               <Route path="/stories/manage" element={<ManageMyStories />} />
             </Route>
+            <Route path="/stories/filter" element={<ManageAllStories />}>
+              <Route path="stories/filter" element={<PrivateRoute />} />
+            </Route>
             <Route path="/libraries/create" element={<PrivateRoute />}>
               <Route path="/libraries/create" element={<CreateLibrary />} />
             </Route>
@@ -76,7 +81,10 @@ function App() {
               <Route path="/libraries/me" element={<ViewLibrariesList />} />
             </Route>
             <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
-              <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
+              <Route
+                path="/libraries/:libraryId"
+                element={<AllLibraryStories />}
+              />
             </Route>
             <Route path="/stories/choose/:genre" element={<PrivateRoute />}>
               <Route path="/stories/choose/:genre" element={<ShowByGenres />} />

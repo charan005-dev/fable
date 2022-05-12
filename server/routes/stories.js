@@ -73,6 +73,26 @@ router.get("/me", async (req, res) => {
   }
 });
 
+router.get("/filter", async (req, res) => {
+  try {
+    let selectedGenres = req.query.genres;
+    let exact = req.query.exact === "true";
+    selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
+    if (exact) {
+      const { selectStories } = await stories.getALLStoriesByGenres(selectedGenres);
+      res.status(200).json({ success: true, stories: selectStories });
+      return;
+    } else {
+      const { selectStories } = await stories.getAllStoriesByGenresNonExact(selectedGenres);
+      res.status(200).json({ success: true, stories: selectStories });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ messsage: "Sorry, something went wrong." });
+  }
+});
+
 router.post("/", upload.single("coverImage"), async (req, res) => {
   try {
     console.log(req.body);
