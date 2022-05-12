@@ -149,23 +149,25 @@ const ManageMyStories = () => {
 
   useEffect(() => {
     console.log("useEffect again");
-    async function getMyStoriesByGenres() {
-      if (!doExactMatch) {
-        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`, {
-          headers: { authtoken: await currentUser.getIdToken() },
-        });
-        console.log("Data ", data);
-        setMyStories(data.stories);
+    if (selectedGenres.length >= 1) {
+      async function getMyStoriesByGenres() {
+        if (!doExactMatch) {
+          const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`, {
+            headers: { authtoken: await currentUser.getIdToken() },
+          });
+          console.log("Data ", data);
+          setMyStories(data.stories);
+        }
+        if (doExactMatch) {
+          const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
+            headers: { authtoken: await currentUser.getIdToken() },
+          });
+          console.log("Data ", data);
+          setMyStories(data.stories);
+        }
       }
-      if (doExactMatch) {
-        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
-          headers: { authtoken: await currentUser.getIdToken() },
-        });
-        console.log("Data ", data);
-        setMyStories(data.stories);
-      }
+      getMyStoriesByGenres();
     }
-    getMyStoriesByGenres();
   }, [selectedGenres]);
 
   const chipSelect = (genre) => {

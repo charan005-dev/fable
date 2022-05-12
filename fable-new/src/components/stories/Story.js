@@ -18,10 +18,11 @@ import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
-import { grid } from "@mui/system";
+import { Fab } from "@material-ui/core";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Edit from "@mui/icons-material/Edit";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 const useStyles = makeStyles({
   card: {
@@ -197,13 +198,12 @@ const Story = () => {
                     {currentUser.uid === storyData.story.creatorId && (
                       <Fab
                         className={classes.editButton}
-                        onClick={() => navigate(`/stories/${storyData.story.creatorId}/edit`)}
+                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
                       >
                         <Edit />
                       </Fab>
                     )}
                   </span>
-
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button}>
                       <MenuBookIcon /> &nbsp; Start Reading{" "}
@@ -257,8 +257,7 @@ const Story = () => {
                                 className={classes.similarImages}
                                 src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
                               />
-                              &nbsp;
-                              &nbsp;
+                              &nbsp; &nbsp;
                               <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
                             </Typography>
                           </Grid>
