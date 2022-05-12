@@ -4,7 +4,10 @@ const axios = require("axios").default;
 
 const createLibrary = async (userId, libraryName, private) => {
   const librariesCollection = await libraries();
-  const existingLibraryName = await librariesCollection.findOne({ libraryName, owner: userId });
+  const existingLibraryName = await librariesCollection.findOne({
+    libraryName: { $regex: new RegExp("^" + libraryName + "$", "i") },
+    owner: userId,
+  });
   if (existingLibraryName) throw `You already have a library with the same name. Please choose some other name.`;
   let newLibrary = {
     _id: uuid.v4(),

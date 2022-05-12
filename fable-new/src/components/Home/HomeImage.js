@@ -75,9 +75,7 @@ const useStyles = makeStyles({
       opacity: 1,
     },
   },
-  chip: {
-    border: "10px",
-  },
+
 });
 
 function HomeImage() {
@@ -107,7 +105,9 @@ function HomeImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all`, { headers: { authtoken: await currentUser.getIdToken() } });
+      const { data } = await axios.get(`/api/stories/all`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data);
       setStoryData(data.stories);
     }
@@ -126,7 +126,9 @@ function HomeImage() {
             gap: 2,
           }}
         >
-          <Grid item sx={{ marginBottom: "100%" }}>
+
+          <Grid>
+
             <div>
               <br />
               <h2 className={classes.text1}>New and Hot</h2>
@@ -137,6 +139,7 @@ function HomeImage() {
                     storyData.map((image) => {
                       return (
                         <>
+
                           {/* <Stack direction="row"> */}
                           <ImageList>
                             <Card sx={{ maxWidth: 345 }} className={classes.card}>
@@ -185,6 +188,7 @@ function HomeImage() {
                           </ImageList>
 
                           {/* </Stack> */}
+
                         </>
                       );
                     })}

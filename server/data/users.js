@@ -36,17 +36,35 @@ const updateUser = async (userId, displayName, filePath) => {
   if (!findUser) {
     throw `User does not exist with id ${userId}`;
   }
+  const checkUsername = await usersCollection.findOne({
+    displayName: { $regex: new RegExp("^" + displayName + "$", "i") },
+  });
+  if (checkUsername) {
+    throw `Username is already taken!`;
+  }
   let updatedUser = {
     displayName,
-    userAvatar: filePath,
+    userAvatar: filePath ? filePath : null,
   };
   const performedUpdate = await usersCollection.updateOne({ _id: userId }, { $set: updatedUser });
   const updateUser = await usersCollection.findOne({ _id: userId });
   return updateUser;
 };
 
+const checkDisplayName = async (name) => {
+  const usersCollection = await users();
+  const findUser = await usersCollection.findOne({
+    displayName: { $regex: new RegExp("^" + name + "$", "i") },
+  });
+  if (findUser) {
+    throw `This username is not available. Please use some other name instead.`;
+  }
+  return { isAvailable: true };
+};
+
 module.exports = {
   createUser,
   getPublicProfile,
   updateUser,
+  checkDisplayName,
 };
