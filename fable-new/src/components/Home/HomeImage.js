@@ -137,7 +137,7 @@ function HomeImage() {
                       return (
                         <>
                           {/* <ImageList> */}
-                          <Card sx={{ maxWidth: 345 }} className={classes.card}>
+                          <Card className={classes.card}>
                             <CardActionArea>
                               {/* <Typography>{hover && image.title} </Typography> */}
                               <ImageListItem>
