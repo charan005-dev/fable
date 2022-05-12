@@ -1,5 +1,12 @@
-import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/core";
-import { Button, MenuItem, TextField, FormControl, Alert } from "@mui/material";
+import {
+  Grid,
+  OutlinedInput,
+  Paper,
+  Select,
+  Typography,
+  MenuItem,
+} from "@material-ui/core";
+import { Button, TextField, FormControl, Alert, Stack } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -29,8 +36,8 @@ const genres = [
 ];
 const useStyles = makeStyles({
   card1: {
-    width: "30%",
-    paddingLeft: "300px",
+    width: "100%",
+    paddingLeft: "0px",
   },
   button: {
     backgroundColor: "blanchedalmond",
@@ -53,7 +60,7 @@ const useStyles = makeStyles({
   button1: {
     backgroundColor: "black",
     color: "blanchedalmond",
-    width: "10%",
+    width: "auto",
     marginLeft: "auto",
     marginRight: "auto",
     "&:hover": {
@@ -86,8 +93,7 @@ const useStyles = makeStyles({
   },
 
   headertext: {
-    backgroundColor: "black",
-    color: "blanchedalmond",
+    color: "black",
     width: "auto",
     marginLeft: "auto",
     marginRight: "auto",
@@ -97,10 +103,34 @@ const useStyles = makeStyles({
     paddingBottom: "10px",
     borderRadius: "10px",
     fontSize: "40px",
-    "&:hover": {
-      backgroundColor: "blanchedalmond",
-      color: "black",
-    },
+  },
+  paper: {
+    width: "45%",
+    marginLeft: "10%",
+    paddingRight: "0.7%",
+  },
+  paperright: {
+    width: "25%",
+    marginLeft: "14%",
+    paddingLeft: "%",
+    maxHeight: "100px",
+  },
+  textfield1: {
+    width: "50em",
+  },
+  textfield: {
+    width: "93%",
+  },
+  title: {
+    marginLeft: "3%",
+    fontSize: "25px",
+  },
+  story: {
+    marginLeft: "34%",
+    fontSize: "25px",
+  },
+  editor: {
+    width: "100px",
   },
 });
 
@@ -145,19 +175,34 @@ const CreateStory = () => {
   const isStateValid = () => {
     // checking all the state values to see if they're correct
     // before allowing story creation
-    if (!title || typeof title !== "string" || title.length === 0 || title.trim().length === 0)
+    if (
+      !title ||
+      typeof title !== "string" ||
+      title.length === 0 ||
+      title.trim().length === 0
+    )
       return { e: true, message: "Your title value is invalid." };
-    if (!desc || typeof desc !== "string" || desc.length === 0 || desc.trim().length === 0)
+    if (
+      !desc ||
+      typeof desc !== "string" ||
+      desc.length === 0 ||
+      desc.trim().length === 0
+    )
       return { e: true, message: "Your description is invalid." };
     let content = editorRef.current.getContent();
-    if (!content || typeof content !== "string" || content.length === 0 || content.trim().length === 0)
+    if (
+      !content ||
+      typeof content !== "string" ||
+      content.length === 0 ||
+      content.trim().length === 0
+    )
       return { e: true, message: "Your story content is invalid." };
     let genres = selectedGenres;
     console.log(genres);
     return { e: false };
   };
 
-  const createStory = async () => {
+  const createStory1 = async () => {
     let validity = isStateValid();
     if (validity.e) {
       toast.dark(validity.message, {
@@ -172,7 +217,10 @@ const CreateStory = () => {
     formData.append("title", title);
     formData.append("shortDescription", desc);
     formData.append("genres", selectedGenres);
-    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
+    formData.append(
+      "contentHtml",
+      editorRef.current ? editorRef.current.getContent() : ""
+    );
     formData.append("coverImage", coverImage);
     const { data } = await axios.post("/api/stories", formData, {
       headers: {
@@ -188,115 +236,165 @@ const CreateStory = () => {
     }
   };
 
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
   return (
     <div>
       <div>
+        <br />
         <ToastContainer />
-        <Paper elevation={3}>
-          <br />
-          <Grid container justifyContent="center" alignItems="center">
-            <Typography variant="h3" component={"h1"} className={classes.headertext}>
-              Create your story here!
-            </Typography>
-          </Grid>
-          <br />
-          <br />
-          <br />
-          <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
-            <Typography className={classes.story}>Title *</Typography>
-            <br />
-            <Input
-              sx={{
-                width: "30%",
-                marginLeft: "auto",
-                marginRight: "auto",
-                paddingTop: "35px",
-                border: "4px black",
-              }}
-              id="title"
-              label="Title of the story"
-              variant="filled"
-              value={title}
-              required
-              onChange={(e) => handleChange(e, "title")}
-            />
-
-            <br />
-            <br />
-            <Typography className={classes.story}>A short description of the story *</Typography>
+        <Stack direction="row" spacing={2}>
+          <Paper className={classes.paperright} elevation={24}>
+            {" "}
+            cwefwbeugbw{" "}
+          </Paper>
+          <Paper className={classes.paper} elevation={20}>
             <br />
 
-            <Input
-              sx={{
-                width: "30%",
-                marginLeft: "auto",
-                marginRight: "auto",
-                paddingTop: "35px",
-              }}
-              id="short_desc"
-              label="A short description of the story"
-              variant="filled"
-              multiline
-              value={desc}
-              minRows={4}
-              maxRows={4}
-              require
-              onChange={(e) => handleChange(e, "desc")}
-            />
-            <br />
-            <br />
-            <Typography className={classes.story}>Your Story Goes Here! *</Typography>
-            <br />
-            <Editor
-              className={classes.card1}
-              required
-              onLoadContent={() => {
-                setTimeout(() => {
-                  let close = document.getElementsByClassName("tox-notification__dismiss")[0];
-                  if (close) close.click();
-                }, 20);
-              }}
-              onInit={(evt, editor) => (editorRef.current = editor)}
-            />
-            <br />
-            <br />
-            <Typography className={classes.story}>Select all the Genres that apply! *</Typography>
-            <br />
-
-            <Select
-              sx={{ width: "40%" }}
-              id="genres"
-              label="Genres"
-              placeholder="Genres"
-              value={selectedGenres}
-              multiple
-              input={<OutlinedInput label="Genre" />}
-              onChange={handleGenreSelect}
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              elevation={25}
             >
-              {genres.map((genre, idx) => (
-                <MenuItem key={idx} value={genre}>
-                  {genre}
-                </MenuItem>
-              ))}
-            </Select>
+              <Typography
+                variant="h3"
+                component={"h1"}
+                className={classes.headertext}
+              >
+                Create your story here!
+              </Typography>
+            </Grid>
             <br />
             <br />
+            <br />
+            <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
+              <Typography variant={"h4"} className={classes.title}>
+                Title
+              </Typography>
+              <br />
 
-            <Button variant="contained" component="label" className={classes.button2}>
-              Upload a cover photo for your story &nbsp;&nbsp;
-              <input
-                type="file"
-                accept="image/jpeg, image/png, .jpeg, .jpg, .png"
-                onChange={(e) => handleChange(e, "file")}
+              <TextField
+                sx={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  border: "4px black",
+                }}
+                className={classes.textfield1}
+                id="title"
+                value={title}
+                variant="outlined"
+                label=" "
+                fullWidth
+                placeholder="untitled story"
+                InputLabelProps={{ shrink: false }}
+                onChange={(e) => handleChange(e, "title")}
               />
-            </Button>
-            <br />
-            <br />
-            <Button variant="contained" onClick={createStory} className={classes.button1}>
-              Create Story
-            </Button>
-          </FormControl>
-        </Paper>
+              <br />
+              <br />
+
+              <Typography variant={"h4"} className={classes.title}>
+                Short Description of the Story
+              </Typography>
+              <br />
+
+              <TextField
+                sx={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  border: "4px black",
+                }}
+                className={classes.textfield1}
+                id="short_desc"
+                value={desc}
+                variant="outlined"
+                label=" "
+                fullWidth
+                placeholder="description"
+                InputLabelProps={{ shrink: false }}
+                minRows={4}
+                maxRows={4}
+                multiline
+                onChange={(e) => handleChange(e, "desc")}
+              />
+
+              <br />
+              <br />
+              <Typography variant={"h4"} className={classes.title}>
+                Your Story Goes Here!
+              </Typography>
+              <br />
+              <Editor
+                className={classes.editor}
+                required
+                onLoadContent={() => {
+                  setTimeout(() => {
+                    let close = document.getElementsByClassName(
+                      "tox-notification__dismiss"
+                    )[0];
+                    if (close) close.click();
+                  }, 20);
+                }}
+                onInit={(evt, editor) => (editorRef.current = editor)}
+                init={{ width: 790 }}
+              />
+              <br />
+              <br />
+              <Typography variant={"h4"} className={classes.title}>
+                Select All Genres that Apply!
+              </Typography>
+              <br />
+
+              <Select
+                multiple
+                displayEmpty
+                value={selectedGenres}
+                label=" "
+                InputLabelProps={{ shrink: false }}
+                onChange={handleGenreSelect}
+                input={<OutlinedInput />}
+                className={classes.textfield}
+                renderValue={(selected) => {
+                  return selected.join(", ");
+                }}
+                MenuProps={MenuProps}
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem disabled value="">
+                  <em>Select All that Apply!</em>
+                </MenuItem>
+                {genres.map((genre, idx) => (
+                  <MenuItem key={idx} value={genre}>
+                    {genre}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              <br />
+              <br />
+
+              <Button
+                variant="contained"
+                onClick={createStory1}
+                className={classes.button1}
+              >
+                Create Story
+              </Button>
+              <br />
+            </FormControl>
+          </Paper>
+        </Stack>
+        <br />
+        <br />
       </div>
     </div>
   );

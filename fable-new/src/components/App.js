@@ -23,7 +23,7 @@ import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
 import ShowByGenres from "./Stories/ShowByGenres"; 
-import CreateStory1 from "./Stories/CreateStory1";
+import CreateStory1 from "./Stories/CreateStory";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -48,7 +48,7 @@ function App() {
               <Route path="/account" element={<Account />} />
             </Route>
             <Route path="/stories/create_story" element={<PrivateRoute />}>
-              <Route path="/stories/create_story" element={<CreateStory1 />} />
+              <Route path="/stories/create_story" element={<CreateStory />} />
             </Route>
 
             <Route exact path="/stories/:id" element={<PrivateRoute />}>
