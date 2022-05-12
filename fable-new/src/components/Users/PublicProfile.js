@@ -209,7 +209,10 @@ const PublicProfile = () => {
           <Card elevation={15} className={classes.namecard}>
             <Grid container justifyContent="center">
               {!profileData.profile.userAvatar && (
-                <Avatar sx={{ width: 64, height: 64 }} className={classes.avatar}>
+                <Avatar
+                  sx={{ width: 64, height: 64 }}
+                  className={classes.avatar}
+                >
                   {profileData.profile.displayName.substring(0, 2)}
                 </Avatar>
               )}
@@ -229,7 +232,12 @@ const PublicProfile = () => {
                 {profileData.profile.displayName}
               </Typography>
               {currentUser.uid === profileData.profile._id && (
-                <Fab className={classes.editButton} onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}>
+                <Fab
+                  className={classes.editButton}
+                  onClick={() =>
+                    navigate(`/users/${profileData.profile._id}/edit`)
+                  }
+                >
                   <Edit />
                 </Fab>
               )}
@@ -238,13 +246,21 @@ const PublicProfile = () => {
             <br />
             <Stack direction="row" className={classes.card3} spacing={5}>
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text1}
+                >
                   <MenuBookIcon />
                 </Typography>
               </Card>
               &nbsp; &nbsp;
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text1}
+                >
                   <LibraryAddIcon />
                 </Typography>
               </Card>
@@ -255,45 +271,57 @@ const PublicProfile = () => {
             Stories written
           </Typography>
           <br />
+
           <br />
           <br />
           <Stack direction="column">
             <div>
               <Stack direction="column">
                 {profileData.profile &&
-                  profileData.profile.storiesCreated.map((createdStory, idx) => {
-                    if (idx > 4) {
-                      return;
-                    }
-                    return (
-                      <Grid key={idx}>
-                        <Stack direction="row">
-                          <Card className={classes.card1} elevation={15}>
-                            <Link to={`/stories/${createdStory._id}`}>
-                              <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
-                            </Link>
-                          </Card>
-
-                          <Card className={classes.card2} elevation={0}>
-                            <CardContent>
+                  profileData.profile.storiesCreated.map(
+                    (createdStory, idx) => {
+                      if (idx > 4) {
+                        return;
+                      }
+                      return (
+                        <Grid key={idx}>
+                          <Stack direction="row">
+                            <Card className={classes.card1} elevation={15}>
                               <Link to={`/stories/${createdStory._id}`}>
-                                <Typography>{createdStory.title}</Typography>
+                                <CardMedia
+                                  className={classes.media}
+                                  component="img"
+                                  image={createdStory.coverImage}
+                                />
                               </Link>
-                            </CardContent>
-                            <CardContent>
-                              <Typography>
-                                {createdStory.shortDescription.length > 200
-                                  ? createdStory.shortDescription.substring(0, 197) + "..."
-                                  : createdStory.shortDescription}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Stack>
-                      </Grid>
-                    );
-                  })}
+                            </Card>
+
+                            <Card className={classes.card2} elevation={0}>
+                              <CardContent>
+                                <Link to={`/stories/${createdStory._id}`}>
+                                  <Typography>{createdStory.title}</Typography>
+                                </Link>
+                              </CardContent>
+                              <CardContent>
+                                <Typography>
+                                  {createdStory.shortDescription.length > 200
+                                    ? createdStory.shortDescription.substring(
+                                        0,
+                                        197
+                                      ) + "..."
+                                    : createdStory.shortDescription}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          </Stack>
+                        </Grid>
+                      );
+                    }
+                  )}
               </Stack>
-              <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
+              <Button onClick={() => navigate(`/stories/manage`)}>
+                View More
+              </Button>
             </div>
             <Box className={classes.box1}>
               <Grid>
