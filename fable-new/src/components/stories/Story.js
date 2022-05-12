@@ -8,6 +8,8 @@ import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const useStyles = makeStyles({
   card: {
@@ -141,6 +143,12 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
+                  <br></br>
+                  <Typography variant="h7" > <FavoriteIcon/>{ storyData.story.likedBy.length} Liked By</Typography>
+
+                  <Typography variant="h7" > <VisibilityIcon/>{ storyData.story.visitedBy.length} Visited By </Typography>
+                 
+      
                   <br />
                   <br />
                   <Link to={`/stories/${storyData.story._id}/book`}>
