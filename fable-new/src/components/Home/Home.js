@@ -1,6 +1,7 @@
 import React from "react";
 import CarouselImage from "./CarouselImage";
 import HomeImage from "./HomeImage";
+
 const Home = () => {
   return (
     <div>
@@ -8,6 +9,7 @@ const Home = () => {
         <CarouselImage />
       </div>
       <HomeImage />
+      {/* <HomeTest /> */}
     </div>
   );
 };
