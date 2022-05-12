@@ -1,5 +1,6 @@
 import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
 import { accordionSummaryClasses, Stack } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -26,6 +27,8 @@ const genres = [
   "Non-fiction",
   "Medieval",
 ];
+
+
 
 const useStyles = makeStyles({
   refinery: {
@@ -207,21 +210,26 @@ const ManageAllStories = () => {
         {allStories.length > 0 &&
           allStories.map((story) => {
             return (
+              
               <div>
                 <Box
+                
                   sx={{
+                    flexGrow:1,
                     display: "flex",
                     flexWrap: "wrap",
                     "& > :not(style)": {
                       m: 1,
-                      width: "auto",
+                      width: 500,
                       height: "auto",
-                      marginLeft: 500,
-                    },
+                      marginLeft: 400,
+                   
+                     },
                   }}
                 >
+                  
                   <Paper
-                    elevation={5}
+                    elevation={20}
                     className={classes.paper}
                     sx={{
                       bgcolor: "background.default",
