@@ -1,5 +1,6 @@
 import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
-import { Divider, Stack } from "@mui/material";
+import { accordionSummaryClasses, Stack } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -27,6 +28,8 @@ const genres = [
   "Medieval",
 ];
 
+
+
 const useStyles = makeStyles({
   refinery: {
     padding: 10,
@@ -36,13 +39,8 @@ const useStyles = makeStyles({
     margin: 4,
   },
   card: {
-    margin: 6,
-    float: "left",
-    backgroundColor: "#2f2f2f",
-    color: "#fff",
-    paddingLeft: 30,
-    padding: 10,
-    maxWidth: 300,
+    padding: 3,
+    maxWidth: "16%",
   },
   storyLink: {
     textDecoration: "none",
@@ -124,39 +122,36 @@ const useStyles = makeStyles({
   paper: {},
 });
 
-const ManageMyStories = () => {
-  const [myStories, setMyStories] = useState([]);
+const ManageAllStories = () => {
+  const [allStories, setAllStories] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [doExactMatch, setDoExactMatch] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    setMyStories([]);
+    setAllStories([]);
     setSelectedGenres([]);
   }, [doExactMatch]);
 
   useEffect(() => {
-    console.log("useEffect again");
-    async function getMyStoriesByGenres() {
+    async function getALLStoriesByGenres() {
       if (!doExactMatch) {
-        const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=false`,
-          { headers: { authtoken: await currentUser.getIdToken() } }
-        );
-        console.log("Data ", data);
-        setMyStories(data.stories);
+        const { data } = await axios.get(`/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=false`,{
+          headers: { authToken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        setAllStories(data.stories);
       }
       if (doExactMatch) {
-        const { data } = await axios.get(
-          `/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=true`,
-          { headers: { authtoken: await currentUser.getIdToken() } }
-        );
-        console.log("Data ", data);
-        setMyStories(data.stories);
+        const { data } = await axios.get(`/api/stories/me?genres=${selectedGenres}&authorId=${currentUser.uid}&exact=true`, {
+          headers: { authToken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        setAllStories(data.stories);
       }
     }
-    getMyStoriesByGenres();
+    getALLStoriesByGenres();
   }, [selectedGenres]);
 
   const chipSelect = (genre) => {
@@ -168,7 +163,7 @@ const ManageMyStories = () => {
       genreCopy.push(genre);
       setSelectedGenres(genreCopy);
     }
-    console.log(selectedGenres);
+    console.log("selected", selectedGenres);
   };
 
   const chipDeselect = (genre) => {
@@ -191,15 +186,6 @@ const ManageMyStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
-          <Grid container justifyContent="center">
-            <Card className={classes.card}>
-              Check all selected genres?
-              <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
-            </Card>
-          </Grid>
-          <br />
-          <Divider></Divider>
-          <br />
           {genres &&
             genres.map((genre, idx) => {
               //console.log(selectedGenres, genre);
@@ -210,6 +196,10 @@ const ManageMyStories = () => {
               }
             })}
           <br />
+          <Card className={classes.card}>
+            Filter individually
+            <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
+          </Card>
         </Paper>
       </Grid>
       <div>
@@ -217,86 +207,74 @@ const ManageMyStories = () => {
         <br />
         <br />
         <br />
-        {myStories.length === 0 && (
-          <>
-            <Grid container justifyContent="center">
-              <Paper sx={{ width: 400 }} variant="outlined" className={classes.refinery}>
-                <Typography variant="body2">
-                  Seems like there aren't any stories matching the current filter. Please refine your filters and try
-                  again.
-                </Typography>
-              </Paper>
-            </Grid>
-            <br />
-            <br />
-            <br />
-            <br />
-          </>
-        )}
-        {myStories.length > 0 && (
-          <Grid container justifyContent="center">
-            <Paper variant="outlined" className={classes.refinery}>
-              {myStories.length > 0 &&
-                myStories.map((story) => {
-                  return (
-                    <div>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          "& > :not(style)": {
-                            m: 1,
-                            width: "auto",
-                            height: "auto",
-                            marginLeft: 500,
-                          },
-                        }}
-                      >
-                        <Paper
-                          elevation={5}
-                          className={classes.paper}
-                          sx={{
-                            bgcolor: "background.default",
-                            display: "grid",
-                            gridTemplateColumns: { md: "1fr 1fr" },
-                            gap: 2,
-                          }}
-                        >
-                          <Grid>
-                            <Stack direction="row">
-                              <Card className={classes.card1} elevation={0}>
-                                <Link to={`/stories/${story._id}`}>
-                                  <CardMedia className={classes.media} component="img" image={story.coverImage} />
-                                </Link>
-                              </Card>
+          
+        <div>
+                <Box
 
-                              <Card className={classes.card2} elevation={0}>
-                                <CardContent>
-                                  <Link to={`/stories/${story._id}`}>
-                                    <Typography>{story.title}</Typography>
-                                  </Link>
-                                </CardContent>
-                                <CardContent>
-                                  <Typography>
-                                    {story.shortDescription.length > 200
-                                      ? story.shortDescription.substring(0, 197) + "..."
-                                      : story.shortDescription}
-                                  </Typography>
-                                </CardContent>
-                              </Card>
-                            </Stack>
-                          </Grid>
-                        </Paper>
-                      </Box>
-                    </div>
-                  );
-                })}
-            </Paper>
+                  sx={{
+                    
+                    flexGrow:1,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    "& > :not(style)": {
+                      m: 1,
+                      width: 1500,
+                      height: "auto",
+                      marginLeft: 320,
+                      
+                   
+                     },
+                  }}
+                >
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+        {allStories.length > 0 &&
+          allStories.map((story) => {
+            return (
+              <Grid item xs={5}>
+                  <Paper
+                    elevation={20}
+                    className={classes.paper}
+                    sx={{
+                      bgcolor: "background.default",
+                      display: "grid",
+                      gridTemplateColumns: { md: "1fr 1fr" },
+                      gap: 2,
+
+                    }}
+                  >
+                      <Stack direction="row">
+                        <Card className={classes.card1} elevation={0}>
+                          <Link to={`/stories/${story._id}`}>
+                            <CardMedia className={classes.media} component="img" image={story.coverImage} />
+                          </Link>
+                        </Card>
+
+                        <Card className={classes.card2} elevation={0}>
+                          <CardContent>
+                            <Link to={`/stories/${story._id}`}>
+                              <Typography>{story.title}</Typography>
+                            </Link>
+                          </CardContent>
+                          <br />
+                          <CardContent>
+                            <Typography>
+                              {story.shortDescription.length > 200
+                                ? story.shortDescription.substring(0, 197) + "..."
+                                : story.shortDescription}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Stack>
+                  </Paper>
+                  </Grid>
+            );
+          })}
           </Grid>
-        )}
+          </Box>
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 
-export default ManageMyStories;
+export default ManageAllStories;
