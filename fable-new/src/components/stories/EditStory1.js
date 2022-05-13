@@ -117,7 +117,7 @@ const useStyles = makeStyles({
     color: "black",
     width: "auto",
     marginLeft: "auto",
-    marginRight: "auto",
+    
     paddingRight: "30px",
     paddingLeft: "30px",
     paddingTop: "10px",
@@ -157,7 +157,11 @@ const useStyles = makeStyles({
   edit: {
     width: "100vw",
     marginLeft: "-80%",
-  },
+  }, 
+  grid:
+  {
+      width:"100%"
+  }
 });
 
 const EditStory1 = () => {
@@ -300,9 +304,9 @@ const EditStory1 = () => {
 
             <Grid
               container
-              justifyContent="center"
-              alignItems="center"
-              elevation={25}
+              
+              elevation={25} 
+              className={classes.grid}
             >
               <Typography
                 variant="h3"
