@@ -209,23 +209,32 @@ const EditStory1 = () => {
 
   useEffect(() => {
     async function getStoryDetails() {
-      const { data } = await axios.get(`/api/stories/${storyId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
-      console.log(data);
-      if (data.story.creatorId !== currentUser.uid) {
-        setError("You don't have access to perform this action!");
+      try {
+        const { data } = await axios.get(`/api/stories/${storyId}`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        if (data.story.creatorId !== currentUser.uid) {
+          setError("You don't have access to perform this action!");
+          return;
+        }
+        setStoryDetails(data.story);
+        let newState = {
+          title: data.story.title,
+          desc: data.story.shortDescription,
+          genres: data.story.genres,
+          content: data.story.contentHtml,
+          coverImage: data.story.coverImage,
+        };
+        setChangingState(newState);
+      } catch (e) {
+        console.log(e);
+        toast.error("The requested resource does not exist.", {
+          theme: "dark",
+        });
+        setTimeout(() => navigate(`/home`), 400);
         return;
       }
-      setStoryDetails(data.story);
-      let newState = {
-        title: data.story.title,
-        desc: data.story.shortDescription,
-        genres: data.story.genres,
-        content: data.story.contentHtml,
-        coverImage: data.story.coverImage,
-      };
-      setChangingState(newState);
     }
     getStoryDetails();
   }, [storyId]);

@@ -106,4 +106,24 @@ router.post("/add", async (req, res) => {
   }
 });
 
+router.put("/:libraryId", async (req, res) => {
+  try {
+    let { libraryId } = req.params;
+    let accessor = req.authenticatedUser;
+    let { libraryName, private } = req.body;
+    try {
+      const updatedLibrary = await libraries.updateLibrary(accessor, libraryId, libraryName, private);
+      res.status(200).json(updatedLibrary);
+      return;
+    } catch (e) {
+      console.log(e);
+      if (e.toString().includes("library does not exist")) res.status(404).json({ success: false, error: e });
+      else res.status(400).json({ success: false, error: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 module.exports = router;

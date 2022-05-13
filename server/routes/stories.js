@@ -124,7 +124,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     }
     // graphicsmagick resize
     gm(gmPath)
-      .resize(1200, 800)
+      .resize(3200, 4800, "!")
       .write(gmPath, function (err) {
         if (err) console.log(err);
         console.log("Done!");
@@ -218,7 +218,7 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     }
     // graphicsmagick resize
     gm(gmPath)
-      .resize(1200, 800)
+      .resize(3200, 4800, "!")
       .write(gmPath, function (err) {
         if (err) console.log(err);
         console.log("Done!");
