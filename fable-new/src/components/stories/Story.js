@@ -300,37 +300,39 @@ const Story = () => {
                   {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
                   {recommendations &&
                     recommendations.map((recommendation) => {
-                      return (
-                        <div>
-                          <Grid className={classes.similarStories}>
-                            <Typography variant="subtitle">
-                              <span className={classes.card3}>
-                                <img
-                                  className={classes.similarImages}
-                                  src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                                />
-                              </span>
-                              &nbsp; &nbsp;
-                              <span className={classes.card4}>
+                      if (recommendation._id !== id) {
+                        return (
+                          <div>
+                            <Grid className={classes.similarStories}>
+                              <Typography variant="subtitle">
+                                <span className={classes.card3}>
+                                  <img
+                                    className={classes.similarImages}
+                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                  />
+                                </span>
                                 &nbsp; &nbsp;
-                                <span className={classes.content}>
-                                  <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
-                                    {recommendation.title}
-                                  </Link>
+                                <span className={classes.card4}>
+                                  &nbsp; &nbsp;
+                                  <span className={classes.content}>
+                                    <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
+                                      {recommendation.title}
+                                    </Link>
+                                  </span>
+                                  <br />
+                                  <span className={classes.content1}>
+                                    <Typography variant="caption">
+                                      {recommendation.shortDescription.length > 50
+                                        ? recommendation.shortDescription.substring(0, 50) + "..."
+                                        : recommendation.shortDescription}
+                                    </Typography>
+                                  </span>
                                 </span>
-                                <br />
-                                <span className={classes.content1}>
-                                  <Typography variant="caption">
-                                    {recommendation.shortDescription.length > 50
-                                      ? recommendation.shortDescription.substring(0, 50) + "..."
-                                      : recommendation.shortDescription}
-                                  </Typography>
-                                </span>
-                              </span>
-                            </Typography>
-                          </Grid>
-                        </div>
-                      );
+                              </Typography>
+                            </Grid>
+                          </div>
+                        );
+                      }
                     })}
                 </CardContent>
               </Card>
