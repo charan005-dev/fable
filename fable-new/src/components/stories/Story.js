@@ -22,6 +22,7 @@ import { Fab } from "@material-ui/core";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Edit from "@mui/icons-material/Edit";
+import { Chip } from "@material-ui/core";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 const useStyles = makeStyles({
@@ -120,7 +121,7 @@ const useStyles = makeStyles({
   },
   similarImages: {
     maxWidth: 50,
-    maxHeight: 50
+    maxHeight: 50,
   },
 });
 
@@ -248,7 +249,22 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
+                  <br />
+                  <br />
+                  <Stack direction="row" spacing={1}>
+                    {storyData &&
+                      storyData.story.genres.map((genre) => {
+                        return (
+                          <Chip
+                            label={genre}
+                            size={"small"}
+                            color="info"
+                            onClick={() => navigate(`/stories/choose/${genre}`)}
+                          />
+                        );
+                      })}
+                  </Stack>
                 </CardContent>
               </Card>
               {/* <Card className={classes.cardempty} elevation={10}>
@@ -266,21 +282,17 @@ const Story = () => {
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
                               <Card className={classes.card3}>
-                              <img
-                                className={classes.similarImages}
-                                src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                              />
+                                <img
+                                  className={classes.similarImages}
+                                  src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                />
                               </Card>
-                              &nbsp;
-                              &nbsp;
-                              <Card lassName={classes.card4}>
                               &nbsp; &nbsp;
-
-                              <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
-                              <br />
-                              <Typography variant="overline">
-                                {recommendation.shortDescription}
-                              </Typography>
+                              <Card lassName={classes.card4}>
+                                &nbsp; &nbsp;
+                                <Link to={`/stories/${recommendation._id}`}>{recommendation.title}</Link>
+                                <br />
+                                <Typography variant="overline">{recommendation.shortDescription}</Typography>
                               </Card>
                             </Typography>
                           </Grid>
