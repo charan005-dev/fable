@@ -105,19 +105,20 @@ const useStyles = makeStyles({
     paddingLeft: 40,
   },
   card1: {
-    width: "auto",
+    width: 300,
     height: "8%",
-    marginLeft: "10%",
-    paddingLeft: "0%",
-    paddingRight: "0%",
-    marginRight: "2%",
+    marginLeft: "20%",
+    paddingLeft: "10%",
+    paddingRight: "5%",
+    marginRight: "4%",
     paddingBottom: "0%",
     marginBottom: "1%",
     fontSize: "25px",
   },
   card2: {
-    width: "15%",
+    width: 500,
     marginBottom: "100px",
+    // paddingLeft:"10%",
     paddingBottom: "2%",
     height: "2%",
   },
@@ -168,6 +169,9 @@ const useStyles = makeStyles({
       radius: "solid 1px",
     },
   },
+  text4:{
+marginLeft:100
+  },
   editicon: {
     fontSize: "medium",
   },
@@ -205,6 +209,7 @@ const PublicProfile = () => {
   const buildUserProfile = (profileData) => {
     return (
       <>
+     
         <Grid>
           <Card elevation={15} className={classes.namecard}>
             <Grid container justifyContent="center">
@@ -267,26 +272,28 @@ const PublicProfile = () => {
             </Stack>
           </Card>
           <br />
+         
           <Typography variant="h3" component={"h2"} className={classes.text}>
-            Stories written
+            Stories Written
           </Typography>
           <br />
 
           <br />
           <br />
-          <Stack direction="column">
+        <Grid>
+          <Stack direction="row" className={classes.text4}>
             <div>
-              <Stack direction="column">
+              <Stack direction="row">
                 {profileData.profile &&
                   profileData.profile.storiesCreated.map(
                     (createdStory, idx) => {
-                      if (idx > 4) {
+                      if (idx > 2) {
                         return;
                       }
                       return (
                         <Grid key={idx}>
-                          <Stack direction="row">
-                            <Card className={classes.card1} elevation={15}>
+                          <Stack direction="column">
+                            <Card className={classes.card1} elevation={4}>
                               <Link to={`/stories/${createdStory._id}`}>
                                 <CardMedia
                                   className={classes.media}
@@ -295,7 +302,7 @@ const PublicProfile = () => {
                                 />
                               </Link>
                             </Card>
-
+<Paper>
                             <Card className={classes.card2} elevation={0}>
                               <CardContent>
                                 <Link to={`/stories/${createdStory._id}`}>
@@ -313,16 +320,25 @@ const PublicProfile = () => {
                                 </Typography>
                               </CardContent>
                             </Card>
+                            </Paper>
                           </Stack>
                         </Grid>
+                     
                       );
                     }
                   )}
+                    
+                  <br />
+                  </Stack>
+                  </div>
               </Stack>
-              <Button onClick={() => navigate(`/stories/manage`)}>
+              
+              </Grid>
+
+              <Button onClick={() => navigate(`/stories/manage`)} >
                 View More
               </Button>
-            </div>
+           
             <Box className={classes.box1}>
               <Grid>
                 <Card className={classes.card4}>
@@ -330,7 +346,7 @@ const PublicProfile = () => {
                 </Card>
               </Grid>
             </Box>
-          </Stack>
+    
         </Grid>
       </>
     );

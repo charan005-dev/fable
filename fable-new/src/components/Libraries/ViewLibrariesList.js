@@ -9,6 +9,7 @@ import {
   Grid,
   Paper,
   Typography,
+  Box,
 } from "@material-ui/core";
 import React from "react";
 import { useState, useContext, useEffect } from "react";
@@ -89,13 +90,14 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2">Library</Typography>
+        <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
-      <br />
-      <br />
+      {/* <br />
+      <br /> */}
+    
       <Paper
-        elevation={0}
+        elevation={10}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
