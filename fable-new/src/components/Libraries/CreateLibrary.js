@@ -155,6 +155,7 @@ const CreateLibrary = () => {
               onChange={() => {
                 setIsPrivate(!isPrivate);
               }}
+              color="primary"
               label={isPrivate ? "Public" : "Private"}
             />
           </Typography>

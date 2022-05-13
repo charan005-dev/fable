@@ -11,9 +11,7 @@ import {
   Paper,
   Typography,
   Box,
-
   Switch,
-
 } from "@material-ui/core";
 import React from "react";
 import { useState, useContext, useEffect } from "react";
@@ -159,9 +157,9 @@ const ViewLibrariesList = () => {
       <Divider />
       {/* <br />
       <br /> */}
-    
+
       <Paper
-        elevation={10}
+        elevation={0}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -262,16 +260,16 @@ const ViewLibrariesList = () => {
                               </Typography>
                             </Link>
                           </Card>
-                          {/* <Card className={classes.card4} elevation={0}>
-                            <Badge className={classes.edit}>
+                          <Card className={classes.card4} elevation={0}>
+                            <Fab className={classes.edit}>
                               <EditIcon />
-                            </Badge>
+                            </Fab>
                           </Card>
                           <Card className={classes.card5} elevation={0}>
-                            <Badge className={classes.delete}>
+                            <Fab className={classes.delete}>
                               <DeleteIcon />
-                            </Badge>
-                          </Card> */}
+                            </Fab>
+                          </Card>
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
@@ -283,8 +281,11 @@ const ViewLibrariesList = () => {
             })}
           {libraryData && libraryData.length === 0 && (
             <div>
-              Seems like you're missing out on so much fun! <Link to={`/libraries/create`} class="text-decoration-none">Click here</Link> to create
-              your own library, make it public and much more!
+              Seems like you're missing out on so much fun!{" "}
+              <Link to={`/libraries/create`} class="text-decoration-none">
+                Click here
+              </Link>{" "}
+              to create your own library, make it public and much more!
             </div>
           )}
         </Stack>
