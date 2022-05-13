@@ -98,7 +98,6 @@ const useStyles = makeStyles({
     },
   },
   card1: {
-
     width: "70%",
     marginLeft: "10%",
     paddingRight: "10%",
@@ -270,6 +269,7 @@ const Story = () => {
             gridTemplateColumns: { md: "1fr 1fr" },
             gap: 2,
             height: "auto",
+            textDecoration: "none",
           }}
         >
           <Grid container justifyContent="center">
@@ -280,8 +280,8 @@ const Story = () => {
 
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
-                <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`}>
+                <CardContent >
+                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none">
                     {storyData.creator.displayName}
                   </Link>
                 </CardContent>{" "}
@@ -295,8 +295,6 @@ const Story = () => {
               </Card>
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-
-
                   <Typography variant="h5">Also you might like</Typography>
 
                   <Divider />
@@ -321,9 +319,9 @@ const Story = () => {
                                 />
                               </Card>
                               &nbsp; &nbsp;
-                              <Card lassName={classes.card4}>
+                              <Card className={classes.card4}>
                                 &nbsp; &nbsp;
-                                <Link to={`/stories/${recommendation._id}`}>
+                                <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
                                   {recommendation.title}
                                 </Link>
                                 <br />

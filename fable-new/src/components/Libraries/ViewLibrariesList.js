@@ -166,7 +166,7 @@ const ViewLibrariesList = () => {
             })}
           {libraryData && libraryData.length === 0 && (
             <div>
-              Seems like you're missing out on so much fun! <Link to={`/libraries/create`}>Click here</Link> to create
+              Seems like you're missing out on so much fun! <Link to={`/libraries/create`} class="text-decoration-none">Click here</Link> to create
               your own library, make it public and much more!
             </div>
           )}
