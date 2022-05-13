@@ -48,13 +48,11 @@ const getAllMyLibraryStories = async (userId, libraryId) => {
   const owner = await usersCollection.findOne({ _id: userId });
   if (!owner) throw `No such user exists.`;
   let libraryStories = await librariesCollection.findOne({ _id: libraryId });
-  console.log(libraryStories);
   let allLibStory = [];
   for (const libStories of libraryStories.stories) {
     allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
   }
   libraryStories.stories = allLibStory;
-  console.log(libraryStories);
   return libraryStories;
 };
 

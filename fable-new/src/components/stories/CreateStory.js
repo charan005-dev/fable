@@ -434,7 +434,9 @@ const CreateStory = () => {
               <Button onClick={createStory} className={classes.button1}>
                 Create Story
               </Button>
-
+              <Button onClick={() => window.history.back()} variant="outlined">
+                Take me back
+              </Button>
               <br />
             </FormControl>
           </Paper>
