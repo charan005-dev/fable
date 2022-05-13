@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
-
+import ForumIcon from "@mui/icons-material/Forum";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ import { Fab } from "@material-ui/core";
 
 import Edit from "@mui/icons-material/Edit";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import Comments from "./Comments";
 
 const useStyles = makeStyles({
   card: {
@@ -139,6 +140,7 @@ const Story = () => {
   const [storyData, setStoryData] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const classes = useStyles();
+  const [commentsModal, setCommentsModal] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -227,14 +229,19 @@ const Story = () => {
                   </Link>
                   <span>
                     {currentUser.uid === storyData.story.creatorId && (
-                      <Fab
-                        className={classes.editButton}
-                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
-                      >
-                        <Edit />
-                      </Fab>
+                      <>
+                        <Fab
+                          className={classes.editButton}
+                          onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
+                        >
+                          <Edit />
+                        </Fab>
+                      </>
                     )}
                   </span>
+                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
+                    <ForumIcon />
+                  </Fab>
                 </CardContent>
               </Card>
             </Stack>
@@ -303,6 +310,12 @@ const Story = () => {
             </Stack>
           </Grid>
         </Paper>
+        <Comments
+          storyId={id}
+          open={commentsModal}
+          existingComments={storyData.story.comments}
+          handleClose={() => setCommentsModal(false)}
+        />
       </div>
     );
   }
