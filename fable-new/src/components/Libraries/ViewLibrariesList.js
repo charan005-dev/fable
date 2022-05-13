@@ -93,11 +93,11 @@ const ViewLibrariesList = () => {
         <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
-      {/* <br />
-      <br /> */}
+     <br />
+      <br />
     
       <Paper
-        elevation={10}
+        elevation={0}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
