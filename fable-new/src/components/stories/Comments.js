@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  FormControl,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, Box, Button, Divider, FormControl, Grid, List, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import React from "react";
@@ -42,12 +34,11 @@ const useStyles = makeStyles({
     marginRight: "1%",
     marginTop: "1%",
     backgroundColor: "#ececec",
-    color: "black", 
+    color: "black",
     border: "1px solid",
     "&:hover": {
       color: "white",
       backgroundColor: "black",
-     
     },
   },
   buttonupdate: {
@@ -68,8 +59,8 @@ const useStyles = makeStyles({
     fontColor: "grey",
   },
   text: {
-    paddingLeft: "12.5vw", 
-    background:"#ecece"
+    paddingLeft: "12.5vw",
+    background: "#ecece",
   },
   text1: {
     paddingLeft: "8.5vw",
@@ -78,7 +69,7 @@ const useStyles = makeStyles({
 
 const Comments = ({ open, handleClose, storyId }) => {
   const [comment, setComment] = useState("");
-  const [commentError, setCommentError] = useState({ error: false, text: "" });
+  const [commentError, setCommentError] = useState({ error: true, text: "" });
   const [comments, setComments] = useState([]);
   const classes = useStyles();
   let { currentUser } = useContext(AuthContext);
@@ -118,12 +109,9 @@ const Comments = ({ open, handleClose, storyId }) => {
 
   const addComment = async () => {
     if (commentError.error) {
-      toast.error(
-        "Your input is invalid for the comment. Please recheck your inputs and try again.",
-        {
-          theme: "dark",
-        }
-      );
+      toast.error("Your input is invalid for the comment. Please recheck your inputs and try again.", {
+        theme: "dark",
+      });
       return;
     }
     try {
@@ -148,18 +136,12 @@ const Comments = ({ open, handleClose, storyId }) => {
 
   return (
     <div>
-      <SidePane
-        className={classes.commentsPane}
-        open={open}
-        width={40}
-        height={"100%"}
-        onClose={handleClose}
-      >
+      <SidePane className={classes.commentsPane} open={open} width={40} height={"100%"} onClose={handleClose}>
         <Box className={classes.commentsBox}>
           <Typography variant="h4" component={"h2"} className={classes.text}>
             Comments
           </Typography>
-         
+
           <br />
           <div>
             <FormControl className={classes.form}>
@@ -167,6 +149,7 @@ const Comments = ({ open, handleClose, storyId }) => {
                 fullWidth
                 className={classes.textfield}
                 variant="outlined"
+                value={comment}
                 label=" "
                 placeholder="Join the discussion!"
                 onChange={(e) => handleCommentInput(e)}
@@ -175,11 +158,7 @@ const Comments = ({ open, handleClose, storyId }) => {
                 helperText={commentError.error && commentError.text}
               />
               <br />
-              <Button
-                variant="contained"
-                onClick={addComment}
-                className={classes.buttonupdate}
-              >
+              <Button variant="contained" onClick={addComment} className={classes.buttonupdate}>
                 Post Comment
               </Button>
             </FormControl>
@@ -187,29 +166,27 @@ const Comments = ({ open, handleClose, storyId }) => {
             <br />
             <br />
 
-            {comments && comments.length === 0 && (
-              <Typography variant="body2" className={classes.text1}>
-                No comments yet. Be the first person to speak out.
-              </Typography>
-            )}
-
-            {comments &&
-              comments.length > 0 &&
-              comments.map((comment) => {
-                return (
-                  <div>
-                    <Button className={classes.button}>
-                      <Typography className={classes.commenttext}>
-                        {comment.commenterName}{" "}
-                      </Typography>
-                      &nbsp;: {comment.comment}
-                    </Button>
-                  </div>
-                );
-              })}
+            <List>
+              {comments && comments.length === 0 && (
+                <Typography variant="body2" className={classes.text1}>
+                  No comments yet. Be the first person to speak out.
+                </Typography>
+              )}
+              {comments &&
+                comments.length > 0 &&
+                comments.map((comment) => {
+                  return (
+                    <div>
+                      <Button className={classes.button}>
+                        <Typography className={classes.commenttext}>{comment.commenterName} </Typography>
+                        &nbsp;: <Typography variant="body2">{comment.comment}</Typography>
+                      </Button>
+                    </div>
+                  );
+                })}
+            </List>
           </div>
           <br />
-
         </Box>
       </SidePane>
     </div>
