@@ -117,9 +117,11 @@ const useStyles = makeStyles({
   card4: {
     height: "50%",
     width: "50%",
+
     marginLeft: "0%",
     paddingRight: "0%",
     paddingLeft: "0%",
+
   },
   similarStories: {
     padding: 6,
@@ -263,15 +265,52 @@ const Story = () => {
                     {storyData &&
                       storyData.story.genres &&
                       storyData.story.genres.map((genre) => {
+                          return (
+                            <Chip
+                              label={genre}
+                              size={"small"}
+                              color="info"
+                              onClick={() => navigate(`/stories/choose/${genre}`)}
+                            />
+                          );
+                        })}
+                    </Stack>
+                  </CardContent>
+                </Card>
+                <Card className={classes.card2} elevation={24}>
+                  <CardContent>
+                    <Typography variant="h5">Also you might like</Typography>
+
+                    <Divider />
+                    <br />
+                    {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
+                    {recommendations &&
+                      recommendations.map((recommendation) => {
                         return (
-                          <Chip
-                            label={genre}
-                            size={"small"}
-                            color="info"
-                            onClick={() => navigate(`/stories/choose/${genre}`)}
-                          />
+                          <div>
+                            <Grid className={classes.similarStories}>
+                              <Typography variant="subtitle">
+                                <Card className={classes.card3}>
+                                  <img
+                                    className={classes.similarImages}
+                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                  />
+                                </Card>
+                                &nbsp; &nbsp;
+                                <Card className={classes.card4}>
+                                  &nbsp; &nbsp;
+                                  <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
+                                    {recommendation.title}
+                                  </Link>
+                                  <br />
+                                  <Typography variant="overline">{recommendation.shortDescription}</Typography>
+                                </Card>
+                              </Typography>
+                            </Grid>
+                          </div>
                         );
                       })}
+
                   </Stack>
                   <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>{" "}
