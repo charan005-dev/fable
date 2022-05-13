@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
 
 router.get("/me", async (req, res) => {
   try {
-    let owner = req.query.owner;
+    let owner = req.authenticatedUser;
     let storyId = req.query.storyId;
     if (req.authenticatedUser !== owner) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
@@ -48,6 +48,22 @@ router.get("/me", async (req, res) => {
       let allNonAddedLibs = await libraries.getMyNonAddedLibraries(owner, storyId);
       res.status(200).json({ success: true, libraries: allNonAddedLibs });
     }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
+  }
+});
+
+router.get("/me/private", async (req, res) => {
+  try {
+    let accessor = req.authenticatedUser;
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(accessor, skip, take);
+    console.log(privateLibraries);
+    res.status(200).json({ success, libraries: privateLibraries });
+    return;
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
