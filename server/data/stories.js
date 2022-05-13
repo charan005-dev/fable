@@ -128,6 +128,7 @@ const getStoryById = async (storyId, accessor) => {
   const usersCollection = await users();
   console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
+  if (!story) throw `No story present with that id.`;
   const creator = await usersCollection.findOne({ _id: story.creatorId });
   const accessorDetails = await usersCollection.findOne({ _id: accessor });
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
