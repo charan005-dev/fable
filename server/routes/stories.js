@@ -253,6 +253,31 @@ router.post("/:id/like", async (req, res) => {
   }
 });
 
+router.post("/:storyId/comment", async (req, res) => {
+  try {
+    let storyId = req.params.storyId;
+    let commenter = req.authenticatedUser;
+    let comment = req.body.comment;
+    let { success, story } = await stories.addComment(storyId, commenter, comment);
+    res.status(200).json({ success, story });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
+router.get("/:storyId/comments", async (req, res) => {
+  try {
+    let { storyId } = req.params;
+    let existingComments = await stories.getCommentsFromStory(storyId);
+    res.status(200).json(existingComments);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 router.delete("/:storyId", async (req, res) => {
   try {
     let accessor = req.authenticatedUser;

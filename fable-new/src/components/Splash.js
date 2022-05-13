@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -6,10 +6,11 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Stack } from "@mui/material";
 
 import "../App.css";
+import { AuthContext } from "../firebase/Auth";
 
 const useStyles = makeStyles({
   card: {
@@ -71,6 +72,16 @@ const useStyles = makeStyles({
 
 const Splash = () => {
   const classes = useStyles();
+  let { currentUser } = useContext(AuthContext);
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/home");
+      return;
+    }
+  }, [currentUser]);
+
   return (
     <Stack direction="row">
       <div>

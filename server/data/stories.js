@@ -252,6 +252,53 @@ const deleteStory = async (accessor, storyId) => {
   return { success: true };
 };
 
+const addComment = async (storyId, commenter, comment) => {
+  const storiesCollection = await stories();
+  const usersCollection = await users();
+  const findStory = await storiesCollection.findOne({ _id: storyId });
+  if (!findStory) {
+    throw `The story does not exist.`;
+  }
+  let newComment = {
+    _id: uuid.v4(),
+    commenter,
+    comment,
+  };
+  await storiesCollection.updateOne({ _id: storyId }, { $push: { comments: newComment } });
+  let story = await storiesCollection.findOne({ _id: storyId });
+  let friendlyComments = [];
+  for (const x of story.comments) {
+    let cont = {
+      id: x._id,
+      comment: x.comment,
+      commenterId: x.commenter,
+      commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
+    };
+    friendlyComments.push(cont);
+  }
+  story.comments = friendlyComments;
+  console.log(story);
+  return { success: true, story };
+};
+
+const getCommentsFromStory = async (storyId) => {
+  const storiesCollection = await stories();
+  const usersCollection = await users();
+  let story = await storiesCollection.findOne({ _id: storyId });
+  if (!story) throw `No story found with the given id.`;
+  let friendlyComments = [];
+  for (const x of story.comments) {
+    let cont = {
+      id: x._id,
+      comment: x.comment,
+      commenterId: x.commenter,
+      commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
+    };
+    friendlyComments.push(cont);
+  }
+  return { success: true, storyId, comments: friendlyComments };
+};
+
 module.exports = {
   createStory,
   getAllStories,
@@ -266,4 +313,6 @@ module.exports = {
   getRecommendations,
   updateStory,
   deleteStory,
+  addComment,
+  getCommentsFromStory,
 };
