@@ -9,6 +9,7 @@ import {
   Grid,
   Paper,
   Typography,
+  Box,
 } from "@material-ui/core";
 import React from "react";
 import { useState, useContext, useEffect } from "react";
@@ -89,13 +90,14 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2">Library</Typography>
+        <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
-      <br />
-      <br />
+      {/* <br />
+      <br /> */}
+    
       <Paper
-        elevation={0}
+        elevation={10}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -166,7 +168,7 @@ const ViewLibrariesList = () => {
             })}
           {libraryData && libraryData.length === 0 && (
             <div>
-              Seems like you're missing out on so much fun! <Link to={`/libraries/create`}>Click here</Link> to create
+              Seems like you're missing out on so much fun! <Link to={`/libraries/create`} class="text-decoration-none">Click here</Link> to create
               your own library, make it public and much more!
             </div>
           )}

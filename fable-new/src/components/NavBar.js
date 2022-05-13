@@ -114,6 +114,9 @@ const useStyles = makeStyles({
       marginLeft: "-100%",
     },
   },
+  search:{
+    marginLeft: "100vw"
+  }
 });
 
 export default function NavBar() {
@@ -185,12 +188,13 @@ export default function NavBar() {
             <Typography
               variant="h3"
               component="div"
-              sx={{ flexGrow: 0, textDecoration: "none", color: "white" }}
+              sx={{ textDecoration: "none", color: "white", paddingRight:"25vw" }}
             >
               FABLE
             </Typography>{" "}
           </Link>
-          <SearchBox />
+          <SearchBox className={classes.search}>
+          </SearchBox>
           {auth && (
             <div className={classes.accountbutton}>
               <PopupState variant="popover" popupId="demo-popup-menu">
