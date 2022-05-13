@@ -292,7 +292,7 @@ const EditUser = () => {
           <Tooltip
             arrow
             placement="right"
-            title="Number of words that you usually read per minute. Enter a value within 30 and 500 (the human average is 200). If you leave this empty, we'll assume that you're an average human 😁"
+            title="Number of words that you usually read per minute. Enter a value within 30 and 500 (the human average is 200)."
           >
             <Typography variant="h3" component={"h4"} className={classes.headertext}>
               Words Per Minute ⓘ

@@ -272,6 +272,8 @@ const Story = () => {
                   <br />
                   <Stack direction="row" spacing={1}>
                     {storyData &&
+                      storyData.story &&
+                      storyData.story.genres &&
                       storyData.story.genres.map((genre) => {
                         return (
                           <Chip
