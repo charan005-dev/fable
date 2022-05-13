@@ -81,6 +81,7 @@ const Comments = ({ open, handleClose, storyId }) => {
       );
       console.log(data.story.comments);
       setComments(data.story.comments);
+      setComment("");
     } catch (e) {
       console.log(e);
     }
@@ -115,6 +116,7 @@ const Comments = ({ open, handleClose, storyId }) => {
           <Divider />
           <FormControl className={classes.form}>
             <TextField
+              value={comment}
               variant="filled"
               label="Comment"
               placeholder="Join the discussion!"
