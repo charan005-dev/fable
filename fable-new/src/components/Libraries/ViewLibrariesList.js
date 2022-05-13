@@ -11,7 +11,11 @@ import {
   Paper,
   Typography,
   Box,
-
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   Switch,
 
 } from "@material-ui/core";
@@ -97,11 +101,18 @@ const ViewLibrariesList = () => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [createLib, setCreateLib] = useState(false);
+  const [editLib, seteditLib] = useState(false);
+  const [delLib,setDelLib]=useState(false);
   const [changingState, setChangingState] = useState({
     title: "",
   });
   const openCreateLibModal = () => setCreateLib(true);
   const closeCreateLibModal = () => setCreateLib(false);
+  const openDelLibModal=()=>setDelLib(true);
+  const closeDelLibModal=()=>setDelLib(false);
+  const openeditLibModal=()=>seteditLib(true);
+  const closeeditLibModal=()=>seteditLib(false);
+
   // const handleChange = (e, identifier) => {
   //   switch (identifier) {
   //     case "title":
@@ -137,6 +148,9 @@ const ViewLibrariesList = () => {
       console.log(e);
       toast.dark(e.response.data.error);
     }
+  };
+  const handleClose = () => {
+    setDelLib(false);
   };
   useEffect(() => {
     async function getOwnerLibraries() {
@@ -191,6 +205,8 @@ const ViewLibrariesList = () => {
           </Card>
         </Stack>
         <br />
+
+
         <Modal
           open={createLib}
           onClose={closeCreateLibModal}
@@ -239,6 +255,61 @@ const ViewLibrariesList = () => {
             </Button>
           </Box>
         </Modal>
+      
+
+
+        <Modal
+          open={editLib}
+          onClose={closeeditLibModal}
+          arial
+          abelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Edit your own library here
+            </Typography>
+            <InputLabel style={{ color: "#fff" }} id="lib-select-label">
+              Library Name
+            </InputLabel>
+            <Input
+              sx={{
+                width: "30%",
+                marginLeft: "auto",
+                marginRight: "auto",
+                paddingTop: "35px",
+                border: "4px black",
+              }}
+              id="libraryName"
+              label="Enter a name for your library"
+              variant="filled"
+              value={libraryName}
+              required
+              onChange={(e) => {
+                setLibraryName(e.target.value);
+              }}
+            />
+            <Typography className={classes.story}>
+              Want everyone to view your library? Make it public *
+              <Switch
+                checked={isPrivate}
+                onChange={() => {
+                  setIsPrivate(!isPrivate);
+                }}
+                label={isPrivate ? "Public" : "Private"}
+              />
+            </Typography>
+            <br />
+            <br />
+            <Button variant="contained" onClick={createLibrary} className={classes.button1}>
+              Edit Library
+            </Button>
+          </Box>
+        </Modal>
+
+
+
+       
         <Stack direction={"column"} spacing={2}>
           {libraryData &&
             libraryData.length > 0 &&
@@ -268,18 +339,48 @@ const ViewLibrariesList = () => {
                             </Typography>
                             </Stack>
                           </Card>
+
+
+
+
                           <Stack spacing={1} direction={"row"}>
                           <Card className={classes.card4}  elevation={0}>
-                            <Fab className={classes.edit} color="primary"  >
+                            <Fab className={classes.edit} color="primary" onClick={openeditLibModal}  >
                               <EditIcon />
                             </Fab>
                           </Card>
                           </Stack>
+
+
+                          <Dialog open={delLib}>
+          <DialogTitle id="title-text-conf">
+            {"Are you sure you want to delete this story? This action cannot be reversed."}
+          </DialogTitle>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={() => {
+            
+                handleClose();
+              }}
+              color="error"
+            >
+              Confirm
+            </Button>
+            <Button variant="contained" onClick={handleClose}>
+              No, take me back
+            </Button>
+          </DialogActions>
+        </Dialog>
+                       
                           <Card className={classes.card5} elevation={0}>
-                            <Fab className={classes.delete} color="inherit">
+                            <Fab className={classes.delete} color="inherit" onClick={openDelLibModal}>
                               <DeleteIcon />
                             </Fab>
                           </Card>
+
+
+
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
