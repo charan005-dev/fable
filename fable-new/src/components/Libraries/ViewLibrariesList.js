@@ -11,7 +11,9 @@ import {
   Paper,
   Typography,
   Box,
+
   Switch,
+
 } from "@material-ui/core";
 import React from "react";
 import { useState, useContext, useEffect } from "react";
@@ -152,13 +154,14 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2">Library</Typography>
+        <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
-      <br />
-      <br />
+      {/* <br />
+      <br /> */}
+    
       <Paper
-        elevation={0}
+        elevation={10}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -259,7 +262,7 @@ const ViewLibrariesList = () => {
                               </Typography>
                             </Link>
                           </Card>
-                          <Card className={classes.card4} elevation={0}>
+                          {/* <Card className={classes.card4} elevation={0}>
                             <Badge className={classes.edit}>
                               <EditIcon />
                             </Badge>
@@ -268,7 +271,7 @@ const ViewLibrariesList = () => {
                             <Badge className={classes.delete}>
                               <DeleteIcon />
                             </Badge>
-                          </Card>
+                          </Card> */}
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
@@ -280,7 +283,7 @@ const ViewLibrariesList = () => {
             })}
           {libraryData && libraryData.length === 0 && (
             <div>
-              Seems like you're missing out on so much fun! <Link to={`/libraries/create`}>Click here</Link> to create
+              Seems like you're missing out on so much fun! <Link to={`/libraries/create`} class="text-decoration-none">Click here</Link> to create
               your own library, make it public and much more!
             </div>
           )}

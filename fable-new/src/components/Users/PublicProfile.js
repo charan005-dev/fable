@@ -78,7 +78,7 @@ const useStyles = makeStyles({
   text1: {
     color: "grey",
     justifyContent: "center",
-    marginLeft: "10.5%",
+    marginLeft: "80%",
     marginRight: "auto",
   },
   text2: {
@@ -105,19 +105,20 @@ const useStyles = makeStyles({
     paddingLeft: 40,
   },
   card1: {
-    width: "auto",
+    width: 300,
     height: "8%",
-    marginLeft: "10%",
-    paddingLeft: "0%",
-    paddingRight: "0%",
-    marginRight: "2%",
+    marginLeft: "20%",
+    paddingLeft: "10%",
+    paddingRight: "5%",
+    marginRight: "4%",
     paddingBottom: "0%",
     marginBottom: "1%",
     fontSize: "25px",
   },
   card2: {
-    width: "15%",
+    width: 500,
     marginBottom: "100px",
+    // paddingLeft:"10%",
     paddingBottom: "2%",
     height: "2%",
   },
@@ -152,16 +153,27 @@ const useStyles = makeStyles({
   },
   editButton: {
     border: "solid 1px",
-    padding: 1,
+    padding: "1px",
     float: "right",
-    marginTop: 10,
+    marginTop: 23,
     marginLeft: 20,
-    marginRight: 50,
-    backgroundColor: "#e4d4a3",
+    marginRight: 5,
+    height: 8,
+    width: 35,
+    backgroundColor: "black",
+    color: "white",
+
     "&:hover": {
-      backgroundColor: "#000000",
-      color: "#fff",
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
     },
+  },
+  text4: {
+    marginLeft: 100,
+  },
+  editicon: {
+    fontSize: "medium",
   },
   avatar: {
     marginTop: 6,
@@ -240,58 +252,97 @@ const PublicProfile = () => {
             </Stack>
           </Card>
           <br />
+
           <Typography variant="h3" component={"h2"} className={classes.text}>
-            Stories written
+            Stories Written
           </Typography>
           <br />
-          <br />
-          <br />
-          <Stack direction="column">
-            <div>
-              <Stack direction="column">
-                {profileData.profile &&
-                  profileData.profile.storiesCreated.map((createdStory, idx) => {
-                    if (idx > 4) {
-                      return;
-                    }
-                    return (
-                      <Grid key={idx}>
-                        <Stack direction="row">
-                          <Card className={classes.card1} elevation={15}>
-                            <Link to={`/stories/${createdStory._id}`}>
-                              <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
-                            </Link>
-                          </Card>
 
-                          <Card className={classes.card2} elevation={0}>
-                            <CardContent>
-                              <Link to={`/stories/${createdStory._id}`}>
-                                <Typography>{createdStory.title}</Typography>
-                              </Link>
-                            </CardContent>
-                            <CardContent>
-                              <Typography>
-                                {createdStory.shortDescription.length > 200
-                                  ? createdStory.shortDescription.substring(0, 197) + "..."
-                                  : createdStory.shortDescription}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Stack>
-                      </Grid>
-                    );
-                  })}
-              </Stack>
-              <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
-            </div>
-            <Box className={classes.box1}>
-              <Grid>
-                <Card className={classes.card4}>
-                  <ViewLibrariesList />
-                </Card>
-              </Grid>
-            </Box>
-          </Stack>
+          <br />
+          <br />
+          <Grid>
+            <Stack direction="row" className={classes.text4}>
+              <div>
+                <Stack direction="row">
+                  {profileData.profile &&
+                    profileData.profile.storiesCreated.map((createdStory, idx) => {
+                      if (idx > 4) {
+                        return;
+                      }
+                      return (
+                        <>
+                          <Grid key={idx}>
+                            <Stack direction="row">
+                              <Card className={classes.card1} elevation={15}>
+                                <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
+                                  <CardMedia
+                                    className={classes.media}
+                                    component="img"
+                                    image={createdStory.coverImage}
+                                  />
+                                </Link>
+                              </Card>
+                              <Card className={classes.card2} elevation={0}>
+                                <CardContent>
+                                  <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
+                                    <Typography>{createdStory.title}</Typography>
+                                  </Link>
+                                  {profileData.profile.storiesCreated.map((createdStory, idx) => {
+                                    if (idx > 2) {
+                                      return;
+                                    }
+                                    return (
+                                      <Grid key={idx}>
+                                        <Stack direction="column">
+                                          <Card className={classes.card1} elevation={4}>
+                                            <Link to={`/stories/${createdStory._id}`}>
+                                              <CardMedia
+                                                className={classes.media}
+                                                component="img"
+                                                image={createdStory.coverImage}
+                                              />
+                                            </Link>
+                                          </Card>
+                                          <Paper>
+                                            <Card className={classes.card2} elevation={0}>
+                                              <CardContent>
+                                                <Link to={`/stories/${createdStory._id}`}>
+                                                  <Typography>{createdStory.title}</Typography>
+                                                </Link>
+                                              </CardContent>
+                                              <CardContent>
+                                                <Typography>
+                                                  {createdStory.shortDescription.length > 200
+                                                    ? createdStory.shortDescription.substring(0, 197) + "..."
+                                                    : createdStory.shortDescription}
+                                                </Typography>
+                                              </CardContent>
+                                            </Card>
+                                          </Paper>
+                                        </Stack>
+                                      </Grid>
+                                    );
+                                  })}
+                                  <br />
+                                </CardContent>
+                              </Card>
+                            </Stack>
+                          </Grid>
+                        </>
+                      );
+                    })}
+                </Stack>
+              </div>
+            </Stack>
+          </Grid>
+          <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
+          <Box className={classes.box1}>
+            <Grid>
+              <Card className={classes.card4}>
+                <ViewLibrariesList />
+              </Card>
+            </Grid>
+          </Box>
         </Grid>
       </>
     );

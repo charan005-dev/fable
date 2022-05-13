@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import {
   Card,
@@ -20,19 +21,70 @@ import {
   CardMedia,
   Divider,
   Tooltip,
+  Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../firebase/Auth";
+import { ClassNames } from "@emotion/react";
+
+const useStyles = makeStyles({
+  card: {
+    background: "black",
+    color: "white",
+    marginTop: "4%",
+    textDecoration: "none",
+    paddingBottom: "5%",
+    paddingTop: "5%",
+    paddingLeft: "2%",
+    paddingRight: "15%",
+    height: "auto",
+    width: "60%",
+    marginLeft: "20%",
+    marginRight: "20%",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+    },
+  },
+  title: {
+    marginLeft: "10%",
+  },
+  dialog: {
+    marginLeft: "33%",
+  },
+  buttonupdate: {
+    background: "black",
+    color: "white",
+    width: "auto",
+
+    textDecoration: "none",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+    },
+  },
+  link: {
+    textDecoration: "none",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+    },
+  },
+});
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
+
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
+  marginLeft: "0",
   maxWidth: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing("40vw"),
@@ -43,6 +95,7 @@ const Search = styled("div")(({ theme }) => ({
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: "100%",
+  marginRight: "80%",
   position: "absolute",
   pointerEvents: "none",
   display: "flex",
@@ -60,7 +113,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: "100%",
     paddingRight: "10px",
     [theme.breakpoints.up("sm")]: {
-      width: "100%",
+      width: "80%",
       "&:focus": {
         width: "20ch",
       },
@@ -69,7 +122,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const isValidSearchTerm = (q) => {
-  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0) return false;
+  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0)
+    return false;
   return true;
 };
 
@@ -78,6 +132,7 @@ export default function SearchBox() {
   const [searchResults, setSearchResults] = useState([]);
   const [open, setOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const classes = useStyles();
 
   const handleSearchInput = (e) => {
     setSearchTerm(e.target.value);
@@ -111,7 +166,7 @@ export default function SearchBox() {
   };
 
   return (
-    <Search sx={{ marginX: 40 }}>
+    <Search sx={{  marginX: "2%" }}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
@@ -128,8 +183,8 @@ export default function SearchBox() {
         />
       </Tooltip>
       {/* <SearchResults /> */}
-      <Dialog onClose={handleDialogClose} open={open}>
-        <DialogTitle>Search Results</DialogTitle>
+      <Dialog onClose={handleDialogClose} open={open} fullWidth>
+        <DialogTitle className={classes.dialog}>Search Results</DialogTitle>
         {searchResults && searchResults.length === 0 && (
           <div>
             <Typography sx={{ p: 2 }} variant="body1">
@@ -143,18 +198,20 @@ export default function SearchBox() {
             {searchResults &&
               searchResults.map((res) => {
                 return (
-                  <Card>
-                    <CardContent>
-                      <CardActionArea>
-                        <Link onClick={handleLinkClick} to={`/stories/${res.id}`}>
-                          <CardHeader title={res.title}></CardHeader>
-                          <br />
-                        </Link>
-                      </CardActionArea>
-                    </CardContent>
-                  </Card>
+                  <div>
+                    <NavLink to={`/stories/${res.id}`} className={classes.link}>
+                      {" "}
+                      <Card className={classes.card} onClick={handleLinkClick}>
+                        {" "}
+                        {res.title.length > 35
+                          ? res.title.substring(0, 23) + "..."
+                          : res.title}{" "}
+                      </Card>
+                    </NavLink>
+                  </div>
                 );
               })}
+            <br />
           </List>
         )}
       </Dialog>
