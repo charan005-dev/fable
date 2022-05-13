@@ -238,7 +238,69 @@ const EditStory1 = () => {
     });
   };
 
+  const isStateValid = () => {
+    // checking all the state values to see if they're correct
+    // before allowing story creation
+    if (
+      !changingState.title ||
+      typeof changingState.title !== "string" ||
+      changingState.title.length === 0 ||
+      changingState.title.trim().length === 0 ||
+      changingState.title.length < 6 ||
+      changingState.title.length > 30
+    )
+      return {
+        e: true,
+        message: "Your title value is invalid or contains more than the expected amount of characters.",
+      };
+    if (
+      !changingState.desc ||
+      typeof changingState.desc !== "string" ||
+      changingState.desc.length === 0 ||
+      changingState.desc.trim().length === 0 ||
+      changingState.desc.length < 30 ||
+      changingState.desc.length > 5000
+    )
+      return {
+        e: true,
+        message: "Your description is invalid or contains more than the expected amount of characters.",
+      };
+    let content = editorRef.current.getContent();
+    if (
+      !content ||
+      typeof content !== "string" ||
+      content.length === 0 ||
+      content.trim().length === 0 ||
+      content.length < 200 ||
+      content.length > 1000000
+    )
+      return {
+        e: true,
+        message: "Your story content is invalid or contains more than the expected amount of characters.",
+      };
+    if (
+      !Array.isArray(changingState.genres) ||
+      changingState.genres.length === 0 ||
+      changingState.genres.some((genre) => !genres.includes(genre))
+    ) {
+      return {
+        e: true,
+        message:
+          "The selected genres are invalid. " +
+          (changingState.genres.length === 0 ? "Please select at least one genre for your story" : ""),
+      };
+    }
+    return { e: false };
+  };
+
   const updateStory = async () => {
+    let validity = isStateValid();
+    if (validity.e) {
+      toast.error("Cannot perform the action. " + validity.message, {
+        theme: "dark",
+      });
+      return;
+    }
     let formData = new FormData();
     formData.append("creatorId", currentUser.uid);
     formData.append("title", changingState.title);
@@ -256,6 +318,7 @@ const EditStory1 = () => {
       if (data.success) {
         setUpdateSuccess(true);
         toast.dark("Your story has been updated successfully!");
+        setTimeout(() => navigate(`/stories/${storyId}`));
         return;
       }
     } catch (e) {
@@ -323,7 +386,7 @@ const EditStory1 = () => {
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
               <Typography variant={"h4"} className={classes.title}>
-                Title
+                Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
 
@@ -346,7 +409,7 @@ const EditStory1 = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story
+                Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
               </Typography>
               <br />
 
@@ -373,7 +436,7 @@ const EditStory1 = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Your Story Goes Here!
+                Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
               </Typography>
               <br />
               <Editor
@@ -391,7 +454,7 @@ const EditStory1 = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Select All Genres that Apply!
+                Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />
 
