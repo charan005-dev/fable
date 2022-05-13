@@ -19,7 +19,7 @@ import ViewLibrariesList from "./Libraries/ViewLibrariesList";
 import Signin from "./Signin";
 import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
-import ManageAllStories from "./Stories/ManageAllStories"; 
+import ManageAllStories from "./Stories/ManageAllStories";
 import EditStory1 from "./Stories/EditStory1";
 
 import Footer from "./Footer";
@@ -43,6 +43,7 @@ function App() {
         <div className="App-body">
           <Routes>
             <Route path="/" element={<Splash />} />
+
             <Route path="/home" element={<PrivateRoute />}>
               <Route path="/home" element={<Home />} />
             </Route>
