@@ -4,23 +4,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardHeader,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Paper,
-  Divider,
-  TextField,
-  Button,
-} from "@material-ui/core";
+import { Box, Card, CardContent, CardMedia, Grid, Typography, Paper, Divider, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Edit from "@mui/icons-material/Edit";
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
@@ -105,22 +90,24 @@ const useStyles = makeStyles({
     paddingLeft: 40,
   },
   card1: {
-    width: 300,
+    width: "100%",
     height: "8%",
-    marginLeft: "20%",
-    paddingLeft: "10%",
-    paddingRight: "5%",
-    marginRight: "4%",
+    marginLeft: "0%",
+    paddingLeft: "0%",
+    paddingRight: "0%",
+    marginRight: "0%",
     paddingBottom: "0%",
     marginBottom: "1%",
     fontSize: "25px",
   },
   card2: {
-    width: 500,
+    width: 400,
     marginBottom: "100px",
     // paddingLeft:"10%",
     paddingBottom: "2%",
     height: "2%",
+    paddingLeft: "2%",
+    paddingRight: "50%",
   },
   card3: {
     width: "100%",
@@ -150,6 +137,20 @@ const useStyles = makeStyles({
   },
   subcard: {
     width: "6%",
+  },
+  cardpaper: {
+    width: "40vw",
+    marginRight: "10%",
+    marginLeft: "6%",
+    marginBottom: "10%",
+    height: "70vw",
+  },
+  cardpaper1: {
+    width: "40vw",
+    marginRight: "10%",
+    marginLeft: "0%",
+    marginBottom: "10%",
+    height: "70vw",
   },
   editButton: {
     border: "solid 1px",
@@ -182,6 +183,9 @@ const useStyles = makeStyles({
   box1: {
     width: "80%",
   },
+  libraryCol: {
+    maxWidth: 70,
+  },
 });
 
 const PublicProfile = () => {
@@ -193,9 +197,12 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/users/public_profile/${profileUserId}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
       setProfileData(data);
       console.log(data);
     }
@@ -210,7 +217,10 @@ const PublicProfile = () => {
           <Card elevation={15} className={classes.namecard}>
             <Grid container justifyContent="center">
               {!profileData.profile.userAvatar && (
-                <Avatar sx={{ width: 64, height: 64 }} className={classes.avatar}>
+                <Avatar
+                  sx={{ width: 64, height: 64 }}
+                  className={classes.avatar}
+                >
                   {profileData.profile.displayName.substring(0, 2)}
                 </Avatar>
               )}
@@ -230,7 +240,12 @@ const PublicProfile = () => {
                 {profileData.profile.displayName}
               </Typography>
               {currentUser.uid === profileData.profile._id && (
-                <Fab className={classes.editButton} onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}>
+                <Fab
+                  className={classes.editButton}
+                  onClick={() =>
+                    navigate(`/users/${profileData.profile._id}/edit`)
+                  }
+                >
                   <Edit />
                 </Fab>
               )}
@@ -239,110 +254,68 @@ const PublicProfile = () => {
             <br />
             <Stack direction="row" className={classes.card3} spacing={5}>
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text1}
+                >
                   <MenuBookIcon />
                 </Typography>
               </Card>
               &nbsp; &nbsp;
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text1}
+                >
                   <LibraryAddIcon />
                 </Typography>
               </Card>
             </Stack>
           </Card>
           <br />
-
-          <Typography variant="h3" component={"h2"} className={classes.text}>
-            Stories Written
-          </Typography>
-          <br />
-
-          <br />
-          <br />
-          <Grid>
-            <Stack direction="row" className={classes.text4}>
+          {/* <Grid> */}
+          <Stack direction="row" className={classes.libraryCol} spacing={2}>
+            <span>
               <div>
+                <Typography
+                  variant="h3"
+                  component={"h2"}
+                  className={classes.text}
+                >
+                  Stories Written
+                </Typography>
+                <br />
+                <br />
+                <br />
                 <Stack direction="row">
-                  {profileData.profile &&
-                    profileData.profile.storiesCreated.map((createdStory, idx) => {
-                      if (idx > 4) {
-                        return;
-                      }
-                      return (
-                        <>
-                          <Grid key={idx}>
-                            <Stack direction="row">
-                              <Card className={classes.card1} elevation={15}>
-                                <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
-                                  <CardMedia
-                                    className={classes.media}
-                                    component="img"
-                                    image={createdStory.coverImage}
-                                  />
-                                </Link>
-                              </Card>
-                              <Card className={classes.card2} elevation={0}>
-                                <CardContent>
-                                  <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
-                                    <Typography>{createdStory.title}</Typography>
-                                  </Link>
-                                  {profileData.profile.storiesCreated.map((createdStory, idx) => {
-                                    if (idx > 2) {
-                                      return;
-                                    }
-                                    return (
-                                      <Grid key={idx}>
-                                        <Stack direction="column">
-                                          <Card className={classes.card1} elevation={4}>
-                                            <Link to={`/stories/${createdStory._id}`}>
-                                              <CardMedia
-                                                className={classes.media}
-                                                component="img"
-                                                image={createdStory.coverImage}
-                                              />
-                                            </Link>
-                                          </Card>
-                                          <Paper>
-                                            <Card className={classes.card2} elevation={0}>
-                                              <CardContent>
-                                                <Link to={`/stories/${createdStory._id}`}>
-                                                  <Typography>{createdStory.title}</Typography>
-                                                </Link>
-                                              </CardContent>
-                                              <CardContent>
-                                                <Typography>
-                                                  {createdStory.shortDescription.length > 200
-                                                    ? createdStory.shortDescription.substring(0, 197) + "..."
-                                                    : createdStory.shortDescription}
-                                                </Typography>
-                                              </CardContent>
-                                            </Card>
-                                          </Paper>
-                                        </Stack>
-                                      </Grid>
-                                    );
-                                  })}
-                                  <br />
-                                </CardContent>
-                              </Card>
-                            </Stack>
-                          </Grid>
-                        </>
-                      );
-                    })}
+                  <Paper className={classes.cardpaper} elevation={0}>
+                    <Card className={classes.cardpaper} elevation={10}>
+                      charan
+                    </Card>
+                  </Paper>
+                  <Paper className={classes.cardpaper1} elevation={0}>
+                    <Card className={classes.cardpaper1} elevation={10}>
+                      charan
+                    </Card>
+                  </Paper>
                 </Stack>
+                );
+                <br />
+                <Button onClick={() => navigate(`/stories/manage`)}>
+                  View More
+                </Button>
               </div>
-            </Stack>
-          </Grid>
-          <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
-          <Box className={classes.box1}>
-            <Grid>
-              <Card className={classes.card4}>
-                <ViewLibrariesList />
-              </Card>
-            </Grid>
-          </Box>
+              {/* </Stack> */}
+              <Stack direction="column" spacing={2}>
+                <div>
+                  <Typography variant="h2">Libraries</Typography>
+                </div>
+              </Stack>
+            </span>
+          </Stack>
+          {/* </Grid> */}
         </Grid>
       </>
     );
