@@ -262,16 +262,7 @@ const ViewLibrariesList = () => {
                               </Typography>
                             </Link>
                           </Card>
-                          {/* <Card className={classes.card4} elevation={0}>
-                            <Badge className={classes.edit}>
-                              <EditIcon />
-                            </Badge>
-                          </Card>
-                          <Card className={classes.card5} elevation={0}>
-                            <Badge className={classes.delete}>
-                              <DeleteIcon />
-                            </Badge>
-                          </Card> */}
+                       
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
