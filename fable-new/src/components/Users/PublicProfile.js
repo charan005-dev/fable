@@ -107,7 +107,7 @@ const useStyles = makeStyles({
   card1: {
     width: 300,
     height: "8%",
-    marginLeft: "20%",
+    marginLeft: "40%",
     paddingLeft: "10%",
     paddingRight: "5%",
     marginRight: "4%",
@@ -116,11 +116,13 @@ const useStyles = makeStyles({
     fontSize: "25px",
   },
   card2: {
-    width: 500,
+    width: 400,
     marginBottom: "100px",
     // paddingLeft:"10%",
     paddingBottom: "2%",
     height: "2%",
+    paddingLeft: "2%",
+    paddingRight: "50%",
   },
   card3: {
     width: "100%",
@@ -150,6 +152,10 @@ const useStyles = makeStyles({
   },
   subcard: {
     width: "6%",
+  },
+  cardpaper:{
+  marginLeft:200
+
   },
   editButton: {
     border: "solid 1px",
@@ -204,9 +210,9 @@ const PublicProfile = () => {
 
   const [scrollX, setScrollX] = useState(0);
   const buildUserProfile = (profileData) => {
-    return (
-      <>
-        <Grid>
+  return(
+    <>
+      <Grid>
           <Card elevation={15} className={classes.namecard}>
             <Grid container justifyContent="center">
               {!profileData.profile.userAvatar && (
@@ -261,37 +267,15 @@ const PublicProfile = () => {
           <br />
           <br />
           <Grid>
-            <Stack direction="row" className={classes.text4}>
+            <Stack direction="row" >
               <div>
                 <Stack direction="row">
                   {profileData.profile &&
                     profileData.profile.storiesCreated.map((createdStory, idx) => {
-                      if (idx > 4) {
+                      if (idx > 2) {
                         return;
-                      }
-                      return (
-                        <>
-                          <Grid key={idx}>
-                            <Stack direction="row">
-                              <Card className={classes.card1} elevation={15}>
-                                <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
-                                  <CardMedia
-                                    className={classes.media}
-                                    component="img"
-                                    image={createdStory.coverImage}
-                                  />
-                                </Link>
-                              </Card>
-                              <Card className={classes.card2} elevation={0}>
-                                <CardContent>
-                                  <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
-                                    <Typography>{createdStory.title}</Typography>
-                                  </Link>
-                                  {profileData.profile.storiesCreated.map((createdStory, idx) => {
-                                    if (idx > 2) {
-                                      return;
-                                    }
-                                    return (
+                      }          
+                             return (
                                       <Grid key={idx}>
                                         <Stack direction="column">
                                           <Card className={classes.card1} elevation={4}>
@@ -303,8 +287,8 @@ const PublicProfile = () => {
                                               />
                                             </Link>
                                           </Card>
-                                          <Paper>
-                                            <Card className={classes.card2} elevation={0}>
+                                          <Paper className ="cardPaper" elevation={4}>
+                                            {/* <Card className={classes.card2} elevation={10}> */}
                                               <CardContent>
                                                 <Link to={`/stories/${createdStory._id}`}>
                                                   <Typography>{createdStory.title}</Typography>
@@ -317,25 +301,23 @@ const PublicProfile = () => {
                                                     : createdStory.shortDescription}
                                                 </Typography>
                                               </CardContent>
-                                            </Card>
+                                            {/* </Card> */}
                                           </Paper>
                                         </Stack>
                                       </Grid>
                                     );
                                   })}
                                   <br />
-                                </CardContent>
-                              </Card>
+                              
+                             </Stack>
+                             </div>
                             </Stack>
                           </Grid>
-                        </>
-                      );
-                    })}
-                </Stack>
-              </div>
-            </Stack>
-          </Grid>
-          <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
+                 
+                  
+
+              <Grid>
+           <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
           <Box className={classes.box1}>
             <Grid>
               <Card className={classes.card4}>
@@ -344,8 +326,9 @@ const PublicProfile = () => {
             </Grid>
           </Box>
         </Grid>
-      </>
-    );
+</Grid>
+    </>
+  )
   };
   return <div>{profileData && <div>{buildUserProfile(profileData)}</div>}</div>;
 };
