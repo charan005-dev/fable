@@ -94,7 +94,7 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
     contentText: convert(contentHtml, { wordwrap: 130 }),
     contentHtml,
     genres,
-    coverImage,
+    coverImage: coverImage ? coverImage : findUpdatable.coverImage,
     updatedAt: Date.now(),
   };
   await storiesCollection.updateOne({ _id: storyId, creatorId: owner }, { $set: updatedStory });

@@ -43,7 +43,7 @@ const updateUser = async (userId, displayName, wpm, filePath) => {
   const checkUsername = await usersCollection.findOne({
     displayName: { $regex: new RegExp("^" + displayName + "$", "i") },
   });
-  if (checkUsername) {
+  if (checkUsername && userId !== checkUsername._id) {
     throw `Username is already taken!`;
   }
   let updatedUser = {

@@ -112,7 +112,7 @@ const useStyles = makeStyles({
     color: "black",
     width: "auto",
     marginLeft: "auto",
-    
+
     paddingRight: "30px",
     paddingLeft: "30px",
     paddingTop: "10px",
@@ -152,11 +152,10 @@ const useStyles = makeStyles({
   edit: {
     width: "100vw",
     marginLeft: "-80%",
-  }, 
-  grid:
-  {
-      width:"100%"
-  }
+  },
+  grid: {
+    width: "100%",
+  },
 });
 
 const EditStory1 = () => {
@@ -200,7 +199,7 @@ const EditStory1 = () => {
       case "file":
         setChangingState({
           ...changingState,
-          coverImage: e.target.value.length !== 0 ? e.target.value : "",
+          coverImage: e.target.files[0],
         });
         break;
       case "default":
@@ -314,19 +313,8 @@ const EditStory1 = () => {
           <Paper className={classes.paper} elevation={20}>
             <br />
 
-
-            <Grid
-              container
-              
-              elevation={25} 
-              className={classes.grid}
-            >
-              <Typography
-                variant="h3"
-                component={"h1"}
-                className={classes.headertext}
-              >
-
+            <Grid container elevation={25} className={classes.grid}>
+              <Typography variant="h3" component={"h1"} className={classes.headertext}>
                 Use this place to edit and fine-tune your story!
               </Typography>
             </Grid>
