@@ -79,7 +79,7 @@ const useStyles = makeStyles({
   },
   paper: {
     width: "23.3%",
-    marginLeft: "40%",
+    marginLeft: "38.5%",
     paddingLeft: "2%",
     paddingRight: "2%",
   },
@@ -236,7 +236,7 @@ const EditUser = () => {
       <br />
       <br />
       <br />
-      <Paper className={classes.paper} elevation={23}>
+      <Paper className={classes.paper} elevation={24}>
         <br />
         <br />
         <FormGroup>
