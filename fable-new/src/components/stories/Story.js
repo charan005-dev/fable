@@ -29,6 +29,7 @@ import Edit from "@mui/icons-material/Edit";
 import { Chip } from "@material-ui/core";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Comments from "./Comments";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   card: {
@@ -117,11 +118,9 @@ const useStyles = makeStyles({
   card4: {
     height: "50%",
     width: "50%",
-
     marginLeft: "0%",
     paddingRight: "0%",
     paddingLeft: "0%",
-
   },
   similarStories: {
     padding: 6,
@@ -146,11 +145,21 @@ const Story = () => {
 
   useEffect(() => {
     async function getStoryData() {
-      const { data } = await axios.get(`/api/stories/${id}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
-      console.log(data);
-      setStoryData(data);
+      try {
+        const { data } = await axios.get(`/api/stories/${id}`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        setStoryData(data);
+      } catch (e) {
+        console.log(e);
+        if (e.response.status === 404)
+          toast.error("The requested resource does not exist.", {
+            theme: "dark",
+          });
+        setTimeout(() => navigate(`/home`), 500);
+        return;
+      }
     }
     getStoryData();
   }, [id]);
@@ -204,13 +213,13 @@ const Story = () => {
                   <Typography variant="h7">
                     {" "}
                     <FavoriteIcon /> &nbsp;
-                    {" " + (storyData.story && storyData.story.likedBy && storyData.story.likedBy.length)}
+                    {" " + storyData.story.likedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
                   <Typography variant="h7">
                     {" "}
                     <VisibilityIcon />
-                    {" " + (storyData.story && storyData.story.visitedBy && storyData.story.visitedBy.length)}
+                    {" " + storyData.story.visitedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
                   <Tooltip placement="right" title="Average time it'll take for you to read this story">
@@ -258,61 +267,22 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData && storyData.story.shortDescription}</Typography> <br />
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
                     {storyData &&
-                      storyData.story.genres &&
                       storyData.story.genres.map((genre) => {
-                          return (
-                            <Chip
-                              label={genre}
-                              size={"small"}
-                              color="info"
-                              onClick={() => navigate(`/stories/choose/${genre}`)}
-                            />
-                          );
-                        })}
-                    </Stack>
-                  </CardContent>
-                </Card>
-                <Card className={classes.card2} elevation={24}>
-                  <CardContent>
-                    <Typography variant="h5">Also you might like</Typography>
-
-                    <Divider />
-                    <br />
-                    {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
-                    {recommendations &&
-                      recommendations.map((recommendation) => {
                         return (
-                          <div>
-                            <Grid className={classes.similarStories}>
-                              <Typography variant="subtitle">
-                                <Card className={classes.card3}>
-                                  <img
-                                    className={classes.similarImages}
-                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                                  />
-                                </Card>
-                                &nbsp; &nbsp;
-                                <Card className={classes.card4}>
-                                  &nbsp; &nbsp;
-                                  <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
-                                    {recommendation.title}
-                                  </Link>
-                                  <br />
-                                  <Typography variant="overline">{recommendation.shortDescription}</Typography>
-                                </Card>
-                              </Typography>
-                            </Grid>
-                          </div>
+                          <Chip
+                            label={genre}
+                            size={"small"}
+                            color="info"
+                            onClick={() => navigate(`/stories/choose/${genre}`)}
+                          />
                         );
                       })}
-
                   </Stack>
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography>{" "}
                 </CardContent>{" "}
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
@@ -327,45 +297,40 @@ const Story = () => {
                   <Typography variant="h5">You might also like</Typography>
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && <div>No relevant stories available.</div>}
+                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
                   {recommendations &&
-                    recommendations.map((recommendation, idx) => {
-                      if (recommendation._id !== id) {
-                        return (
-                          <div>
-                            <Grid className={classes.similarStories}>
-                              <Typography variant="subtitle">
-                                <span className={classes.card3}>
-                                  <img
-                                    className={classes.similarImages}
-                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                                  />
-                                </span>
+                    recommendations.map((recommendation) => {
+                      return (
+                        <div>
+                          <Grid className={classes.similarStories}>
+                            <Typography variant="subtitle">
+                              <span className={classes.card3}>
+                                <img
+                                  className={classes.similarImages}
+                                  src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                />
+                              </span>
+                              &nbsp; &nbsp;
+                              <span className={classes.card4}>
                                 &nbsp; &nbsp;
-                                <span className={classes.card4}>
-                                  &nbsp; &nbsp;
-                                  <span className={classes.content}>
-                                    <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
-                                      {recommendation.title}
-                                    </Link>
-                                  </span>
-                                  <br />
-                                  <span className={classes.content1}>
-                                    <Typography variant="caption">
-                                      {recommendation.shortDescription.length > 50
-                                        ? recommendation.shortDescription.substring(0, 50) + "..."
-                                        : recommendation.shortDescription}
-                                    </Typography>
-                                  </span>
+                                <span className={classes.content}>
+                                  <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
+                                    {recommendation.title}
+                                  </Link>
                                 </span>
-                              </Typography>
-                            </Grid>
-                          </div>
-                        );
-                      }
-                      if (idx === recommendations.length - 1) {
-                        return <div>No relevant stories available.</div>;
-                      }
+                                <br />
+                                <span className={classes.content1}>
+                                  <Typography variant="caption">
+                                    {recommendation.shortDescription.length > 50
+                                      ? recommendation.shortDescription.substring(0, 50) + "..."
+                                      : recommendation.shortDescription}
+                                  </Typography>
+                                </span>
+                              </span>
+                            </Typography>
+                          </Grid>
+                        </div>
+                      );
                     })}
                 </CardContent>
               </Card>
