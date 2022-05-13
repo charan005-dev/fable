@@ -207,27 +207,30 @@ const ManageAllStories = () => {
         <br />
         <br />
         <br />
-        {allStories.length > 0 &&
-          allStories.map((story) => {
-            return (
-              
-              <div>
+          
+        <div>
                 <Box
-                
+
                   sx={{
+                    
                     flexGrow:1,
                     display: "flex",
                     flexWrap: "wrap",
                     "& > :not(style)": {
                       m: 1,
-                      width: 500,
+                      width: 1500,
                       height: "auto",
-                      marginLeft: 400,
+                      marginLeft: 320,
+                      
                    
                      },
                   }}
                 >
-                  
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+        {allStories.length > 0 &&
+          allStories.map((story) => {
+            return (
+              <Grid item xs={5}>
                   <Paper
                     elevation={20}
                     className={classes.paper}
@@ -236,9 +239,9 @@ const ManageAllStories = () => {
                       display: "grid",
                       gridTemplateColumns: { md: "1fr 1fr" },
                       gap: 2,
+
                     }}
                   >
-                    <Grid>
                       <Stack direction="row">
                         <Card className={classes.card1} elevation={0}>
                           <Link to={`/stories/${story._id}`}>
@@ -252,6 +255,7 @@ const ManageAllStories = () => {
                               <Typography>{story.title}</Typography>
                             </Link>
                           </CardContent>
+                          <br />
                           <CardContent>
                             <Typography>
                               {story.shortDescription.length > 200
@@ -261,14 +265,15 @@ const ManageAllStories = () => {
                           </CardContent>
                         </Card>
                       </Stack>
-                    </Grid>
                   </Paper>
-                </Box>
-              </div>
+                  </Grid>
             );
           })}
+          </Grid>
+          </Box>
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 

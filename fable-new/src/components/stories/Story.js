@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
@@ -18,9 +19,12 @@ import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
+
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import { Fab } from "@material-ui/core";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import Edit from "@mui/icons-material/Edit";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
@@ -93,6 +97,15 @@ const useStyles = makeStyles({
     },
   },
   card1: {
+
+    width: "70%",
+    marginLeft: "10%",
+    paddingRight: "10%",
+  },
+  card2: {
+    width: "15%",
+    marginBottom: "100px",
+
     width: "80%",
     marginLeft: "0%",
     paddingRight: "0%",
@@ -112,10 +125,8 @@ const useStyles = makeStyles({
     width: "50%",
     marginLeft: "50%",
     paddingRight: "50%",
+
   },
-  // cardempty: {
-  //   width: "100%"
-  // },
   similarStories: {
     padding: 6,
   },
@@ -168,6 +179,8 @@ const Story = () => {
     console.log(storyData);
     return (
       <div>
+        <br />
+        <br />
         <Paper
           elevation={10}
           sx={{
@@ -193,6 +206,7 @@ const Story = () => {
                       ? storyData.story.title.substring(0, 40) + "..."
                       : storyData.story.title}
                   </Typography>{" "}
+
                   <br></br> &nbsp;
                   <Typography variant="h7">
                     {" "}
@@ -218,6 +232,7 @@ const Story = () => {
                   </Tooltip>
                   <br />
                   <br />
+
                   <Link to={`/stories/${storyData.story._id}/book`}>
                     <Button className={classes.button} elevation={20}>
                       <MenuBookIcon /> &nbsp; Start Reading{" "}
@@ -253,7 +268,11 @@ const Story = () => {
           }}
         >
           <Grid container justifyContent="center">
+
+            <Stack direction={"row"} spacing={2}>
+
             <Stack direction={"row"} spacing={90}>
+
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
               <Card className={classes.card1} elevation={0}>
                 <CardContent>
@@ -269,11 +288,12 @@ const Story = () => {
                   </Typography>{" "}
                 </CardContent>
               </Card>
-              {/* <Card className={classes.cardempty} elevation={10}>
-                </Card> */}
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
+
+
                   <Typography variant="h5">Also you might like</Typography>
+
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && (
@@ -313,6 +333,7 @@ const Story = () => {
                     })}
                 </CardContent>
               </Card>
+              </Stack>
             </Stack>
           </Grid>
         </Paper>

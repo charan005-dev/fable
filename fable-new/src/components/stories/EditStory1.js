@@ -5,24 +5,19 @@ import {
   Select,
   Typography,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
-import {
-  Button,
-  TextField,
-  FormControl,
-  Alert,
-  Stack,
-  CircularProgress,
-} from "@mui/material";
+import { Button, TextField, FormControl, Alert, Stack, CircularProgress } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
-import { NotificationManager } from "react-notifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
@@ -177,6 +172,7 @@ const EditStory1 = () => {
     content: "",
     coverImage: "",
   });
+  const [deleteModal, setDeleteModal] = useState(false);
 
   let existingContent;
   //   const [title, setTitle] = useState("");
@@ -185,6 +181,7 @@ const EditStory1 = () => {
   //   const [coverImage, setCoverImage] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e, identifier) => {
     switch (identifier) {
@@ -248,10 +245,7 @@ const EditStory1 = () => {
     formData.append("title", changingState.title);
     formData.append("shortDescription", changingState.desc);
     formData.append("genres", changingState.genres);
-    formData.append(
-      "contentHtml",
-      editorRef.current ? editorRef.current.getContent() : ""
-    );
+    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", changingState.coverImage);
     try {
       const { data } = await axios.put(`/api/stories/${storyId}`, formData, {
@@ -271,9 +265,31 @@ const EditStory1 = () => {
     }
   };
 
-  //   if (error) {
-  //     return <NotificationContainer title={"Permission Error"} severity={"error"} message={error} />;
-  //   }
+  const requestDeletionConfirmation = () => {
+    setDeleteModal(true);
+  };
+
+  const handleClose = () => {
+    setDeleteModal(false);
+  };
+
+  const performDelete = async () => {
+    try {
+      const { data } = await axios.delete(`/api/stories/${storyId}`, {
+        headers: {
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      console.log(data);
+      toast.success("Successfully deleted the story.");
+      setTimeout(() => navigate(`/stories`), 400);
+    } catch (e) {
+      console.log(e);
+      toast.error("Cannot perform delete operation. " + e, {
+        theme: "dark",
+      });
+    }
+  };
 
   if (!storyDetails) {
     return <CircularProgress />;
@@ -285,11 +301,7 @@ const EditStory1 = () => {
         <br />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            <Button
-              variant="contained"
-              component="label"
-              className={classes.button2}
-            >
+            <Button variant="contained" component="label" className={classes.button2}>
               Upload a cover photo for your story
               <input
                 type="file"
@@ -302,6 +314,7 @@ const EditStory1 = () => {
           <Paper className={classes.paper} elevation={20}>
             <br />
 
+
             <Grid
               container
               
@@ -313,6 +326,7 @@ const EditStory1 = () => {
                 component={"h1"}
                 className={classes.headertext}
               >
+
                 Use this place to edit and fine-tune your story!
               </Typography>
             </Grid>
@@ -378,9 +392,7 @@ const EditStory1 = () => {
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
-                    let close = document.getElementsByClassName(
-                      "tox-notification__dismiss"
-                    )[0];
+                    let close = document.getElementsByClassName("tox-notification__dismiss")[0];
                     if (close) close.click();
                   }, 20);
                 }}
@@ -425,12 +437,34 @@ const EditStory1 = () => {
                   Update Story
                 </Button>
 
-                <Button className={classes.buttondelete}>Delete Story</Button>
+                <Button className={classes.buttondelete} onClick={requestDeletionConfirmation}>
+                  Delete Story
+                </Button>
               </span>
               <br />
             </FormControl>
           </Paper>
         </Stack>
+        <Dialog open={deleteModal}>
+          <DialogTitle id="title-text-conf">
+            {"Are you sure you want to delete this story? This action cannot be reversed."}
+          </DialogTitle>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={() => {
+                performDelete();
+                handleClose();
+              }}
+              color="error"
+            >
+              Confirm
+            </Button>
+            <Button variant="contained" onClick={handleClose}>
+              No, take me back
+            </Button>
+          </DialogActions>
+        </Dialog>
         <br />
         <br />
       </div>
