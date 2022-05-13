@@ -140,6 +140,7 @@ const Comments = ({ open, handleClose, storyId }) => {
       );
       console.log(data.story.comments);
       setComments(data.story.comments);
+      setComment("");
     } catch (e) {
       console.log(e);
     }
@@ -208,6 +209,7 @@ const Comments = ({ open, handleClose, storyId }) => {
               })}
           </div>
           <br />
+
         </Box>
       </SidePane>
     </div>
