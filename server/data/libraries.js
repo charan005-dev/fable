@@ -65,10 +65,21 @@ const getMyNonAddedLibraries = async (owner, storyId) => {
   return allNonAddedLibs;
 };
 
+const getMyPrivateLibraries = async (accessor, skip = 0, take = 20) => {
+  const librariesCollection = await libraries();
+  const privateLibraries = await librariesCollection
+    .find({ owner: accessor, private: true })
+    .skip(skip)
+    .limit(take)
+    .toArray();
+  return { success: true, privateLibraries: privateLibraries };
+};
+
 module.exports = {
   createLibrary,
   addStoryToUserLibrary,
   getAllMyLibraries,
   getAllMyLibraryStories,
   getMyNonAddedLibraries,
+  getMyPrivateLibraries,
 };

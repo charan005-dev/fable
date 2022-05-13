@@ -11,9 +11,7 @@ import {
   Paper,
   Typography,
   Box,
-
   Switch,
-
 } from "@material-ui/core";
 import React from "react";
 import { useState, useContext, useEffect } from "react";
@@ -49,16 +47,17 @@ const useStyles = makeStyles({
   card3: {
     width: "700%",
   },
-  card4: {overflow: "inherit",
+  card4: {
+    overflow: "inherit",
 
     marginLeft: "3%",
-    paddingRight:10,
+    paddingRight: 10,
     width: "100%",
   },
   card5: {
     overflow: "inherit",
     width: "100%",
-    color:'red',
+    color: "red",
   },
   create: {
     marginLeft: "50%",
@@ -140,11 +139,11 @@ const ViewLibrariesList = () => {
   };
   useEffect(() => {
     async function getOwnerLibraries() {
-      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}`, {
+      const { data } = await axios.get(`/api/libraries/me`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
-      console.log(data);
-      setLibraryData(data.libraries);
+      console.log("Content", data);
+      if (data.libraries) setLibraryData(data.libraries);
     }
     getOwnerLibraries();
   }, []);
@@ -159,9 +158,9 @@ const ViewLibrariesList = () => {
         <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
-     <br />
       <br />
-    
+      <br />
+
       <Paper
         elevation={0}
         className={classes.paper}
@@ -251,24 +250,19 @@ const ViewLibrariesList = () => {
                         <Stack spacing={0} direction={"row"}>
                           <Card className={classes.card3} elevation={0}>
                             <Stack direction="row" spacing={2}>
-                            <Badge
-                              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                            >
-                              <LibraryBooksIcon />
-                            </Badge>
-                            <Link to={`/libraries/${lib._id}`}>
-                              <Typography variant="body1">
-                                {lib.libraryName.length > 20
-                                  ? lib.libraryName.length.substring(16) + "..."
-                                  : lib.libraryName}
-                              </Typography>
-                            </Link>
-                            <Typography variant="overline">
-                              ({lib.stories.length} Stories Inside)
-                            </Typography>
+                              <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                                <LibraryBooksIcon />
+                              </Badge>
+                              <Link to={`/libraries/${lib._id}`}>
+                                <Typography variant="body1">
+                                  {lib.libraryName.length > 20
+                                    ? lib.libraryName.length.substring(16) + "..."
+                                    : lib.libraryName}
+                                </Typography>
+                              </Link>
+                              <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
                             </Stack>
                           </Card>
-
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
@@ -280,8 +274,11 @@ const ViewLibrariesList = () => {
             })}
           {libraryData && libraryData.length === 0 && (
             <div>
-              Seems like you're missing out on so much fun! <Link to={`/libraries/create`} class="text-decoration-none">Click here</Link> to create
-              your own library, make it public and much more!
+              Seems like you're missing out on so much fun!{" "}
+              <Link to={`/libraries/create`} class="text-decoration-none">
+                Click here
+              </Link>{" "}
+              to create your own library, make it public and much more!
             </div>
           )}
         </Stack>
