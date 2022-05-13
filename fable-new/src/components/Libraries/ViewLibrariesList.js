@@ -268,18 +268,7 @@ const ViewLibrariesList = () => {
                             </Typography>
                             </Stack>
                           </Card>
-                          <Stack spacing={1} direction={"row"}>
-                          <Card className={classes.card4}  elevation={0}>
-                            <Fab className={classes.edit} color="primary"  >
-                              <EditIcon />
-                            </Fab>
-                          </Card>
-                          </Stack>
-                          <Card className={classes.card5} elevation={0}>
-                            <Fab className={classes.delete} color="inherit">
-                              <DeleteIcon />
-                            </Fab>
-                          </Card>
+
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
