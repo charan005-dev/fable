@@ -271,14 +271,14 @@ const PublicProfile = () => {
                       <Grid key={idx}>
                         <Stack direction="row">
                           <Card className={classes.card1} elevation={15}>
-                            <Link to={`/stories/${createdStory._id}`}>
-                              <CardMedia className={classes.media} component="img" image={createdStory.coverImage} />
+                            <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
+                              <CardMedia className={classes.media} component="img" image={createdStory.coverImage}/>
                             </Link>
                           </Card>
 
                           <Card className={classes.card2} elevation={0}>
                             <CardContent>
-                              <Link to={`/stories/${createdStory._id}`}>
+                              <Link to={`/stories/${createdStory._id}`} class="text-decoration-none">
                                 <Typography>{createdStory.title}</Typography>
                               </Link>
                             </CardContent>

@@ -32,7 +32,7 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
+  marginLeft: "0",
   maxWidth: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing("40vw"),
@@ -43,6 +43,7 @@ const Search = styled("div")(({ theme }) => ({
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   height: "100%",
+  marginRight: "80%",
   position: "absolute",
   pointerEvents: "none",
   display: "flex",
@@ -111,7 +112,7 @@ export default function SearchBox() {
   };
 
   return (
-    <Search sx={{ marginX: 40 }}>
+    <Search sx={{  marginX: "2%" }}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
