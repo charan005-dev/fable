@@ -4,23 +4,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardHeader,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Paper,
-  Divider,
-  TextField,
-  Button,
-} from "@material-ui/core";
+import { Box, Card, CardContent, CardMedia, Grid, Typography, Paper, Divider, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Edit from "@mui/icons-material/Edit";
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
