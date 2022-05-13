@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   commentsPane: {
     paddingTop: 70,
     paddingLeft: 50,
+    overflowY: "scroll"
   },
   commentsBox: {
     margin: 10,
@@ -157,7 +158,7 @@ const Comments = ({ open, handleClose, storyId }) => {
                 InputLabelProps={{ shrink: false }}
                 helperText={commentError.error && commentError.text}
               />
-              <br />
+              &nbsp;
               <Button variant="contained" onClick={addComment} className={classes.buttonupdate}>
                 Post Comment
               </Button>

@@ -89,10 +89,16 @@ const useStyles = makeStyles({
 const EditUser = () => {
   const { currentUser } = useContext(AuthContext);
   const { userId } = useParams();
-  const [displayName, setDisplayName] = useState("");
-  const [nameError, setNameError] = useState({ error: true, text: "" });
-  const [wpm, setWpm] = useState(200);
-  const [wpmError, setWpmError] = useState({ error: true, text: "" });
+  // const [displayName, setDisplayName] = useState("");
+  const [existingName, setExistingName] = useState("");
+  const [existingWpm, setExistingWpm] = useState(0);
+  const [nameError, setNameError] = useState({ error: false, text: "" });
+  // const [wpm, setWpm] = useState(200);
+  const [changingState, setChangingState] = useState({
+    displayName: "",
+    wpm: "",
+  });
+  const [wpmError, setWpmError] = useState({ error: false, text: "" });
   const [userAvatar, setUserAvatar] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const classes = useStyles();
@@ -107,6 +113,13 @@ const EditUser = () => {
         },
       });
       console.log(data);
+      setExistingName(data.profile.displayName);
+      setExistingWpm(data.profile.wpm);
+      let newState = {
+        displayName: data.profile.displayName,
+        wpm: data.profile.wpm,
+      };
+      setChangingState(newState);
     }
     prefetch();
   }, [userId]);
@@ -114,13 +127,10 @@ const EditUser = () => {
   const handleDispNameChange = async (e) => {
     // make sure the entered value is valid
     let displayName = e.target.value;
-    // if (!displayName || typeof displayName !== "string" || displayName.length === 0) {
-    //   setNameError({
-    //     error: false,
-    //     text: "",
-    //   });
-    //   return;
-    // }
+    setChangingState({
+      ...changingState,
+      displayName: e.target.value,
+    });
     if (
       !displayName ||
       typeof displayName !== "string" ||
@@ -142,6 +152,14 @@ const EditUser = () => {
       });
       return;
     }
+    console.log(existingName, displayName);
+    if (existingName === displayName) {
+      setNameError({
+        error: false,
+        text: "",
+      });
+      return;
+    }
     // and then - if valid, constantly poll the backend to check if displayName is available
     try {
       const { data } = await axios.get(`/api/users/check?tentative=${e.target.value}`, {
@@ -157,7 +175,11 @@ const EditUser = () => {
         text: `🎸You can't always get what you want!🎸 This username is taken.`,
       });
     }
-    setDisplayName(e.target.value);
+    // setDisplayName(e.target.value);
+    setChangingState({
+      ...changingState,
+      displayName: e.target.value,
+    });
   };
 
   const handleFileUpload = (e) => {
@@ -167,10 +189,14 @@ const EditUser = () => {
   const handleWpmChange = (e) => {
     let value = parseInt(e.target.value);
     console.log(value);
-    if (!value && value !== 0) {
-      setWpmError({ error: false, text: "Start entering your input" });
-      return;
-    }
+    setChangingState({
+      ...changingState,
+      wpm: value,
+    });
+    // if (value === 0) {
+    //   setWpmError({ error: false, text: "Start entering your input" });
+    //   return;
+    // }
     if (isNaN(value)) {
       setWpmError({ error: true, text: "Invalid input value for wpm." });
       return;
@@ -190,7 +216,11 @@ const EditUser = () => {
       return;
     }
     setWpmError({ error: false, text: "Good Input!" });
-    setWpm(value);
+    // setWpm(value);
+    setChangingState({
+      ...changingState,
+      wpm: value,
+    });
   };
 
   const performEditUser = async () => {
@@ -200,8 +230,8 @@ const EditUser = () => {
     }
     const formData = new FormData();
     formData.append("userId", currentUser.uid);
-    formData.append("displayName", displayName);
-    formData.append("wpm", wpm);
+    formData.append("displayName", changingState.displayName);
+    formData.append("wpm", changingState.wpm);
     formData.append("userAvatar", userAvatar);
     const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
       headers: {
@@ -247,6 +277,7 @@ const EditUser = () => {
           <br />
           <TextField
             fullWidth
+            value={changingState.displayName}
             className={classes.textfield}
             error={nameError.error}
             helperText={nameError.error ? nameError.text : ""}
@@ -270,6 +301,7 @@ const EditUser = () => {
           <br />
           <TextField
             fullWidth
+            value={changingState.wpm}
             className={classes.textfield}
             type={"number"}
             error={wpmError.error}
@@ -277,7 +309,6 @@ const EditUser = () => {
             id="wordsPerMinute"
             variant="outlined"
             InputLabelProps={{ shrink: false }}
-            required
             onChange={(e) => handleWpmChange(e)}
           />
           <br />
