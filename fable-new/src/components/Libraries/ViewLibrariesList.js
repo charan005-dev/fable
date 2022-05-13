@@ -30,6 +30,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Add from "@mui/icons-material/Add";
 import { Stack } from "@mui/material";
 import { toast } from "react-toastify";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   card1: {
@@ -48,15 +49,16 @@ const useStyles = makeStyles({
   card3: {
     width: "700%",
   },
-  card4: {
-    paddingRight: "3%",
+  card4: {overflow: "inherit",
+
+    marginLeft: "3%",
+    paddingRight:10,
     width: "100%",
   },
   card5: {
+    overflow: "inherit",
     width: "100%",
-  },
-  edit: {
-    paddingLeft: "70%",
+    color:'red',
   },
   create: {
     marginLeft: "50%",
@@ -192,7 +194,7 @@ const ViewLibrariesList = () => {
         <Modal
           open={createLib}
           onClose={closeCreateLibModal}
-          aria-l
+          arial
           abelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -248,30 +250,36 @@ const ViewLibrariesList = () => {
                       <CardContent>
                         <Stack spacing={0} direction={"row"}>
                           <Card className={classes.card3} elevation={0}>
+                            <Stack direction="row" spacing={2}>
                             <Badge
                               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                              badgeContent={lib.stories.length === 0 ? "0" : lib.stories.length}
                             >
                               <LibraryBooksIcon />
                             </Badge>
                             <Link to={`/libraries/${lib._id}`}>
-                              <Typography variant="body2">
+                              <Typography variant="body1">
                                 {lib.libraryName.length > 20
                                   ? lib.libraryName.length.substring(16) + "..."
                                   : lib.libraryName}
                               </Typography>
                             </Link>
+                            <Typography variant="overline">
+                              ({lib.stories.length} Stories Inside)
+                            </Typography>
+                            </Stack>
                           </Card>
-                          {/* <Card className={classes.card4} elevation={0}>
-                            <Badge className={classes.edit}>
+                          <Stack spacing={1} direction={"row"}>
+                          <Card className={classes.card4}  elevation={0}>
+                            <Fab className={classes.edit} color="primary"  >
                               <EditIcon />
-                            </Badge>
+                            </Fab>
                           </Card>
+                          </Stack>
                           <Card className={classes.card5} elevation={0}>
-                            <Badge className={classes.delete}>
+                            <Fab className={classes.delete} color="inherit">
                               <DeleteIcon />
-                            </Badge>
-                          </Card> */}
+                            </Fab>
+                          </Card>
                         </Stack>
                         <Stack spacing={2} direction={"row"}></Stack>
                         {/* </Stack> */}
