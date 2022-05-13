@@ -1,12 +1,4 @@
-import {
-  FormGroup,
-  TextField,
-  Button,
-  Typography,
-  FormHelperText,
-  FormControl,
-  Tooltip,
-} from "@material-ui/core";
+import { FormGroup, TextField, Button, Typography, FormHelperText, FormControl, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../firebase/Auth";
@@ -16,6 +8,7 @@ import Input from "@mui/material/Input";
 import { makeStyles } from "@material-ui/core";
 import { toast } from "react-toastify";
 import { Paper } from "@mui/material";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   card1: {
@@ -97,13 +90,26 @@ const EditUser = () => {
   const { currentUser } = useContext(AuthContext);
   const { userId } = useParams();
   const [displayName, setDisplayName] = useState("");
-  const [nameError, setNameError] = useState({ error: false, text: "" });
+  const [nameError, setNameError] = useState({ error: true, text: "" });
   const [wpm, setWpm] = useState(200);
-  const [wpmError, setWpmError] = useState({ error: false, text: "" });
+  const [wpmError, setWpmError] = useState({ error: true, text: "" });
   const [userAvatar, setUserAvatar] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const classes = useStyles();
   const navigate = useNavigate();
+
+  // prefetch data
+  useEffect(() => {
+    async function prefetch() {
+      const { data } = await axios.get(`/api/users/public_profile/${userId}`, {
+        headers: {
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      console.log(data);
+    }
+    prefetch();
+  }, [userId]);
 
   const handleDispNameChange = async (e) => {
     // make sure the entered value is valid
@@ -138,14 +144,11 @@ const EditUser = () => {
     }
     // and then - if valid, constantly poll the backend to check if displayName is available
     try {
-      const { data } = await axios.get(
-        `/api/users/check?tentative=${e.target.value}`,
-        {
-          headers: {
-            authtoken: await currentUser.getIdToken(),
-          },
-        }
-      );
+      const { data } = await axios.get(`/api/users/check?tentative=${e.target.value}`, {
+        headers: {
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
       setNameError({ error: false, text: "Available!" });
     } catch (e) {
       // server throws a 409 when the username already exists in the database
@@ -192,9 +195,7 @@ const EditUser = () => {
 
   const performEditUser = async () => {
     if (nameError.error || wpmError.error) {
-      toast.dark(
-        "Your inputs are invalid. Please check them before performing the action."
-      );
+      toast.dark("Your inputs are invalid. Please check them before performing the action.");
       return;
     }
     const formData = new FormData();
@@ -202,16 +203,12 @@ const EditUser = () => {
     formData.append("displayName", displayName);
     formData.append("wpm", wpm);
     formData.append("userAvatar", userAvatar);
-    const { data } = await axios.put(
-      `/api/users/${currentUser.uid}/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authtoken: await currentUser.getIdToken(),
-        },
-      }
-    );
+    const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        authtoken: await currentUser.getIdToken(),
+      },
+    });
     if (data.success) {
       setUpdateSuccess(true);
     }
@@ -240,19 +237,11 @@ const EditUser = () => {
         <br />
         <br />
         <FormGroup>
-          <Typography
-            variant="h3"
-            component={"h4"}
-            className={classes.headertext1}
-          >
+          <Typography variant="h3" component={"h4"} className={classes.headertext1}>
             Edit Your Details Here!
           </Typography>
           <br /> <br /> <br />
-          <Typography
-            variant="h3"
-            component={"h4"}
-            className={classes.headertext}
-          >
+          <Typography variant="h3" component={"h4"} className={classes.headertext}>
             Display Name
           </Typography>
           <br />
@@ -274,11 +263,7 @@ const EditUser = () => {
             placement="right"
             title="Number of words that you usually read per minute. Enter a value within 30 and 500 (the human average is 200). If you leave this empty, we'll assume that you're an average human 😁"
           >
-            <Typography
-              variant="h3"
-              component={"h4"}
-              className={classes.headertext}
-            >
+            <Typography variant="h3" component={"h4"} className={classes.headertext}>
               Words Per Minute ⓘ
             </Typography>
           </Tooltip>
@@ -297,19 +282,11 @@ const EditUser = () => {
           />
           <br />
           <br />
-          <Typography
-            variant="h3"
-            component={"h4"}
-            className={classes.headertext}
-          >
+          <Typography variant="h3" component={"h4"} className={classes.headertext}>
             Upload Your Avatar
           </Typography>
           <br />
-          <Button
-            variant="contained"
-            component="label"
-            className={classes.button3}
-          >
+          <Button variant="contained" component="label" className={classes.button3}>
             <input
               type="file"
               accept="image/jpeg, image/png, .jpeg, .jpg, .png"
@@ -320,18 +297,10 @@ const EditUser = () => {
           <br />
           <br />
           <span>
-            <Button
-              color="primary"
-              onClick={performEditUser}
-              className={classes.buttonupdate}
-            >
+            <Button color="primary" onClick={performEditUser} className={classes.buttonupdate}>
               Update User
             </Button>
-            <Button
-              color="primary"
-              onClick={() => window.history.back()}
-              className={classes.buttonback}
-            >
+            <Button color="primary" onClick={() => window.history.back()} className={classes.buttonback}>
               Back
             </Button>
           </span>
