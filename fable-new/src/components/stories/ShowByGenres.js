@@ -1,4 +1,3 @@
-
 import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import React from "react";
@@ -149,26 +148,23 @@ const ManageMyStories = () => {
   }, [doExactMatch]);
 
   useEffect(() => {
-    console.log("useEffect again");
-    if (selectedGenres.length >= 1) {
-      async function getMyStoriesByGenres() {
-        if (!doExactMatch) {
-          const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`, {
-            headers: { authtoken: await currentUser.getIdToken() },
-          });
-          console.log("Data ", data);
-          setMyStories(data.stories);
-        }
-        if (doExactMatch) {
-          const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
-            headers: { authtoken: await currentUser.getIdToken() },
-          });
-          console.log("Data ", data);
-          setMyStories(data.stories);
-        }
+    async function getmyStoriesByGenres() {
+      if (!doExactMatch) {
+        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`,{
+          headers: { authToken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        setMyStories(data.stories);
       }
-      getMyStoriesByGenres();
+      if (doExactMatch) {
+        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
+          headers: { authToken: await currentUser.getIdToken() },
+        });
+        console.log(data);
+        setMyStories(data.stories);
+      }
     }
+    getmyStoriesByGenres();
   }, [selectedGenres]);
 
   const chipSelect = (genre) => {
@@ -180,7 +176,7 @@ const ManageMyStories = () => {
       genreCopy.push(genre);
       setSelectedGenres(genreCopy);
     }
-    console.log(selectedGenres);
+    console.log("selected", selectedGenres);
   };
 
   const chipDeselect = (genre) => {
@@ -203,18 +199,9 @@ const ManageMyStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
-          <Grid container justifyContent="center">
-            <Card className={classes.card}>
-              Check all selected genres?
-              <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
-            </Card>
-          </Grid>
-          <br />
-          <Divider></Divider>
-          <br />
           {genres &&
             genres.map((genre, idx) => {
-              console.log(selectedGenres, genre);
+              //console.log(selectedGenres, genre);
               if (selectedGenres.includes(genre)) {
                 return <Chip className={classes.chip} key={genre} label={genre} onDelete={() => chipDeselect(genre)} />;
               } else {
@@ -222,6 +209,10 @@ const ManageMyStories = () => {
               }
             })}
           <br />
+          <Card className={classes.card}>
+            Filter individually
+            <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
+          </Card>
         </Paper>
       </Grid>
       <div>
@@ -229,87 +220,74 @@ const ManageMyStories = () => {
         <br />
         <br />
         <br />
-        {myStories.length === 0 && (
-          <>
-            <Grid container justifyContent="center">
-              <Paper variant="outlined" className={classes.refinery}>
-                <Typography variant="body2">
-                  Seems like there aren't any stories matching the current filter. Please refine your filters and try
-                  again.
-                </Typography>
-              </Paper>
-            </Grid>
-            <br />
-            <br />
-            <br />
-            <br />
-          </>
-        )}
-        {myStories.length > 0 && (
-          <Grid container justifyContent="center">
-            <Paper variant="outlined" className={classes.refinery}>
-              {myStories.length > 0 &&
-                myStories.map((story) => {
-                  return (
-                    <div>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          "& > :not(style)": {
-                            m: 1,
-                            width: "auto",
-                            height: "auto",
-                            marginLeft: 500,
-                          },
-                        }}
-                      >
-                        <Paper
-                          elevation={5}
-                          className={classes.paper}
-                          sx={{
-                            bgcolor: "background.default",
-                            display: "grid",
-                            gridTemplateColumns: { md: "1fr 1fr" },
-                            gap: 2,
-                          }}
-                        >
-                          <Grid>
-                            <Stack direction="row">
-                              <Card className={classes.card1} elevation={0}>
-                                <Link to={`/stories/${story._id}`}>
-                                  <CardMedia className={classes.media} component="img" image={story.coverImage} />
-                                </Link>
-                              </Card>
+          
+        <div>
+                <Box
 
-                              <Card className={classes.card2} elevation={0}>
-                                <CardContent>
-                                  <Link to={`/stories/${story._id}`}>
-                                    <Typography>{story.title}</Typography>
-                                  </Link>
-                                </CardContent>
-                                <CardContent>
-                                  <Typography>
-                                    {story.shortDescription.length > 200
-                                      ? story.shortDescription.substring(0, 197) + "..."
-                                      : story.shortDescription}
-                                  </Typography>
-                                </CardContent>
-                              </Card>
-                            </Stack>
-                          </Grid>
-                        </Paper>
-                      </Box>
-                    </div>
-                  );
-                })}
-            </Paper>
+                  sx={{
+                    
+                    flexGrow:1,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    "& > :not(style)": {
+                      m: 1,
+                      width: 1500,
+                      height: "auto",
+                      marginLeft: 320,
+                      
+                   
+                     },
+                  }}
+                >
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+        {myStories.length > 0 &&
+          myStories.map((story) => {
+            return (
+              <Grid item xs={5}>
+                  <Paper
+                    elevation={20}
+                    className={classes.paper}
+                    sx={{
+                      bgcolor: "background.default",
+                      display: "grid",
+                      gridTemplateColumns: { md: "1fr 1fr" },
+                      gap: 2,
+
+                    }}
+                  >
+                      <Stack direction="row">
+                        <Card className={classes.card1} elevation={0}>
+                          <Link to={`/stories/${story._id}`}>
+                            <CardMedia className={classes.media} component="img" image={story.coverImage} />
+                          </Link>
+                        </Card>
+
+                        <Card className={classes.card2} elevation={0}>
+                          <CardContent>
+                            <Link to={`/stories/${story._id}`}>
+                              <Typography>{story.title}</Typography>
+                            </Link>
+                          </CardContent>
+                          <br />
+                          <CardContent>
+                            <Typography>
+                              {story.shortDescription.length > 200
+                                ? story.shortDescription.substring(0, 197) + "..."
+                                : story.shortDescription}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Stack>
+                  </Paper>
+                  </Grid>
+            );
+          })}
           </Grid>
-        )}
+          </Box>
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 
 export default ManageMyStories;
-
