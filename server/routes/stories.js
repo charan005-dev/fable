@@ -5,6 +5,14 @@ const stories = require("../data/stories");
 const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
+const fs = require("fs");
+const gm = require("gm");
+
+let winpath = "";
+if (process.platform == "win32") {
+  winpath = "C:\\Users\\jeshn\\Desktop\\CS554_Fable\\fable\\server";
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../public/covers/"));
@@ -109,9 +117,14 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     // TODO validate incoming parameters
     let filePath = null;
     if (req.file) {
-      filePath = "/public/covers/" + req.file.filename;
+      filePath = path.resolve(winpath + "/public/covers/" + req.file.filename);
     }
-
+    gm(filePath)
+      .resize(200, 200)
+      .write(filePath, function (err) {
+        if (err) console.log(err);
+        console.log("Done!");
+      });
     const { success, story } = await stories.createStory(
       currentUser,
       xss(title),

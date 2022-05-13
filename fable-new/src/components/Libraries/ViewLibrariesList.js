@@ -11,11 +11,13 @@ import {
   Paper,
   Typography,
   Box,
+
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
+
   Switch,
 } from "@material-ui/core";
 import React from "react";
@@ -173,8 +175,10 @@ const ViewLibrariesList = () => {
         <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
+
       <br />
       <br />
+
 
       <Paper
         elevation={0}
@@ -335,9 +339,11 @@ const ViewLibrariesList = () => {
                               <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
                             </Stack>
                           </Card>
+
                           <Stack spacing={1} direction={"row"}>
                           <Card className={classes.card4}  elevation={0}>
                             <Fab className={classes.edit} color="primary" onClick={openeditLibModal}  >
+
                               <EditIcon />
                             </Fab>
                           </Card>
@@ -366,7 +372,9 @@ const ViewLibrariesList = () => {
         </Dialog>
                        
                           <Card className={classes.card5} elevation={0}>
+
                             <Fab className={classes.delete} color="inherit" onClick={openDelLibModal}>
+
                               <DeleteIcon />
                             </Fab>
                           </Card>
