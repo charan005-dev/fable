@@ -56,7 +56,7 @@ const useStyles = makeStyles({
     },
   },
   media: {
-    height: "300px",
+    height: "100%",
     width: "100%",
   },
   title: {
@@ -99,34 +99,27 @@ const useStyles = makeStyles({
     },
   },
   card1: {
-    width: "70%",
+    width: "100%",
     marginLeft: "10%",
-    paddingRight: "10%",
-  },
-  card2: {
-    width: "15%",
-    marginBottom: "100px",
-
-    width: "80%",
-    marginLeft: "0%",
     paddingRight: "0%",
   },
   card2: {
-    width: "120%",
-    height: "200%",
-    marginBottom: "100%",
+    width: "70%",
+    height: "100%",
+    marginRight: "13vw !important",
   },
   card3: {
-    width: "22%",
-    height: "22%",
-    marginLeft: "0%",
+    width: "5vw",
+    height: "5vw",
+    marginLeft: "5%",
     paddingRight: "0%",
   },
   card4: {
+    height: "50%",
     width: "50%",
-    marginLeft: "50%",
-    paddingRight: "50%",
-
+    marginLeft: "0%",
+    paddingRight: "0%",
+    paddingLeft: "0%",
   },
   similarStories: {
     padding: 6,
@@ -135,6 +128,9 @@ const useStyles = makeStyles({
     maxWidth: 50,
     maxHeight: 50,
   },
+  content1:{
+    paddingLeft: "22%"
+  }
 });
 
 const Story = () => {
@@ -264,28 +260,16 @@ const Story = () => {
         <br />
         <Paper
           elevation={0}
-          sx={{
-            bgcolor: "background.default",
-            display: "grid",
-            gridTemplateColumns: { md: "1fr 1fr" },
-            gap: 2,
-            height: "auto",
-            textDecoration: "none",
-          }}
         >
-          <Grid container justifyContent="center">
+          <Grid >
 
-            <Stack direction={"row"} spacing={2}>
+            {/* <Stack direction={"row"} spacing={20}> */}
 
-            <Stack direction={"row"} spacing={90}>
+            <Stack direction={"row"} spacing={30}>
 
               {/* <Typography variant="h6">{storyData.creator}</Typography> */}
-              <Card className={classes.card1} elevation={0}>
-                <CardContent >
-                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none">
-                    {storyData.creator.displayName}
-                  </Link>
-                </CardContent>{" "}
+               <Card className={classes.card1} elevation={0}> 
+                {" "} 
                 <br />
                 <CardContent>
                   {" "}
@@ -310,13 +294,20 @@ const Story = () => {
                   <Typography variant="subtitle">
                     {storyData.story.shortDescription}
                   </Typography>{" "}
-
+                </CardContent>{" "}
+                <Typography>
+                   &nbsp;&nbsp; Story Written by:
+                </Typography>
+                <CardContent >
+                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none"> 
+                    {storyData.creator.displayName}
+                  </Link>
                 </CardContent>
               </Card>
-              <Card className={classes.card2} elevation={24}>
+              
+                <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h5">Also you might like</Typography>
-
+                  <Typography variant="h5">You might also like</Typography>
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && (
@@ -328,7 +319,7 @@ const Story = () => {
                         <div>
                           <Grid className={classes.similarStories}>
                             <Typography variant="subtitle">
-                              <Card className={classes.card3}>
+                              <span className={classes.card3}>
                                 <img
                                   className={classes.similarImages}
 
@@ -338,28 +329,31 @@ const Story = () => {
                                       : "/fablefinal.png"
                                   }
                                 />
-                              </Card>
+                              </span>
                               &nbsp; &nbsp;
-                              <Card className={classes.card4}>
+                              <span className={classes.card4}>
                                 &nbsp; &nbsp;
+                                <span className={classes.content}>
                                 <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
                                   {recommendation.title}
                                 </Link>
+                                </span>
                                 <br />
-                                <Typography variant="overline">
-                                  {recommendation.shortDescription}
+                                <span className={classes.content1}>
+                                <Typography variant="caption">
+                                  {recommendation.shortDescription.length > 50 ? recommendation.shortDescription.substring(0, 50) + '...' : recommendation.shortDescription}
                                 </Typography>
-
-                              </Card>
+                                </span>
+                              </span>
                             </Typography>
                           </Grid>
                         </div>
                       );
                     })}
                 </CardContent>
-              </Card>
+                </Card>
               </Stack>
-            </Stack>
+            {/* </Stack> */}
           </Grid>
         </Paper>
         <Comments

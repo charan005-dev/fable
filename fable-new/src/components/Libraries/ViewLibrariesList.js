@@ -343,6 +343,7 @@ const ViewLibrariesList = () => {
 
 
 
+
                           <Stack spacing={1} direction={"row"}>
                           <Card className={classes.card4}  elevation={0}>
                             <Fab className={classes.edit} color="primary" onClick={openeditLibModal}  >
