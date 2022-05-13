@@ -164,7 +164,7 @@ const EditUser = () => {
   const handleWpmChange = (e) => {
     let value = parseInt(e.target.value);
     console.log(value);
-    if (!value) {
+    if (!value && value !== 0) {
       setWpmError({ error: false, text: "Start entering your input" });
       return;
     }
