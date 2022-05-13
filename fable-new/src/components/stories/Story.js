@@ -26,6 +26,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fab } from "@material-ui/core";
 
 import Edit from "@mui/icons-material/Edit";
+import { Chip } from "@material-ui/core";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Comments from "./Comments";
 
@@ -272,6 +273,24 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
+
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
+                  <br />
+                  <br />
+                  <Stack direction="row" spacing={1}>
+                    {storyData &&
+                      storyData.story.genres.map((genre) => {
+                        return (
+                          <Chip
+                            label={genre}
+                            size={"small"}
+                            color="info"
+                            onClick={() => navigate(`/stories/choose/${genre}`)}
+                          />
+                        );
+                      })}
+                  </Stack>
+
                   <Typography variant="subtitle">
                     {storyData.story.shortDescription}
                   </Typography>{" "}
@@ -303,6 +322,7 @@ const Story = () => {
                               <span className={classes.card3}>
                                 <img
                                   className={classes.similarImages}
+
                                   src={
                                     recommendation.coverImage
                                       ? recommendation.coverImage
