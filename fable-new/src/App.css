@@ -434,17 +434,25 @@ h1 {
   width: "auto";
   max-height: 100px;
 }
-
+ 
 .row_poster::-webkit-scrollbar {
   display: none;
+  overflow-x: hidden;
+} 
+ .scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+} 
+::-webkit-scrollbar {
+  width: 0px;
 }
-
 .row_posters {
   display: flex;
   overflow-y: hidden;
   overflow-x: scroll;
+  /* overflow-x: hidden; */
   padding: 50px;
   padding-right: 10px;
+  
 }
 
 .row_poster:hover {

@@ -133,8 +133,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const isValidSearchTerm = (q) => {
-  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0)
-    return false;
+  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0) return false;
   return true;
 };
 
@@ -162,9 +161,8 @@ export default function SearchBox() {
       console.log(data);
       setSearchResults(data.results);
       setOpen(true);
-    } else {
-      setSearchTerm("");
     }
+    setSearchTerm("");
   };
 
   const handleDialogClose = () => {
@@ -178,9 +176,7 @@ export default function SearchBox() {
 
   return (
     <Search sx={{ marginX: "2%" }}>
-      
-        &nbsp; <SearchIcon /> &nbsp; 
-    
+      &nbsp; <SearchIcon /> &nbsp;
       <Tooltip
         title="To search, click outside after typing. Enter at least 3 characters for relevant results."
         placement="bottom-start"
@@ -215,9 +211,7 @@ export default function SearchBox() {
                       {" "}
                       <Card className={classes.card} onClick={handleLinkClick}>
                         {" "}
-                        {res.title.length > 35
-                          ? res.title.substring(0, 23) + "..."
-                          : res.title}{" "}
+                        {res.title.length > 35 ? res.title.substring(0, 23) + "..." : res.title}{" "}
                       </Card>
                     </NavLink>
                   </div>

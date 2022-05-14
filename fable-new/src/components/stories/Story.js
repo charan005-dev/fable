@@ -30,6 +30,8 @@ import { Chip } from "@material-ui/core";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Comments from "./Comments";
 import { toast } from "react-toastify";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Sugar from "sugar";
 
 const useStyles = makeStyles({
   card: {
@@ -111,7 +113,7 @@ const useStyles = makeStyles({
   },
   card3: {
     width: "5vw",
-    height: "5vw",
+    height: "10vw",
     marginLeft: "5%",
     paddingRight: "0%",
   },
@@ -126,11 +128,57 @@ const useStyles = makeStyles({
     padding: 6,
   },
   similarImages: {
-    maxWidth: 50,
-    maxHeight: 50,
+    width: 53,
+    height: 80,
+    marginTop: "3.5%",
   },
   content1: {
     paddingLeft: "22%",
+  },
+  description: {
+    paddingLeft: "22%",
+    marginBottom: "10%",
+  },
+  titleside: {
+    background: "#ececec",
+
+    textDecoration: "none",
+    color: "black",
+    border: "0px solid",
+    paddingLeft: "2%",
+    paddingRight: "2%",
+    paddingTop: "2%",
+    paddingBottom: "2%",
+    borderRadius: "6px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+  typo: {
+    marginLeft: "6%",
+  },
+
+  author: {
+    background: "black",
+    textDecoration: "none",
+    color: "white",
+    border: "1px solid",
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    borderRadius: "20px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
   },
 });
 
@@ -168,9 +216,7 @@ const Story = () => {
     async function getRecommendations() {
       if (storyData) {
         const { data } = await axios.get(
-          `/api/stories/recommendations?genres=${
-            storyData.story.genres ? storyData.story.genres : ""
-          }`,
+          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
           {
             headers: {
               authtoken: await currentUser.getIdToken(),
@@ -184,12 +230,23 @@ const Story = () => {
     getRecommendations();
   }, [storyData]);
 
+  const buildFriendlyDate = (date) => {
+    try {
+      let dateObj = new Date(date);
+      // if (isNaN(Date.parse(dateObj))) {
+      //   console.log("Invalid date");
+      //   return "";
+      // }
+      return Sugar.Date.relative(dateObj);
+    } catch (e) {
+      return "";
+    }
+  };
+
   if (storyData) {
     console.log(storyData);
     return (
       <span>
-       
-
         <Paper
           elevation={10}
           sx={{
@@ -202,37 +259,32 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia
-                  className={classes.media}
-                  component="img"
-                  image={storyData.story.coverImage}
-                />
+                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
-                  <Typography variant="h2" className={classes.title1}>
-                    {storyData.story.title.length > 35
-                      ? storyData.story.title.substring(0, 40) + "..."
-                      : storyData.story.title}
-                  </Typography>{" "}
+                  <Tooltip placement="right" title={buildFriendlyDate(storyData.story.createdAt)}>
+                    <Typography variant="h2" className={classes.title1}>
+                      {storyData.story.title.length > 35
+                        ? storyData.story.title.substring(0, 40) + "..."
+                        : storyData.story.title}
+                    </Typography>
+                  </Tooltip>{" "}
                   <br></br> &nbsp;
-                  <Typography variant="h7">
+                  <Typography variant="inherit">
                     {" "}
                     <FavoriteIcon /> &nbsp;
                     {" " + storyData.story.likedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Typography variant="h7">
+                  <Typography variant="inherit">
                     {" "}
                     <VisibilityIcon />
                     {" " + storyData.story.visitedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Tooltip
-                    placement="right"
-                    title="Average time it'll take for you to read this story"
-                  >
-                    <Typography variant="h7">
+                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
+                    <Typography variant="inherit">
                       {" "}
                       <AutoStoriesIcon />
                       {" ~" + storyData.story.accessorReadTime + " min"}
@@ -249,18 +301,13 @@ const Story = () => {
                     {currentUser.uid === storyData.story.creatorId && (
                       <Fab
                         className={classes.editButton}
-                        onClick={() =>
-                          navigate(`/stories/${storyData.story._id}/edit`)
-                        }
+                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
                       >
                         <Edit />
                       </Fab>
                     )}
                   </span>
-                  <Fab
-                    className={classes.editButton}
-                    onClick={() => setCommentsModal(true)}
-                  >
+                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
                     <ForumIcon />
                   </Fab>
                 </CardContent>
@@ -281,10 +328,7 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">
-                    {storyData.story.shortDescription}
-                  </Typography>{" "}
-                  <br />
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
@@ -303,11 +347,14 @@ const Story = () => {
                       })}
                   </Stack>
                 </CardContent>{" "}
+                <br />
+                <br />
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
                   <Link
                     to={`/users/${storyData.creator._id}`}
                     class="text-decoration-none"
+                    className={classes.author}
                   >
                     {storyData.creator.displayName}
                   </Link>
@@ -316,12 +363,12 @@ const Story = () => {
 
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h5">You might also like</Typography>
+                  <Typography variant="h5" className={classes.typo}>
+                    You might also like
+                  </Typography>
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && (
-                    <div>No stories available.</div>
-                  )}
+                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
                   {recommendations &&
                     recommendations.map((recommendation) => {
                       if (recommendation._id !== id) {
@@ -332,11 +379,7 @@ const Story = () => {
                                 <span className={classes.card3}>
                                   <img
                                     className={classes.similarImages}
-                                    src={
-                                      recommendation.coverImage
-                                        ? recommendation.coverImage
-                                        : "/fablefinal.png"
-                                    }
+                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
                                   />
                                 </span>
                                 &nbsp; &nbsp;
@@ -346,13 +389,15 @@ const Story = () => {
                                     <Link
                                       to={`/stories/${recommendation._id}`}
                                       class="text-decoration-none"
+                                      className={classes.titleside}
                                     >
                                       {recommendation.title}
                                     </Link>
-                                  </span>
-                                  <br />
-                                  <span className={classes.content1}>
-                                    <Typography variant="caption">
+                                    <br />
+                                    <Typography
+                                      variant="caption"
+                                      className={classes.description}
+                                    >
                                       {recommendation.shortDescription.length >
                                       50
                                         ? recommendation.shortDescription.substring(
@@ -361,6 +406,8 @@ const Story = () => {
                                           ) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
+                                    <br />
+                                    <Divider />
                                   </span>
                                 </span>
                               </Typography>
