@@ -66,8 +66,10 @@ const useStyles = makeStyles({
   },
   card1: {
     width: "70%",
-    marginLeft: "12%",
-    paddingLeft: "10%",
+    marginLeft: "16%",
+    marginRight: "16%",
+    marginTop: "2%",
+    paddingLeft: "0%",
     paddingRight: "0%",
     textIndent: "0px",
     fontSize: "25px",
@@ -207,12 +209,14 @@ const StoryBook = () => {
       <div>
         <br />
         <Paper
-          elevation={0}
+          elevation={10}
           sx={{
             bgcolor: "background.default",
             display: "grid",
             gridTemplateColumns: { md: "1fr 1fr" },
             gap: 2,
+            paddingBottom:"2%",
+            paddingTop:"1%"
           }}
         >
           <Grid container justifyContent="center" direction="row">
@@ -249,9 +253,8 @@ const StoryBook = () => {
         </Paper>
         <br />
         {/* ///////////////////  */}
-        <Divider />
         {/* story component */}
-        <Card elevation={0} className={classes.card1}>
+        <Card elevation={10} className={classes.card1}>
           <div className={classes.storyBook + " story_content"}>
             <div
               dangerouslySetInnerHTML={{

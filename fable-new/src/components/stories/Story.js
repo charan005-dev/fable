@@ -19,7 +19,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
-import { AuthContext } from "../../firebase/Auth";
+import { AuthContext } from "../../firebase/Auth"; 
+import { BsVectorPen } from 'react-icons/bs';
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -32,7 +33,10 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Comments from "./Comments";
 import { toast } from "react-toastify";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import Sugar from "sugar";
+import Sugar from "sugar"; 
+import CreateIcon from '@mui/icons-material/Create'; 
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; 
+
 
 const useStyles = makeStyles({
   card: {
@@ -111,6 +115,7 @@ const useStyles = makeStyles({
     width: "70%",
     height: "100%",
     marginRight: "13vw !important", 
+    marginTop: "15%",
     marginBottom: "10%"
   },
   card3: {
@@ -135,21 +140,19 @@ const useStyles = makeStyles({
     marginLeft: 18,
     marginTop: 18,
     marginBottom: 18,
+    border: "0px solid black", 
+    borderRadius: "3px"
   },
   content1: {
     paddingLeft: "22%",
   },
   description: {
-    paddingLeft: "2%",
+    
     marginBottom: "0%",
     marginTop: "2%",
     border: "0px solid",
-    paddingLeft: "2%",
-    paddingRight: "2%",
-    paddingTop: "1%",
-    paddingBottom: "1%",
-    borderRadius: "6px",
-    background: "#ececec",
+    borderRadius: "6px", 
+    color:"black",
     width: "80",
   },
   titleside: {
@@ -168,14 +171,16 @@ const useStyles = makeStyles({
     paddingTop: "2%",
     paddingBottom: "1%",
     borderRadius: "6px",
-    elevation: "3",
+    elevation: "3", 
+    fontWeight: "bolder",
     "&:hover": {
       textDecoration: "none",
       color: "black",
     },
   },
   typo: {
-    marginLeft: "6%",
+    marginLeft: "26%", 
+    fontWeight: "bold"
   },
 
   author: {
@@ -205,9 +210,16 @@ const useStyles = makeStyles({
 
   recommendation: {
     marginBottom: "3%",
-    textDecoration: "none",
+    textDecoration: "none", 
+    backgroundColor: "#EDEDED",
+    border: '0px solid black', 
+    color: "white",
+    borderRadius: '7px', 
+    
+
     "&:hover": {
-      textDecoration: "none",
+      textDecoration: "none", 
+      color: "white",
     },
   },
 
@@ -216,7 +228,11 @@ const useStyles = makeStyles({
     "&:hover": {
       textDecoration: "none",
     },
-  },
+  }, 
+  pen:
+   {
+     fontSize:"larger"
+   }
 });
 
 const Story = () => {
@@ -371,7 +387,7 @@ const Story = () => {
         </Paper>
         <br />
         <br />
-        <Paper elevation={0}>
+        <Paper elevation={0} className={classes.paper}>
           <Grid>
             {/* <Stack direction={"row"} spacing={20}> */}
 
@@ -404,24 +420,29 @@ const Story = () => {
                       })}
                   </Stack>
                 </CardContent>{" "}
-                <br />
-                <br />
-                <Typography>&nbsp;&nbsp; Story Written by:</Typography>
-                <CardContent>
+            
+                <span>
+               
+                <CardContent> 
+                 
                   <Link
                     to={`/users/${storyData.creator._id}`}
                     class="text-decoration-none"
                     className={classes.author}
                   >
                     {storyData.creator.displayName}
-                  </Link>
-                </CardContent>
-              </Card>
+                  </Link> 
+                  &nbsp;&nbsp;
+                  <BsVectorPen className={classes.pen}/>
+                </CardContent> 
+                </span>
+              </Card> 
+              
 
-              <Card className={classes.card2} elevation={24}>
+              <Card className={classes.card2} elevation={0}>
                 <CardContent>
                   <Typography variant="h5" className={classes.typo}>
-                    You might also like
+                    You might also like 
                   </Typography>
                   <br />
                   <Divider />
