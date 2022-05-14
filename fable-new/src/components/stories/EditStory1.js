@@ -11,7 +11,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@material-ui/core";
-import { Button, TextField, FormControl, Alert, Stack, CircularProgress } from "@mui/material";
+import { Button, TextField, FormControl, Alert, Stack, Backdrop, CircularProgress } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -173,6 +173,10 @@ const useStyles = makeStyles({
       color: "white",
     },
   },
+  imagePreview: {
+    backgroundColor: "#808080",
+    width: "19.8vw",
+  },
 });
 
 const EditStory1 = () => {
@@ -189,6 +193,7 @@ const EditStory1 = () => {
     content: "",
     coverImage: "",
   });
+  const [updateStarted, setUpdateStarted] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
   let existingContent;
@@ -342,6 +347,7 @@ const EditStory1 = () => {
     formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", changingState.coverImage);
     try {
+      setUpdateStarted(true);
       const { data } = await axios.put(`/api/stories/${storyId}`, formData, {
         headers: {
           "Content-Type": `multipart/form-data`,
@@ -349,12 +355,14 @@ const EditStory1 = () => {
         },
       });
       if (data.success) {
+        setUpdateStarted(false);
         setUpdateSuccess(true);
         toast.dark("Your story has been updated successfully!");
         setTimeout(() => navigate(`/stories/${storyId}`));
         return;
       }
     } catch (e) {
+      setUpdateStarted(false);
       console.log(e);
       setError(e.message);
     }
@@ -386,8 +394,14 @@ const EditStory1 = () => {
     }
   };
 
-  if (!storyDetails) {
-    return <CircularProgress />;
+  if (updateStarted) {
+    return (
+      <Backdrop open={updateStarted}>
+        <Typography variant="body1">Performing the update...</Typography>
+        <br />
+        <CircularProgress />
+      </Backdrop>
+    );
   }
 
   return (
@@ -408,6 +422,7 @@ const EditStory1 = () => {
               <Paper elevation={1}>
                 <Grid container justifyContent="center">
                   <Typography variant="overline">Preview</Typography>
+                  <br />
                   <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
                 </Grid>
               </Paper>

@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   paper: {
     height: "auto",
     width: "auto",
-
+    marginTop: "0%",
     marginBottom: "5%",
     height: "80%",
   },
@@ -115,11 +115,22 @@ function HomeImage() {
     }
     getAllStories();
   }, []);
+
+  // useEffect(() => {
+  //   async function getAllStories() {
+  //     const { data } = await axios.get(`/api/stories/all?required=12`&Romance, {
+  //       headers: { authtoken: await currentUser.getIdToken() },
+  //     });
+  //     console.log(data);
+  //     setStoryData(data.stories);
+  //   }
+  //   getAllStories();
+  // }, []);
+
   if (storyData) {
     return (
       <>
-
-<Paper
+        <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -132,7 +143,78 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Romance </h2>
+              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
+              <div className="row_posters">
+                <Stack direction={"row"} spacing={4}>
+                  {storyData &&
+                    storyData.map((image) => {
+                      return (
+                        <>
+                          {/* <ImageList> */}
+
+                          <Box>
+                            <Card className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                            </Card>
+                            <br />
+                            <Stack direction="row" spacing={0.5}>
+                              {image.genres &&
+                                image.genres.map((genre, idx) => {
+                                  if (idx > 2) {
+                                    return;
+                                  }
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </Box>
+
+                          {/* </ImageList> */}
+                        </>
+                      );
+                    })}
+                </Stack>
+              </div>
+              {/* </div> */}
+            </div>
+          </Grid>
+        </Paper>
+
+        <Paper
+          elevation={15}
+          className={classes.paper}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid item>
+            <div>
+              <br />
+              <h2 className={classes.text1}>Horror</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -261,7 +343,6 @@ function HomeImage() {
           </Grid>
         </Paper>
 
-
         <Paper
           elevation={15}
           className={classes.paper}
@@ -275,7 +356,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Mystery</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -333,8 +414,6 @@ function HomeImage() {
           </Grid>
         </Paper>
 
-
-
         <Paper
           elevation={15}
           className={classes.paper}
@@ -348,7 +427,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Science Fiction</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -406,10 +485,6 @@ function HomeImage() {
           </Grid>
         </Paper>
 
-
-
-
-
         <Paper
           elevation={15}
           className={classes.paper}
@@ -423,7 +498,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Thriller</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -480,10 +555,6 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
-
-
-
-        
       </>
     );
   }

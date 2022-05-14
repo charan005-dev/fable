@@ -29,6 +29,7 @@
     "mdb-react-ui-kit": "^3.0.0",
     "react": "^18.0.0",
     "react-bootstrap": "^2.3.1",
+    "react-carousel-dots": "^0.1.0",
     "react-carousel-minimal": "^1.4.1",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
