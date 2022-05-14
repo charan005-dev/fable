@@ -142,7 +142,15 @@ const useStyles = makeStyles({
     marginBottom: 18,
     border: "0px solid black", 
     borderRadius: "3px"
-  },
+  }, 
+
+  mainImage: {
+    width: 140,
+    height: 200,
+    border: "0px solid black", 
+    borderRadius: "3px"
+  }, 
+
   content1: {
     paddingLeft: "22%",
   },
@@ -315,7 +323,7 @@ const Story = () => {
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
                 <CardMedia
-                  className={classes.media}
+                  className={classes.mainImage}
                   component="img"
                   image={storyData.story.coverImage}
                 />
