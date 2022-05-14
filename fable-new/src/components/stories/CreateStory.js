@@ -1,4 +1,11 @@
-import { Grid, OutlinedInput, Paper, Select, Typography, MenuItem } from "@material-ui/core";
+import {
+  Grid,
+  OutlinedInput,
+  Paper,
+  Select,
+  Typography,
+  MenuItem,
+} from "@material-ui/core";
 import { Button, TextField, FormControl, Alert, Stack } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -52,25 +59,39 @@ const useStyles = makeStyles({
   },
   button1: {
     backgroundColor: "black",
-    color: "blanchedalmond",
+    color: "white",
     width: "auto",
-    marginLeft: "14%",
+    marginLeft: "13%",
+    marginRight: "auto", 
+    border:"0px solid",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white", 
+      fontWeight: "bolder"
+    },
+  },
+  buttonback: {
+    backgroundColor: "#ececec",
+    color: "black",
+    width: "auto",
+    marginLeft: "1%",
     marginRight: "auto",
     "&:hover": {
-      backgroundColor: "blanchedalmond",
-      color: "black",
+      backgroundColor: "black",
+      color: "white",
     },
   },
 
   button2: {
-    backgroundColor: "blanchedalmond",
-    color: "black",
+    backgroundColor: "black",
+    color: "white",
     width: "auto",
     marginLeft: "auto",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
-      color: "blanchedalmond",
+      color: "white", 
+      fontWeight: "bold"
     },
   },
 
@@ -207,7 +228,8 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message: "Your title value is invalid or contains more/less than the expected amount of characters.",
+        message:
+          "Your title value is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !desc ||
@@ -219,7 +241,8 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message: "Your description is invalid or contains more/less than the expected amount of characters.",
+        message:
+          "Your description is invalid or contains more/less than the expected amount of characters.",
       };
     let content = editorRef.current.getContent();
     if (
@@ -232,7 +255,8 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message: "Your story content is invalid or contains more/less than the expected amount of characters.",
+        message:
+          "Your story content is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !Array.isArray(selectedGenres) ||
@@ -243,7 +267,9 @@ const CreateStory = () => {
         e: true,
         message:
           "The selected genres are invalid. " +
-          (selectedGenres.length === 0 ? "Please select at least one genre for your story" : ""),
+          (selectedGenres.length === 0
+            ? "Please select at least one genre for your story"
+            : ""),
       };
     }
     return { e: false };
@@ -262,7 +288,10 @@ const CreateStory = () => {
     formData.append("title", title);
     formData.append("shortDescription", desc);
     formData.append("genres", selectedGenres);
-    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
+    formData.append(
+      "contentHtml",
+      editorRef.current ? editorRef.current.getContent() : ""
+    );
     formData.append("coverImage", coverImage);
     const { data } = await axios.post("/api/stories", formData, {
       headers: {
@@ -301,7 +330,11 @@ const CreateStory = () => {
         <ToastContainer />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            <Button variant="contained" component="label" className={classes.button2}>
+            <Button
+              variant="contained"
+              component="label"
+              className={classes.button2}
+            >
               Upload a cover photo for your story
               <input
                 type="file"
@@ -313,7 +346,11 @@ const CreateStory = () => {
               <Paper elevation={1}>
                 <Grid container justifyContent="center">
                   <Typography variant="overline">Preview</Typography>
-                  <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
+                  <img
+                    className={classes.imagePreview}
+                    src={uploadedImageUrl}
+                    alt="preview of uploaded"
+                  />
                 </Grid>
               </Paper>
             )}
@@ -322,8 +359,17 @@ const CreateStory = () => {
           <Paper className={classes.paper} elevation={20}>
             <br />
 
-            <Grid container justifyContent="center" alignItems="center" elevation={25}>
-              <Typography variant="h3" component={"h1"} className={classes.headertext}>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              elevation={25}
+            >
+              <Typography
+                variant="h3"
+                component={"h1"}
+                className={classes.headertext}
+              >
                 Create your story here!
               </Typography>
             </Grid>
@@ -332,7 +378,8 @@ const CreateStory = () => {
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
               <Typography variant={"h4"} className={classes.title}>
-                Title <Typography variant="overline">(6 - 30 characters)</Typography>
+                Title{" "}
+                <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
 
@@ -356,7 +403,10 @@ const CreateStory = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
+                Short Description of the Story{" "}
+                <Typography variant="overline">
+                  (30 - 5000 characters)
+                </Typography>
               </Typography>
               <br />
 
@@ -383,14 +433,19 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
+                Your Story Goes Here!{" "}
+                <Typography variant="overline">
+                  (200 - 1M characters)
+                </Typography>
               </Typography>
               <br />
               <Editor
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
-                    let close = document.getElementsByClassName("tox-notification__dismiss")[0];
+                    let close = document.getElementsByClassName(
+                      "tox-notification__dismiss"
+                    )[0];
                     if (close) close.click();
                   }, 20);
                 }}
@@ -401,7 +456,8 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
+                Select All Genres that Apply!{" "}
+                <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />
 
@@ -431,13 +487,17 @@ const CreateStory = () => {
               </Select>
               <br />
               <br />
-
-              <Button onClick={createStory} className={classes.button1}>
-                Create Story
-              </Button>
-              <Button onClick={() => window.history.back()} variant="outlined">
-                Take me back
-              </Button>
+              <span>
+                <Button onClick={createStory} className={classes.button1}>
+                  Create Story
+                </Button>
+                <Button
+                  onClick={() => window.history.back()}
+                  className={classes.buttonback}
+                >
+                  back
+                </Button>
+              </span>
               <br />
             </FormControl>
           </Paper>
