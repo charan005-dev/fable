@@ -113,7 +113,7 @@ const useStyles = makeStyles({
   },
   card3: {
     width: "5vw",
-    height: "5vw",
+    height: "10vw",
     marginLeft: "5%",
     paddingRight: "0%",
   },
@@ -128,11 +128,57 @@ const useStyles = makeStyles({
     padding: 6,
   },
   similarImages: {
-    maxWidth: 50,
-    maxHeight: 50,
+    width: 53,
+    height: 80,
+    marginTop: "3.5%",
   },
   content1: {
     paddingLeft: "22%",
+  },
+  description: {
+    paddingLeft: "22%",
+    marginBottom: "10%",
+  },
+  titleside: {
+    background: "#ececec",
+
+    textDecoration: "none",
+    color: "black",
+    border: "0px solid",
+    paddingLeft: "2%",
+    paddingRight: "2%",
+    paddingTop: "2%",
+    paddingBottom: "2%",
+    borderRadius: "6px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+  typo: {
+    marginLeft: "6%",
+  },
+
+  author: {
+    background: "black",
+    textDecoration: "none",
+    color: "white",
+    border: "1px solid",
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    borderRadius: "20px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
   },
 });
 
@@ -301,9 +347,15 @@ const Story = () => {
                       })}
                   </Stack>
                 </CardContent>{" "}
+                <br />
+                <br />
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none">
+                  <Link
+                    to={`/users/${storyData.creator._id}`}
+                    class="text-decoration-none"
+                    className={classes.author}
+                  >
                     {storyData.creator.displayName}
                   </Link>
                 </CardContent>
@@ -311,7 +363,9 @@ const Story = () => {
 
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h5">You might also like</Typography>
+                  <Typography variant="h5" className={classes.typo}>
+                    You might also like
+                  </Typography>
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
@@ -332,17 +386,28 @@ const Story = () => {
                                 <span className={classes.card4}>
                                   &nbsp; &nbsp;
                                   <span className={classes.content}>
-                                    <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
+                                    <Link
+                                      to={`/stories/${recommendation._id}`}
+                                      class="text-decoration-none"
+                                      className={classes.titleside}
+                                    >
                                       {recommendation.title}
                                     </Link>
-                                  </span>
-                                  <br />
-                                  <span className={classes.content1}>
-                                    <Typography variant="caption">
-                                      {recommendation.shortDescription.length > 50
-                                        ? recommendation.shortDescription.substring(0, 50) + "..."
+                                    <br />
+                                    <Typography
+                                      variant="caption"
+                                      className={classes.description}
+                                    >
+                                      {recommendation.shortDescription.length >
+                                      50
+                                        ? recommendation.shortDescription.substring(
+                                            0,
+                                            50
+                                          ) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
+                                    <br />
+                                    <Divider />
                                   </span>
                                 </span>
                               </Typography>
