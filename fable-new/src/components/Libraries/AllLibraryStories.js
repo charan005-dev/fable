@@ -173,7 +173,7 @@ const AllLibraryStories = () => {
   if (libraryData) {
     return (
       <div>
-
+      <div>
         <Typography className={classes.title} subtitle={""}>
           {libraryData && libraryData.libraryName}'s Library
         </Typography>
