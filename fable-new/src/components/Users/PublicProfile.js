@@ -16,6 +16,7 @@ import {
   Divider,
   Button,
   CardActionArea,
+  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Badge } from "@material-ui/core";
@@ -23,6 +24,8 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Edit from "@mui/icons-material/Edit";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
 
 /* This component will take care of displaying
@@ -351,30 +354,41 @@ const PublicProfile = () => {
                         {libraryData &&
                           libraryData.length > 0 &&
                           libraryData.map((lib, idx) => {
-                            return (
-                              <Card>
-                                <CardContent>
-                                  <Stack direction="row" spacing={2}>
-                                    <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
-                                      <LibraryBooksIcon />
-                                    </Badge>
-                                    <Link to={`/libraries/${lib._id}`}>
-                                      <Typography variant="body1">
-                                        {lib.libraryName.length > 20
-                                          ? lib.libraryName.length.substring(16) + "..."
-                                          : lib.libraryName}
-                                      </Typography>
-                                    </Link>
-                                    {/* <CardActionArea>
+                            if (!lib.private)
+                              return (
+                                <Card>
+                                  <CardContent>
+                                    <Stack direction="row" spacing={2}>
+                                      <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                                        {lib.private ? (
+                                          <Tooltip placement="left" arrow title="Private">
+                                            <LockIcon />
+                                          </Tooltip>
+                                        ) : (
+                                          <Tooltip placement="left" arrow title="Public">
+                                            <LockOpenIcon />
+                                          </Tooltip>
+                                        )}
+                                      </Badge>
+
+                                      <Link to={`/libraries/${lib._id}`}>
+                                        <Typography variant="body1">
+                                          {lib.libraryName.length > 20
+                                            ? lib.libraryName.length.substring(16) + "..."
+                                            : lib.libraryName}
+                                        </Typography>
+                                      </Link>
+
+                                      {/* <CardActionArea>
                                       <Link to={`/stories/${libraryData.stories._id}`}>
                                         <CardMedia></CardMedia>
                                       </Link>
                                     </CardActionArea> */}
-                                    <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
-                                  </Stack>
-                                </CardContent>
-                              </Card>
-                            );
+                                      <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
+                                    </Stack>
+                                  </CardContent>
+                                </Card>
+                              );
                           })}
                       </Stack>
                     </Card>
