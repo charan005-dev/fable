@@ -75,12 +75,17 @@ router.get("/library_stories/:libraryId", async (req, res) => {
     let owner = req.query.owner;
     // let storyId = req.query.storyId;
     let library = req.params.libraryId;
-    let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library);
-    res.status(200).json({ success: true, libraries: allLibraryStories });
-    return;
+    try {
+      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library);
+      res.status(200).json({ success: true, libraries: allLibraryStories });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ success: false, error: e });
+    }
   } catch (e) {
     console.log(e);
-    res.status(500).json({ succes: false, error: "Sorry, something went wrong" });
+    res.status(500).json({ success: false, error: "Sorry, something went wrong" });
   }
 });
 
@@ -119,6 +124,25 @@ router.put("/:libraryId", async (req, res) => {
       console.log(e);
       if (e.toString().includes("library does not exist")) res.status(404).json({ success: false, error: e });
       else res.status(400).json({ success: false, error: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
+router.delete("/:libraryId", async (req, res) => {
+  try {
+    let { libraryId } = req.params;
+    let accessor = req.authenticatedUser;
+    try {
+      // will return all user libraries after deletion
+      const deletedResult = await libraries.deleteLibrary(accessor, libraryId);
+      res.status(200).json({ success: true, libraries: deletedResult.libraries });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, error: e });
     }
   } catch (e) {
     console.log(e);

@@ -19,8 +19,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from "@restart/ui/esm/Button";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useContext } from "react";
-import { AuthContext } from "../../firebase/Auth"; 
-import { BsVectorPen } from 'react-icons/bs';
+import { AuthContext } from "../../firebase/Auth";
+import { BsVectorPen } from "react-icons/bs";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -33,10 +33,9 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Comments from "./Comments";
 import { toast } from "react-toastify";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import Sugar from "sugar"; 
-import CreateIcon from '@mui/icons-material/Create'; 
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; 
-
+import Sugar from "sugar";
+import CreateIcon from "@mui/icons-material/Create";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 
 const useStyles = makeStyles({
   card: {
@@ -91,17 +90,16 @@ const useStyles = makeStyles({
     maxWidth: "500px",
     maxHeight: "200px",
     marginTop: "1%",
-    paddingTop: "20px",
-    paddingBottom: "20px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
     paddingRight: "40px",
     paddingLeft: "40px",
     borderRadius: "35px",
-    fontWeight: "bold",
     fontSize: "16px",
     textDecoration: "white",
     "&:hover": {
-      backgroundColor: "white",
-      color: "black",
+      backgroundColor: "black",
+      color: "white",
       textDecoration: "white",
       fontWeight: "bold",
     },
@@ -114,9 +112,9 @@ const useStyles = makeStyles({
   card2: {
     width: "70%",
     height: "100%",
-    marginRight: "13vw !important", 
+    marginRight: "13vw !important",
     marginTop: "15%",
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
   card3: {
     width: "7vw",
@@ -140,27 +138,26 @@ const useStyles = makeStyles({
     marginLeft: 18,
     marginTop: 18,
     marginBottom: 18,
-    border: "0px solid black", 
-    borderRadius: "3px"
-  }, 
+    border: "0px solid black",
+    borderRadius: "3px",
+  },
 
   mainImage: {
     width: 140,
     height: 200,
-    border: "0px solid black", 
-    borderRadius: "3px"
-  }, 
+    border: "0px solid black",
+    borderRadius: "3px",
+  },
 
   content1: {
     paddingLeft: "22%",
   },
   description: {
-    
     marginBottom: "0%",
     marginTop: "2%",
     border: "0px solid",
-    borderRadius: "6px", 
-    color:"black",
+    borderRadius: "6px",
+    color: "black",
     width: "80",
   },
   titleside: {
@@ -179,7 +176,7 @@ const useStyles = makeStyles({
     paddingTop: "2%",
     paddingBottom: "1%",
     borderRadius: "6px",
-    elevation: "3", 
+    elevation: "3",
     fontWeight: "bolder",
     "&:hover": {
       textDecoration: "none",
@@ -187,8 +184,8 @@ const useStyles = makeStyles({
     },
   },
   typo: {
-    marginLeft: "26%", 
-    fontWeight: "bold"
+    marginLeft: "26%",
+    fontWeight: "bold",
   },
 
   author: {
@@ -218,15 +215,14 @@ const useStyles = makeStyles({
 
   recommendation: {
     marginBottom: "3%",
-    textDecoration: "none", 
+    textDecoration: "none",
     backgroundColor: "#EDEDED",
-    border: '0px solid black', 
+    border: "0px solid black",
     color: "white",
-    borderRadius: '7px', 
-    
+    borderRadius: "7px",
 
     "&:hover": {
-      textDecoration: "none", 
+      textDecoration: "none",
       color: "white",
     },
   },
@@ -236,10 +232,20 @@ const useStyles = makeStyles({
     "&:hover": {
       textDecoration: "none",
     },
+  },
+  pen: {
+    fontSize: "larger",
   }, 
+
+  bold: 
+  {
+    fontWeight:"bolder"
+  },
+
   pen:{
      fontSize:"larger"
    }
+
 });
 
 const Story = () => {
@@ -405,6 +411,10 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
+                  <Typography variant="h4" className={classes.bold}>
+                    Desciption
+                  </Typography>
+                  <br />
                   <Typography variant="subtitle">
                     {storyData.story.shortDescription}
                   </Typography>{" "}
@@ -427,29 +437,25 @@ const Story = () => {
                       })}
                   </Stack>
                 </CardContent>{" "}
-            
                 <span>
-               
-                <CardContent> 
-                 
-                  <Link
-                    to={`/users/${storyData.creator._id}`}
-                    class="text-decoration-none"
-                    className={classes.author}
-                  >
-                    {storyData.creator.displayName}
-                  </Link> 
-                  &nbsp;&nbsp;
-                  <BsVectorPen className={classes.pen}/>
-                </CardContent> 
+                  <CardContent>
+                    <Link
+                      to={`/users/${storyData.creator._id}`}
+                      class="text-decoration-none"
+                      className={classes.author}
+                    >
+                      {storyData.creator.displayName}
+                    </Link>
+                    &nbsp;&nbsp;
+                    <BsVectorPen className={classes.pen} />
+                  </CardContent>
                 </span>
-              </Card> 
-              
+              </Card>
 
               <Card className={classes.card2} elevation={0}>
                 <CardContent>
                   <Typography variant="h5" className={classes.typo}>
-                    You might also like 
+                    You might also like
                   </Typography>
                   <br />
                   <Divider />

@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
+
 import { Link, useNavigate, useParams } from "react-router-dom";
+
 import { AuthContext } from "../../firebase/Auth";
 import {
   Box,
@@ -22,6 +24,7 @@ import Hero from "../Hero";
 import { Chip } from "@material-ui/core";
 import { Stack } from "react-bootstrap";
 import { typography } from "@mui/system";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -144,22 +147,33 @@ const AllLibraryStories = () => {
   const { currentUser } = useContext(AuthContext);
   let { libraryId } = useParams();
   let [libraryData, setLibraryData] = useState(null);
+  const navigate = useNavigate();
   const classes = useStyles();
   const navigate = useNavigate();
   useEffect(() => {
     async function getLibraryStories() {
-      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
-      console.log(data.libraries);
-      setLibraryData(data.libraries);
+      try {
+        const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
+        console.log(data.libraries);
+        setLibraryData(data.libraries);
+      } catch (e) {
+        console.log(e);
+        toast.error("Cannot find the library.", {
+          theme: "dark",
+        });
+        setTimeout(() => navigate(`/libraries/me`), 300);
+        return;
+      }
     }
     getLibraryStories();
   }, []);
 
-  return (
-    <div>
+  if (libraryData) {
+    return (
       <div>
+
         <Typography className={classes.title} subtitle={""}>
           {libraryData && libraryData.libraryName}'s Library
         </Typography>
@@ -221,6 +235,7 @@ const AllLibraryStories = () => {
       </Stack>
     </div>
   );
+
 };
 
 export default AllLibraryStories;

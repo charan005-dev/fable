@@ -111,8 +111,14 @@ const ViewLibrariesList = () => {
   });
   const openCreateLibModal = () => setCreateLib(true);
   const closeCreateLibModal = () => setCreateLib(false);
-  const openDelLibModal = () => setDelLib(true);
-  const closeDelLibModal = () => setDelLib(false);
+  const openDelLibModal = (libraryId) => {
+    setChosenLibrary(libraryId);
+    setDelLib(true);
+  };
+  const closeDelLibModal = () => {
+    setChosenLibrary("");
+    setDelLib(false);
+  };
   const openeditLibModal = (libraryId) => {
     setChosenLibrary(libraryId);
     seteditLib(true);
@@ -135,7 +141,7 @@ const ViewLibrariesList = () => {
     return { e: false };
   };
 
-  const createLibrary = async () => {
+  const performEditLibrary = async () => {
     let validity = isStateValid();
     if (validity.e) {
       toast.error(validity.text, {
@@ -165,7 +171,6 @@ const ViewLibrariesList = () => {
           }
           libraries.push(library);
         }
-        libraries.push(data.library);
         setLibraryData(libraries);
         closeeditLibModal();
         setCreationSuccess(true);
@@ -173,6 +178,62 @@ const ViewLibrariesList = () => {
     } catch (e) {
       console.log(e);
       toast.dark(e.response.data.error);
+    }
+  };
+
+  const createLibrary = async () => {
+    let validity = isStateValid();
+    if (validity.e) {
+      toast.error(validity.text, {
+        theme: "dark",
+      });
+      return;
+    }
+    try {
+      const { data } = await axios.post(
+        `/api/libraries/`,
+        {
+          userId: currentUser.uid,
+          libraryName: libraryName,
+          private: isPrivate,
+        },
+        { headers: { authtoken: await currentUser.getIdToken() } }
+      );
+      console.log(data);
+      if (data.success) {
+        setLibraryName("");
+        setIsPrivate(true);
+        let libraries = [];
+        for (const library of libraryData) {
+          libraries.push(library);
+        }
+        // pushing in the latest created library!
+        libraries.push(data.library);
+        setLibraryData(libraries);
+        closeCreateLibModal();
+        setCreationSuccess(true);
+      }
+    } catch (e) {
+      console.log(e);
+      toast.dark(e.response.data.error);
+    }
+  };
+
+  const performDelete = async () => {
+    try {
+      const { data } = await axios.delete(`/api/libraries/${chosenLibrary}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      // data will contain updated libraries state after deletion
+      console.log(data);
+      setChosenLibrary("");
+      setLibraryData(data.libraries);
+      closeDelLibModal();
+    } catch (e) {
+      setChosenLibrary("");
+      toast.error(e.message, {
+        theme: "dark",
+      });
     }
   };
 
@@ -269,11 +330,11 @@ const ViewLibrariesList = () => {
             <Typography className={classes.story}>
               Want everyone to view your library? Make it public *
               <Switch
-                checked={isPrivate}
+                checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
-                label={isPrivate ? "Public" : "Private"}
+                label={!isPrivate ? "Public" : "Private"}
               />
             </Typography>
             <br />
@@ -317,16 +378,16 @@ const ViewLibrariesList = () => {
             <Typography className={classes.story}>
               Want everyone to view your library? Make it public *
               <Switch
-                checked={isPrivate}
+                checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
-                label={isPrivate ? "Public" : "Private"}
+                label={!isPrivate ? "Public" : "Private"}
               />
             </Typography>
             <br />
             <br />
-            <Button variant="contained" onClick={createLibrary} className={classes.button1}>
+            <Button variant="contained" onClick={performEditLibrary} className={classes.button1}>
               Edit Library
             </Button>
           </Box>
@@ -382,6 +443,7 @@ const ViewLibrariesList = () => {
                               <Button
                                 variant="contained"
                                 onClick={() => {
+                                  performDelete();
                                   handleClose();
                                 }}
                                 color="error"
