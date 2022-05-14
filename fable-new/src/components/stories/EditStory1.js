@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     backgroundColor: "black",
     color: "white",
     width: "auto",
-    marginLeft: "12%",
+    marginLeft: "10%",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
@@ -130,7 +130,8 @@ const useStyles = makeStyles({
   paperright: {
     width: "25%",
     marginLeft: "14%",
-    paddingLeft: "%",
+    paddingLeft: "%", 
+    height: "2%",
     maxHeight: "100%",
   },
   textfield1: {
@@ -155,6 +156,22 @@ const useStyles = makeStyles({
   },
   grid: {
     width: "100%",
+  }, 
+  imagePreview: 
+  {
+      width:"100%"
+  },
+
+  buttonback: {
+    backgroundColor: "#ececec",
+    color: "black",
+    width: "auto",
+    marginLeft: "1%",
+    marginRight: "auto",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+    },
   },
   imagePreview: {
     backgroundColor: "#808080",
@@ -529,6 +546,13 @@ const EditStory1 = () => {
 
                 <Button className={classes.buttondelete} onClick={requestDeletionConfirmation}>
                   Delete Story
+                </Button> 
+
+                <Button
+                  onClick={() => window.history.back()}
+                  className={classes.buttonback}
+                >
+                  back
                 </Button>
               </span>
               <br />
