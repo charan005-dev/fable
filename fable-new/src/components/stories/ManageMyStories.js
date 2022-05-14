@@ -37,8 +37,13 @@ const useStyles = makeStyles({
     margin: 4,
   },
   card: {
-    padding: 3,
-    maxWidth: "16%",
+    margin: 6,
+    float: "left",
+    backgroundColor: "#2f2f2f",
+    color: "#fff",
+    paddingLeft: 30,
+    padding: 10,
+    maxWidth: 300,
   },
   storyLink: {
     textDecoration: "none",
@@ -109,15 +114,18 @@ const useStyles = makeStyles({
   },
   card2: {
     width: "100%",
-    marginBottom: "100px",
+    marginTop: "5%",
+    marginRight: "10%",
+    marginBottom: "10%",
     paddingBottom: "2%",
     height: "2%",
   },
   media: {
-    height: "300px",
-    width: "200px",
+    marginTop: "10%",
+    marginBottom: "10%",
+    height: "15vw",
+    width: "10vw",
   },
-  paper: {},
 });
 
 const ManageAllStories = () => {

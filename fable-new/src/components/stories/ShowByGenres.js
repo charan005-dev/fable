@@ -113,15 +113,18 @@ const useStyles = makeStyles({
   },
   card2: {
     width: "100%",
-    marginBottom: "100px",
+    marginTop: "5%",
+    marginRight: "10%",
+    marginBottom: "10%",
     paddingBottom: "2%",
     height: "2%",
   },
   media: {
-    height: "300px",
-    width: "200px",
+    marginTop: "10%",
+    marginBottom: "10%",
+    height: "15vw",
+    width: "10vw",
   },
-  paper: {},
 });
 
 const ManageMyStories = () => {
@@ -245,7 +248,7 @@ const ManageMyStories = () => {
             return (
               <Grid item xs={5}>
                   <Paper
-                    elevation={20}
+                    elevation={10}
                     className={classes.paper}
                     sx={{
                       bgcolor: "background.default",
@@ -264,11 +267,11 @@ const ManageMyStories = () => {
 
                         <Card className={classes.card2} elevation={0}>
                           <CardContent>
-                            <Link to={`/stories/${story._id}`}>
+                            <Link to={`/stories/${story._id}`} class="text-decoration-none">
                               <Typography>{story.title}</Typography>
                             </Link>
                           </CardContent>
-                          <br />
+                          
                           <CardContent>
                             <Typography>
                               {story.shortDescription.length > 200
