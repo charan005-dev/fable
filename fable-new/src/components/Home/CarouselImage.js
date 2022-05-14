@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { jsx } from "@emotion/react";
 import Slider from "react-slick";
 import Dots from 'react-carousel-dots';
+import { Chip, Typography } from "@material-ui/core";
 import {
   makeStyles,
 } from "@material-ui/core";
@@ -15,7 +16,13 @@ const useStyles = makeStyles({
 dots:{
   marginLeft: "auto",
   marginRight: "auto",
-}
+},
+// username:{
+//   marginLeft:"100",
+//   paddingLeft:100,
+//   marginRight:100
+
+// }
 });
 
 function CarouselImage() {
@@ -65,6 +72,7 @@ function CarouselImage() {
             }}
           >
             
+            
             <Carousel
               data={storyData}
                time={1000}
@@ -91,7 +99,19 @@ function CarouselImage() {
                 maxHeight: "500px",
                 margin: "40px auto",
               }}
-            />
+            /><div>
+
+           
+{/* Welcome Home
+
+      <Chip
+      label={currentUser.displayName}
+      size={"large"}
+      color="info"
+      onClick={() => navigate(`/`)}
+    /> */}
+                                      
+      </div>
             <br />
             
            {/* <Dots  className="dots"length={10} active={5} /> */}

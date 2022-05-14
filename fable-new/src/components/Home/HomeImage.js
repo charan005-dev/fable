@@ -114,6 +114,18 @@ function HomeImage() {
     }
     getAllStories();
   }, []);
+
+  // useEffect(() => {
+  //   async function getAllStories() {
+  //     const { data } = await axios.get(`/api/stories/all?required=12`&Romance, {
+  //       headers: { authtoken: await currentUser.getIdToken() },
+  //     });
+  //     console.log(data);
+  //     setStoryData(data.stories);
+  //   }
+  //   getAllStories();
+  // }, []);
+
   if (storyData) {
     return (
       <>
@@ -347,7 +359,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>Adventure</h2>
+              <h2 className={classes.text1}>Science Fiction</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
