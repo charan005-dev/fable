@@ -127,7 +127,7 @@ const useStyles = makeStyles({
   card3: {
     width: "100%",
     height: "auto",
-    marginLeft: "17%",
+    marginLeft: "19.2%",
     paddingLeft: "0%",
     paddingRight: "0%",
     marginRight: "auto",
@@ -152,6 +152,7 @@ const useStyles = makeStyles({
   },
   subcard: {
     width: "6%",
+    marginLeft: "23%",
   },
   cardpaper: {
     width: "40vw",
@@ -213,9 +214,12 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getProfileData() {
-      const { data } = await axios.get(`/api/users/public_profile/${profileUserId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/users/public_profile/${profileUserId}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
       setProfileData(data);
       console.log(data);
     }
@@ -241,7 +245,10 @@ const PublicProfile = () => {
           <Card elevation={15} className={classes.namecard}>
             <Grid container justifyContent="center">
               {!profileData.profile.userAvatar && (
-                <Avatar sx={{ width: 64, height: 64 }} className={classes.avatar}>
+                <Avatar
+                  sx={{ width: 64, height: 64 }}
+                  className={classes.avatar}
+                >
                   {profileData.profile.displayName.substring(0, 2)}
                 </Avatar>
               )}
@@ -261,7 +268,12 @@ const PublicProfile = () => {
                 {profileData.profile.displayName}
               </Typography>
               {currentUser.uid === profileData.profile._id && (
-                <Fab className={classes.editButton} onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}>
+                <Fab
+                  className={classes.editButton}
+                  onClick={() =>
+                    navigate(`/users/${profileData.profile._id}/edit`)
+                  }
+                >
                   <Edit />
                 </Fab>
               )}
@@ -270,13 +282,21 @@ const PublicProfile = () => {
             <br />
             <Stack direction="row" className={classes.card3} spacing={5}>
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text1}
+                >
                   <MenuBookIcon />
                 </Typography>
               </Card>
               &nbsp; &nbsp;
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
+                <Typography
+                  variant="h6"
+                  component={"h2"}
+                  className={classes.text2}
+                >
                   <LibraryAddIcon />
                 </Typography>
               </Card>
@@ -293,57 +313,80 @@ const PublicProfile = () => {
                 <Stack direction="row">
                   <Paper className={classes.cardpaper} elevation={0}>
                     <Card className={classes.cardpaper} elevation={10}>
-                      <Typography variant="h3" component={"h2"} className={classes.text}>
+                      <Typography
+                        variant="h3"
+                        component={"h2"}
+                        className={classes.text}
+                      >
                         Stories Written
                       </Typography>
                       <br />
                       <Stack direction={"column"} spacing={2}>
                         {profileData &&
-                          profileData.profile.storiesCreated.map((profile, idx) => {
-                            if (idx > 2) {
-                              return;
-                            }
-                            return (
-                              <Stack direction="row" spacing={5}>
-                                <Card>
-                                  <CardActionArea>
+                          profileData.profile.storiesCreated.map(
+                            (profile, idx) => {
+                              if (idx > 2) {
+                                return;
+                              }
+                              return (
+                                <Stack direction="row" spacing={5}>
+                                  <Card>
+                                    <CardActionArea>
+                                      <Link to={`/stories/${profile._id}`}>
+                                        <CardMedia
+                                          className={classes.media}
+                                          component="img"
+                                          image={profile.coverImage}
+                                        />
+                                      </Link>
+                                    </CardActionArea>
+                                  </Card>
+                                  <Card elevation={0}>
                                     <Link to={`/stories/${profile._id}`}>
-                                      <CardMedia className={classes.media} component="img" image={profile.coverImage} />
+                                      <Typography
+                                        style={{ textTransform: "uppercase" }}
+                                      >
+                                        {profile.title}
+                                      </Typography>
                                     </Link>
-                                  </CardActionArea>
-                                </Card>
-                                <Card elevation={0}>
-                                  <Link to={`/stories/${profile._id}`}>
-                                    <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
-                                  </Link>
-                                  <br />
-                                  <Typography variant="h7">
-                                    {" "}
-                                    <FavoriteIcon /> &nbsp;
-                                    {" " + profile.likedBy.length}
-                                  </Typography>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                  <Typography variant="h7">
-                                    {" "}
-                                    <VisibilityIcon />
-                                    {" " + profile.visitedBy.length}
-                                  </Typography>
-                                  <Typography>
-                                    {profile.shortDescription.length > 50
-                                      ? profile.shortDescription.substring(0, 50) + "...."
-                                      : profile.shortDescription}
-                                  </Typography>
-                                </Card>
-                              </Stack>
-                            );
-                          })}
+                                    <br />
+                                    <Typography variant="h7">
+                                      {" "}
+                                      <FavoriteIcon /> &nbsp;
+                                      {" " + profile.likedBy.length}
+                                    </Typography>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Typography variant="h7">
+                                      {" "}
+                                      <VisibilityIcon />
+                                      {" " + profile.visitedBy.length}
+                                    </Typography>
+                                    <Typography>
+                                      {profile.shortDescription.length > 50
+                                        ? profile.shortDescription.substring(
+                                            0,
+                                            50
+                                          ) + "...."
+                                        : profile.shortDescription}
+                                    </Typography>
+                                  </Card>
+                                </Stack>
+                              );
+                            }
+                          )}
                       </Stack>
-                      <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
+                      <Button onClick={() => navigate(`/stories/manage`)}>
+                        View More
+                      </Button>
                     </Card>
                   </Paper>
                   <Paper className={classes.cardpaper1} elevation={0}>
                     <Card className={classes.cardpaper1} elevation={10}>
-                      <Typography variant="h3" component={"h2"} className={classes.text}>
+                      <Typography
+                        variant="h3"
+                        component={"h2"}
+                        className={classes.text}
+                      >
                         Your Libraries
                       </Typography>
                       <br />
@@ -355,13 +398,20 @@ const PublicProfile = () => {
                               <Card>
                                 <CardContent>
                                   <Stack direction="row" spacing={2}>
-                                    <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                                    <Badge
+                                      anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "right",
+                                      }}
+                                    >
                                       <LibraryBooksIcon />
                                     </Badge>
                                     <Link to={`/libraries/${lib._id}`}>
                                       <Typography variant="body1">
                                         {lib.libraryName.length > 20
-                                          ? lib.libraryName.length.substring(16) + "..."
+                                          ? lib.libraryName.length.substring(
+                                              16
+                                            ) + "..."
                                           : lib.libraryName}
                                       </Typography>
                                     </Link>
@@ -370,7 +420,9 @@ const PublicProfile = () => {
                                         <CardMedia></CardMedia>
                                       </Link>
                                     </CardActionArea> */}
-                                    <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
+                                    <Typography variant="overline">
+                                      ({lib.stories.length} Stories Inside)
+                                    </Typography>
                                   </Stack>
                                 </CardContent>
                               </Card>
