@@ -19,9 +19,20 @@ import { NavLink } from "react-router-dom";
 import SocialSignIn from "./SocialSignIn";
 import firebase from "firebase";
 import { create } from "@mui/material/styles/createTransitions";
-import { Card, CardContent, Grid, makeStyles, Typography, TextField } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Grid,
+  makeStyles,
+  Typography,
+  TextField,
+  Paper,
+} from "@material-ui/core";
 
-import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
+import {
+  doSignInWithEmailAndPassword,
+  doPasswordReset,
+} from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
 // axios.defaults.baseURL = "http://localhost:4000";
 
@@ -51,38 +62,51 @@ const useStyles = makeStyles({
 
   textdecoration: {
     color: "black",
-    textdecoration: "none",
-
+    fontWeight: "bold",
     "&:hover": {
-      color: "blanchedalmond",
-      textdecoration: "none",
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
     },
   },
   button: {
     backgroundColor: "black",
-    color: "blanchedalmond",
-    textDecoration: "white",
+    width: "80%",
+    color: "white",
+    textDecoration: "none",
+    fontWeight: "bold",
+    marginLeft: "10.5%",
     "&:hover": {
-      backgroundColor: "blanchedalmond",
-      color: "black",
-      textDecoration: "white",
+      backgroundColor: "black",
+      color: "white",
+      fontWeight: "bold",
     },
-    textbox: {
-      border: "5px black",
-      "&:hover": {
-        backgroundColor: "#5dc2a6",
-        border: "5px bold black",
-      },
+  },
+
+  textbox: {
+    border: "5px black",
+    "&:hover": {
+      backgroundColor: "#ececec",
+      border: "5px bold black",
     },
   },
 
   button1: {
-    backgroundColor: "blanchedalmond",
+    backgroundColor: "#ececec",
     color: "black",
+    textDecoration: "none",
+    fontWeight: "bold",
+
     "&:hover": {
       backgroundColor: "black",
-      color: "blanchedalmond",
+      color: "white",
+      textDecoration: "none",
     },
+  },
+  paper: {
+    marginLeft: "35%",
+    marginRight: "35%",
+    paddingBottom: "1%",
   },
 });
 
@@ -99,7 +123,11 @@ function SignUp() {
       return false;
     }
     try {
-      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
+      await doCreateUserWithEmailAndPassword(
+        email.value,
+        passwordOne.value,
+        name.value
+      );
       console.log(email.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
@@ -120,96 +148,107 @@ function SignUp() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "black" }}>
-            <LockIcon />
-          </Avatar>
-          <br />
-          <Typography component="h1" variant="h4">
-            Sign-Up
-          </Typography>
-          {pwMatch && <h4 className="error">{pwMatch}</h4>}
-          <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              id="name"
-              label="name"
-              name="name"
-              autoComplete="name"
-              autoFocus
-              variant="outlined"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              variant="outlined"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              name="passwordOne"
-              label="Password"
-              type="password"
-              id="passwordOne"
-              autoComplete="current-password"
-              variant="outlined"
-              sx={{ border: "4px bold black" }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              name="passwordTwo"
-              label="Confirm Password"
-              type="password"
-              id="passwordTwo"
-              autoComplete="current-password"
-              variant="outlined"
-              sx={{ border: "4px bold black" }}
-            />
-            <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+    <Paper className={classes.paper} elevation={24}>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 20,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          > 
+          <br/>
+            <Avatar sx={{ m: 1, bgcolor: "black" }}>
+              <LockIcon />
+            </Avatar>
+            <br />
+            <Typography component="h1" variant="h4">
               Sign-Up
-            </Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Typography component="h11" variant="h11">
-              Already Have an Account?
             </Typography>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button className={classes.button1} sx={{ mt: 3, mb: 2 }}>
-              &nbsp;
+            {pwMatch && <h4 className="error">{pwMatch}</h4>}
+            <Box
+              component="form"
+              onSubmit={handleSignUp}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                id="name"
+                label="name"
+                name="name"
+                autoComplete="name"
+                autoFocus
+                variant="outlined"
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                variant="outlined"
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                name="passwordOne"
+                label="Password"
+                type="password"
+                id="passwordOne"
+                autoComplete="current-password"
+                variant="outlined"
+                sx={{ border: "4px bold black" }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                name="passwordTwo"
+                label="Confirm Password"
+                type="password"
+                id="passwordTwo"
+                autoComplete="current-password"
+                variant="outlined"
+                sx={{ border: "4px bold black" }}
+              />
+              <Button
+                className={classes.button}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign-Up
+              </Button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Typography component="h11" variant="h11">
+                Already Have an Account?
+              </Typography>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <NavLink to="/signin" className={classes.textdecoration}>
-                {" "}
-                Login{" "}
-              </NavLink>{" "}
-              &nbsp;
-            </Button>
+                <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
+                  &nbsp; Login &nbsp;
+                </Button>
+              </NavLink>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
+    </Paper>
   );
 }
 export default SignUp;

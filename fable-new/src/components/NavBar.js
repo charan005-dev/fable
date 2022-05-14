@@ -190,7 +190,7 @@ export default function NavBar() {
               component="div"
               sx={{ textDecoration: "none", color: "white", paddingRight:"25vw" }}
             >
-              FABLE
+              Fable
             </Typography>{" "}
           </Link>
           <SearchBox className={classes.search}>
