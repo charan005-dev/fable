@@ -119,14 +119,43 @@ function SignUp() {
       });
       return;
     }
+    if (
+      !name.value ||
+      typeof name.value !== "string" ||
+      name.value.length === 0 ||
+      name.value.trim().length === 0 ||
+      name.value.length < 6
+    ) {
+      toast.error("Please make sure the username exceeds 6 characters ", {
+        theme: "dark",
+        position: "top-center",
+      });
+      return;
+    }
+    let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+    if (!uNameRegex.test(name.value)) {
+      toast.error("It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).", {
+        theme: "dark",
+        position: "top-center",
+      });
+      return;
+    }
+    if (passwordOne.value.trim().length === 0 || passwordOne.value.trim().length < 6) {
+      toast.error("Your password format is invalid", {
+        theme: "dark",
+        position: "top-center",
+      });
+      return;
+    }
     try {
       await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
       let username = name.value;
+      let loweredEmailAddress = emailAddress.toLowerCase();
       const { data } = await axios.post(`/api/users`, {
         userId,
-        emailAddress,
+        emailAddress: loweredEmailAddress,
         displayName: username,
       });
       console.log(data);
@@ -163,7 +192,6 @@ function SignUp() {
             <Typography component="h1" variant="h4">
               Sign-Up
             </Typography>
-            {pwMatch && <h4 className="error">{pwMatch}</h4>}
             <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"

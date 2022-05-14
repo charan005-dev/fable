@@ -113,6 +113,13 @@ const CreateLibrary = () => {
 
   const createLibrary = async () => {
     try {
+      if (!libraryName || typeof libraryName === "string" || libraryName.trim().length === 0) {
+        toast.error("Please make sure that you enter a valid library name", {
+          theme: "dark",
+          position: "top-center",
+        });
+        return;
+      }
       const { data } = await axios.post(
         `/api/libraries/`,
         {
@@ -162,7 +169,6 @@ const CreateLibrary = () => {
               id="displayName"
               variant="outlined"
               value={libraryName}
-              InputLabelProps={{ shrink: false }}
               onChange={(e) => {
                 setLibraryName(e.target.value);
               }}
