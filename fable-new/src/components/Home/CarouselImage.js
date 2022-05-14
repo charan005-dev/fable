@@ -6,12 +6,31 @@ import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
 import { jsx } from "@emotion/react";
 import Slider from "react-slick";
+import Dots from 'react-carousel-dots';
+import { Chip, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+} from "@material-ui/core";
+
+const useStyles = makeStyles({
+dots:{
+  marginLeft: "auto",
+  marginRight: "auto",
+},
+// username:{
+//   marginLeft:"100",
+//   paddingLeft:100,
+//   marginRight:100
+
+// }
+});
 
 function CarouselImage() {
   const { currentUser } = useContext(AuthContext);
   const [storyData, setStoryData] = useState(null);
   const [storyIds, setStoryIds] = useState([]);
   const navigate = useNavigate();
+  const classes = useStyles();
 
   useEffect(() => {
     async function getAllStories() {
@@ -42,6 +61,7 @@ function CarouselImage() {
     fontWeight: "bold",
   };
 
+
   if (storyData)
     return (
       <div className="App">
@@ -52,12 +72,13 @@ function CarouselImage() {
             }}
           >
             
+            
             <Carousel
               data={storyData}
                time={1000}
               interval={1000}
               width="850px"
-              height="250px"
+              height="300px"
               captionStyle={captionStyle}
               radius="10px"
               slideNumber={true}
@@ -78,7 +99,22 @@ function CarouselImage() {
                 maxHeight: "500px",
                 margin: "40px auto",
               }}
-            />
+            /><div>
+
+           
+{/* Welcome Home
+
+      <Chip
+      label={currentUser.displayName}
+      size={"large"}
+      color="info"
+      onClick={() => navigate(`/`)}
+    /> */}
+                                      
+      </div>
+            <br />
+            
+           {/* <Dots  className="dots"length={10} active={5} /> */}
           </div>
         </div>
       </div>
