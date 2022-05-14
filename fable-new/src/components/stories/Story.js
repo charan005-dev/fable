@@ -111,7 +111,7 @@ const useStyles = makeStyles({
   },
   card3: {
     width: "5vw",
-    height: "5vw",
+    height: "10vw",
     marginLeft: "5%",
     paddingRight: "0%",
   },
@@ -126,11 +126,57 @@ const useStyles = makeStyles({
     padding: 6,
   },
   similarImages: {
-    maxWidth: 50,
-    maxHeight: 50,
+    width: 53,
+    height: 80,
+    marginTop: "3.5%",
   },
   content1: {
     paddingLeft: "22%",
+  },
+  description: {
+    paddingLeft: "22%",
+    marginBottom: "10%",
+  },
+  titleside: {
+    background: "#ececec",
+
+    textDecoration: "none",
+    color: "black",
+    border: "0px solid",
+    paddingLeft: "2%",
+    paddingRight: "2%",
+    paddingTop: "2%",
+    paddingBottom: "2%",
+    borderRadius: "6px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+  typo: {
+    marginLeft: "6%",
+  },
+
+  author: {
+    background: "black",
+    textDecoration: "none",
+    color: "white",
+    border: "1px solid",
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    borderRadius: "20px",
+    elevation: "3",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
   },
 });
 
@@ -188,8 +234,6 @@ const Story = () => {
     console.log(storyData);
     return (
       <span>
-       
-
         <Paper
           elevation={10}
           sx={{
@@ -216,13 +260,13 @@ const Story = () => {
                       : storyData.story.title}
                   </Typography>{" "}
                   <br></br> &nbsp;
-                  <Typography variant="h7">
+                  <Typography >
                     {" "}
                     <FavoriteIcon /> &nbsp;
                     {" " + storyData.story.likedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Typography variant="h7">
+                  <Typography>
                     {" "}
                     <VisibilityIcon />
                     {" " + storyData.story.visitedBy.length}
@@ -232,7 +276,7 @@ const Story = () => {
                     placement="right"
                     title="Average time it'll take for you to read this story"
                   >
-                    <Typography variant="h7">
+                    <Typography >
                       {" "}
                       <AutoStoriesIcon />
                       {" ~" + storyData.story.accessorReadTime + " min"}
@@ -303,11 +347,14 @@ const Story = () => {
                       })}
                   </Stack>
                 </CardContent>{" "}
+                <br />
+                <br />
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
                   <Link
                     to={`/users/${storyData.creator._id}`}
                     class="text-decoration-none"
+                    className={classes.author}
                   >
                     {storyData.creator.displayName}
                   </Link>
@@ -316,7 +363,9 @@ const Story = () => {
 
               <Card className={classes.card2} elevation={24}>
                 <CardContent>
-                  <Typography variant="h5">You might also like</Typography>
+                  <Typography variant="h5" className={classes.typo}>
+                    You might also like
+                  </Typography>
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && (
@@ -346,13 +395,15 @@ const Story = () => {
                                     <Link
                                       to={`/stories/${recommendation._id}`}
                                       class="text-decoration-none"
+                                      className={classes.titleside}
                                     >
                                       {recommendation.title}
                                     </Link>
-                                  </span>
-                                  <br />
-                                  <span className={classes.content1}>
-                                    <Typography variant="caption">
+                                    <br />
+                                    <Typography
+                                      variant="caption"
+                                      className={classes.description}
+                                    >
                                       {recommendation.shortDescription.length >
                                       50
                                         ? recommendation.shortDescription.substring(
@@ -361,6 +412,8 @@ const Story = () => {
                                           ) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
+                                    <br />
+                                    <Divider />
                                   </span>
                                 </span>
                               </Typography>
