@@ -100,7 +100,6 @@ function SignUp() {
     }
     try {
       await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
-      console.log(email.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
       let username = name.value;
