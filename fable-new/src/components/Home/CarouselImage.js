@@ -62,9 +62,13 @@ function CarouselImage() {
               captionPosition="bottom"
               automatic={true}
               dots={true}
-              pauseIconColor="white"
-              pauseIconSize="40px"
-              slideBackgroundColor="darkgrey"
+              swipeScrollTolerance="0"
+             
+          
+              slideBackgroundColor="grey"
+              // slideBackgroundtime="none"
+              duration="0"
+              
               slideImageFit="cover"
               thumbnails={false}
               thumbnailWidth="100px"
