@@ -168,7 +168,9 @@ const Story = () => {
     async function getRecommendations() {
       if (storyData) {
         const { data } = await axios.get(
-          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
+          `/api/stories/recommendations?genres=${
+            storyData.story.genres ? storyData.story.genres : ""
+          }`,
           {
             headers: {
               authtoken: await currentUser.getIdToken(),
@@ -185,9 +187,9 @@ const Story = () => {
   if (storyData) {
     console.log(storyData);
     return (
-      <div>
-        <br />
-        <br />
+      <span>
+       
+
         <Paper
           elevation={10}
           sx={{
@@ -200,7 +202,11 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={storyData.story.coverImage}
+                />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
@@ -222,7 +228,10 @@ const Story = () => {
                     {" " + storyData.story.visitedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
+                  <Tooltip
+                    placement="right"
+                    title="Average time it'll take for you to read this story"
+                  >
                     <Typography variant="h7">
                       {" "}
                       <AutoStoriesIcon />
@@ -240,13 +249,18 @@ const Story = () => {
                     {currentUser.uid === storyData.story.creatorId && (
                       <Fab
                         className={classes.editButton}
-                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
+                        onClick={() =>
+                          navigate(`/stories/${storyData.story._id}/edit`)
+                        }
                       >
                         <Edit />
                       </Fab>
                     )}
                   </span>
-                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
+                  <Fab
+                    className={classes.editButton}
+                    onClick={() => setCommentsModal(true)}
+                  >
                     <ForumIcon />
                   </Fab>
                 </CardContent>
@@ -267,7 +281,10 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
+                  <Typography variant="subtitle">
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
+                  <br />
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
@@ -288,7 +305,10 @@ const Story = () => {
                 </CardContent>{" "}
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none">
+                  <Link
+                    to={`/users/${storyData.creator._id}`}
+                    class="text-decoration-none"
+                  >
                     {storyData.creator.displayName}
                   </Link>
                 </CardContent>
@@ -299,7 +319,9 @@ const Story = () => {
                   <Typography variant="h5">You might also like</Typography>
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
+                  {recommendations && recommendations.length === 0 && (
+                    <div>No stories available.</div>
+                  )}
                   {recommendations &&
                     recommendations.map((recommendation) => {
                       if (recommendation._id !== id) {
@@ -310,22 +332,33 @@ const Story = () => {
                                 <span className={classes.card3}>
                                   <img
                                     className={classes.similarImages}
-                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                    src={
+                                      recommendation.coverImage
+                                        ? recommendation.coverImage
+                                        : "/fablefinal.png"
+                                    }
                                   />
                                 </span>
                                 &nbsp; &nbsp;
                                 <span className={classes.card4}>
                                   &nbsp; &nbsp;
                                   <span className={classes.content}>
-                                    <Link to={`/stories/${recommendation._id}`} class="text-decoration-none">
+                                    <Link
+                                      to={`/stories/${recommendation._id}`}
+                                      class="text-decoration-none"
+                                    >
                                       {recommendation.title}
                                     </Link>
                                   </span>
                                   <br />
                                   <span className={classes.content1}>
                                     <Typography variant="caption">
-                                      {recommendation.shortDescription.length > 50
-                                        ? recommendation.shortDescription.substring(0, 50) + "..."
+                                      {recommendation.shortDescription.length >
+                                      50
+                                        ? recommendation.shortDescription.substring(
+                                            0,
+                                            50
+                                          ) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
                                   </span>
@@ -348,7 +381,7 @@ const Story = () => {
           existingComments={storyData.story.comments}
           handleClose={() => setCommentsModal(false)}
         />
-      </div>
+      </span>
     );
   }
 };
