@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import {
   Box,
@@ -19,6 +19,7 @@ import {
 import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
+import { Chip } from "@material-ui/core";
 import { Stack } from "react-bootstrap";
 import { typography } from "@mui/system";
 
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
   },
   imageWrapper: {},
-  stories:{
+  stories: {
     marginLeft: "0%",
   },
   title: {
@@ -127,15 +128,15 @@ const useStyles = makeStyles({
     width: "10vw",
     height: "15vw",
     marginTop: "50%",
-    marginBottom:"40%",
+    marginBottom: "40%",
     marginLeft: "10%",
   },
-  content:{
+  content: {
     paddingLeft: "20%",
     marginBottom: "5%",
     marginTop: "0% !important",
     fontWeight: "bold",
-    fontSize: "25px"
+    fontSize: "25px",
   },
 });
 
@@ -144,7 +145,7 @@ const AllLibraryStories = () => {
   let { libraryId } = useParams();
   let [libraryData, setLibraryData] = useState(null);
   const classes = useStyles();
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function getLibraryStories() {
       const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
@@ -164,35 +165,59 @@ const AllLibraryStories = () => {
         </Typography>
       </div>
       <br />
-      <Stack direction="column" >
-          {libraryData &&
-            libraryData.stories &&
-            libraryData.stories.map((libraryStory) => {
-              if (libraryStory) {
-                return (
-                  <div>
-                    <Paper elevation={10} className={classes.paper}>
-                      <Grid className={classes.stories}>
-                        <Card className={classes.card1}>
+      <Stack direction="column">
+        {libraryData &&
+          libraryData.stories &&
+          libraryData.stories.map((libraryStory) => {
+            if (libraryStory) {
+              return (
+                <div>
+                  <Paper elevation={10} className={classes.paper}>
+                    <Grid className={classes.stories}>
+                      <Card className={classes.card1}>
                         <div>
-                          <div className={classes.card3} elevation={15}>
-                            <CardMedia className={classes.images} component="img" image={libraryStory.coverImage}  />
+                          <div className={classes.card3} elevation={0}>
+                            <Link to={`/stories/${libraryStory._id}`}>
+                              <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+                            </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Typography className={classes.content}> {libraryStory.title} </Typography>
+                            <Link to={`/stories/${libraryStory._id}`}>
+                              <Typography className={classes.content}> {libraryStory.title} </Typography>
+                            </Link>
                           </div>
                           <div>
-                            <Typography > {libraryStory.shortDescription.length > 500 ? libraryStory.shortDescription.substring(0, 500) + "..." : libraryStory.shortDescription} </Typography>
+                            <Typography>
+                              {" "}
+                              {libraryStory.shortDescription.length > 500
+                                ? libraryStory.shortDescription.substring(0, 500) + "..."
+                                : libraryStory.shortDescription}{" "}
+                            </Typography>
                           </div>
+                          <br />
+
+                          <Stack direction="row" spacing={1}>
+                            {libraryStory &&
+                              libraryStory.genres &&
+                              libraryStory.genres.map((genre) => {
+                                return (
+                                  <Chip
+                                    label={genre}
+                                    size={"small"}
+                                    color="info"
+                                    onClick={() => navigate(`/stories/choose/${genre}`)}
+                                  />
+                                );
+                              })}
+                          </Stack>
                         </div>
-                        </Card>
-                      </Grid>
-                      </Paper>
-                  </div>
-                );
-              }
-            })}
-        
+                      </Card>
+                    </Grid>
+                  </Paper>
+                </div>
+              );
+            }
+          })}
       </Stack>
     </div>
   );

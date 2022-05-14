@@ -113,7 +113,7 @@ const CreateLibrary = () => {
 
   const createLibrary = async () => {
     try {
-      if (!libraryName || typeof libraryName === "string" || libraryName.trim().length === 0) {
+      if (!libraryName || typeof libraryName !== "string" || libraryName.trim().length === 0) {
         toast.error("Please make sure that you enter a valid library name", {
           theme: "dark",
           position: "top-center",
@@ -182,7 +182,7 @@ const CreateLibrary = () => {
             <Typography className={classes.headertext} variant={"h3"}>
               Want everyone to view your library? Make it public *
               <Switch
-                checked={isPrivate}
+                checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
