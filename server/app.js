@@ -15,17 +15,16 @@ app.use("/public", express.static(__dirname + "/public/"));
 // feel free to add exception cases here
 app.use("/", async (req, res, next) => {
   console.log(req.originalUrl, req.method);
-  // if (req.originalUrl.includes("/api/stories/recommendations")) {
-  //   console.log("User creation process. Skipping authentication check.");
-  //   next();
-  //   return;
-  // }
   if (req.originalUrl === "/api/users" && req.method.toLowerCase() === "post") {
     console.log("User creation process. Skipping authentication check.");
     next();
     return;
   }
-
+  if (req.originalUrl.includes("/api/users/check")) {
+    console.log("Username checking process. Skipping authentication check.");
+    next();
+    return;
+  }
   const idToken = req.headers.authtoken;
   try {
     if (!idToken) {

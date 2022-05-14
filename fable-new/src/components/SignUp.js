@@ -6,33 +6,16 @@ import { collapseClasses, fabClasses } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
-import SocialSignIn from "./SocialSignIn";
 import firebase from "firebase";
-import { create } from "@mui/material/styles/createTransitions";
-import {
-  Card,
-  CardContent,
-  Grid,
-  makeStyles,
-  Typography,
-  TextField,
-  Paper,
-} from "@material-ui/core";
-
-import {
-  doSignInWithEmailAndPassword,
-  doPasswordReset,
-} from "../firebase/FirebaseFunctions";
+import { toast } from "react-toastify";
+import { Card, CardContent, Grid, makeStyles, Typography, TextField, Paper } from "@material-ui/core";
+import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
 // axios.defaults.baseURL = "http://localhost:4000";
 
@@ -120,15 +103,24 @@ function SignUp() {
     const { name, email, passwordOne, passwordTwo } = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch("Passwords do not match");
+      toast.error("Given passwords do not match", {
+        theme: "dark",
+        position: "top-center",
+      });
       return false;
     }
+    // check to see if the display name is available.
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        name.value
-      );
-      console.log(email.value);
+      await axios.get(`/api/users/check?tentative=${name.value}`);
+    } catch (e) {
+      toast.error("This username is not available.", {
+        theme: "dark",
+        position: "top-center",
+      });
+      return;
+    }
+    try {
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
       let username = name.value;
@@ -139,7 +131,10 @@ function SignUp() {
       });
       console.log(data);
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+        theme: "dark",
+        position: "top-center",
+      });
     }
   };
 
@@ -159,8 +154,8 @@ function SignUp() {
               flexDirection: "column",
               alignItems: "center",
             }}
-          > 
-          <br/>
+          >
+            <br />
             <Avatar sx={{ m: 1, bgcolor: "black" }}>
               <LockIcon />
             </Avatar>
@@ -169,12 +164,7 @@ function SignUp() {
               Sign-Up
             </Typography>
             {pwMatch && <h4 className="error">{pwMatch}</h4>}
-            <Box
-              component="form"
-              onSubmit={handleSignUp}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -225,13 +215,7 @@ function SignUp() {
                 variant="outlined"
                 sx={{ border: "4px bold black" }}
               />
-              <Button
-                className={classes.button}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign-Up
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
