@@ -236,10 +236,16 @@ const useStyles = makeStyles({
   pen: {
     fontSize: "larger",
   }, 
+
   bold: 
   {
     fontWeight:"bolder"
-  }
+  },
+
+  pen:{
+     fontSize:"larger"
+   }
+
 });
 
 const Story = () => {
@@ -455,10 +461,12 @@ const Story = () => {
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && (
-                    <div>No stories available.</div>
+                    <Typography>
+                      No stories available.
+                    </Typography>
                   )}
                   {recommendations &&
-                    recommendations.map((recommendation) => {
+                    recommendations.map((recommendation, idx) => {
                       if (recommendation._id !== id) {
                         return (
                           <div>
@@ -518,6 +526,14 @@ const Story = () => {
                           </div>
                         );
                       }
+                      if (idx === recommendations.length - 1) {
+                        return (
+                          <div>
+                            <Typography>
+                              No stories available.
+                            </Typography>
+                          </div>
+                        )}
                     })}
                 </CardContent>
               </Card>

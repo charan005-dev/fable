@@ -485,6 +485,7 @@ function HomeImage() {
           </Grid>
         </Paper>
 
+
         <Paper
           elevation={15}
           className={classes.paper}
@@ -555,6 +556,7 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
+
       </>
     );
   }
