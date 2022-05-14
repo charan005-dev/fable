@@ -23,6 +23,7 @@
     "axios": "^0.27.2",
     "dompurify": "^2.3.6",
     "firebase": "^7.23.0",
+    "gm": "^1.23.1",
     "material-ui-popup-state": "^2.0.1",
     "mdb-react-ui-kit": "^3.0.0",
     "react": "^18.0.0",
@@ -33,6 +34,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-side-pane": "^2.4.6",
+    "react-slick": "^0.29.0",
     "react-toastify": "^9.0.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"

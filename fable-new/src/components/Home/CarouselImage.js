@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
 import { jsx } from "@emotion/react";
+import Slider from "react-slick";
 
 function CarouselImage() {
   const { currentUser } = useContext(AuthContext);
@@ -50,9 +51,11 @@ function CarouselImage() {
               padding: "0 20px",
             }}
           >
+            
             <Carousel
               data={storyData}
-              time={2000}
+               time={1000}
+              interval={1000}
               width="850px"
               height="250px"
               captionStyle={captionStyle}
@@ -62,13 +65,10 @@ function CarouselImage() {
               captionPosition="bottom"
               automatic={true}
               dots={true}
-              swipeScrollTolerance="0"
-             
-          
+              swipeScrollTolerance={0}             
+              transitiontime="100"
               slideBackgroundColor="grey"
-              // slideBackgroundtime="none"
-              duration="0"
-              
+              duration="0"  
               slideImageFit="cover"
               thumbnails={false}
               thumbnailWidth="100px"
