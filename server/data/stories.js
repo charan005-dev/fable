@@ -322,6 +322,12 @@ const getCommentsFromStory = async (storyId) => {
   return { success: true, storyId, comments: friendlyComments };
 };
 
+const getMyStories = async (accessor, skip = 0, take = 20) => {
+  const storiesCollection = await stories();
+  let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
+  return { success: true, stories: myStories };
+};
+
 module.exports = {
   createStory,
   getAllStories,
@@ -339,4 +345,5 @@ module.exports = {
   addComment,
   getCommentsFromStory,
   getAllHotStories,
+  getMyStories,
 };
