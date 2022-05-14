@@ -351,11 +351,7 @@ const Story = () => {
                 <br />
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
-                  <Link
-                    to={`/users/${storyData.creator._id}`}
-                    class="text-decoration-none"
-                    className={classes.author}
-                  >
+                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none" className={classes.author}>
                     {storyData.creator.displayName}
                   </Link>
                 </CardContent>
@@ -377,10 +373,13 @@ const Story = () => {
                             <Grid className={classes.similarStories}>
                               <Typography variant="subtitle">
                                 <span className={classes.card3}>
-                                  <img
-                                    className={classes.similarImages}
-                                    src={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                                  />
+                                  <Link to={`/stories/${recommendation._id}`}>
+                                    <CardMedia
+                                      className={classes.similarImages}
+                                      component="img"
+                                      image={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+                                    />
+                                  </Link>
                                 </span>
                                 &nbsp; &nbsp;
                                 <span className={classes.card4}>
@@ -394,16 +393,9 @@ const Story = () => {
                                       {recommendation.title}
                                     </Link>
                                     <br />
-                                    <Typography
-                                      variant="caption"
-                                      className={classes.description}
-                                    >
-                                      {recommendation.shortDescription.length >
-                                      50
-                                        ? recommendation.shortDescription.substring(
-                                            0,
-                                            50
-                                          ) + "..."
+                                    <Typography variant="caption" className={classes.description}>
+                                      {recommendation.shortDescription.length > 50
+                                        ? recommendation.shortDescription.substring(0, 50) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
                                     <br />
