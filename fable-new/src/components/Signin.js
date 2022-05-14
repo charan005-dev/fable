@@ -28,6 +28,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
+import { toast } from "react-toastify";
 const theme = createTheme();
 
 const useStyles = makeStyles({
@@ -89,7 +90,6 @@ const useStyles = makeStyles({
     textDecoration: "none",
     marginLeft: "9%",
     fontWeight: "bold",
-
     "&:hover": {
       backgroundColor: "black",
       color: "white",
@@ -125,11 +125,14 @@ function Signin() {
   const handleLogin = async (event) => {
     event.preventDefault();
     let { email, password } = event.target.elements;
-
     try {
       await doSignInWithEmailAndPassword(email.value, password.value);
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+        theme: "dark",
+        position: "top-center",
+        autoClose: 1500,
+      });
     }
   };
 
@@ -138,11 +141,17 @@ function Signin() {
     let email = document.getElementById("email").value;
     if (email) {
       doPasswordReset(email);
-      alert("Password reset email was sent");
+      toast.success("Password reset email will be sent if the entered email is in our system.", {
+        theme: "dark",
+        position: "top-center",
+        autoClose: 1500,
+      });
     } else {
-      alert(
-        "Please enter an email address below before you click the forgot password link"
-      );
+      toast.error("Please enter an email address before triggering the password reset email!", {
+        theme: "dark",
+        position: "top-center",
+        autoClose: 1500,
+      });
     }
   };
   if (currentUser) {
@@ -178,12 +187,7 @@ function Signin() {
           <Typography component="h1" variant="h4">
             Login
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleLogin}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -209,13 +213,7 @@ function Signin() {
               variant="outlined"
               sx={{ border: "4px bold black" }}
             />
-            <Button
-              className={classes.button}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Login
             </Button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
