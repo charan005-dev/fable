@@ -20,7 +20,7 @@ app.use("/", async (req, res, next) => {
     next();
     return;
   }
-  if (req.originalUrl === "/api/users/check") {
+  if (req.originalUrl.includes("/api/users/check")) {
     console.log("Username checking process. Skipping authentication check.");
     next();
     return;
