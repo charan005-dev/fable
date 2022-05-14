@@ -9,7 +9,7 @@ const fs = require("fs");
 const gm = require("gm");
 
 let winpath = "";
-let basePath = "/Users/aravindhshiva/Desktop/cs554-finalproject/fable/server/public/covers/";
+let basePath = "/Users/koushikraja/Desktop/fable/server/public/covers/";
 if (process.platform == "win32") {
   winpath = "C:\\Users\\jeshn\\Desktop\\CS554_Fable\\fable\\server";
 }

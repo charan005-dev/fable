@@ -188,8 +188,6 @@ const Story = () => {
     console.log(storyData);
     return (
       <span>
-       
-
         <Paper
           elevation={10}
           sx={{
