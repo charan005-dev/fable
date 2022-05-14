@@ -13,7 +13,8 @@ import {
   Grid,
   makeStyles,
   Typography,
-  TextField,
+  TextField, 
+  Paper
 } from "@material-ui/core";
 import { collapseClasses, fabClasses } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -48,43 +49,72 @@ const useStyles = makeStyles({
   },
   text: {
     justifyContent: "center",
-    paddingLeft: "50px", 
+    paddingLeft: "50px",
   },
   textdecoration: {
-     
-    
-    color: 'black',
+    color: "black",
+    fontWeight: "bold",
     "&:hover": {
-        
-        color: "blanchedalmond", 
-        textDecoration: 'none'
-      }, 
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
+    },
   },
   button: {
     backgroundColor: "black",
-    color: "blanchedalmond", 
+    width: "80%",
+    color: "white",
     textDecoration: "none",
-    "&:hover": {
-      backgroundColor: "blanchedalmond",
-      color: "black",
-    }, 
-    textbox: {
-        border: '5px black',
-        "&:hover": {
-            backgroundColor: '#5dc2a6', 
-            border: '5px bold black'
-
-         }
-    }
-  },
-
-  button1: {
-    backgroundColor: "blanchedalmond",
-    color: "black",
+    fontWeight: "bold",
+    marginLeft: "10%",
     "&:hover": {
       backgroundColor: "black",
-      color: "blanchedalmond",
+      color: "white",
+      fontWeight: "bold",
     },
+  },
+
+    textbox: {
+      border: "5px black",
+      "&:hover": {
+        backgroundColor: "#ececec",
+        border: "5px bold black",
+      },
+    },
+ 
+
+  button1: {
+    backgroundColor: "#ececec",
+    color: "black",
+    textDecoration: "none",
+    marginLeft: "9%",
+    fontWeight: "bold",
+
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
+    },
+  },
+
+  button2: {
+    backgroundColor: "#ececec",
+    color: "black",
+    textDecoration: "none",
+    marginLeft: "-4%",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
+    },
+  }, 
+  paper: {
+    marginLeft: "35%",
+    marginRight: "35%",
+    paddingBottom: "1%",
   },
 });
 
@@ -127,7 +157,8 @@ function Signin() {
       password: data.get("password"),
     });
   };
-  return (
+  return ( 
+    <Paper className={classes.paper} elevation={24}>
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
         <CssBaseline />
@@ -138,7 +169,8 @@ function Signin() {
             flexDirection: "column",
             alignItems: "center",
           }}
-        >
+        > 
+        <br/>
           <Avatar sx={{ m: 1, bgcolor: "black" }}>
             <LockIcon />
           </Avatar>
@@ -155,15 +187,14 @@ function Signin() {
             <TextField
               margin="normal"
               required
-              fullWidth 
+              fullWidth
               className={classes.textbox}
               id="email"
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
-              variant="outlined" 
-              
+              variant="outlined"
             />
             <TextField
               margin="normal"
@@ -187,18 +218,16 @@ function Signin() {
             >
               Login
             </Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;
-            <Button
-              className={classes.button1}
-              
-              sx={{ mt: 3, mb: 2 }}
-            >
-              &nbsp;<NavLink to="/signup" className={classes.textdecoration}> Sign Up </NavLink> &nbsp;
-            </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+            <NavLink to="/signup" className={classes.textdecoration}>
+              {" "}
+              <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
+                &nbsp; Sign Up &nbsp;
+              </Button>
+            </NavLink>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button
-              className={classes.button1}
+              className={classes.button2}
               onClick={passwordReset}
               sx={{ mt: 3, mb: 2 }}
             >
@@ -208,6 +237,7 @@ function Signin() {
         </Box>
       </Container>
     </ThemeProvider>
+    </Paper>
   );
 }
 
