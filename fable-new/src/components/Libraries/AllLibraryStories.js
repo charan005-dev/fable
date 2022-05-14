@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import {
   Box,
@@ -21,7 +19,6 @@ import {
 import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
-import { Chip } from "@material-ui/core";
 import { Stack } from "react-bootstrap";
 import { typography } from "@mui/system";
 import { toast } from "react-toastify";
@@ -149,7 +146,7 @@ const AllLibraryStories = () => {
   let [libraryData, setLibraryData] = useState(null);
   const navigate = useNavigate();
   const classes = useStyles();
-  const navigate = useNavigate();
+
   useEffect(() => {
     async function getLibraryStories() {
       try {
@@ -173,69 +170,49 @@ const AllLibraryStories = () => {
   if (libraryData) {
     return (
       <div>
-      <div>
-        <Typography className={classes.title} subtitle={""}>
-          {libraryData && libraryData.libraryName}'s Library
-        </Typography>
-      </div>
-      <br />
-      <Stack direction="column">
-        {libraryData &&
-          libraryData.stories &&
-          libraryData.stories.map((libraryStory) => {
-            if (libraryStory) {
-              return (
-                <div>
-                  <Paper elevation={10} className={classes.paper}>
-                    <Grid className={classes.stories}>
-                      <Card className={classes.card1}>
-                        <div>
-                          <div className={classes.card3} elevation={0}>
-                            <Link to={`/stories/${libraryStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
-                            </Link>
-                          </div>
-                          <div className={classes.card4}>
-                            <Link to={`/stories/${libraryStory._id}`}>
-                              <Typography className={classes.content}> {libraryStory.title} </Typography>
-                            </Link>
-                          </div>
+        <div>
+          <Typography className={classes.title} subtitle={""}>
+            {libraryData && libraryData.libraryName}
+          </Typography>
+        </div>
+        <br />
+        <Stack direction="column">
+          {libraryData &&
+            libraryData.stories &&
+            libraryData.stories.map((libraryStory) => {
+              if (libraryStory) {
+                return (
+                  <div>
+                    <Paper elevation={10} className={classes.paper}>
+                      <Grid className={classes.stories}>
+                        <Card className={classes.card1}>
                           <div>
-                            <Typography>
-                              {" "}
-                              {libraryStory.shortDescription.length > 500
-                                ? libraryStory.shortDescription.substring(0, 500) + "..."
-                                : libraryStory.shortDescription}{" "}
-                            </Typography>
+                            <div className={classes.card3} elevation={15}>
+                              <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+                            </div>
+                            <div className={classes.card4}>
+                              <Typography className={classes.content}> {libraryStory.title} </Typography>
+                            </div>
+                            <div>
+                              <Typography>
+                                {" "}
+                                {libraryStory.shortDescription.length > 500
+                                  ? libraryStory.shortDescription.substring(0, 500) + "..."
+                                  : libraryStory.shortDescription}{" "}
+                              </Typography>
+                            </div>
                           </div>
-                          <br />
-
-                          <Stack direction="row" spacing={1}>
-                            {libraryStory &&
-                              libraryStory.genres &&
-                              libraryStory.genres.map((genre) => {
-                                return (
-                                  <Chip
-                                    label={genre}
-                                    size={"small"}
-                                    color="info"
-                                    onClick={() => navigate(`/stories/choose/${genre}`)}
-                                  />
-                                );
-                              })}
-                          </Stack>
-                        </div>
-                      </Card>
-                    </Grid>
-                  </Paper>
-                </div>
-              );
-            }
-          })}
-      </Stack>
-    </div>
-  );
-
+                        </Card>
+                      </Grid>
+                    </Paper>
+                  </div>
+                );
+              }
+            })}
+        </Stack>
+      </div>
+    );
+  }
 };
 
 export default AllLibraryStories;
