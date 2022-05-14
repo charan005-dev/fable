@@ -52,36 +52,36 @@ const useStyles = makeStyles({
   },
   button1: {
     backgroundColor: "black",
-    color: "white",
+    color: "blanchedalmond",
     width: "auto",
     marginLeft: "14%",
     marginRight: "auto",
     "&:hover": {
-      backgroundColor: "black",
-      color: "white",
+      backgroundColor: "blanchedalmond",
+      color: "black",
     },
   },
 
   button2: {
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: "blanchedalmond",
+    color: "black",
     width: "auto",
     marginLeft: "auto",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
-      color: "white",
+      color: "blanchedalmond",
     },
   },
 
   button3: {
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: "blanchedalmond",
+    color: "black",
     marginLeft: "auto",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
-      color: "#ececec",
+      color: "blanchedalmond",
     },
   },
 
@@ -207,7 +207,7 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message: "Your title value is invalid or contains more than the expected amount of characters.",
+        message: "Your title value is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !desc ||
@@ -215,11 +215,11 @@ const CreateStory = () => {
       desc.length === 0 ||
       desc.trim().length === 0 ||
       desc.length < 30 ||
-      desc.length > 500
+      desc.length > 5000
     )
       return {
         e: true,
-        message: "Your description is invalid or contains more than the expected amount of characters.",
+        message: "Your description is invalid or contains more/less than the expected amount of characters.",
       };
     let content = editorRef.current.getContent();
     if (
@@ -232,7 +232,7 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message: "Your story content is invalid or contains more than the expected amount of characters.",
+        message: "Your story content is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !Array.isArray(selectedGenres) ||
@@ -355,7 +355,7 @@ const CreateStory = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story <Typography variant="overline">(30 - 500 characters)</Typography>
+                Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
               </Typography>
               <br />
 
@@ -434,7 +434,9 @@ const CreateStory = () => {
               <Button onClick={createStory} className={classes.button1}>
                 Create Story
               </Button>
-
+              <Button onClick={() => window.history.back()} variant="outlined">
+                Take me back
+              </Button>
               <br />
             </FormControl>
           </Paper>

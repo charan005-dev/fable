@@ -5,6 +5,15 @@ const stories = require("../data/stories");
 const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
+const fs = require("fs");
+const gm = require("gm");
+
+let winpath = "";
+let basePath = "/Users/aravindhshiva/Desktop/cs554-finalproject/fable/server/public/covers/";
+if (process.platform == "win32") {
+  winpath = "C:\\Users\\jeshn\\Desktop\\CS554_Fable\\fable\\server";
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../public/covers/"));
@@ -108,10 +117,18 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     const { title, shortDescription, contentHtml, genres } = req.body;
     // TODO validate incoming parameters
     let filePath = null;
+    let gmPath = null;
     if (req.file) {
+      gmPath = path.resolve(basePath + req.file.filename);
       filePath = "/public/covers/" + req.file.filename;
     }
-
+    // graphicsmagick resize
+    gm(gmPath)
+      .resize(3200, 4800, "!")
+      .write(gmPath, function (err) {
+        if (err) console.log(err);
+        console.log("Done!");
+      });
     const { success, story } = await stories.createStory(
       currentUser,
       xss(title),
@@ -172,10 +189,16 @@ router.get("/:id", async (req, res) => {
   try {
     let storyId = req.params.id;
     let accessor = req.authenticatedUser;
-    let story = await stories.getStoryById(storyId, accessor);
-    console.log(story);
-    res.status(200).json({ success: true, story: story.story, creator: story.creator });
-    return;
+    try {
+      let story = await stories.getStoryById(storyId, accessor);
+      console.log(story);
+      res.status(200).json({ success: true, story: story.story, creator: story.creator });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ success: false, error: e });
+      return;
+    }
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false });
@@ -188,9 +211,18 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     let storyId = req.params.id;
     let { title, shortDescription, genres, contentHtml } = req.body;
     let filePath = null;
+    let gmPath = null;
     if (req.file) {
+      gmPath = path.resolve(basePath + req.file.filename);
       filePath = "/public/covers/" + req.file.filename;
     }
+    // graphicsmagick resize
+    gm(gmPath)
+      .resize(3200, 4800, "!")
+      .write(gmPath, function (err) {
+        if (err) console.log(err);
+        console.log("Done!");
+      });
     try {
       const { success, updatedStory } = await stories.updateStory(
         storyId,

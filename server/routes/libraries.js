@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
 
 router.get("/me", async (req, res) => {
   try {
-    let owner = req.query.owner;
+    let owner = req.authenticatedUser;
     let storyId = req.query.storyId;
     if (req.authenticatedUser !== owner) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
@@ -48,6 +48,22 @@ router.get("/me", async (req, res) => {
       let allNonAddedLibs = await libraries.getMyNonAddedLibraries(owner, storyId);
       res.status(200).json({ success: true, libraries: allNonAddedLibs });
     }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
+  }
+});
+
+router.get("/me/private", async (req, res) => {
+  try {
+    let accessor = req.authenticatedUser;
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(accessor, skip, take);
+    console.log(privateLibraries);
+    res.status(200).json({ success, libraries: privateLibraries });
+    return;
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
@@ -87,6 +103,26 @@ router.post("/add", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ success: false, error: "Sorry, something went wrong. " });
+  }
+});
+
+router.put("/:libraryId", async (req, res) => {
+  try {
+    let { libraryId } = req.params;
+    let accessor = req.authenticatedUser;
+    let { libraryName, private } = req.body;
+    try {
+      const updatedLibrary = await libraries.updateLibrary(accessor, libraryId, libraryName, private);
+      res.status(200).json(updatedLibrary);
+      return;
+    } catch (e) {
+      console.log(e);
+      if (e.toString().includes("library does not exist")) res.status(404).json({ success: false, error: e });
+      else res.status(400).json({ success: false, error: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
   }
 });
 

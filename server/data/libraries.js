@@ -48,13 +48,11 @@ const getAllMyLibraryStories = async (userId, libraryId) => {
   const owner = await usersCollection.findOne({ _id: userId });
   if (!owner) throw `No such user exists.`;
   let libraryStories = await librariesCollection.findOne({ _id: libraryId });
-  console.log(libraryStories);
   let allLibStory = [];
   for (const libStories of libraryStories.stories) {
     allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
   }
   libraryStories.stories = allLibStory;
-  console.log(libraryStories);
   return libraryStories;
 };
 
@@ -65,10 +63,46 @@ const getMyNonAddedLibraries = async (owner, storyId) => {
   return allNonAddedLibs;
 };
 
+const getMyPrivateLibraries = async (accessor, skip = 0, take = 20) => {
+  const librariesCollection = await libraries();
+  const privateLibraries = await librariesCollection
+    .find({ owner: accessor, private: true })
+    .skip(skip)
+    .limit(take)
+    .toArray();
+  return { success: true, privateLibraries: privateLibraries };
+};
+
+const updateLibrary = async (accessor, libraryId, libraryName, private) => {
+  const librariesCollection = await libraries();
+  const findLibrary = await librariesCollection.findOne({ owner: accessor, _id: libraryId });
+  if (!findLibrary) {
+    throw `Either the library does not exist or the user does not have access to perform this action.`;
+  }
+  const existingName = await librariesCollection.findOne({
+    owner: accessor,
+    libraryName: { $regex: new RegExp("^" + libraryName + "$", "i") },
+  });
+  if (existingName && libraryId !== existingName._id) {
+    throw `You already have a library with the same name. Please choose some other name instead.`;
+  }
+  let newLibrary = {
+    libraryName,
+    private,
+  };
+  const updatedLib = await librariesCollection.updateOne({ owner: accessor, _id: libraryId }, { $set: newLibrary });
+  return {
+    success: true,
+    library: await librariesCollection.findOne({ owner: accessor, _id: libraryId }),
+  };
+};
+
 module.exports = {
   createLibrary,
   addStoryToUserLibrary,
   getAllMyLibraries,
   getAllMyLibraryStories,
   getMyNonAddedLibraries,
+  getMyPrivateLibraries,
+  updateLibrary,
 };

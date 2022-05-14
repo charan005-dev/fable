@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   commentsPane: {
     paddingTop: 70,
     paddingLeft: 50,
+    overflowY: "scroll",
   },
   commentsBox: {
     margin: 10,
@@ -157,7 +158,7 @@ const Comments = ({ open, handleClose, storyId }) => {
                 InputLabelProps={{ shrink: false }}
                 helperText={commentError.error && commentError.text}
               />
-              <br />
+              &nbsp;
               <Button variant="contained" onClick={addComment} className={classes.buttonupdate}>
                 Post Comment
               </Button>
@@ -169,7 +170,7 @@ const Comments = ({ open, handleClose, storyId }) => {
             <List>
               {comments && comments.length === 0 && (
                 <Typography variant="body2" className={classes.text1}>
-                  No comments yet. Be the first person to speak out.
+                  No comments yet. Be the start for something awesome.
                 </Typography>
               )}
               {comments &&

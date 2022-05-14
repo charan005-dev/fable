@@ -188,6 +188,10 @@ const CreateLibrary = () => {
               onChange={(e) => {
                 setLibraryName(e.target.value);
               }}
+
+              color="primary"
+              label={isPrivate ? "Public" : "Private"}
+
             />
 
             <br />
