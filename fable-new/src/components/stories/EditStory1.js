@@ -164,6 +164,7 @@ const EditStory1 = () => {
   const { storyId } = useParams();
   let { currentUser } = useContext(AuthContext);
   const classes = useStyles();
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [changingState, setChangingState] = useState({
     title: "",
     desc: "",
@@ -201,6 +202,8 @@ const EditStory1 = () => {
           ...changingState,
           coverImage: e.target.files[0],
         });
+        let imageAsBlob = URL.createObjectURL(e.target.files[0]);
+        setUploadedImageUrl(imageAsBlob);
         break;
       case "default":
         break;
@@ -215,6 +218,10 @@ const EditStory1 = () => {
         });
         console.log(data);
         if (data.story.creatorId !== currentUser.uid) {
+          toast.error("You don't have access to perform this action!", {
+            theme: "dark",
+          });
+          setTimeout(() => navigate(`/home`, 400));
           setError("You don't have access to perform this action!");
           return;
         }
@@ -380,6 +387,14 @@ const EditStory1 = () => {
                 onChange={(e) => handleChange(e, "file")}
               />
             </Button>
+            {uploadedImageUrl && (
+              <Paper elevation={1}>
+                <Grid container justifyContent="center">
+                  <Typography variant="overline">Preview</Typography>
+                  <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
+                </Grid>
+              </Paper>
+            )}
           </Paper>
 
           <Paper className={classes.paper} elevation={20}>
