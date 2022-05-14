@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   paper: {
     height: "auto",
     width: "auto",
-
+    marginTop: "0%",
     marginBottom: "5%",
     height: "80%",
   },
@@ -131,7 +131,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Romance </h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -202,7 +202,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Horror</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -274,7 +274,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Mystery</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -347,7 +347,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Adventure</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -422,7 +422,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>New and Hot</h2>
+              <h2 className={classes.text1}>Thriller</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>

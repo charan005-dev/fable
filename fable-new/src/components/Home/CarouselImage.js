@@ -6,12 +6,24 @@ import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
 import { jsx } from "@emotion/react";
 import Slider from "react-slick";
+import Dots from 'react-carousel-dots';
+import {
+  makeStyles,
+} from "@material-ui/core";
+
+const useStyles = makeStyles({
+dots:{
+  marginLeft: "auto",
+  marginRight: "auto",
+}
+});
 
 function CarouselImage() {
   const { currentUser } = useContext(AuthContext);
   const [storyData, setStoryData] = useState(null);
   const [storyIds, setStoryIds] = useState([]);
   const navigate = useNavigate();
+  const classes = useStyles();
 
   useEffect(() => {
     async function getAllStories() {
@@ -42,6 +54,7 @@ function CarouselImage() {
     fontWeight: "bold",
   };
 
+
   if (storyData)
     return (
       <div className="App">
@@ -57,7 +70,7 @@ function CarouselImage() {
                time={1000}
               interval={1000}
               width="850px"
-              height="250px"
+              height="300px"
               captionStyle={captionStyle}
               radius="10px"
               slideNumber={true}
@@ -79,6 +92,9 @@ function CarouselImage() {
                 margin: "40px auto",
               }}
             />
+            <br />
+            
+           {/* <Dots  className="dots"length={10} active={5} /> */}
           </div>
         </div>
       </div>
