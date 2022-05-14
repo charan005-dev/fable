@@ -398,14 +398,12 @@ const PublicProfile = () => {
                         Your Libraries
                       </Typography>
                       <br />
+                      {libraryData && libraryData.length === 0 && (
+                        <Typography variant="body2">
+                          <Link to={`/libraries/create`}>Click here</Link> to create a new library.
+                        </Typography>
+                      )}
                       <Stack direction="column" spacing={2}>
-                        {libraryData && libraryData.length === 0 && (
-                          <div>
-                            <Typography variant="body2">
-                              <Link to={`/libraries/create`}>Click here</Link> to create a new library.
-                            </Typography>
-                          </div>
-                        )}
                         {libraryData &&
                           libraryData.length > 0 &&
                           libraryData.map((lib, idx) => {
