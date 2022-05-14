@@ -1,20 +1,5 @@
-import {
-  FormControlLabel,
-  Grid,
-  OutlinedInput,
-  Paper,
-  Select,
-  Switch,
-  Typography,
-} from "@material-ui/core";
-import {
-  Button,
-  MenuItem,
-  TextField,
-  FormControl,
-  Alert,
-  Input,
-} from "@mui/material";
+import { FormControlLabel, Grid, OutlinedInput, Paper, Select, Switch, Typography } from "@material-ui/core";
+import { Button, MenuItem, TextField, FormControl, Alert, Input } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useContext } from "react";
@@ -156,15 +141,9 @@ const CreateLibrary = () => {
       <br />
       <br />
       <Paper className={classes.paper} elevation={24}>
-        {creationSuccess && (
-          <Alert severity="success">Library Creation Successful!</Alert>
-        )}
+        {creationSuccess && <Alert severity="success">Library Creation Successful!</Alert>}
         <Grid container justifyContent="center" alignItems="center">
-          <Typography
-            variant="h3"
-            component={"h4"}
-            className={classes.headertext1}
-          >
+          <Typography variant="h3" component={"h4"} className={classes.headertext1}>
             Create your own library here!
           </Typography>
           <br />
@@ -182,16 +161,13 @@ const CreateLibrary = () => {
               className={classes.textfield}
               id="displayName"
               variant="outlined"
-              label=" "
               value={libraryName}
               InputLabelProps={{ shrink: false }}
               onChange={(e) => {
                 setLibraryName(e.target.value);
               }}
-
               color="primary"
               label={isPrivate ? "Public" : "Private"}
-
             />
 
             <br />
@@ -203,18 +179,14 @@ const CreateLibrary = () => {
                 checked={isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
-                }} 
+                }}
                 color="primary"
                 label={isPrivate ? "Public" : "Private"}
               />
             </Typography>
             <br />
             <br />
-            <Button
-              variant="contained"
-              onClick={createLibrary}
-              className={classes.buttonupdate}
-            >
+            <Button variant="contained" onClick={createLibrary} className={classes.buttonupdate}>
               Create Library
             </Button>
             <br />
