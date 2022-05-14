@@ -81,12 +81,12 @@ const useStyles = makeStyles({
     marginBottom: "100px",
   },
   cardnew: {
-    marginLeft: "-65%",
-    paddingBottom: 15,
+    marginLeft: "-10%",
+    marginRight: "60%",
+    paddingBottom: "10%",
     paddingTop: "8%",
     fontSize: "40px",
-    paddingLeft: "5%",
-    paddingRight: "5%",
+    padding: "5%",
     width: "50%",
   },
 
@@ -225,9 +225,9 @@ const StoryBook = () => {
             </Card>
           </Grid>
           <Grid container justifyContent="center" direction="row">
-            <Card className={classes.cardnew} elevation={0}>
+            <Card className={classes.cardnew} elevation={10}>
               <Typography variant={"h3"}>{story.title}</Typography>
-              <br />
+              
               <span className={classes.fab}>
                 {!story.likedBy.includes(currentUser.uid) && (
                   <Fab variant="circular" color="default" onClick={handleLike}>
