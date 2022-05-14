@@ -53,6 +53,7 @@ const getAllMyLibraryStories = async (userId, libraryId) => {
     allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
   }
   libraryStories.stories = allLibStory;
+  console.log(libraryStories);
   return libraryStories;
 };
 
