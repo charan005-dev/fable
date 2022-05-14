@@ -8,22 +8,22 @@ const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
 const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
+const validGenres = [
+  "Horror",
+  "Romance",
+  "Mystery",
+  "Thriller",
+  "Sci-fi",
+  "Crime",
+  "Drama",
+  "Fantasy",
+  "Adventure",
+  "Comedy",
+  "Tragedy",
+  "Adult",
+];
 
 const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
-  const validGenres = [
-    "Horror",
-    "Romance",
-    "Mystery",
-    "Thriller",
-    "Sci-fi",
-    "Crime",
-    "Drama",
-    "Fantasy",
-    "Adventure",
-    "Comedy",
-    "Tragedy",
-    "Adult",
-  ];
   genres = genres.length > 0 ? genres.split(",") : [];
   for (const genre of genres) {
     if (!validGenres.includes(genre))
@@ -61,25 +61,11 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     // errors in pushing to elastic search could be caught here. logging them for reference
     console.log(e);
   }
-  let result = { success: true, createdStory: story };
+  let result = { success: true, story: story };
   return result;
 };
 
 const updateStory = async (storyId, owner, title, shortDescription, contentHtml, genres, coverImage) => {
-  const validGenres = [
-    "Horror",
-    "Romance",
-    "Mystery",
-    "Thriller",
-    "Sci-fi",
-    "Crime",
-    "Drama",
-    "Fantasy",
-    "Adventure",
-    "Comedy",
-    "Tragedy",
-    "Adult",
-  ];
   genres = genres.length > 0 ? genres.split(",") : [];
   for (const genre of genres) {
     if (!validGenres.includes(genre))
@@ -116,9 +102,30 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
   return { success: true, updatedStory: await storiesCollection.findOne({ _id: storyId, creatorId: owner }) };
 };
 
-const getAllStories = async () => {
+const getAllStories = async (required, genres) => {
   const storiesCollection = await stories();
-  const allStories = await storiesCollection.find({}).toArray();
+  required = parseInt(required);
+  if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
+  if (!Array.isArray(genres)) throw `Invalid parameter for genres. Expecting an array of valid genres.`;
+  const allStories = await storiesCollection
+    .aggregate([{ $match: { genres: { $in: genres } } }, { $sample: { size: required } }])
+    .toArray();
+  let result = { success: true, allStories };
+  return result;
+};
+
+const getAllHotStories = async (required) => {
+  const storiesCollection = await stories();
+  required = parseInt(required);
+  if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
+  const allStories = await storiesCollection
+    .aggregate([
+      { $addFields: { visitedLength: { $size: "$visitedBy" } } },
+      { $sort: { visitedLength: -1 } },
+      { $limit: required },
+    ])
+    .toArray();
+  console.log(allStories);
   let result = { success: true, allStories };
   return result;
 };
@@ -315,6 +322,12 @@ const getCommentsFromStory = async (storyId) => {
   return { success: true, storyId, comments: friendlyComments };
 };
 
+const getMyStories = async (accessor, skip = 0, take = 20) => {
+  const storiesCollection = await stories();
+  let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
+  return { success: true, stories: myStories };
+};
+
 module.exports = {
   createStory,
   getAllStories,
@@ -331,4 +344,6 @@ module.exports = {
   deleteStory,
   addComment,
   getCommentsFromStory,
+  getAllHotStories,
+  getMyStories,
 };

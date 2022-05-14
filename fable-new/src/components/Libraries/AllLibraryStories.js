@@ -20,19 +20,15 @@ import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
+import { typography } from "@mui/system";
 
 const useStyles = makeStyles({
   storyLink: {
     textDecoration: "none",
   },
   imageWrapper: {},
-  images: {
-    margin: 15,
-    border: "solid 1px black",
-    borderRadius: "50%",
-    boxShadow: "2px 2px 2px 2px",
-    width: 150,
-    height: 150,
+  stories:{
+    marginLeft: "0%",
   },
   title: {
     border: " 0px #fff",
@@ -49,14 +45,8 @@ const useStyles = makeStyles({
     width: "100%",
   },
 
-  cards: {
-    width: "20vw",
-    height: "9vw",
-    marginLeft: "100%",
-    marginRight: "100%",
-    marginBottom: "9%",
-    border: "3px solid black",
-    borderRadius: "5px",
+  card1: {
+    marginBottom: "1%",
   },
   text: {
     color: "grey",
@@ -72,18 +62,18 @@ const useStyles = makeStyles({
   title: {
     color: "black",
     justifyContent: "center",
-    fontSize: "30px",
-    paddingLeft: "43.5%",
+    fontSize: "300%",
+    paddingLeft: "40%",
   },
   paper1: {
-    height: "auto",
-    width: "20%",
+    height: "10%",
+    width: "5%",
     marginLeft: "5%",
     marginRight: "auto",
     borderRadius: 5,
     border: "0px solid #000",
-    marginBottom: "1%",
-    marginTop: "2%",
+    marginBottom: "10%",
+    marginTop: "10%",
   },
 
   paper2: {
@@ -104,13 +94,48 @@ const useStyles = makeStyles({
     maxHeight: "29vw",
     maxWidth: "10vw",
   },
-  papersecond: {
-    width: "20%",
-    height: "350px",
+  paper: {
+    marginLeft: "10%",
+    width: "80%",
+    height: "100%",
   },
   media: {
+    marginTop: "10%",
+    marginBottom: "10%",
     height: "20%",
     width: "20%",
+  },
+  card3: {
+    width: "5vw",
+    height: "10vw",
+    marginLeft: "5%",
+    paddingRight: "0%",
+  },
+  card4: {
+    marginTop: "-7%",
+    height: "0%",
+    width: "50%",
+  },
+  images: {
+    display: "inline-block",
+    verticalAlign: "top",
+    margin: "30%",
+    border: "solid 1px black",
+    borderRadius: "5px",
+    boxShadow: " 0px 5px 10px",
+    float: "left",
+    width: "10vw",
+    height: "15vw",
+    marginTop: "50%",
+    marginBottom:"40%",
+    marginLeft: "10%",
+  },
+  content:{
+    paddingLeft: "20%",
+    marginBottom: "5%",
+    marginTop: "0% !important",
+    fontWeight: "bold",
+    fontSize: "25px"
   },
 });
 
@@ -135,39 +160,39 @@ const AllLibraryStories = () => {
     <div>
       <div>
         <Typography className={classes.title} subtitle={""}>
-          {libraryData && libraryData.libraryName}
+          {libraryData && libraryData.libraryName}'s Library
         </Typography>
       </div>
-
       <br />
-
-      <div className="movieRow"></div>
-      <Stack direction="column">
-        <Paper>
+      <Stack direction="column" >
           {libraryData &&
             libraryData.stories &&
             libraryData.stories.map((libraryStory) => {
               if (libraryStory) {
                 return (
-                  <>
-                    <Stack direction="row">
-                      <Paper className="paper1">
-                        <Card className={classes.paper1} elevation={15}>
-                          <CardMedia component="img" image={libraryStory.coverImage} />
+                  <div>
+                    <Paper elevation={10} className={classes.paper}>
+                      <Grid className={classes.stories}>
+                        <Card className={classes.card1}>
+                        <div>
+                          <div className={classes.card3} elevation={15}>
+                            <CardMedia className={classes.images} component="img" image={libraryStory.coverImage}  />
+                          </div>
+                          <div className={classes.card4}>
+                            <Typography className={classes.content}> {libraryStory.title} </Typography>
+                          </div>
+                          <div>
+                            <Typography > {libraryStory.shortDescription.length > 500 ? libraryStory.shortDescription.substring(0, 500) + "..." : libraryStory.shortDescription} </Typography>
+                          </div>
+                        </div>
                         </Card>
+                      </Grid>
                       </Paper>
-
-                      <Paper>
-                        <Card className={classes.paper1} elevation={15}>
-                          <Typography>{libraryStory.title}</Typography>
-                        </Card>
-                      </Paper>
-                    </Stack>
-                  </>
+                  </div>
                 );
               }
             })}
-        </Paper>
+        
       </Stack>
     </div>
   );

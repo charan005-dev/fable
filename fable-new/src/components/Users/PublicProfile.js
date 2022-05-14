@@ -27,6 +27,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Edit from "@mui/icons-material/Edit";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
 
 /* This component will take care of displaying
@@ -159,9 +160,9 @@ const useStyles = makeStyles({
     marginLeft: "23%",
   },
   cardpaper: {
-    width: "40vw",
+    width: "70vw",
     marginRight: "10%",
-    marginLeft: "6%",
+    marginLeft: "8%",
     marginBottom: "10%",
     height: "auto",
   },
@@ -206,6 +207,26 @@ const useStyles = makeStyles({
   libraryCol: {
     maxWidth: 70,
   },
+  imagecard:{
+    marginLeft:"10%",
+    marginBottom:"5%"
+  },
+  button1:{
+    marginLeft:"10%"
+  },
+  filter:{
+    borderRadius: "50%",
+    border: "solid 1px",
+    padding: "1%",
+    marginTop: "-1%",
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
+    },
+  }
 });
 
 const PublicProfile = () => {
@@ -266,9 +287,18 @@ const PublicProfile = () => {
                 {profileData.profile.displayName}
               </Typography>
               {currentUser.uid === profileData.profile._id && (
-                <Fab className={classes.editButton} onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}>
+
+                <>
+                <Fab
+                  className={classes.editButton}
+                  onClick={() =>
+                    navigate(`/users/${profileData.profile._id}/edit`)
+                  }
+                >
+
                   <Edit />
                 </Fab>
+              </>
               )}
             </Grid>
             <br />
@@ -287,6 +317,7 @@ const PublicProfile = () => {
               </Card>
             </Stack>
           </Card>
+          
           <br />
           {/* <Grid> */}
           <Stack direction="row" className={classes.libraryCol} spacing={2}>
@@ -297,23 +328,53 @@ const PublicProfile = () => {
                 <br />
                 <Stack direction="row">
                   <Paper className={classes.cardpaper} elevation={0}>
-                    <Card className={classes.cardpaper} elevation={10}>
-                      <Typography variant="h3" component={"h2"} className={classes.text}>
+
+                    <Card  elevation={10}>
+                      <br />
+                      <Typography
+                        variant="h3"
+                        component={"h2"}
+                        className={classes.text}
+                      >
+
                         Stories Written
+                      &nbsp;
+                      <Fab className={classes.filter} onClick={() => navigate(`/stories/manage`)}>
+                        <FilterListIcon/>
+                      </Fab>
                       </Typography>
+                      
+                      <br />
                       <br />
                       <Stack direction={"column"} spacing={2}>
                         {profileData &&
-                          profileData.profile.storiesCreated.map((profile, idx) => {
-                            if (idx > 2) {
-                              return;
-                            }
-                            return (
-                              <Stack direction="row" spacing={5}>
-                                <Card>
-                                  <CardActionArea>
-                                    <Link to={`/stories/${profile._id}`}>
-                                      <CardMedia className={classes.media} component="img" image={profile.coverImage} />
+
+                          profileData.profile.storiesCreated.map(
+                            (profile, idx) => {
+                              if (idx > 2) {
+                                return;
+                              }
+                              return (
+                                <Stack direction="row" spacing={5}>
+                                  <Card className={classes.imagecard}>
+                                    <CardActionArea>
+                                      <Link to={`/stories/${profile._id}`}>
+                                        <CardMedia
+                                          className={classes.media}
+                                          component="img"
+                                          image={profile.coverImage}
+                                        />
+                                      </Link>
+                                    </CardActionArea>
+                                  </Card>
+                                  <Card elevation={0}>
+                                    <Link to={`/stories/${profile._id}`} class="text-decoration-none">
+                                      <Typography
+                                        style={{ textTransform: "uppercase" }} 
+                                      >
+                                        {profile.title}
+                                      </Typography>
+
                                     </Link>
                                   </CardActionArea>
                                 </Card>
@@ -348,7 +409,11 @@ const PublicProfile = () => {
                             );
                           })}
                       </Stack>
-                      <Button onClick={() => navigate(`/stories/manage`)}>View More</Button>
+
+                      <Button className={classes.button1} onClick={() => navigate(`/stories/manage`)}>
+                        View More
+                      </Button>
+
                     </Card>
                   </Paper>
                   <Paper className={classes.cardpaper1} elevation={0}>

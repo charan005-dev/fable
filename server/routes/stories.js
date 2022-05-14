@@ -5,14 +5,24 @@ const stories = require("../data/stories");
 const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
-const fs = require("fs");
 const gm = require("gm");
 
 let winpath = "";
-let basePath = "/Users/koushikraja/Desktop/fable/server/public/covers/";
+let basePath = process.env.GM_FS_COVER_PATH;
 if (process.platform == "win32") {
   winpath = "C:\\Users\\jeshn\\Desktop\\CS554_Fable\\fable\\server";
 }
+
+const resizeImage = (gmPath) => {
+  return new Promise((resolve, reject) => {
+    gm(gmPath)
+      .resize(3200, 4800, "!")
+      .write(gmPath, function (err) {
+        if (err) reject(err);
+        resolve("Resizing Complete!");
+      });
+  });
+};
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -41,10 +51,24 @@ const validGenres = [
 
 router.get("/all", async (req, res) => {
   try {
-    const { success, allStories } = await stories.getAllStories();
-    if (success) {
-      res.status(200).json({ success, stories: allStories });
-      return;
+    let { required, genres, hot } = req.query;
+    if (!required) required = 12;
+    if (genres && genres.length > 0) genres = genres.split(",");
+    else genres = [];
+    if (hot) {
+      hot = hot === "true";
+      // don't filter by genres for hot stories - but apply sorting
+      const { success, allStories } = await stories.getAllHotStories(required);
+      if (success) {
+        res.status(200).json({ success, stories: allStories });
+        return;
+      }
+    } else {
+      const { success, allStories } = await stories.getAllStories(required, genres);
+      if (success) {
+        res.status(200).json({ success, stories: allStories });
+        return;
+      }
     }
     // db function throws in case of errors
   } catch (e) {
@@ -102,6 +126,24 @@ router.get("/filter", async (req, res) => {
   }
 });
 
+router.get("/all/me", async (req, res) => {
+  try {
+    let accessor = req.authenticatedUser;
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    const storiesData = await stories.getMyStories(accessor, skip, take);
+    if (storiesData.success) {
+      res.status(200).json({ success: true, stories: storiesData.stories });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+    return;
+  }
+});
+
 router.post("/", upload.single("coverImage"), async (req, res) => {
   try {
     console.log(req.body);
@@ -123,12 +165,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
       filePath = "/public/covers/" + req.file.filename;
     }
     // graphicsmagick resize
-    gm(gmPath)
-      .resize(3200, 4800, "!")
-      .write(gmPath, function (err) {
-        if (err) console.log(err);
-        console.log("Done!");
-      });
+    if (gmPath) await resizeImage(gmPath);
     const { success, story } = await stories.createStory(
       currentUser,
       xss(title),
@@ -216,13 +253,8 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
       gmPath = path.resolve(basePath + req.file.filename);
       filePath = "/public/covers/" + req.file.filename;
     }
-    // graphicsmagick resize
-    gm(gmPath)
-      .resize(3200, 4800, "!")
-      .write(gmPath, function (err) {
-        if (err) console.log(err);
-        console.log("Done!");
-      });
+    // graphicsmagick resize only if gmPath is present
+    if (gmPath) await resizeImage(gmPath);
     try {
       const { success, updatedStory } = await stories.updateStory(
         storyId,
