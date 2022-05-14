@@ -355,7 +355,6 @@ const PublicProfile = () => {
                                     <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
                                   </Link>
                                 </Card>
-
                                 <Card elevation={0}>
                                   <Link to={`/stories/${profile._id}`}>
                                     <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
