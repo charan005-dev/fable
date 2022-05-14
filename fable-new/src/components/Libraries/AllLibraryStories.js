@@ -17,15 +17,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Skeleton } from "@mui/material";
-import {
-  MDBCard,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardBody,
-  MDBCardImage,
-  MDBRow,
-  MDBCol,
-} from "mdb-react-ui-kit";
+import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
 
@@ -84,7 +76,6 @@ const useStyles = makeStyles({
     paddingLeft: "43.5%",
   },
   paper1: {
-   
     height: "auto",
     width: "20%",
     marginLeft: "5%",
@@ -131,12 +122,9 @@ const AllLibraryStories = () => {
 
   useEffect(() => {
     async function getLibraryStories() {
-      const { data } = await axios.get(
-        `/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`,
-        {
-          headers: { authtoken: await currentUser.getIdToken() },
-        }
-      );
+      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       console.log(data.libraries);
       setLibraryData(data.libraries);
     }
@@ -154,34 +142,33 @@ const AllLibraryStories = () => {
       <br />
 
       <div className="movieRow"></div>
-      <Stack direction="column"> 
-      <Paper>
-        {libraryData &&
-          libraryData.stories.map((libraryStory) => {
-            return (
-              <>
-                <Stack direction="row">
-                  <Paper className="paper1">
-                    <Card className={classes.paper1} elevation={15}>
-                      <CardMedia
-                        component="img"
-                        image={libraryStory.coverImage}
-                      />
-                    </Card>
-                  </Paper>
+      <Stack direction="column">
+        <Paper>
+          {libraryData &&
+            libraryData.stories &&
+            libraryData.stories.map((libraryStory) => {
+              if (libraryStory) {
+                return (
+                  <>
+                    <Stack direction="row">
+                      <Paper className="paper1">
+                        <Card className={classes.paper1} elevation={15}>
+                          <CardMedia component="img" image={libraryStory.coverImage} />
+                        </Card>
+                      </Paper>
 
-                  <Paper>
-                    <Card className={classes.paper1} elevation={15}>
-                     <Typography>{libraryStory.title}</Typography>
-                    </Card>
-                  </Paper> 
-
-                </Stack>
-              </>
-            );
-          })} 
-          </Paper>
-      </Stack> 
+                      <Paper>
+                        <Card className={classes.paper1} elevation={15}>
+                          <Typography>{libraryStory.title}</Typography>
+                        </Card>
+                      </Paper>
+                    </Stack>
+                  </>
+                );
+              }
+            })}
+        </Paper>
+      </Stack>
     </div>
   );
 };

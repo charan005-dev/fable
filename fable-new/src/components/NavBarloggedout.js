@@ -18,8 +18,8 @@ import SignOutButton from "./SignOut";
 
 const useStyles = makeStyles({
   card: {
-    backgroundColor: "blanchedalmond", 
-    color:"black"
+    backgroundColor: "black", 
+    color:"white"
   },
 });
 
@@ -58,7 +58,7 @@ export default function NavBarloggedout() {
         <Toolbar>
           
           <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
-            F A B L E
+           Fable
           </Typography>
         </Toolbar>
       </AppBar>

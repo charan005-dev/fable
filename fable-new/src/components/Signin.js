@@ -3,8 +3,19 @@ import SocialSignIn from "./SocialSignIn";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
-import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
-import { Card, CardContent, Grid, makeStyles, Typography, TextField } from "@material-ui/core";
+import {
+  doSignInWithEmailAndPassword,
+  doPasswordReset,
+} from "../firebase/FirebaseFunctions";
+import {
+  Card,
+  CardContent,
+  Grid,
+  makeStyles,
+  Typography,
+  TextField, 
+  Paper
+} from "@material-ui/core";
 import { collapseClasses, fabClasses } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -43,35 +54,67 @@ const useStyles = makeStyles({
   },
   textdecoration: {
     color: "black",
+    fontWeight: "bold",
     "&:hover": {
-      color: "blanchedalmond",
+      color: "white",
       textDecoration: "none",
+      fontWeight: "bold",
     },
   },
   button: {
     backgroundColor: "black",
-    color: "blanchedalmond",
+    width: "80%",
+    color: "white",
     textDecoration: "none",
+    fontWeight: "bold",
+    marginLeft: "10%",
     "&:hover": {
-      backgroundColor: "blanchedalmond",
-      color: "black",
-    },
-    textbox: {
-      border: "5px black",
-      "&:hover": {
-        backgroundColor: "#5dc2a6",
-        border: "5px bold black",
-      },
+      backgroundColor: "black",
+      color: "white",
+      fontWeight: "bold",
     },
   },
 
+    textbox: {
+      border: "5px black",
+      "&:hover": {
+        backgroundColor: "#ececec",
+        border: "5px bold black",
+      },
+    },
+ 
+
   button1: {
-    backgroundColor: "blanchedalmond",
+    backgroundColor: "#ececec",
     color: "black",
+    textDecoration: "none",
+    marginLeft: "9%",
+    fontWeight: "bold",
     "&:hover": {
       backgroundColor: "black",
-      color: "blanchedalmond",
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
     },
+  },
+
+  button2: {
+    backgroundColor: "#ececec",
+    color: "black",
+    textDecoration: "none",
+    marginLeft: "-4%",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "black",
+      color: "white",
+      textDecoration: "none",
+      fontWeight: "bold",
+    },
+  }, 
+  paper: {
+    marginLeft: "35%",
+    marginRight: "35%",
+    paddingBottom: "1%",
   },
 });
 
@@ -123,7 +166,8 @@ function Signin() {
       password: data.get("password"),
     });
   };
-  return (
+  return ( 
+    <Paper className={classes.paper} elevation={24}>
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
         <CssBaseline />
@@ -134,7 +178,8 @@ function Signin() {
             flexDirection: "column",
             alignItems: "center",
           }}
-        >
+        > 
+        <br/>
           <Avatar sx={{ m: 1, bgcolor: "black" }}>
             <LockIcon />
           </Avatar>
@@ -172,22 +217,25 @@ function Signin() {
               Login
             </Button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-            <Button className={classes.button1} sx={{ mt: 3, mb: 2 }}>
-              &nbsp;
-              <NavLink to="/signup" className={classes.textdecoration}>
-                {" "}
-                Sign Up{" "}
-              </NavLink>{" "}
-              &nbsp;
-            </Button>
+            <NavLink to="/signup" className={classes.textdecoration}>
+              {" "}
+              <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
+                &nbsp; Sign Up &nbsp;
+              </Button>
+            </NavLink>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button className={classes.button1} onClick={passwordReset} sx={{ mt: 3, mb: 2 }}>
+            <Button
+              className={classes.button2}
+              onClick={passwordReset}
+              sx={{ mt: 3, mb: 2 }}
+            >
               &nbsp; Forgot Password &nbsp;
             </Button>
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
+    </Paper>
   );
 }
 
