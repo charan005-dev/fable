@@ -16,8 +16,19 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
+import { Skeleton } from "@mui/material";
+import {
+  MDBCard,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBRow,
+  MDBCol,
+} from "mdb-react-ui-kit";
 import Hero from "../Hero";
+import { Stack } from "react-bootstrap";
+
 const useStyles = makeStyles({
   storyLink: {
     textDecoration: "none",
@@ -42,19 +53,16 @@ const useStyles = makeStyles({
     paddingRight: "auto",
   },
   media: {
-    width: "50%",
-    height: "120px",
-    height: "auto",
-    float: "left",
-    margin: "3px",
-    padding: "3px",
+    height: "300px",
+    width: "100%",
   },
 
   cards: {
-    width: "500px",
-    height: "600px",
+    width: "20vw",
+    height: "9vw",
     marginLeft: "100%",
     marginRight: "100%",
+    marginBottom: "9%",
     border: "3px solid black",
     borderRadius: "5px",
   },
@@ -75,6 +83,44 @@ const useStyles = makeStyles({
     fontSize: "30px",
     paddingLeft: "43.5%",
   },
+  paper1: {
+   
+    height: "auto",
+    width: "20%",
+    marginLeft: "5%",
+    marginRight: "auto",
+    borderRadius: 5,
+    border: "0px solid #000",
+    marginBottom: "1%",
+    marginTop: "2%",
+  },
+
+  paper2: {
+    width: "13%",
+    marginLeft: "43.5%",
+    paddingLeft: "auto",
+    paddingRight: "auto",
+  },
+  paperfirst: {
+    height: "350px",
+    width: "auto",
+    marginLeft: "60%",
+    marginRight: "auto",
+    borderRadius: 5,
+    border: "0px solid #000",
+    marginBottom: "1%",
+    marginTop: "7%",
+    maxHeight: "29vw",
+    maxWidth: "10vw",
+  },
+  papersecond: {
+    width: "20%",
+    height: "350px",
+  },
+  media: {
+    height: "20%",
+    width: "20%",
+  },
 });
 
 const AllLibraryStories = () => {
@@ -85,9 +131,12 @@ const AllLibraryStories = () => {
 
   useEffect(() => {
     async function getLibraryStories() {
-      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
       console.log(data.libraries);
       setLibraryData(data.libraries);
     }
@@ -101,40 +150,38 @@ const AllLibraryStories = () => {
           {libraryData && libraryData.libraryName}
         </Typography>
       </div>
-      <br />
-      <br />
+
       <br />
 
       <div className="movieRow"></div>
-      <Box className={classes.box}>
+      <Stack direction="column"> 
+      <Paper>
         {libraryData &&
           libraryData.stories.map((libraryStory) => {
             return (
               <>
-                <MDBCard>
-                  <MDBRow className={classes.cards}>
-                    <MDBCol>
-                      <Link to={`/stories/${libraryStory._id}`}>
-                        <MDBCardImage src={libraryStory.coverImage} alt="..." fluid />
-                      </Link>
-                    </MDBCol>
-                    <MDBCard>
-                      <MDBCardBody>
-                        <Link to={`/stories/${libraryStory._id}`}>
-                          <MDBCardText className="text">{libraryStory.title}</MDBCardText>
-                        </Link>
-                        <MDBCardText>
-                          <small className="text">{libraryStory.shortDescription}</small>
-                        </MDBCardText>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </MDBRow>
-                </MDBCard>
-                <br />
+                <Stack direction="row">
+                  <Paper className="paper1">
+                    <Card className={classes.paper1} elevation={15}>
+                      <CardMedia
+                        component="img"
+                        image={libraryStory.coverImage}
+                      />
+                    </Card>
+                  </Paper>
+
+                  <Paper>
+                    <Card className={classes.paper1} elevation={15}>
+                     <Typography>{libraryStory.title}</Typography>
+                    </Card>
+                  </Paper> 
+
+                </Stack>
               </>
             );
-          })}
-      </Box>
+          })} 
+          </Paper>
+      </Stack> 
     </div>
   );
 };

@@ -30,8 +30,8 @@ import { ClassNames } from "@emotion/react";
 
 const useStyles = makeStyles({
   card: {
-    background: "black",
-    color: "white",
+    background: "darkgrey",
+    color: "black",
     marginTop: "4%",
     textDecoration: "none",
     paddingBottom: "5%",
@@ -72,6 +72,17 @@ const useStyles = makeStyles({
       backgroundColor: "black",
       color: "white",
       textDecoration: "none",
+    },
+  },
+
+  searchbar: {
+    textDecoration: "none",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "none",
+      borderRadius: "6px",
     },
   },
 });
@@ -122,8 +133,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const isValidSearchTerm = (q) => {
-  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0)
-    return false;
+  if (!q || typeof q !== "string" || q.length === 0 || q.trim().length === 0) return false;
   return true;
 };
 
@@ -151,9 +161,8 @@ export default function SearchBox() {
       console.log(data);
       setSearchResults(data.results);
       setOpen(true);
-    } else {
-      setSearchTerm("");
     }
+    setSearchTerm("");
   };
 
   const handleDialogClose = () => {
@@ -166,10 +175,8 @@ export default function SearchBox() {
   };
 
   return (
-    <Search sx={{  marginX: "2%" }}>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
+    <Search sx={{ marginX: "2%" }}>
+      &nbsp; <SearchIcon /> &nbsp;
       <Tooltip
         title="To search, click outside after typing. Enter at least 3 characters for relevant results."
         placement="bottom-start"
@@ -180,6 +187,7 @@ export default function SearchBox() {
           onChange={(e) => handleSearchInput(e)}
           onBlur={performSearch}
           value={searchTerm}
+          className={classes.searchbar}
         />
       </Tooltip>
       {/* <SearchResults /> */}
@@ -203,9 +211,7 @@ export default function SearchBox() {
                       {" "}
                       <Card className={classes.card} onClick={handleLinkClick}>
                         {" "}
-                        {res.title.length > 35
-                          ? res.title.substring(0, 23) + "..."
-                          : res.title}{" "}
+                        {res.title.length > 35 ? res.title.substring(0, 23) + "..." : res.title}{" "}
                       </Card>
                     </NavLink>
                   </div>

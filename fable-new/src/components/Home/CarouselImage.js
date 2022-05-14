@@ -52,7 +52,7 @@ function CarouselImage() {
           >
             <Carousel
               data={storyData}
-              interval={3000}
+              time={2000}
               width="850px"
               height="250px"
               captionStyle={captionStyle}

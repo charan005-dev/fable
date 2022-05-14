@@ -1,4 +1,4 @@
-const { stories, users } = require("../config/mongoCollections");
+const { stories, users, libraries } = require("../config/mongoCollections");
 const uuid = require("uuid");
 const { convert } = require("html-to-text");
 const axios = require("axios").default;
@@ -128,6 +128,7 @@ const getStoryById = async (storyId, accessor) => {
   const usersCollection = await users();
   console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
+  if (!story) throw `No story present with that id.`;
   const creator = await usersCollection.findOne({ _id: story.creatorId });
   const accessorDetails = await usersCollection.findOne({ _id: accessor });
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
@@ -237,6 +238,7 @@ const getRecommendations = async (userId, genres) => {
 
 const deleteStory = async (accessor, storyId) => {
   const storiesCollection = await stories();
+  const librariesCollection = await libraries();
   const findStoryToDelete = await storiesCollection.findOne({ _id: storyId, creatorId: accessor });
   if (!findStoryToDelete) {
     throw `Either the story does not exist or the user does not have access to perform this action.`;
@@ -247,6 +249,17 @@ const deleteStory = async (accessor, storyId) => {
     await client.destroyDocuments(elasticEngineName, [storyId]);
   } catch (e) {
     // logging elasticsearch errors for reference
+    console.log(e);
+  }
+  try {
+    console.log("Performing Bulk actions...");
+    let bulk = librariesCollection.initializeUnorderedBulkOp();
+    // remove story from any user's library too
+    bulk.find({ stories: { $in: [storyId] } }).update({ $pull: { stories: storyId } });
+    bulk.execute();
+    console.log("Done with Bulk actions...");
+  } catch (e) {
+    // catching errors in bulk deletion here
     console.log(e);
   }
   return { success: true };

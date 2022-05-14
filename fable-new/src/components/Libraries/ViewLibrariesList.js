@@ -9,6 +9,7 @@ import {
   Grid,
   InputLabel,
   Paper,
+  Tooltip,
   Typography,
   Box,
   Dialog,
@@ -33,6 +34,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Add from "@mui/icons-material/Add";
 import { Stack } from "@mui/material";
 import { toast } from "react-toastify";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
 import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
@@ -102,28 +105,47 @@ const ViewLibrariesList = () => {
   const classes = useStyles();
   const [createLib, setCreateLib] = useState(false);
   const [editLib, seteditLib] = useState(false);
-  const [delLib,setDelLib]=useState(false);
+  const [delLib, setDelLib] = useState(false);
   const [changingState, setChangingState] = useState({
     title: "",
   });
   const openCreateLibModal = () => setCreateLib(true);
   const closeCreateLibModal = () => setCreateLib(false);
-  const openDelLibModal=()=>setDelLib(true);
-  const closeDelLibModal=()=>setDelLib(false);
-  const openeditLibModal=()=>seteditLib(true);
-  const closeeditLibModal=()=>seteditLib(false);
+  const openDelLibModal = () => setDelLib(true);
+  const closeDelLibModal = () => setDelLib(false);
+  const openeditLibModal = (libraryId) => {
+    setChosenLibrary(libraryId);
+    seteditLib(true);
+  };
+  const closeeditLibModal = (libraryId) => {
+    setChosenLibrary("");
+    seteditLib(false);
+  };
+  const [chosenLibrary, setChosenLibrary] = useState("");
 
-  // const handleChange = (e, identifier) => {
-  //   switch (identifier) {
-  //     case "title":
-  //       setChangingState({ ...changingState, title: e.target.value.length !== 0 ? e.target.value : "" });
-  //       break;
-  //   }
-  // };
+  const isStateValid = () => {
+    if (
+      !libraryName ||
+      typeof libraryName !== "string" ||
+      libraryName.length === 0 ||
+      libraryName.trim().length === 0 ||
+      libraryName.length > 15
+    )
+      return { e: true, text: "Your library name should be less than 15 characters in length." };
+    return { e: false };
+  };
+
   const createLibrary = async () => {
+    let validity = isStateValid();
+    if (validity.e) {
+      toast.error(validity.text, {
+        theme: "dark",
+      });
+      return;
+    }
     try {
-      const { data } = await axios.post(
-        `/api/libraries/`,
+      const { data } = await axios.put(
+        `/api/libraries/${chosenLibrary}`,
         {
           userId: currentUser.uid,
           libraryName: libraryName,
@@ -137,11 +159,15 @@ const ViewLibrariesList = () => {
         setIsPrivate(true);
         let libraries = [];
         for (const library of libraryData) {
+          if (library._id === data.library._id) {
+            libraries.push(data.library);
+            continue;
+          }
           libraries.push(library);
         }
         libraries.push(data.library);
         setLibraryData(libraries);
-        closeCreateLibModal();
+        closeeditLibModal();
         setCreationSuccess(true);
       }
     } catch (e) {
@@ -149,9 +175,11 @@ const ViewLibrariesList = () => {
       toast.dark(e.response.data.error);
     }
   };
+
   const handleClose = () => {
     setDelLib(false);
   };
+
   useEffect(() => {
     async function getOwnerLibraries() {
       const { data } = await axios.get(`/api/libraries/me`, {
@@ -173,6 +201,7 @@ const ViewLibrariesList = () => {
         <Typography variant="h2"> Library</Typography>
       </div>
       <Divider />
+
       <br />
       <br />
 
@@ -205,7 +234,6 @@ const ViewLibrariesList = () => {
           </Card>
         </Stack>
         <br />
-
 
         <Modal
           open={createLib}
@@ -255,9 +283,6 @@ const ViewLibrariesList = () => {
             </Button>
           </Box>
         </Modal>
-      
-
-
         <Modal
           open={editLib}
           onClose={closeeditLibModal}
@@ -267,7 +292,7 @@ const ViewLibrariesList = () => {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Edit your own library here
+              Edit your library
             </Typography>
             <InputLabel style={{ color: "#fff" }} id="lib-select-label">
               Library Name
@@ -307,9 +332,6 @@ const ViewLibrariesList = () => {
           </Box>
         </Modal>
 
-
-
-       
         <Stack direction={"column"} spacing={2}>
           {libraryData &&
             libraryData.length > 0 &&
@@ -323,7 +345,15 @@ const ViewLibrariesList = () => {
                           <Card className={classes.card3} elevation={0}>
                             <Stack direction="row" spacing={2}>
                               <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
-                                <LibraryBooksIcon />
+                                {lib.private ? (
+                                  <Tooltip placement="left" arrow title="Private">
+                                    <LockIcon />
+                                  </Tooltip>
+                                ) : (
+                                  <Tooltip placement="left" arrow title="Public">
+                                    <LockOpenIcon />
+                                  </Tooltip>
+                                )}
                               </Badge>
                               <Link to={`/libraries/${lib._id}`}>
                                 <Typography variant="body1">
@@ -335,38 +365,37 @@ const ViewLibrariesList = () => {
                               <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
                             </Stack>
                           </Card>
+
                           <Stack spacing={1} direction={"row"}>
-                          <Card className={classes.card4}  elevation={0}>
-                            <Fab className={classes.edit} color="primary" onClick={openeditLibModal}  >
-                              <EditIcon />
-                            </Fab>
-                          </Card>
+                            <Card className={classes.card4} elevation={0}>
+                              <Fab className={classes.edit} color="primary" onClick={() => openeditLibModal(lib._id)}>
+                                <EditIcon />
+                              </Fab>
+                            </Card>
                           </Stack>
 
-
                           <Dialog open={delLib}>
-          <DialogTitle id="title-text-conf">
-            {"Are you sure you want to delete this story? This action cannot be reversed."}
-          </DialogTitle>
-          <DialogActions>
-            <Button
-              variant="contained"
-              onClick={() => {
-            
-                handleClose();
-              }}
-              color="error"
-            >
-              Confirm
-            </Button>
-            <Button variant="contained" onClick={handleClose}>
-              No, take me back
-            </Button>
-          </DialogActions>
-        </Dialog>
-                       
+                            <DialogTitle id="title-text-conf">
+                              {"Are you sure you want to delete this story? This action cannot be reversed."}
+                            </DialogTitle>
+                            <DialogActions>
+                              <Button
+                                variant="contained"
+                                onClick={() => {
+                                  handleClose();
+                                }}
+                                color="error"
+                              >
+                                Confirm
+                              </Button>
+                              <Button variant="contained" onClick={handleClose}>
+                                No, take me back
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
+
                           <Card className={classes.card5} elevation={0}>
-                            <Fab className={classes.delete} color="inherit" onClick={openDelLibModal}>
+                            <Fab className={classes.delete} color="inherit" onClick={() => openDelLibModal(lib._id)}>
                               <DeleteIcon />
                             </Fab>
                           </Card>
