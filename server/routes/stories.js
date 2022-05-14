@@ -5,7 +5,6 @@ const stories = require("../data/stories");
 const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
-const fs = require("fs");
 const gm = require("gm");
 
 let winpath = "";
@@ -41,10 +40,24 @@ const validGenres = [
 
 router.get("/all", async (req, res) => {
   try {
-    const { success, allStories } = await stories.getAllStories();
-    if (success) {
-      res.status(200).json({ success, stories: allStories });
-      return;
+    let { required, genres, hot } = req.query;
+    if (!required) required = 12;
+    if (genres && genres.length > 0) genres = genres.split(",");
+    else genres = [];
+    if (hot) {
+      hot = hot === "true";
+      // don't filter by genres for hot stories - but apply sorting
+      const { success, allStories } = await stories.getAllHotStories(required);
+      if (success) {
+        res.status(200).json({ success, stories: allStories });
+        return;
+      }
+    } else {
+      const { success, allStories } = await stories.getAllStories(required, genres);
+      if (success) {
+        res.status(200).json({ success, stories: allStories });
+        return;
+      }
     }
     // db function throws in case of errors
   } catch (e) {

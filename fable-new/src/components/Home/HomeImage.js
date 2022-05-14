@@ -105,8 +105,9 @@ function HomeImage() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   useEffect(() => {
+    // required, genres (Drama), hot (true/false)
     async function getAllStories() {
-      const { data } = await axios.get(`/api/stories/all?required=12`, {
+      const { data } = await axios.get(`/api/stories/all?required=12&hot=true`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
       console.log(data);

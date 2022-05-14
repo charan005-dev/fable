@@ -146,7 +146,7 @@ const CreateStory = () => {
   const [desc, setDesc] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [coverImage, setCoverImage] = useState(null);
-  const [creationSuccess, setCreationSuccess] = useState(false);
+  // const [createdStory, setCreatedStory] = useState("");
   const classes = useStyles();
 
   const [errors, setErrors] = useState({
@@ -270,6 +270,7 @@ const CreateStory = () => {
         authtoken: await currentUser.getIdToken(),
       },
     });
+    console.log(data);
     if (data.success) {
       setTitle("");
       setDesc("");
@@ -278,7 +279,7 @@ const CreateStory = () => {
       toast.success("Your story has been created successfully!", {
         theme: "dark",
       });
-      setTimeout(() => navigate(`/stories/manage`), 1000);
+      setTimeout(() => navigate(`/stories/${data.story._id}`), 1000);
     }
   };
 
