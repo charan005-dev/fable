@@ -9,6 +9,7 @@ import {
   makeStyles,
   CardContent,
   Tooltip,
+  CardActionArea,
 } from "@material-ui/core";
 import { Divider, Stack } from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -109,10 +110,11 @@ const useStyles = makeStyles({
   card2: {
     width: "70%",
     height: "100%",
-    marginRight: "13vw !important",
+    marginRight: "13vw !important", 
+    marginBottom: "10%"
   },
   card3: {
-    width: "5vw",
+    width: "7vw",
     height: "10vw",
     marginLeft: "5%",
     paddingRight: "0%",
@@ -128,34 +130,48 @@ const useStyles = makeStyles({
     padding: 6,
   },
   similarImages: {
-    width: 53,
-    height: 80,
-    marginTop: "3.5%",
+    width: 57,
+    height: 90,
+    marginLeft: 18,
+    marginTop: 18,
+    marginBottom: 18,
   },
   content1: {
     paddingLeft: "22%",
   },
   description: {
-    paddingLeft: "22%",
-    marginBottom: "10%",
+    paddingLeft: "2%",
+    marginBottom: "0%",
+    marginTop: "2%",
+    border: "0px solid",
+    paddingLeft: "2%",
+    paddingRight: "2%",
+    paddingTop: "1%",
+    paddingBottom: "1%",
+    borderRadius: "6px",
+    background: "#ececec",
+    width: "80",
   },
   titleside: {
-    background: "#ececec",
+    marginLeft: "-5%",
 
+    width: "120%",
+    alignContent: "center",
+    alignSelf: "center",
+    marginBottom: "10%",
+    marginTop: "10%",
     textDecoration: "none",
     color: "black",
     border: "0px solid",
     paddingLeft: "2%",
     paddingRight: "2%",
     paddingTop: "2%",
-    paddingBottom: "2%",
+    paddingBottom: "1%",
     borderRadius: "6px",
     elevation: "3",
     "&:hover": {
-      backgroundColor: "black",
-      color: "white",
-      textDecoration: "white",
-      fontWeight: "bold",
+      textDecoration: "none",
+      color: "black",
     },
   },
   typo: {
@@ -178,6 +194,27 @@ const useStyles = makeStyles({
       color: "white",
       textDecoration: "white",
       fontWeight: "bold",
+    },
+  },
+
+  box2: {
+    marginLeft: "5%",
+    marginTop: "2%",
+    width: "100%",
+  },
+
+  recommendation: {
+    marginBottom: "3%",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
+    },
+  },
+
+  td: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
     },
   },
 });
@@ -216,7 +253,9 @@ const Story = () => {
     async function getRecommendations() {
       if (storyData) {
         const { data } = await axios.get(
-          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
+          `/api/stories/recommendations?genres=${
+            storyData.story.genres ? storyData.story.genres : ""
+          }`,
           {
             headers: {
               authtoken: await currentUser.getIdToken(),
@@ -259,11 +298,18 @@ const Story = () => {
           <Grid container justifyContent="center">
             <Stack direction={"row"} spacing={7}>
               <Card className={classes.card} elevation={15}>
-                <CardMedia className={classes.media} component="img" image={storyData.story.coverImage} />
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={storyData.story.coverImage}
+                />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
-                  <Tooltip placement="right" title={buildFriendlyDate(storyData.story.createdAt)}>
+                  <Tooltip
+                    placement="right"
+                    title={buildFriendlyDate(storyData.story.createdAt)}
+                  >
                     <Typography variant="h2" className={classes.title1}>
                       {storyData.story.title.length > 35
                         ? storyData.story.title.substring(0, 40) + "..."
@@ -283,7 +329,10 @@ const Story = () => {
                     {" " + storyData.story.visitedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
+                  <Tooltip
+                    placement="right"
+                    title="Average time it'll take for you to read this story"
+                  >
                     <Typography variant="inherit">
                       {" "}
                       <AutoStoriesIcon />
@@ -301,13 +350,18 @@ const Story = () => {
                     {currentUser.uid === storyData.story.creatorId && (
                       <Fab
                         className={classes.editButton}
-                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
+                        onClick={() =>
+                          navigate(`/stories/${storyData.story._id}/edit`)
+                        }
                       >
                         <Edit />
                       </Fab>
                     )}
                   </span>
-                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
+                  <Fab
+                    className={classes.editButton}
+                    onClick={() => setCommentsModal(true)}
+                  >
                     <ForumIcon />
                   </Fab>
                 </CardContent>
@@ -328,7 +382,10 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
+                  <Typography variant="subtitle">
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
+                  <br />
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
@@ -351,7 +408,11 @@ const Story = () => {
                 <br />
                 <Typography>&nbsp;&nbsp; Story Written by:</Typography>
                 <CardContent>
-                  <Link to={`/users/${storyData.creator._id}`} class="text-decoration-none" className={classes.author}>
+                  <Link
+                    to={`/users/${storyData.creator._id}`}
+                    class="text-decoration-none"
+                    className={classes.author}
+                  >
                     {storyData.creator.displayName}
                   </Link>
                 </CardContent>
@@ -362,48 +423,70 @@ const Story = () => {
                   <Typography variant="h5" className={classes.typo}>
                     You might also like
                   </Typography>
+                  <br />
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && <div>No stories available.</div>}
+                  {recommendations && recommendations.length === 0 && (
+                    <div>No stories available.</div>
+                  )}
                   {recommendations &&
                     recommendations.map((recommendation) => {
                       if (recommendation._id !== id) {
                         return (
                           <div>
-                            <Grid className={classes.similarStories}>
-                              <Typography variant="subtitle">
-                                <span className={classes.card3}>
-                                  <Link to={`/stories/${recommendation._id}`}>
-                                    <CardMedia
-                                      className={classes.similarImages}
-                                      component="img"
-                                      image={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
-                                    />
-                                  </Link>
-                                </span>
-                                &nbsp; &nbsp;
-                                <span className={classes.card4}>
-                                  &nbsp; &nbsp;
-                                  <span className={classes.content}>
-                                    <Link
-                                      to={`/stories/${recommendation._id}`}
-                                      class="text-decoration-none"
-                                      className={classes.titleside}
+                            <Link
+                              to={`/stories/${recommendation._id}`}
+                              className={classes.td}
+                            >
+                              <Card
+                                sx={{ display: "flex" }}
+                                className={classes.recommendation}
+                                elevation={2}
+                                to
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    width: "150%",
+                                  }}
+                                >
+                                  <CardMedia
+                                    className={classes.similarImages}
+                                    component="img"
+                                    image={
+                                      recommendation.coverImage
+                                        ? recommendation.coverImage
+                                        : "/fablefinal.png"
+                                    }
+                                  />
+                                  <Box className={classes.box2}>
+                                    <CardContent>
+                                      <Link
+                                        to={`/stories/${recommendation._id}`}
+                                        class="text-decoration-none"
+                                        className={classes.titleside}
+                                      >
+                                        {recommendation.title}
+                                      </Link>
+                                    </CardContent>
+
+                                    <Typography
+                                      variant="caption"
+                                      className={classes.description}
                                     >
-                                      {recommendation.title}
-                                    </Link>
-                                    <br />
-                                    <Typography variant="caption" className={classes.description}>
-                                      {recommendation.shortDescription.length > 50
-                                        ? recommendation.shortDescription.substring(0, 50) + "..."
+                                      {recommendation.shortDescription.length >
+                                      50
+                                        ? recommendation.shortDescription.substring(
+                                            0,
+                                            50
+                                          ) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
-                                    <br />
-                                    <Divider />
-                                  </span>
-                                </span>
-                              </Typography>
-                            </Grid>
+                                  </Box>
+                                </Box>
+                              </Card>
+                            </Link>
                           </div>
                         );
                       }
