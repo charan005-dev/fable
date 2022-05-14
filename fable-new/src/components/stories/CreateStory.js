@@ -1,5 +1,5 @@
-import { Grid, OutlinedInput, Paper, Select, Typography, MenuItem } from "@material-ui/core";
-import { Button, TextField, FormControl, Alert, Stack } from "@mui/material";
+import { Grid, OutlinedInput, Paper, Select, Typography, MenuItem, CircularProgress } from "@material-ui/core";
+import { Button, TextField, FormControl, Alert, Stack, Backdrop } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -146,7 +146,7 @@ const CreateStory = () => {
   const [desc, setDesc] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [coverImage, setCoverImage] = useState(null);
-  // const [createdStory, setCreatedStory] = useState("");
+  const [creationStarted, setCreationStarted] = useState(false);
   const classes = useStyles();
 
   const [errors, setErrors] = useState({
@@ -264,22 +264,32 @@ const CreateStory = () => {
     formData.append("genres", selectedGenres);
     formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", coverImage);
-    const { data } = await axios.post("/api/stories", formData, {
-      headers: {
-        "Content-Type": `multipart/form-data`,
-        authtoken: await currentUser.getIdToken(),
-      },
-    });
-    console.log(data);
-    if (data.success) {
-      setTitle("");
-      setDesc("");
-      setSelectedGenres([]);
-      editorRef.current.setContent("");
-      toast.success("Your story has been created successfully!", {
+    setCreationStarted(true);
+    try {
+      const { data } = await axios.post("/api/stories", formData, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      console.log(data);
+      if (data.success) {
+        setTitle("");
+        setDesc("");
+        setSelectedGenres([]);
+        editorRef.current.setContent("");
+        toast.success("Your story has been created successfully!", {
+          theme: "dark",
+        });
+        setCreationStarted(false);
+        navigate(`/stories/${data.story._id}`);
+      }
+    } catch (e) {
+      setCreationStarted(false);
+      if (e.response) console.log(e.response);
+      toast.error(e.message, {
         theme: "dark",
       });
-      setTimeout(() => navigate(`/stories/${data.story._id}`), 1000);
     }
   };
 
@@ -293,6 +303,15 @@ const CreateStory = () => {
       },
     },
   };
+
+  if (creationStarted) {
+    return (
+      <Backdrop open={creationStarted}>
+        <Typography variant="body1">Creating your story...</Typography>
+        <CircularProgress variant="success" />
+      </Backdrop>
+    );
+  }
 
   return (
     <div>
