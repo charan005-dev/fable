@@ -1,4 +1,15 @@
-import { Avatar, Box, Button, Divider, FormControl, Grid, List, TextField, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  Grid,
+  List,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import React from "react";
@@ -8,6 +19,8 @@ import { useState } from "react";
 import { SidePane } from "react-side-pane";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/Auth";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Sugar from "sugar";
 
 const useStyles = makeStyles({
   commentsPane: {
@@ -65,6 +78,13 @@ const useStyles = makeStyles({
   },
   text1: {
     paddingLeft: "8.5vw",
+  },
+  timeIcon: {
+    marginTop: 20,
+    maxWidth: 15,
+  },
+  timeString: {
+    marginTop: 20,
   },
 });
 
@@ -135,6 +155,19 @@ const Comments = ({ open, handleClose, storyId }) => {
     }
   };
 
+  const buildFriendlyDate = (date) => {
+    try {
+      let dateObj = new Date(date);
+      // if (isNaN(Date.parse(dateObj))) {
+      //   console.log("Invalid date");
+      //   return "";
+      // }
+      return Sugar.Date.relative(dateObj);
+    } catch (e) {
+      return "";
+    }
+  };
+
   return (
     <div>
       <SidePane className={classes.commentsPane} open={open} width={40} height={"100%"} onClose={handleClose}>
@@ -182,6 +215,9 @@ const Comments = ({ open, handleClose, storyId }) => {
                         <Typography className={classes.commenttext}>{comment.commenterName} </Typography>
                         &nbsp;: <Typography variant="body2">{comment.comment}</Typography>
                       </Button>
+                      <Tooltip placement={"right"} arrow title={buildFriendlyDate(comment.addedTime)}>
+                        <AccessTimeIcon className={classes.timeIcon} fontSize={"small"} />
+                      </Tooltip>
                     </div>
                   );
                 })}

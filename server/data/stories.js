@@ -276,6 +276,7 @@ const addComment = async (storyId, commenter, comment) => {
     _id: uuid.v4(),
     commenter,
     comment,
+    createdAt: new Date(),
   };
   await storiesCollection.updateOne({ _id: storyId }, { $push: { comments: newComment } });
   let story = await storiesCollection.findOne({ _id: storyId });
@@ -285,6 +286,7 @@ const addComment = async (storyId, commenter, comment) => {
       id: x._id,
       comment: x.comment,
       commenterId: x.commenter,
+      addedTime: x.createdAt,
       commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
     };
     friendlyComments.push(cont);
@@ -305,6 +307,7 @@ const getCommentsFromStory = async (storyId) => {
       id: x._id,
       comment: x.comment,
       commenterId: x.commenter,
+      addedTime: x.createdAt,
       commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
     };
     friendlyComments.push(cont);
