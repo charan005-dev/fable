@@ -302,223 +302,234 @@ function HomeImage() {
                 </div>
                 {/* </div> */}
               </div>
-            </Grid>
-          </Paper>
-        )}
 
-        {mysteryData && mysteryData.length !== 0 && (
-          <Paper
-            elevation={15}
-            className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
-          >
-            <Grid item>
-              <div>
-                <br />
-                <h2 className={classes.text1}>New and Hot</h2>
-                {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
-                <div className="row_posters">
-                  <Stack direction={"row"} spacing={4}>
-                    {mysteryData &&
-                      mysteryData.map((image) => {
-                        return (
-                          <>
-                            <Box>
-                              <Card className={classes.card}>
-                                <CardActionArea>
-                                  {/* <Typography>{hover && image.title} </Typography> */}
-                                  <ImageListItem>
-                                    <Link to={`/stories/${image._id}`}>
-                                      <CardMedia
-                                        className={classes.media}
-                                        component="img"
-                                        image={image.coverImage}
-                                        onMouseEnter={onHover}
-                                        onMouseLeave={onHover}
-                                      />
-                                      <ImageListItemBar title={image.title}></ImageListItemBar>
-                                    </Link>
-                                  </ImageListItem>
-                                </CardActionArea>
-                              </Card>
-                              <br />
-                              <Stack direction="row" spacing={0.5}>
-                                {image.genres &&
-                                  image.genres.map((genre, idx) => {
-                                    if (idx > 2) {
-                                      return;
-                                    }
-                                    return (
-                                      <Chip
-                                        label={genre}
-                                        size={"small"}
-                                        color="info"
-                                        onClick={() => navigate(`/stories/choose/${genre}`)}
-                                      />
-                                    );
-                                  })}
-                              </Stack>
-                            </Box>
-                          </>
-                        );
-                      })}
-                  </Stack>
-                </div>
+              {/* </div> */}
+            </div>
+          </Grid>
+        </Paper>)}
+       
+
+{ mysteryData &&  mysteryData.length !== 0 && ( <Paper
+          elevation={15}
+          className={classes.paper}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid item>
+            <div>
+              <br />
+              <h2 className={classes.text1}>Mystery</h2>
+              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
+              <div className="row_posters">
+                <Stack direction={"row"} spacing={4}>
+                  {mysteryData &&
+                    mysteryData.map((image) => {
+                      return (
+                        <>
+                          {/* <ImageList> */}
+
+                          <Box>
+                            <Card className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                            </Card>
+                            <br />
+                            <Stack direction="row" spacing={0.5}>
+                              {image.genres &&
+                                image.genres.map((genre, idx) => {
+                                  if (idx > 2) {
+                                    return;
+                                  }
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </Box>
+
+                          {/* </ImageList> */}
+                        </>
+                      );
+                    })}
+                </Stack>
               </div>
-            </Grid>
-          </Paper>
-        )}
+              {/* </div> */}
+            </div>
+          </Grid>
+        </Paper>)}
+       
 
-        {scifiData && scifiData.length !== 0 && (
-          <Paper
-            elevation={15}
-            className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
-          >
-            <Grid item>
-              <div>
-                <br />
-                <h2 className={classes.text1}>Mystery</h2>
-                {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
-                <div className="row_posters">
-                  <Stack direction={"row"} spacing={4}>
-                    {scifiData &&
-                      scifiData.map((image) => {
-                        return (
-                          <>
-                            {/* <ImageList> */}
 
-                            <Box>
-                              <Card className={classes.card}>
-                                <CardActionArea>
-                                  {/* <Typography>{hover && image.title} </Typography> */}
-                                  <ImageListItem>
-                                    <Link to={`/stories/${image._id}`}>
-                                      <CardMedia
-                                        className={classes.media}
-                                        component="img"
-                                        image={image.coverImage}
-                                        onMouseEnter={onHover}
-                                        onMouseLeave={onHover}
-                                      />
-                                      <ImageListItemBar title={image.title}></ImageListItemBar>
-                                    </Link>
-                                  </ImageListItem>
-                                </CardActionArea>
-                              </Card>
-                              <br />
-                              <Stack direction="row" spacing={0.5}>
-                                {image.genres &&
-                                  image.genres.map((genre, idx) => {
-                                    if (idx > 2) {
-                                      return;
-                                    }
-                                    return (
-                                      <Chip
-                                        label={genre}
-                                        size={"small"}
-                                        color="info"
-                                        onClick={() => navigate(`/stories/choose/${genre}`)}
-                                      />
-                                    );
-                                  })}
-                              </Stack>
-                            </Box>
+{scifiData && scifiData.length !== 0 && ( <Paper
+          elevation={15}
+          className={classes.paper}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid item>
+            <div>
+              <br />
+              <h2 className={classes.text1}>Science Fiction</h2>
+              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
+              <div className="row_posters">
+                <Stack direction={"row"} spacing={4}>
+                  {scifiData &&
+                    scifiData.map((image) => {
+                      return (
+                        <>
+                          {/* <ImageList> */}
 
-                            {/* </ImageList> */}
-                          </>
-                        );
-                      })}
-                  </Stack>
-                </div>
-                {/* </div> */}
+                          <Box>
+                            <Card className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                            </Card>
+                            <br />
+                            <Stack direction="row" spacing={0.5}>
+                              {image.genres &&
+                                image.genres.map((genre, idx) => {
+                                  if (idx > 2) {
+                                    return;
+                                  }
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </Box>
+
+                          {/* </ImageList> */}
+                        </>
+                      );
+                    })}
+                </Stack>
               </div>
-            </Grid>
-          </Paper>
-        )}
+              {/* </div> */}
+            </div>
+          </Grid>
+        </Paper>
+)}
+       
 
-        {thrillerData && thrillerData.length !== 0 && (
-          <Paper
-            elevation={15}
-            className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
-          >
-            <Grid item>
-              <div>
-                <br />
-                <h2 className={classes.text1}>Thriller</h2>
-                {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
-                <div className="row_posters">
-                  <Stack direction={"row"} spacing={4}>
-                    {thrillerData &&
-                      thrillerData.map((image) => {
-                        return (
-                          <>
-                            {/* <ImageList> */}
+       
+        
+{thrillerData && thrillerData.length !== 0 && <Paper
+          elevation={15}
+          className={classes.paper}
+          sx={{
+            bgcolor: "background.default",
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Grid item>
+            <div>
+              <br />
+              <h2 className={classes.text1}>Thriller</h2>
+              {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
+              <div className="row_posters">
+                <Stack direction={"row"} spacing={4}>
+                  {thrillerData &&
+                    thrillerData.map((image) => {
+                      return (
+                        <>
+                          {/* <ImageList> */}
 
-                            <Box>
-                              <Card className={classes.card}>
-                                <CardActionArea>
-                                  {/* <Typography>{hover && image.title} </Typography> */}
-                                  <ImageListItem>
-                                    <Link to={`/stories/${image._id}`}>
-                                      <CardMedia
-                                        className={classes.media}
-                                        component="img"
-                                        image={image.coverImage}
-                                        onMouseEnter={onHover}
-                                        onMouseLeave={onHover}
-                                      />
-                                      <ImageListItemBar title={image.title}></ImageListItemBar>
-                                    </Link>
-                                  </ImageListItem>
-                                </CardActionArea>
-                              </Card>
-                              <br />
-                              <Stack direction="row" spacing={0.5}>
-                                {image.genres &&
-                                  image.genres.map((genre, idx) => {
-                                    if (idx > 2) {
-                                      return;
-                                    }
-                                    return (
-                                      <Chip
-                                        label={genre}
-                                        size={"small"}
-                                        color="info"
-                                        onClick={() => navigate(`/stories/choose/${genre}`)}
-                                      />
-                                    );
-                                  })}
-                              </Stack>
-                            </Box>
+                          <Box>
+                            <Card className={classes.card}>
+                              <CardActionArea>
+                                {/* <Typography>{hover && image.title} </Typography> */}
+                                <ImageListItem>
+                                  <Link to={`/stories/${image._id}`}>
+                                    <CardMedia
+                                      className={classes.media}
+                                      component="img"
+                                      image={image.coverImage}
+                                      onMouseEnter={onHover}
+                                      onMouseLeave={onHover}
+                                    />
+                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                  </Link>
+                                </ImageListItem>
+                              </CardActionArea>
+                            </Card>
+                            <br />
+                            <Stack direction="row" spacing={0.5}>
+                              {image.genres &&
+                                image.genres.map((genre, idx) => {
+                                  if (idx > 2) {
+                                    return;
+                                  }
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </Box>
 
-                            {/* </ImageList> */}
-                          </>
-                        );
-                      })}
-                  </Stack>
-                </div>
-                {/* </div> */}
+                          {/* </ImageList> */}
+                        </>
+                      );
+                    })}
+                </Stack>
               </div>
-            </Grid>
-          </Paper>
-        )}
+              {/* </div> */}
+            </div>
+          </Grid>
+        </Paper>
+   }  
+)
+
       </>
     );
   }

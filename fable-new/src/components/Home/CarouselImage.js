@@ -61,59 +61,56 @@ function CarouselImage() {
   if (storyData)
     return (
       <div className="App">
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", backgroundColor:"white" }}>
           <div
             style={{
-              padding: "0 20px",
+              padding: " 1px",
+              marginbottom:"0%",
+              marginLeft:"0%"
+            
+            
             }}
           >
-            {storyData.length >= 6 && (
-              <Carousel
-                data={storyData}
-                time={1000}
-                interval={1000}
-                width="850px"
-                height="300px"
-                captionStyle={captionStyle}
-                radius="10px"
-                slideNumber={true}
-                slideNumberStyle={slideNumberStyle}
-                captionPosition="bottom"
-                automatic={true}
-                dots={true}
-                swipeScrollTolerance={0}
-                transitiontime="100"
-                slideBackgroundColor="grey"
-                duration="0"
-                slideImageFit="cover"
-                thumbnails={false}
-                thumbnailWidth="100px"
-                style={{
-                  textAlign: "center",
-                  maxWidth: "850px",
-                  maxHeight: "500px",
-                  margin: "40px auto",
-                }}
-              />
-            )}
-            <div>
-              <div>
-                {/* Welcome Home
 
-      <Chip
-      label={currentUser.displayName}
-      size={"large"}
-      color="info"
-      onClick={() => navigate(`/`)}
-    /> */}
+            {storyData.length >= 6 && <Carousel
+              data={storyData}
+              time={1000}
+              interval={1000}
+              width="850px"
+              height="300px"
+              captionStyle={captionStyle}
+              radius="15px"
+              slideNumber={true}
+              slideNumberStyle={slideNumberStyle}
+              captionPosition="bottom"
+              automatic={true}
+              dots={true}
+              swipeScrollTolerance={0}
+              transitiontime="100"
+              slideBackgroundColor="grey"
+              duration="0"
+              slideImageFit="cover"
+              thumbnails={false}
+              thumbnailWidth="100px"
+              style={{
+                textAlign: "center",
+                maxWidth: "850px",
+                maxHeight: "500px",
+                margin: "40px auto",
+               
+              }}
+            />
+}
+           
+            
               </div>
               <br />
 
-              {/* <Dots  className="dots"length={10} active={5} /> */}
+            
             </div>
           </div>
-        </div>
-      </div>
+       
+  
     );
 }
 
