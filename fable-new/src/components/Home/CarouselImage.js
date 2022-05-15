@@ -24,13 +24,15 @@ const useStyles = makeStyles({
 
 function CarouselImage() {
   const { currentUser } = useContext(AuthContext);
-  const [storyData, setStoryData] = useState(null);
+  const [storyData, setStoryData] = useState([]);
   const [storyIds, setStoryIds] = useState([]);
   const navigate = useNavigate();
   const classes = useStyles();
 
   useEffect(() => {
     async function getAllStories() {
+      
+      
       const { data } = await axios.get(`/api/stories/random?required=6`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
@@ -67,7 +69,7 @@ function CarouselImage() {
               padding: "0 20px",
             }}
           >
-            <Carousel
+            {storyData.length >= 6 && <Carousel
               data={storyData}
               time={1000}
               interval={1000}
@@ -94,6 +96,10 @@ function CarouselImage() {
                 margin: "40px auto",
               }}
             />
+}
+            <div>
+
+       
             <div>
               {/* Welcome Home
 

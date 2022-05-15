@@ -88,6 +88,10 @@ function HomeImage() {
   // const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [storyData, setStoryData] = useState(null);
+  const [romanceData, setromanceData] = useState(null);
+  const [mysteryData, setmysteryData] = useState(null);
+  const [scifiData, setscifiData] = useState(null);
+  const [thrillerData, setthrillerData] = useState(null);
   const [hover, setHover] = useState(false);
   const classes = useStyles();
   const navigate = useNavigate();
@@ -116,18 +120,53 @@ function HomeImage() {
     getAllStories();
   }, []);
 
-  // useEffect(() => {
-  //   async function getAllStories() {
-  //     const { data } = await axios.get(`/api/stories/all?required=12`&Romance, {
-  //       headers: { authtoken: await currentUser.getIdToken() },
-  //     });
-  //     console.log(data);
-  //     setStoryData(data.stories);
-  //   }
-  //   getAllStories();
-  // }, []);
+  useEffect(() => {
+    // required, genres (Drama), hot (true/false)
+    async function getAllStories() {
+      const { data } = await axios.get(`/api/stories/all?required=12&genres=Romance`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+      setromanceData(data.stories);
+    }
+    getAllStories();
+  }, []);
 
-  if (storyData) {
+  useEffect(() => {
+    async function getAllStories() {
+      const { data } = await axios.get(`/api/stories/all?required=12&genres=Mystery`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+      setmysteryData(data.stories);
+    }
+    getAllStories();
+  }, []);
+
+  useEffect(() => {
+    async function getAllStories() {
+      const { data } = await axios.get(`/api/stories/all?required=12&genres=Sci-fi`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+      setscifiData(data.stories);
+    }
+    getAllStories();
+  }, []);
+
+  useEffect(() => {
+    async function getAllStories() {
+      const { data } = await axios.get(`/api/stories/all?required=12&genres=Thriller`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+      setthrillerData(data.stories);
+    }
+    getAllStories();
+  }, []);
+
+  if (storyData  )
+   {
     return (
       <>
         <Paper
@@ -143,7 +182,7 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>Romance </h2>
+              <h2 className={classes.text1}>New and hot </h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
@@ -201,7 +240,7 @@ function HomeImage() {
           </Grid>
         </Paper>
 
-        <Paper
+ { romanceData && romanceData.length!==0 &&( <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -214,12 +253,12 @@ function HomeImage() {
           <Grid item>
             <div>
               <br />
-              <h2 className={classes.text1}>Horror</h2>
+              <h2 className={classes.text1}>Romance</h2>
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
-                  {storyData &&
-                    storyData.map((image) => {
+                  {romanceData &&
+                    romanceData.map((image) => {
                       return (
                         <>
                           {/* <ImageList> */}
@@ -270,9 +309,10 @@ function HomeImage() {
               {/* </div> */}
             </div>
           </Grid>
-        </Paper>
+        </Paper>)}
+       
 
-        <Paper
+{ mysteryData &&  mysteryData.length !== 0 && ( <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -289,8 +329,8 @@ function HomeImage() {
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
-                  {storyData &&
-                    storyData.map((image) => {
+                  {mysteryData &&
+                    mysteryData.map((image) => {
                       return (
                         <>
                           {/* <ImageList> */}
@@ -341,9 +381,11 @@ function HomeImage() {
               {/* </div> */}
             </div>
           </Grid>
-        </Paper>
+        </Paper>)}
+       
 
-        <Paper
+
+{scifiData && scifiData.length !== 0 && ( <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -360,8 +402,8 @@ function HomeImage() {
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
-                  {storyData &&
-                    storyData.map((image) => {
+                  {scifiData &&
+                    scifiData.map((image) => {
                       return (
                         <>
                           {/* <ImageList> */}
@@ -413,6 +455,8 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
+)}
+       
 
         <Paper
           elevation={15}
@@ -474,6 +518,8 @@ function HomeImage() {
                             </Stack>
                           </Box>
 
+{thrillerData && thrillerData.length!==0 &&( <Paper
+
                           {/* </ImageList> */}
                         </>
                       );
@@ -503,8 +549,8 @@ function HomeImage() {
               {/* <div style={{ height: "2300px", width: "514px", margin: "16px" }}></div> */}
               <div className="row_posters">
                 <Stack direction={"row"} spacing={4}>
-                  {storyData &&
-                    storyData.map((image) => {
+                  {thrillerData &&
+                    thrillerData.map((image) => {
                       return (
                         <>
                           {/* <ImageList> */}
@@ -557,6 +603,7 @@ function HomeImage() {
           </Grid>
         </Paper>
 
+)}
       </>
     );
   }
