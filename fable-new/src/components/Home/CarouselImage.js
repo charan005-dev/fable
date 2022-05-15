@@ -31,8 +31,6 @@ function CarouselImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      
-      
       const { data } = await axios.get(`/api/stories/random?required=6`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
@@ -69,39 +67,38 @@ function CarouselImage() {
               padding: "0 20px",
             }}
           >
-            {storyData.length >= 6 && <Carousel
-              data={storyData}
-              time={1000}
-              interval={1000}
-              width="850px"
-              height="300px"
-              captionStyle={captionStyle}
-              radius="10px"
-              slideNumber={true}
-              slideNumberStyle={slideNumberStyle}
-              captionPosition="bottom"
-              automatic={true}
-              dots={true}
-              swipeScrollTolerance={0}
-              transitiontime="100"
-              slideBackgroundColor="grey"
-              duration="0"
-              slideImageFit="cover"
-              thumbnails={false}
-              thumbnailWidth="100px"
-              style={{
-                textAlign: "center",
-                maxWidth: "850px",
-                maxHeight: "500px",
-                margin: "40px auto",
-              }}
-            />
-}
+            {storyData.length >= 6 && (
+              <Carousel
+                data={storyData}
+                time={1000}
+                interval={1000}
+                width="850px"
+                height="300px"
+                captionStyle={captionStyle}
+                radius="10px"
+                slideNumber={true}
+                slideNumberStyle={slideNumberStyle}
+                captionPosition="bottom"
+                automatic={true}
+                dots={true}
+                swipeScrollTolerance={0}
+                transitiontime="100"
+                slideBackgroundColor="grey"
+                duration="0"
+                slideImageFit="cover"
+                thumbnails={false}
+                thumbnailWidth="100px"
+                style={{
+                  textAlign: "center",
+                  maxWidth: "850px",
+                  maxHeight: "500px",
+                  margin: "40px auto",
+                }}
+              />
+            )}
             <div>
-
-       
-            <div>
-              {/* Welcome Home
+              <div>
+                {/* Welcome Home
 
       <Chip
       label={currentUser.displayName}
@@ -109,10 +106,11 @@ function CarouselImage() {
       color="info"
       onClick={() => navigate(`/`)}
     /> */}
-            </div>
-            <br />
+              </div>
+              <br />
 
-            {/* <Dots  className="dots"length={10} active={5} /> */}
+              {/* <Dots  className="dots"length={10} active={5} /> */}
+            </div>
           </div>
         </div>
       </div>
