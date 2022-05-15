@@ -251,7 +251,11 @@ const StoryBook = () => {
         >
           <Grid container justifyContent="center" direction="row">
             <Card className={classes.card} elevation={15}>
-              <CardMedia className={classes.media} component="img" image={story.coverImage} />
+              <CardMedia
+                className={classes.media}
+                component="img"
+                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+              />
             </Card>
           </Grid>
           <Grid container justifyContent="center" direction="row">
