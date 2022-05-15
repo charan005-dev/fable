@@ -246,9 +246,10 @@ const searchStory = async (searchTerm) => {
     console.log(e);
   }
   let results = [];
-  // show only results that have a relevance score > 0.1
+  // show only results that have a relevance score > 0.2
   searchResults.results.forEach((result) => {
-    if (result._meta < 0.1) {
+    console.log(result._meta.score);
+    if (result._meta && result._meta.score > 0.2) {
       let newObj = {};
       for (let obj in result) {
         if (obj === "_meta") {
