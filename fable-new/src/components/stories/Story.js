@@ -412,7 +412,7 @@ const Story = () => {
                 <CardContent>
                   {" "}
                   <Typography variant="h4" className={classes.bold}>
-                    Desciption
+                    Description
                   </Typography>
                   <br />
                   <Typography variant="subtitle">
