@@ -144,6 +144,23 @@ router.get("/all/me", async (req, res) => {
   }
 });
 
+router.get("/all_stories", async (req, res) => {
+  try {
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    const allStoriesData = await stories.getAllPaginatedStories(skip, take);
+    if (allStoriesData.success) {
+      res.status(200).json({ success: true, stories: allStoriesData.stories });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+    return;
+  }
+});
+
 router.post("/", upload.single("coverImage"), async (req, res) => {
   try {
     console.log(req.body);

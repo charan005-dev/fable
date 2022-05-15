@@ -341,19 +341,21 @@ const PublicProfile = () => {
                             if (idx > 2) {
                               return;
                             }
+                            // if (!profile.coverImage) {
+                            //   return (profile.coverImage = `/public/noImage/noImage.jpeg`);
+                            // }
                             return (
                               <Stack direction="row" spacing={5}>
                                 <Card className={classes.imagecard}>
                                   <CardActionArea>
                                     <Link to={`/stories/${profile._id}`}>
-                                      <CardMedia className={classes.media} component="img" image={profile.coverImage} />
+                                      <CardMedia
+                                        className={classes.media}
+                                        component="img"
+                                        image={profile.coverImage ? profile.coverImage : `/images/noImage.jpeg`}
+                                      />
                                     </Link>
                                   </CardActionArea>
-                                </Card>
-                                <Card elevation={0}>
-                                  <Link to={`/stories/${profile._id}`} class="text-decoration-none">
-                                    <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
-                                  </Link>
                                 </Card>
 
                                 <Card elevation={0}>
@@ -388,7 +390,7 @@ const PublicProfile = () => {
                           })}
                       </Stack>
 
-                      <Button className={classes.button1} onClick={() => navigate(`/stories/manage`)}>
+                      <Button className={classes.button1} onClick={() => navigate(`/stories/me`)}>
                         View More
                       </Button>
                     </Card>

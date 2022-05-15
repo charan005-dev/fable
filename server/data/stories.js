@@ -3,6 +3,7 @@ const uuid = require("uuid");
 const { convert } = require("html-to-text");
 const axios = require("axios").default;
 const AppSearchClient = require("@elastic/app-search-node");
+const { all } = require("../routes/stories");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
@@ -327,6 +328,11 @@ const getMyStories = async (accessor, skip = 0, take = 20) => {
   let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
   return { success: true, stories: myStories };
 };
+const getAllPaginatedStories = async (skip = 0, take = 20) => {
+  const storiesCollection = await stories();
+  let allStories = await storiesCollection.find({}).skip(skip).limit(take).toArray();
+  return { success: true, stories: allStories };
+};
 
 module.exports = {
   createStory,
@@ -346,4 +352,5 @@ module.exports = {
   getCommentsFromStory,
   getAllHotStories,
   getMyStories,
+  getAllPaginatedStories,
 };

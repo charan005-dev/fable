@@ -162,7 +162,7 @@ function HomeImage() {
                                     <CardMedia
                                       className={classes.media}
                                       component="img"
-                                      image={image.coverImage}
+                                      image={image.coverImage ? image.coverImage : `/public/noImage/noImage.jpeg`}
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
@@ -485,7 +485,6 @@ function HomeImage() {
           </Grid>
         </Paper>
 
-
         <Paper
           elevation={15}
           className={classes.paper}
@@ -556,7 +555,6 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
-
       </>
     );
   }
