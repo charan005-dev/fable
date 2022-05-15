@@ -75,8 +75,9 @@ router.get("/library_stories/:libraryId", async (req, res) => {
     let owner = req.query.owner;
     // let storyId = req.query.storyId;
     let library = req.params.libraryId;
+    let accessor = req.authenticatedUser;
     try {
-      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library);
+      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library, accessor);
       res.status(200).json({ success: true, libraries: allLibraryStories });
       return;
     } catch (e) {
