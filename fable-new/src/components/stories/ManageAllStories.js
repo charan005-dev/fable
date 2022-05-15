@@ -8,7 +8,6 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
-
 const genres = [
   "Horror",
   "Romance",
@@ -27,9 +26,6 @@ const genres = [
   "Non-fiction",
   "Medieval",
 ];
-
-
-
 const useStyles = makeStyles({
   refinery: {
     padding: 10,
@@ -41,7 +37,7 @@ const useStyles = makeStyles({
   card: {
     margin: 6,
     float: "left",
-    backgroundColor: "#2f2f2f",
+    backgroundColor: "#2F2F2F",
     color: "#fff",
     paddingLeft: 30,
     padding: 10,
@@ -77,7 +73,6 @@ const useStyles = makeStyles({
     margin: "3px",
     padding: "3px",
   },
-
   cards: {
     width: "500px",
     height: "600px",
@@ -129,19 +124,16 @@ const useStyles = makeStyles({
     width: "10vw",
   },
 });
-
 const ManageAllStories = () => {
   const [allStories, setAllStories] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [doExactMatch, setDoExactMatch] = useState(false);
   const classes = useStyles();
-
   useEffect(() => {
     setAllStories([]);
     setSelectedGenres([]);
   }, [doExactMatch]);
-
   useEffect(() => {
     async function getALLStoriesByGenres() {
       if (!doExactMatch) {
@@ -161,7 +153,6 @@ const ManageAllStories = () => {
     }
     getALLStoriesByGenres();
   }, [selectedGenres]);
-
   const chipSelect = (genre) => {
     if (!selectedGenres.includes(genre)) {
       let genreCopy = [];
@@ -173,7 +164,6 @@ const ManageAllStories = () => {
     }
     console.log("selected", selectedGenres);
   };
-
   const chipDeselect = (genre) => {
     if (selectedGenres.includes(genre)) {
       let genreCopy = selectedGenres;
@@ -185,7 +175,6 @@ const ManageAllStories = () => {
     }
     console.log(selectedGenres);
   };
-
   return (
     <div>
       <br />
@@ -215,12 +204,9 @@ const ManageAllStories = () => {
         <br />
         <br />
         <br />
-          
         <div>
                 <Box
-
                   sx={{
-                    
                     flexGrow:1,
                     display: "flex",
                     flexWrap: "wrap",
@@ -229,8 +215,6 @@ const ManageAllStories = () => {
                       width: 1500,
                       height: "auto",
                       marginLeft: 320,
-                      
-                   
                      },
                   }}
                 >
@@ -247,7 +231,6 @@ const ManageAllStories = () => {
                       display: "grid",
                       gridTemplateColumns: { md: "1fr 1fr" },
                       gap: 2,
-
                     }}
                   >
                       <Stack direction="row">
@@ -256,7 +239,6 @@ const ManageAllStories = () => {
                             <CardMedia className={classes.media} component="img" image={story.coverImage} />
                           </Link>
                         </Card>
-
                         <Card className={classes.card2} elevation={0}>
                           <CardContent>
                             <Link to={`/stories/${story._id}`}>
@@ -284,5 +266,4 @@ const ManageAllStories = () => {
       </div>
   );
 };
-
 export default ManageAllStories;
