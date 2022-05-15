@@ -77,10 +77,10 @@ const useStyles = makeStyles({
   },
 
   textbox: {
-    border: "5px black",
+    border: "1px black",
     "&:hover": {
       backgroundColor: "#ececec",
-      border: "5px solid black",
+     
     },
   },
 
@@ -224,7 +224,7 @@ function Signin() {
                 id="password"
                 autoComplete="current-password"
                 variant="outlined"
-                sx={{ border: "4px solid black" }}
+                sx={{ border: "1px solid black" }}
               />
               <Button
                 className={classes.button}
