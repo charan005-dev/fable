@@ -21,6 +21,8 @@ import {
 import { Stack } from "react-bootstrap";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -153,12 +155,9 @@ const AllLibraryStories = () => {
   useEffect(() => {
     async function getLibraryStories() {
       try {
-        const { data } = await axios.get(
-          `/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`,
-          {
-            headers: { authtoken: await currentUser.getIdToken() },
-          }
-        );
+        const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
         console.log(data.libraries);
         setLibraryData(data.libraries);
       } catch (e) {
@@ -208,15 +207,14 @@ const AllLibraryStories = () => {
       <div className={classes.display}>
         <div>
           <Typography className={classes.title} subtitle={""}>
-            {libraryData && libraryData.libraryName}
+            {libraryData && libraryData.libraryName}{" "}
+            {libraryData && libraryData.private ? <LockIcon /> : <LockOpenIcon />}
           </Typography>
         </div>
         <Divider />
         <br />
         {libraryData && libraryData.stories && libraryData.stories.length === 0 && (
-          <Typography variant="body2">
-            There are no stories in this library. <Link to={`/home`}>Start Exploring!</Link>
-          </Typography>
+          <Typography variant="body2">There are no stories in this library.</Typography>
         )}
         <Stack direction="column">
           {libraryData &&
@@ -231,29 +229,19 @@ const AllLibraryStories = () => {
                           <div>
                             <div className={classes.card3} elevation={0}>
                               <Link to={`/stories/${libraryStory._id}`}>
-                                <CardMedia
-                                  className={classes.images}
-                                  component="img"
-                                  image={libraryStory.coverImage}
-                                />
+                                <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
                               </Link>
                             </div>
                             <div className={classes.card4}>
                               <Link to={`/stories/${libraryStory._id}`}>
-                                <Typography className={classes.content}>
-                                  {" "}
-                                  {libraryStory.title}{" "}
-                                </Typography>
+                                <Typography className={classes.content}> {libraryStory.title} </Typography>
                               </Link>
                             </div>
                             <div>
                               <Typography>
                                 {" "}
                                 {libraryStory.shortDescription.length > 500
-                                  ? libraryStory.shortDescription.substring(
-                                      0,
-                                      500
-                                    ) + "..."
+                                  ? libraryStory.shortDescription.substring(0, 500) + "..."
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
                               <Fab variant="circular" onClick={() => removeStory(libraryStory._id)}>
@@ -272,9 +260,7 @@ const AllLibraryStories = () => {
                                       label={genre}
                                       size={"small"}
                                       color="info"
-                                      onClick={() =>
-                                        navigate(`/stories/choose/${genre}`)
-                                      }
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
                                     />
                                   );
                                 })}

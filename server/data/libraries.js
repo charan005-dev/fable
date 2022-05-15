@@ -49,7 +49,7 @@ const getAllMyLibraries = async (owner) => {
   return allLibraries;
 };
 
-const getAllMyLibraryStories = async (userId, libraryId) => {
+const getAllMyLibraryStories = async (userId, libraryId, accessor) => {
   const usersCollection = await users();
   const librariesCollection = await libraries();
   const storiesCollection = await stories();
@@ -57,6 +57,10 @@ const getAllMyLibraryStories = async (userId, libraryId) => {
   if (!owner) throw `No such user exists.`;
   let libraryStories = await librariesCollection.findOne({ _id: libraryId });
   if (!libraryStories) throw `No such library exists.`;
+  console.log(accessor, libraryStories);
+  if (libraryStories.private && accessor !== libraryStories.owner) {
+    throw `You don't have access to view this resource.`;
+  }
   let allLibStory = [];
   for (const libStories of libraryStories.stories) {
     allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
