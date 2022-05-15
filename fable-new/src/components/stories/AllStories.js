@@ -223,7 +223,11 @@ const AllStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${allStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={allStory.coverImage} />
+                              <CardMedia
+                                className={classes.images}
+                                component="img"
+                                image={allStory.coverImage ? allStory.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </div>
                           <div className={classes.card4}>

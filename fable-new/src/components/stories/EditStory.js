@@ -9,21 +9,21 @@ import { Grid, OutlinedInput, Paper, Select, Typography } from "@material-ui/cor
 import { Button, MenuItem, TextField, FormControl, Alert, CircularProgress, AlertTitle } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
-
-const genres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { genres } = require("../genres").genres;
+// const genres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const useStyles = makeStyles({
   container: {

@@ -24,21 +24,21 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import logo from "../Assets/5.gif";
-
-const genres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { genres } = require("../genres");
+// const genres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const useStyles = makeStyles({
   card1: {
@@ -177,14 +177,12 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
-
   },
   logo: {
     marginLeft: "30%",
     marginTop: "8%",
     border: "20px",
   },
-
 });
 
 const EditStory1 = () => {
