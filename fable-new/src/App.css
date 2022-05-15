@@ -488,7 +488,6 @@ h1 {
 /* ------------------------ */
 
 .tox {
-
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
@@ -499,9 +498,9 @@ h1 {
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
+  text-decoration: #ffffff;
+  text-shadow: #ffffff;
+  text-transform: #ffffff;
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
@@ -509,7 +508,6 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-
   box-sizing: border-box;
 
   flex-direction: column;
