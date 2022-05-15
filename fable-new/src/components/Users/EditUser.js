@@ -228,19 +228,34 @@ const EditUser = () => {
       toast.dark("Your inputs are invalid. Please check them before performing the action.");
       return;
     }
-    const formData = new FormData();
-    formData.append("userId", currentUser.uid);
-    formData.append("displayName", changingState.displayName);
-    formData.append("wpm", changingState.wpm);
-    formData.append("userAvatar", userAvatar);
-    const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        authtoken: await currentUser.getIdToken(),
-      },
-    });
-    if (data.success) {
-      setUpdateSuccess(true);
+    try {
+      const formData = new FormData();
+      formData.append("userId", currentUser.uid);
+      formData.append("displayName", changingState.displayName);
+      formData.append("wpm", changingState.wpm);
+      formData.append("userAvatar", userAvatar);
+      const { data } = await axios.put(`/api/users/${currentUser.uid}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authtoken: await currentUser.getIdToken(),
+        },
+      });
+      if (data.success) {
+        setUpdateSuccess(true);
+      }
+    } catch (e) {
+      console.log(e);
+      if (e.response && e.response.data && e.response.data.error) {
+        toast.error(e.response.data.error, {
+          theme: "dark",
+        });
+        return;
+      } else {
+        toast.error("Cannot perform the update. Please check your inputs.", {
+          theme: "dark",
+        });
+        return;
+      }
     }
   };
 

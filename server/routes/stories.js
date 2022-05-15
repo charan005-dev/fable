@@ -77,6 +77,24 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/:storyId/hit", async (req, res) => {
+  try {
+    let { storyId } = req.params;
+    let accessor = req.authenticatedUser;
+    try {
+      await stories.recordUserVisit(accessor, storyId);
+      res.status(200).json({ success: true });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, message: "Sorry, something went wrong." });
+  }
+});
+
 router.get("/me", async (req, res) => {
   try {
     let selectedGenres = req.query.genres;
@@ -135,6 +153,23 @@ router.get("/all/me", async (req, res) => {
     const storiesData = await stories.getMyStories(accessor, skip, take);
     if (storiesData.success) {
       res.status(200).json({ success: true, stories: storiesData.stories });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+    return;
+  }
+});
+
+router.get("/all_stories", async (req, res) => {
+  try {
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    const allStoriesData = await stories.getAllPaginatedStories(skip, take);
+    if (allStoriesData.success) {
+      res.status(200).json({ success: true, stories: allStoriesData.stories });
       return;
     }
   } catch (e) {

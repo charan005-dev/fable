@@ -21,6 +21,8 @@ import AllLibraryStories from "./Libraries/AllLibraryStories";
 import ManageMyStories from "./Stories/ManageMyStories";
 import ManageAllStories from "./Stories/ManageAllStories";
 import EditStory1 from "./Stories/EditStory1";
+import MyStories from "./Stories/MyStories";
+import AllStories from "./Stories/AllStories";
 
 import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
@@ -83,10 +85,13 @@ function App() {
               <Route path="/libraries/me" element={<ViewLibrariesList />} />
             </Route>
             <Route path="/libraries/:libraryId" element={<PrivateRoute />}>
-              <Route
-                path="/libraries/:libraryId"
-                element={<AllLibraryStories />}
-              />
+              <Route path="/libraries/:libraryId" element={<AllLibraryStories />} />
+            </Route>
+            <Route path="/stories/me" element={<PrivateRoute />}>
+              <Route path="/stories/me" element={<MyStories />} />
+            </Route>
+            <Route path="/stories/all" element={<PrivateRoute />}>
+              <Route path="/stories/all" element={<AllStories />} />
             </Route>
             <Route path="/stories/choose/:genre" element={<PrivateRoute />}>
               <Route path="/stories/choose/:genre" element={<ShowByGenres />} />

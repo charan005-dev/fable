@@ -95,4 +95,19 @@ router.put("/:userId", upload.single("userAvatar"), async (req, res) => {
   }
 });
 
+router.get("/:userId/stories", async (req, res) => {
+  try {
+    let { userId } = req.params;
+    let { skip, take } = req.query;
+    if (skip) skip = parseInt(skip);
+    if (take) take = parseInt(take);
+    let userStories = await users.getStoriesOfUser(userId, skip, take);
+    res.status(200).json({ success: true, stories: userStories });
+    return;
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 module.exports = router;

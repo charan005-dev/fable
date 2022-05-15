@@ -11,7 +11,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@material-ui/core";
-import { Button, TextField, FormControl, Alert, Stack, Backdrop, CircularProgress } from "@mui/material";
+import { Button, TextField, FormControl, Alert, Stack, Backdrop } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -22,6 +22,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
+import logo from "../Assets/5.gif";
 
 const genres = [
   "Horror",
@@ -175,7 +177,14 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
+
   },
+  logo: {
+    marginLeft: "30%",
+    marginTop: "8%",
+    border: "20px",
+  },
+
 });
 
 const EditStory1 = () => {
@@ -384,7 +393,7 @@ const EditStory1 = () => {
       });
       console.log(data);
       toast.success("Successfully deleted the story.");
-      setTimeout(() => navigate(`/stories`), 400);
+      setTimeout(() => navigate(`/home`), 400);
     } catch (e) {
       console.log(e);
       toast.error("Cannot perform delete operation. " + e, {
@@ -395,11 +404,12 @@ const EditStory1 = () => {
 
   if (updateStarted) {
     return (
-      <Backdrop open={updateStarted}>
-        <Typography variant="body1">Performing the update...</Typography>
-        <br />
-        <CircularProgress />
-      </Backdrop>
+      <img src={logo} alt="loading..." className={classes.logo} />
+      //   <Backdrop open={updateStarted}>
+      //     <Typography variant="body1">updating...</Typography>
+      //     <br />
+      //     <CircularProgress isIndeterminate color='green.300' />
+      //   </Backdrop>
     );
   }
 

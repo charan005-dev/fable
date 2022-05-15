@@ -31,8 +31,6 @@ function CarouselImage() {
 
   useEffect(() => {
     async function getAllStories() {
-      
-      
       const { data } = await axios.get(`/api/stories/random?required=6`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
@@ -73,6 +71,7 @@ function CarouselImage() {
             
             }}
           >
+
             {storyData.length >= 6 && <Carousel
               data={storyData}
               time={1000}
@@ -103,12 +102,14 @@ function CarouselImage() {
             />
 }
            
-            </div>
-            <br />
+            
+              </div>
+              <br />
 
-        
+            
+            </div>
           </div>
-        </div>
+       
   
     );
 }
