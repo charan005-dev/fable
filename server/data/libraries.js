@@ -109,6 +109,12 @@ const deleteLibrary = async (accessor, libraryId) => {
   return { success: true, libraries: await librariesCollection.find({ owner: accessor }).toArray() };
 };
 
+const getPublicLibrariesOfUser = async (userId) => {
+  const librariesCollection = await libraries();
+  const allMyLibraries = await librariesCollection.find({ owner: userId, private: false }).toArray();
+  return allMyLibraries;
+};
+
 module.exports = {
   createLibrary,
   addStoryToUserLibrary,
@@ -118,4 +124,5 @@ module.exports = {
   getMyPrivateLibraries,
   updateLibrary,
   deleteLibrary,
+  getPublicLibrariesOfUser,
 };
