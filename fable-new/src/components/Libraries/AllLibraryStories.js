@@ -18,10 +18,17 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Skeleton } from "@mui/material";
-import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
+import {
+  MDBCard,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBRow,
+  MDBCol,
+} from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
-import { Chip } from "@material-ui/core";
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -151,9 +158,12 @@ const AllLibraryStories = () => {
   useEffect(() => {
     async function getLibraryStories() {
       try {
-        const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
-          headers: { authtoken: await currentUser.getIdToken() },
-        });
+        const { data } = await axios.get(
+          `/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`,
+          {
+            headers: { authtoken: await currentUser.getIdToken() },
+          }
+        );
         console.log(data.libraries);
         setLibraryData(data.libraries);
       } catch (e) {
@@ -190,19 +200,29 @@ const AllLibraryStories = () => {
                           <div>
                             <div className={classes.card3} elevation={0}>
                               <Link to={`/stories/${libraryStory._id}`}>
-                                <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+                                <CardMedia
+                                  className={classes.images}
+                                  component="img"
+                                  image={libraryStory.coverImage}
+                                />
                               </Link>
                             </div>
                             <div className={classes.card4}>
                               <Link to={`/stories/${libraryStory._id}`}>
-                                <Typography className={classes.content}> {libraryStory.title} </Typography>
+                                <Typography className={classes.content}>
+                                  {" "}
+                                  {libraryStory.title}{" "}
+                                </Typography>
                               </Link>
                             </div>
                             <div>
                               <Typography>
                                 {" "}
                                 {libraryStory.shortDescription.length > 500
-                                  ? libraryStory.shortDescription.substring(0, 500) + "..."
+                                  ? libraryStory.shortDescription.substring(
+                                      0,
+                                      500
+                                    ) + "..."
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
                             </div>
@@ -218,7 +238,9 @@ const AllLibraryStories = () => {
                                       label={genre}
                                       size={"small"}
                                       color="info"
-                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                      onClick={() =>
+                                        navigate(`/stories/choose/${genre}`)
+                                      }
                                     />
                                   );
                                 })}
