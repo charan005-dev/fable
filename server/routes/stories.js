@@ -6,7 +6,14 @@ const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
 const gm = require("gm");
-const { validateRequired, validateHot, validateUuid, validateUserId, validateExact } = require("../helpers/validator");
+const {
+  validateRequired,
+  validateHot,
+  validateUuid,
+  validateUserId,
+  validateExact,
+  validatePaginationParams,
+} = require("../helpers/validator");
 
 let winpath = "";
 let basePath = process.env.GM_FS_COVER_PATH;
@@ -59,7 +66,7 @@ router.get("/all", async (req, res) => {
     else genres = [];
     try {
       validateRequired(required);
-      // validateGenres(genres);
+      validGenres;
       validateHot(hot);
     } catch (e) {
       res.status(200).json({ success: false, message: e });
@@ -199,6 +206,14 @@ router.get("/all/me", async (req, res) => {
     let { skip, take } = req.query;
     if (skip) skip = parseInt(skip);
     if (take) take = parseInt(take);
+    try {
+      validateUserId(accessor);
+      validatePaginationParams(skip, take);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+      return;
+    }
     const storiesData = await stories.getMyStories(accessor, skip, take);
     if (storiesData.success) {
       res.status(200).json({ success: true, stories: storiesData.stories, next: storiesData.next });
@@ -216,6 +231,13 @@ router.get("/all_stories", async (req, res) => {
     let { skip, take } = req.query;
     if (skip) skip = parseInt(skip);
     if (take) take = parseInt(take);
+    try {
+      validatePaginationParams(skip, take);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+      return;
+    }
     const allStoriesData = await stories.getAllPaginatedStories(skip, take);
     if (allStoriesData.success) {
       res.status(200).json({ success: true, stories: allStoriesData.stories, next: allStoriesData.next });

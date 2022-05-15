@@ -1,6 +1,8 @@
 const path = require("path");
 const uuid = require("uuid");
 var isValid = require("is-valid-path");
+const { validGenres } = require("../genres");
+const _ = require("lodash");
 
 const validateUuid = (id) => {
   if (!uuid.validate(id)) throw `Invalid id parameter provided.`;
@@ -61,8 +63,10 @@ const validateFilePath = (filePath) => {
 };
 
 const validatePaginationParams = (skip, take) => {
-  if (!skip) throw `Pagination params (skip) is not provided.`;
-  if (!take) throw `Pagination params (take) is not provided.`;
+  // handle cases where skip and take are not provided
+  if (!skip || !take) {
+    return;
+  }
   skip = parseInt(skip);
   take = parseInt(take);
   if (isNaN(skip) || isNaN(take)) throw `Pagination params (skip & take) must be numbers.`;
@@ -75,7 +79,11 @@ const validateRequired = (required) => {
   if (required <= 0 || required > 30) throw `Required parameter should be positive and must not exceed 30`;
 };
 
-const validateGenres = () => {};
+const validateGenres = (genres) => {
+  if (!genres || !Array.isArray(genres)) throw `genres is not an array.`;
+  let diff = _.difference(validGenres, genres);
+  if (diff.length !== 0) throw `Invalid values [ ${diff} ] in request. Expected:[ ${validGenres} ]`;
+};
 
 const validateHot = (hot) => {
   if (!hot || typeof hot !== "string" || hot.length === 0 || hot.trim().length === 0) {
@@ -105,4 +113,5 @@ module.exports = {
   validateRequired,
   validateHot,
   validateExact,
+  validateGenres,
 };
