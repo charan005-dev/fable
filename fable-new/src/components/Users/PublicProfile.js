@@ -384,6 +384,7 @@ const PublicProfile = () => {
                   className={classes.text1}
                 >
                   <MenuBookIcon />
+                  {profileData.profile.storiesCreated.length}
                 </Typography>
               </Card>
               &nbsp; &nbsp;
@@ -394,6 +395,7 @@ const PublicProfile = () => {
                   className={classes.text2}
                 >
                   <LibraryAddIcon />
+                  {!libraryData.private && libraryData.length}
                 </Typography>
               </Card>
             </Stack>
@@ -424,9 +426,18 @@ const PublicProfile = () => {
                           <FilterListIcon />
                         </Fab>
                       </Typography>
+
+                      {profileData && profileData.profile.storiesCreated.length === 0 && (
+                        <Typography variant="body2">
+                          The user haven't posted any stories yet! <Link to={`/stories/create_story`}>Click here</Link>{" "}
+                          to post a story
+                        </Typography>
+                      )}
+
                       <br />
                       <Divider />
                       <br />
+
                       <br />
                       <br />
                       <Stack direction={"column"} spacing={2}>
@@ -457,7 +468,15 @@ const PublicProfile = () => {
                                         {profile.title}
                                       </Typography>
                                     </Link>
-                                    <br />
+
+                                  </CardActionArea>
+                                </Card>
+
+                                <Card elevation={0}>
+                                  <Link to={`/stories/${profile._id}`}>
+                                    <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
+                                  </Link>
+                                  <br />
 
 
                                     <Typography>
@@ -494,10 +513,12 @@ const PublicProfile = () => {
                           )}
                       </Stack>
 
-                      <Button className={classes.button1} onClick={() => navigate(`/stories/me`)}>
+                      {profileData.profile.storiesCreated.length > 3 && (
+                        <Button className={classes.button1} onClick={() => navigate(`/users/${profileUserId}/stories`)}>
+                          View More
+                        </Button>
+                      )}
 
-                        View More
-                      </Button>
                     </Card>
                   </Paper>
                   <Paper className={classes.cardpaper1} elevation={0}>
