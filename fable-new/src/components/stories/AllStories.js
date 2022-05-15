@@ -28,6 +28,8 @@ const useStyles = makeStyles({
   },
   imageWrapper: {},
   stories: {
+    width: "100%",
+    height: "50%",
     marginLeft: "0%",
   },
   title: {
@@ -46,7 +48,10 @@ const useStyles = makeStyles({
   },
 
   card1: {
-    marginBottom: "1%",
+    // maxWidth: "60%",
+    // maxHeight: "60%",
+    marginBottom: "2%",
+    paddingBottom: "2%"
   },
   text: {
     color: "grey",
@@ -63,7 +68,7 @@ const useStyles = makeStyles({
     color: "black",
     justifyContent: "center",
     fontSize: "300%",
-    paddingLeft: "40%",
+    paddingLeft: "45%",
   },
   paper1: {
     height: "10%",
@@ -96,8 +101,8 @@ const useStyles = makeStyles({
   },
   paper: {
     marginLeft: "10%",
-    width: "80%",
-    height: "100%",
+    maxWidth: "80%",
+    maxHeight: "60vw",
   },
   media: {
     marginTop: "10%",
@@ -122,7 +127,7 @@ const useStyles = makeStyles({
     margin: "30%",
     border: "solid 1px black",
     borderRadius: "5px",
-    boxShadow: " 0px 5px 10px",
+    //boxShadow: " 0px 5px 10px",
     float: "left",
     width: "10vw",
     height: "15vw",
@@ -137,6 +142,28 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "25px",
   },
+  button1: {
+    backgroundColor: "black",
+    color: "white",
+    // maxWidth: "500px",
+    // maxHeight: "200px",
+    marginTop: "1%",
+    marginLeft: "45%",
+    marginBottom: "10%",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+    // fontSize: "16px",
+    textDecoration: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  }
 });
 
 const AllStories = () => {
@@ -206,6 +233,7 @@ const AllStories = () => {
     return (
       <div id="scrollableDiv">
         <div>
+          <br />
           <Typography className={classes.title} subtitle={""}>
             All Stories
           </Typography>
@@ -235,15 +263,15 @@ const AllStories = () => {
                             </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Link to={`/stories/${allStory._id}`}>
+                            <Link to={`/stories/${allStory._id}`} class="text-decoration-none">
                               <Typography className={classes.content}> {allStory.title} </Typography>
                             </Link>
                           </div>
                           <div>
                             <Typography>
                               {" "}
-                              {allStory.shortDescription.length > 500
-                                ? allStory.shortDescription.substring(0, 500) + "..."
+                              {allStory.shortDescription.length > 400
+                                ? allStory.shortDescription.substring(0, 400) + "..."
                                 : allStory.shortDescription}{" "}
                             </Typography>
                           </div>
@@ -271,7 +299,7 @@ const AllStories = () => {
               );
             }
           })}
-        <Button onClick={getNewData}>View More</Button>
+        <Button className={classes.button1} onClick={getNewData}>View More</Button>
         {/* </div> */}
       </div>
     );

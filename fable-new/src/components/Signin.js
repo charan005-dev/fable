@@ -13,8 +13,8 @@ import {
   Grid,
   makeStyles,
   Typography,
-  TextField, 
-  Paper
+  TextField,
+  Paper,
 } from "@material-ui/core";
 import { collapseClasses, fabClasses } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -68,6 +68,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
     fontWeight: "bold",
     marginLeft: "10%",
+    marginTop: "4%",
     "&:hover": {
       backgroundColor: "black",
       color: "white",
@@ -75,20 +76,20 @@ const useStyles = makeStyles({
     },
   },
 
-    textbox: {
-      border: "5px black",
-      "&:hover": {
-        backgroundColor: "#ececec",
-        border: "5px bold black",
-      },
+  textbox: {
+    border: "5px black",
+    "&:hover": {
+      backgroundColor: "#ececec",
+      border: "5px bold black",
     },
- 
+  },
 
   button1: {
     backgroundColor: "#ececec",
     color: "black",
     textDecoration: "none",
-    marginLeft: "9%",
+    marginLeft: "1%",
+    marginTop: "4%",
     fontWeight: "bold",
     "&:hover": {
       backgroundColor: "black",
@@ -103,6 +104,7 @@ const useStyles = makeStyles({
     color: "black",
     textDecoration: "none",
     marginLeft: "-4%",
+    marginTop: "4%",
     fontWeight: "bold",
     "&:hover": {
       backgroundColor: "black",
@@ -110,7 +112,7 @@ const useStyles = makeStyles({
       textDecoration: "none",
       fontWeight: "bold",
     },
-  }, 
+  },
   paper: {
     marginLeft: "35%",
     marginRight: "35%",
@@ -141,17 +143,23 @@ function Signin() {
     let email = document.getElementById("email").value;
     if (email) {
       doPasswordReset(email);
-      toast.success("Password reset email will be sent if the entered email is in our system.", {
-        theme: "dark",
-        position: "top-center",
-        autoClose: 1500,
-      });
+      toast.success(
+        "Password reset email will be sent if the entered email is in our system.",
+        {
+          theme: "dark",
+          position: "top-center",
+          autoClose: 1500,
+        }
+      );
     } else {
-      toast.error("Please enter an email address before triggering the password reset email!", {
-        theme: "dark",
-        position: "top-center",
-        autoClose: 1500,
-      });
+      toast.error(
+        "Please enter an email address before triggering the password reset email!",
+        {
+          theme: "dark",
+          position: "top-center",
+          autoClose: 1500,
+        }
+      );
     }
   };
   if (currentUser) {
@@ -166,75 +174,82 @@ function Signin() {
       password: data.get("password"),
     });
   };
-  return ( 
+  return (
     <Paper className={classes.paper} elevation={24}>
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        > 
-        <br/>
-          <Avatar sx={{ m: 1, bgcolor: "black" }}>
-            <LockIcon />
-          </Avatar>
-          <br />
-          <Typography component="h1" variant="h4">
-            Login
-          </Typography>
-          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              variant="outlined"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              className={classes.textbox}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              variant="outlined"
-              sx={{ border: "4px bold black" }}
-            />
-            <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs" sx={{ marginTop: 8 }}>
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 20,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <br />
+            <Avatar sx={{ m: 1, bgcolor: "black" }}>
+              <LockIcon />
+            </Avatar>
+            <br />
+            <Typography component="h1" variant="h4">
               Login
-            </Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-            <NavLink to="/signup" className={classes.textdecoration}>
-              {" "}
-              <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
-                &nbsp; Sign Up &nbsp;
-              </Button>
-            </NavLink>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button
-              className={classes.button2}
-              onClick={passwordReset}
-              sx={{ mt: 3, mb: 2 }}
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleLogin}
+              noValidate
+              sx={{ mt: 1 }}
             >
-              &nbsp; Forgot Password &nbsp;
-            </Button>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                variant="outlined"
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                className={classes.textbox}
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                variant="outlined"
+                sx={{ border: "4px bold black" }}
+              />
+              <Button
+                className={classes.button}
+                type="submit"
+                fullWidth
+                variant="contained"
+              >
+                Login
+              </Button>
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+              <NavLink to="/signup" className={classes.textdecoration}>
+                {" "}
+                <Button className={classes.button1}>
+                  &nbsp; Sign Up &nbsp;
+                </Button>
+              </NavLink>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Button className={classes.button2} onClick={passwordReset}>
+                &nbsp; Forgot Password &nbsp;
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
     </Paper>
   );
 }
