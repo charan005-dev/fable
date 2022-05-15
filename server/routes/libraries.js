@@ -168,4 +168,28 @@ router.delete("/:libraryId", async (req, res) => {
   }
 });
 
+router.put("/:libraryId/removeStory", async (req, res) => {
+  try {
+    let { libraryId } = req.params;
+    let accessor = req.authenticatedUser;
+    let { storyId } = req.body;
+    if (!storyId) {
+      res.status(400).json({ success: false, message: "Story Id is mandatory in the params for performing removal." });
+      return;
+    }
+    try {
+      let afterRemoval = await libraries.removeStoryFromLibrary(libraryId, storyId, accessor);
+      res.status(200).json({ success: true, library: afterRemoval.library });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
 module.exports = router;

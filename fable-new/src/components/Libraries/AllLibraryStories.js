@@ -16,13 +16,11 @@ import {
   TextField,
   Chip,
   makeStyles,
+  Fab,
 } from "@material-ui/core";
-import { Skeleton } from "@mui/material";
-import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
-import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
-import { Chip } from "@material-ui/core";
 import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -33,7 +31,7 @@ const useStyles = makeStyles({
     marginLeft: "0%",
   },
   title: {
-    border: " 0px #fff",
+    border: "0px #fff",
     width: "auto",
     paddingRight: "100%",
   },
@@ -139,12 +137,16 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "25px",
   },
+  display: {
+    paddingTop: 40,
+  },
 });
 
 const AllLibraryStories = () => {
   const { currentUser } = useContext(AuthContext);
   let { libraryId } = useParams();
   let [libraryData, setLibraryData] = useState(null);
+  let [force, setForce] = useState(0);
   const navigate = useNavigate();
   const classes = useStyles();
 
@@ -166,17 +168,53 @@ const AllLibraryStories = () => {
       }
     }
     getLibraryStories();
-  }, []);
+  }, [force]);
+
+  const removeStory = async (storyId) => {
+    try {
+      const { data } = await axios.put(
+        `/api/libraries/${libraryId}/removeStory`,
+        {
+          storyId,
+        },
+        {
+          headers: {
+            authtoken: await currentUser.getIdToken(),
+          },
+        }
+      );
+      console.log(data);
+      let afterUpdate = data.library;
+      if (afterUpdate) {
+        // forcing a rerender
+        toast.success("Successfully removed the story from library.", {
+          theme: "dark",
+        });
+        setForce(force + 1);
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error("Cannot remove story from library. Try again.", {
+        theme: "dark",
+      });
+    }
+  };
 
   if (libraryData) {
     return (
-      <div>
+      <div className={classes.display}>
         <div>
           <Typography className={classes.title} subtitle={""}>
             {libraryData && libraryData.libraryName}
           </Typography>
         </div>
+        <Divider />
         <br />
+        {libraryData && libraryData.stories && libraryData.stories.length === 0 && (
+          <Typography variant="body2">
+            There are no stories in this library. <Link to={`/home`}>Start Exploring!</Link>
+          </Typography>
+        )}
         <Stack direction="column">
           {libraryData &&
             libraryData.stories &&
@@ -205,6 +243,9 @@ const AllLibraryStories = () => {
                                   ? libraryStory.shortDescription.substring(0, 500) + "..."
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
+                              <Fab variant="circular" onClick={() => removeStory(libraryStory._id)}>
+                                <DeleteIcon />
+                              </Fab>
                             </div>
 
                             <br />
