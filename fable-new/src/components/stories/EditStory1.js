@@ -130,7 +130,7 @@ const useStyles = makeStyles({
   paperright: {
     width: "25%",
     marginLeft: "14%",
-    paddingLeft: "%", 
+    paddingLeft: "%",
     height: "2%",
     maxHeight: "100%",
   },
@@ -156,10 +156,9 @@ const useStyles = makeStyles({
   },
   grid: {
     width: "100%",
-  }, 
-  imagePreview: 
-  {
-      width:"100%"
+  },
+  imagePreview: {
+    width: "100%",
   },
 
   buttonback: {
@@ -546,12 +545,9 @@ const EditStory1 = () => {
 
                 <Button className={classes.buttondelete} onClick={requestDeletionConfirmation}>
                   Delete Story
-                </Button> 
+                </Button>
 
-                <Button
-                  onClick={() => window.history.back()}
-                  className={classes.buttonback}
-                >
+                <Button onClick={() => window.history.back()} className={classes.buttonback}>
                   back
                 </Button>
               </span>

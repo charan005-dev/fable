@@ -49,12 +49,9 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
   const storiesCollection = await stories();
   await storiesCollection.insertOne(story);
   try {
-    let tokenizedKeywords = story.contentText.split(" ").map((word) => {
-      if (word.length > 3) return word;
-    });
     await client.indexDocument(elasticEngineName, {
       id: story._id,
-      content: tokenizedKeywords.join(" "),
+      content: story.contentText,
       title: story.title,
     });
   } catch (e) {
@@ -85,13 +82,10 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
   };
   await storiesCollection.updateOne({ _id: storyId, creatorId: owner }, { $set: updatedStory });
   try {
-    let tokenizedKeywords = updatedStory.contentText.split(" ").map((word) => {
-      if (word.length > 3) return word;
-    });
     await client.updateDocuments(elasticEngineName, [
       {
         id: findUpdatable._id,
-        content: tokenizedKeywords.join(" "),
+        content: findUpdatable.contentText,
         title: updatedStory.title,
       },
     ]);
