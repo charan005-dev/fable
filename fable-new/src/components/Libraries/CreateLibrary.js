@@ -114,7 +114,7 @@ const CreateLibrary = () => {
   const createLibrary = async () => {
     try {
       if (!libraryName || typeof libraryName !== "string" || libraryName.trim().length === 0) {
-        toast.error("Please make sure that you enter a valid library name", {
+        toast.error("Please make sure that you enter a valid library name(only characters)", {
           theme: "dark",
           position: "top-center",
         });
@@ -133,7 +133,11 @@ const CreateLibrary = () => {
       if (data.success) {
         setLibraryName("");
         setIsPrivate(true);
-        setCreationSuccess(true);
+
+        toast.success("A new library has been created", {
+          theme: "dark",
+          position: "top-center",
+        });
       }
     } catch (e) {
       console.log(e);

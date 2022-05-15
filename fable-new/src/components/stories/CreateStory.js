@@ -369,7 +369,7 @@ const CreateStory = () => {
             <br />
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
