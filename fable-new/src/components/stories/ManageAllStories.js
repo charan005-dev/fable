@@ -1,4 +1,14 @@
-import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Chip,
+  Grid,
+  Paper,
+  Switch,
+  Typography,
+  CardMedia,
+  Box,
+} from "@material-ui/core";
 import { accordionSummaryClasses, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
@@ -126,6 +136,10 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
+  paper: { 
+    minHeight: 440,
+    maxHeight: 440, 
+  },
 });
 
 const ManageAllStories = () => {
@@ -144,16 +158,22 @@ const ManageAllStories = () => {
   useEffect(() => {
     async function getALLStoriesByGenres() {
       if (!doExactMatch) {
-        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=false`, {
-          headers: { authToken: await currentUser.getIdToken() },
-        });
+        const { data } = await axios.get(
+          `/api/stories/filter?genres=${selectedGenres}&exact=false`,
+          {
+            headers: { authToken: await currentUser.getIdToken() },
+          }
+        );
         console.log(data);
         setAllStories(data.stories);
       }
       if (doExactMatch) {
-        const { data } = await axios.get(`/api/stories/filter?genres=${selectedGenres}&exact=true`, {
-          headers: { authToken: await currentUser.getIdToken() },
-        });
+        const { data } = await axios.get(
+          `/api/stories/filter?genres=${selectedGenres}&exact=true`,
+          {
+            headers: { authToken: await currentUser.getIdToken() },
+          }
+        );
         console.log(data);
         setAllStories(data.stories);
       }
@@ -201,9 +221,23 @@ const ManageAllStories = () => {
             genres.map((genre, idx) => {
               //console.log(selectedGenres, genre);
               if (selectedGenres.includes(genre)) {
-                return <Chip className={classes.chip} key={genre} label={genre} onDelete={() => chipDeselect(genre)} />;
+                return (
+                  <Chip
+                    className={classes.chip}
+                    key={genre}
+                    label={genre}
+                    onDelete={() => chipDeselect(genre)}
+                  />
+                );
               } else {
-                return <Chip className={classes.chip} key={genre} label={genre} onClick={() => chipSelect(genre)} />;
+                return (
+                  <Chip
+                    className={classes.chip}
+                    key={genre}
+                    label={genre}
+                    onClick={() => chipSelect(genre)}
+                  />
+                );
               }
             })}
           <br />
@@ -233,11 +267,16 @@ const ManageAllStories = () => {
               },
             }}
           >
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              spacing={5}
+            >
               {allStories.length > 0 &&
                 allStories.map((story) => {
                   return (
-                    <Grid item xs={5}>
+                    <Grid item xs={5} >
                       <Paper
                         elevation={20}
                         className={classes.paper}
@@ -251,7 +290,11 @@ const ManageAllStories = () => {
                         <Stack direction="row">
                           <Card className={classes.card1} elevation={0}>
                             <Link to={`/stories/${story._id}`}>
-                              <CardMedia className={classes.media} component="img" image={story.coverImage} />
+                              <CardMedia
+                                className={classes.media}
+                                component="img"
+                                image={story.coverImage}
+                              />
                             </Link>
                           </Card>
 
@@ -265,7 +308,8 @@ const ManageAllStories = () => {
                             <CardContent>
                               <Typography>
                                 {story.shortDescription.length > 200
-                                  ? story.shortDescription.substring(0, 197) + "..."
+                                  ? story.shortDescription.substring(0, 197) +
+                                    "..."
                                   : story.shortDescription}
                               </Typography>
                               <br />
@@ -274,14 +318,18 @@ const ManageAllStories = () => {
                                   story.genres &&
                                   story.genres.map((genre, idx) => {
                                     if (idx > 1) {
-                                      return <Typography> +{idx} more</Typography>;
+                                      return (
+                                        <Typography> +{idx} more</Typography>
+                                      );
                                     }
                                     return (
                                       <Chip
                                         label={genre}
                                         size={"small"}
                                         color="info"
-                                        onClick={() => navigate(`/stories/choose/${genre}`)}
+                                        onClick={() =>
+                                          navigate(`/stories/choose/${genre}`)
+                                        }
                                       />
                                     );
                                   })}
