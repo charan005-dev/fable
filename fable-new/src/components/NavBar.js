@@ -26,6 +26,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import AutoStoriesSharpIcon from '@mui/icons-material/AutoStoriesSharp';
 import { Avatar } from "@material-ui/core";
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -229,6 +230,18 @@ export default function NavBar() {
                         to={`/stories/filter`}
                       >
                         Filter &nbsp; <FilterListIcon />
+                      </MenuItem>
+                      <br />
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
+                        className={classes.menuitem}
+                        component={Link}
+                        to={`/stories/all`}
+                      >
+                        All Stories &nbsp; <AutoStoriesSharpIcon />
                       </MenuItem>
                       <br />
                       <MenuItem
