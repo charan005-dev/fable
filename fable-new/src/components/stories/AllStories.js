@@ -17,7 +17,6 @@ import {
   Divider,
   TextField,
   makeStyles,
-  
 } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
@@ -170,6 +169,7 @@ const AllStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [allStories, setAllStories] = useState(null);
+  const [next, setNext] = useState(null);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -181,6 +181,7 @@ const AllStories = () => {
         });
         console.log("all stories", data);
         setAllStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
@@ -223,6 +224,7 @@ const AllStories = () => {
       console.log("next set", data);
       setAllStories(copyState);
       setPageNum(pageNo);
+      setNext(data.next);
     } catch (e) {
       console.log(e);
     }
@@ -304,9 +306,12 @@ const AllStories = () => {
               );
             }
           })}
-        <Button className={classes.button1} onClick={getNewData}>
-          View More
-        </Button>
+        {next && (
+          <Button className={classes.button1} onClick={getNewData}>
+            View More
+          </Button>
+        )}
+
         {/* </div> */}
       </div>
     );

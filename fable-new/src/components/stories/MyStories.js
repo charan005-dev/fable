@@ -139,9 +139,32 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "25px",
   },
+
+  button1: {
+    backgroundColor: "black",
+    color: "white",
+
+    marginTop: "1%",
+    marginLeft: "45%",
+    marginBottom: "10%",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+
+    textDecoration: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+
   typo: {
     marginLeft: "33%", 
     marginTop: "5%", 
+
 
   },
 });
@@ -150,6 +173,7 @@ const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [myStories, setMyStories] = useState(null);
+  const [next, setNext] = useState(null);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -159,8 +183,9 @@ const MyStories = () => {
         const { data } = await axios.get(`/api/stories/all/me?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
-        console.log("my stories", data);
+        console.log("my stories", data.next);
         setMyStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
@@ -186,6 +211,7 @@ const MyStories = () => {
       console.log("next set", data);
       setMyStories(copyState);
       setPageNum(pageNo);
+      setNext(data.next);
     } catch (e) {
       console.log(e);
     }
@@ -268,8 +294,11 @@ const MyStories = () => {
             }
           })}
         {/* </Stack> */}
-
-        <Button onClick={getNewData}>View More</Button>
+        {next && (
+          <Button className={classes.button1} onClick={getNewData}>
+            View More
+          </Button>
+        )}
       </div>
     );
   }
