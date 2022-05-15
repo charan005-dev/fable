@@ -20,7 +20,7 @@ import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
-
+import { Chip } from "@material-ui/core";
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -172,9 +172,7 @@ const AllLibraryStories = () => {
       <div>
         <div>
           <Typography className={classes.title} subtitle={""}>
-
             {libraryData && libraryData.libraryName}
-
           </Typography>
         </div>
         <br />
@@ -189,7 +187,6 @@ const AllLibraryStories = () => {
                       <Grid className={classes.stories}>
                         <Card className={classes.card1}>
                           <div>
-
                             <div className={classes.card3} elevation={0}>
                               <Link to={`/stories/${libraryStory._id}`}>
                                 <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
@@ -199,7 +196,6 @@ const AllLibraryStories = () => {
                               <Link to={`/stories/${libraryStory._id}`}>
                                 <Typography className={classes.content}> {libraryStory.title} </Typography>
                               </Link>
-
                             </div>
                             <div>
                               <Typography>
@@ -226,7 +222,6 @@ const AllLibraryStories = () => {
                                   );
                                 })}
                             </Stack>
-
                           </div>
                         </Card>
                       </Grid>
