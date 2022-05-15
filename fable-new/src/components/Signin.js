@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     backgroundColor: "black",
     width: "80%",
     color: "white",
-    textDecoration: "none",
+    textDecoration: "black",
     fontWeight: "bold",
     marginLeft: "10%",
     marginTop: "4%",
@@ -80,21 +80,21 @@ const useStyles = makeStyles({
     border: "5px black",
     "&:hover": {
       backgroundColor: "#ececec",
-      border: "5px bold black",
+      border: "5px solid black",
     },
   },
 
   button1: {
     backgroundColor: "#ececec",
     color: "black",
-    textDecoration: "none",
+    textDecoration: "#ececec",
     marginLeft: "1%",
     marginTop: "4%",
     fontWeight: "bold",
     "&:hover": {
       backgroundColor: "black",
       color: "white",
-      textDecoration: "none",
+      textDecoration: "black",
       fontWeight: "bold",
     },
   },
@@ -102,14 +102,14 @@ const useStyles = makeStyles({
   button2: {
     backgroundColor: "#ececec",
     color: "black",
-    textDecoration: "none",
+    textDecoration: "#ececec",
     marginLeft: "-4%",
     marginTop: "4%",
     fontWeight: "bold",
     "&:hover": {
       backgroundColor: "black",
       color: "white",
-      textDecoration: "none",
+      textDecoration: "black",
       fontWeight: "bold",
     },
   },
@@ -224,7 +224,7 @@ function Signin() {
                 id="password"
                 autoComplete="current-password"
                 variant="outlined"
-                sx={{ border: "4px bold black" }}
+                sx={{ border: "4px solid black" }}
               />
               <Button
                 className={classes.button}

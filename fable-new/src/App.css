@@ -19,14 +19,14 @@ body {
 }
 
 a {
-  text-decoration: "none";
-  color: "black";
+  text-decoration: #ececec;
+  color: black;
 }
 a:hover {
-  text-decoration: "none";
+  text-decoration: #ececec;
 }
 .container {
-  margin-right: auto;
+  margin-right:auto;
   margin-left: auto;
   padding-left: 0px;
   padding-right: 0px;
@@ -432,7 +432,6 @@ h1 {
 
 .row_poster {
   object-fit: contain;
-  width: "auto";
   max-height: 100px;
 }
 
@@ -489,7 +488,7 @@ h1 {
 /* ------------------------ */
 
 .tox {
-  box-shadow: black;
+
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
@@ -510,8 +509,7 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-  width: "auto";
-  box-shadow: black 5px;
+
   box-sizing: border-box;
 
   flex-direction: column;
