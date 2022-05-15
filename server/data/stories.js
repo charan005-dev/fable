@@ -2,6 +2,7 @@ const { stories, users, libraries } = require("../config/mongoCollections");
 const uuid = require("uuid");
 const { convert } = require("html-to-text");
 const axios = require("axios").default;
+const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 const { all } = require("../routes/stories");
 
@@ -50,12 +51,9 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
   const storiesCollection = await stories();
   await storiesCollection.insertOne(story);
   try {
-    let tokenizedKeywords = story.contentText.split(" ").map((word) => {
-      if (word.length > 3) return word;
-    });
     await client.indexDocument(elasticEngineName, {
       id: story._id,
-      content: tokenizedKeywords.join(" "),
+      content: story.contentText,
       title: story.title,
     });
   } catch (e) {
@@ -73,6 +71,7 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
       throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
   }
   const storiesCollection = await stories();
+  const redisClient = createClient();
   const findUpdatable = await storiesCollection.findOne({ _id: storyId, creatorId: owner });
   if (!findUpdatable) throw `Either the story does not exist or you do not have permission to perform this action.`;
   let updatedStory = {
@@ -86,13 +85,10 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
   };
   await storiesCollection.updateOne({ _id: storyId, creatorId: owner }, { $set: updatedStory });
   try {
-    let tokenizedKeywords = updatedStory.contentText.split(" ").map((word) => {
-      if (word.length > 3) return word;
-    });
     await client.updateDocuments(elasticEngineName, [
       {
         id: findUpdatable._id,
-        content: tokenizedKeywords.join(" "),
+        content: findUpdatable.contentText,
         title: updatedStory.title,
       },
     ]);
@@ -100,7 +96,13 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
     // errors in pushing to elastic search could be caught here. logging them for reference
     console.log(e);
   }
-  return { success: true, updatedStory: await storiesCollection.findOne({ _id: storyId, creatorId: owner }) };
+  let updatedObj = await storiesCollection.findOne({ _id: storyId, creatorId: owner });
+  // reset things at redis end
+  if (!redisClient.isOpen) await redisClient.connect();
+  await redisClient.del(storyId);
+  await redisClient.set(storyId, JSON.stringify(updatedObj));
+  await redisClient.disconnect();
+  return { success: true, updatedStory: updatedObj };
 };
 
 const getAllStories = async (required, genres) => {
@@ -134,19 +136,33 @@ const getAllHotStories = async (required) => {
 const getStoryById = async (storyId, accessor) => {
   const storiesCollection = await stories();
   const usersCollection = await users();
-  console.log(accessor);
-  const story = await storiesCollection.findOne({ _id: storyId });
+  const redisClient = createClient();
+  if (!redisClient.isOpen) redisClient.connect();
+  let story = null;
+  if (await redisClient.get(storyId)) {
+    story = JSON.parse(await redisClient.get(storyId));
+  } else {
+    story = await storiesCollection.findOne({ _id: storyId });
+  }
   if (!story) throw `No story present with that id.`;
+  await redisClient.set(storyId, JSON.stringify(story));
+  await redisClient.disconnect();
   const creator = await usersCollection.findOne({ _id: story.creatorId });
   const accessorDetails = await usersCollection.findOne({ _id: accessor });
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
   else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
-  // recording user visits
-  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   return {
     story,
     creator: creator,
   };
+};
+
+const recordUserVisit = async (accessor, storyId) => {
+  const storiesCollection = await stories();
+  const story = await storiesCollection.findOne({ _id: storyId });
+  if (!story) throw `No story present with that id.`;
+  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
+  return true;
 };
 
 const searchStory = async (searchTerm) => {
@@ -158,16 +174,19 @@ const searchStory = async (searchTerm) => {
     console.log(e);
   }
   let results = [];
+  // show only results that have a relevance score > 0.1
   searchResults.results.forEach((result) => {
-    let newObj = {};
-    for (let obj in result) {
-      if (obj === "_meta") {
-        newObj[obj] = result[obj];
-        continue;
+    if (result._meta < 0.1) {
+      let newObj = {};
+      for (let obj in result) {
+        if (obj === "_meta") {
+          newObj[obj] = result[obj];
+          continue;
+        }
+        newObj[obj] = result[obj]["raw"];
       }
-      newObj[obj] = result[obj]["raw"];
+      results.push(newObj);
     }
-    results.push(newObj);
   });
   return results;
 };
@@ -247,6 +266,7 @@ const getRecommendations = async (userId, genres) => {
 const deleteStory = async (accessor, storyId) => {
   const storiesCollection = await stories();
   const librariesCollection = await libraries();
+  const redisClient = createClient();
   const findStoryToDelete = await storiesCollection.findOne({ _id: storyId, creatorId: accessor });
   if (!findStoryToDelete) {
     throw `Either the story does not exist or the user does not have access to perform this action.`;
@@ -259,6 +279,8 @@ const deleteStory = async (accessor, storyId) => {
     // logging elasticsearch errors for reference
     console.log(e);
   }
+  // delete from redis
+  await redisClient.del(storyId);
   try {
     console.log("Performing Bulk actions...");
     let bulk = librariesCollection.initializeUnorderedBulkOp();
@@ -352,5 +374,9 @@ module.exports = {
   getCommentsFromStory,
   getAllHotStories,
   getMyStories,
+
   getAllPaginatedStories,
+
+  recordUserVisit,
+
 };

@@ -184,7 +184,6 @@ const useStyles = makeStyles({
     width: 35,
     backgroundColor: "black",
     color: "white",
-
     "&:hover": {
       backgroundColor: "white",
       color: "black",
@@ -250,7 +249,7 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getOwnerLibraries() {
-      const { data } = await axios.get(`/api/libraries/me`, {
+      const { data } = await axios.get(`/api/libraries/user/${profileUserId}`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
       console.log("Content", data);
@@ -359,6 +358,12 @@ const PublicProfile = () => {
                                 </Card>
 
                                 <Card elevation={0}>
+                                  <Link to={`/stories/${profile._id}`} class="text-decoration-none">
+                                    <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
+                                  </Link>
+                                </Card>
+
+                                <Card elevation={0}>
                                   <Link to={`/stories/${profile._id}`}>
                                     <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
                                   </Link>
@@ -398,13 +403,11 @@ const PublicProfile = () => {
                   <Paper className={classes.cardpaper1} elevation={0}>
                     <Card className={classes.cardpaper1} elevation={10}>
                       <Typography variant="h3" component={"h2"} className={classes.text}>
-                        Your Libraries
+                        Public Libraries
                       </Typography>
                       <br />
                       {libraryData && libraryData.length === 0 && (
-                        <Typography variant="body2">
-                          <Link to={`/libraries/create`}>Click here</Link> to create a new library.
-                        </Typography>
+                        <Typography variant="body2">This user does not have any public libraries yet.</Typography>
                       )}
                       <Stack direction="column" spacing={2}>
                         {libraryData &&

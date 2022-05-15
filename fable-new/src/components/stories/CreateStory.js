@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from '../Assets/5.gif'
 const axios = require("axios").default;
 
 const genres = [
@@ -26,7 +27,8 @@ const genres = [
   "Comedy",
   "Tragedy",
   "Adult",
-];
+]; 
+
 const useStyles = makeStyles({
   card1: {
     width: "100%",
@@ -97,6 +99,12 @@ const useStyles = makeStyles({
       backgroundColor: "black",
       color: "blanchedalmond",
     },
+  }, 
+  logo: 
+  {
+      marginLeft:"30%",
+      marginTop: "8%", 
+      border: "20px"
   },
 
   headertext: {
@@ -148,7 +156,7 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
-  },
+  }, 
 });
 
 const CreateStory = () => {
@@ -320,10 +328,7 @@ const CreateStory = () => {
 
   if (creationStarted) {
     return (
-      <Backdrop open={creationStarted}>
-        <Typography variant="body1">Creating your story...</Typography>
-        <CircularProgress variant="success" />
-      </Backdrop>
+      <img src={logo} alt="loading..." className={classes.logo} />
     );
   }
 
@@ -364,7 +369,7 @@ const CreateStory = () => {
             <br />
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />

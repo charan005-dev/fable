@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import {
   Box,
@@ -21,7 +19,6 @@ import {
 import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
-import { Chip } from "@material-ui/core";
 import { Stack } from "react-bootstrap";
 
 import { toast } from "react-toastify";
@@ -175,7 +172,9 @@ const AllLibraryStories = () => {
       <div>
         <div>
           <Typography className={classes.title} subtitle={""}>
-            {libraryData && libraryData.libraryName}'s Library
+
+            {libraryData && libraryData.libraryName}
+
           </Typography>
         </div>
         <br />
@@ -190,6 +189,7 @@ const AllLibraryStories = () => {
                       <Grid className={classes.stories}>
                         <Card className={classes.card1}>
                           <div>
+
                             <div className={classes.card3} elevation={0}>
                               <Link to={`/stories/${libraryStory._id}`}>
                                 <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
@@ -199,6 +199,7 @@ const AllLibraryStories = () => {
                               <Link to={`/stories/${libraryStory._id}`}>
                                 <Typography className={classes.content}> {libraryStory.title} </Typography>
                               </Link>
+
                             </div>
                             <div>
                               <Typography>
@@ -208,6 +209,7 @@ const AllLibraryStories = () => {
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
                             </div>
+
                             <br />
 
                             <Stack direction="row" spacing={1}>
@@ -224,6 +226,7 @@ const AllLibraryStories = () => {
                                   );
                                 })}
                             </Stack>
+
                           </div>
                         </Card>
                       </Grid>

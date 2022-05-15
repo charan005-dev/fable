@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:4000/",
   "dependencies": {
+    "@chakra-ui/react": "^2.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -24,6 +25,7 @@
     "axios": "^0.27.2",
     "dompurify": "^2.3.6",
     "firebase": "^7.23.0",
+    "framer-motion": "^6.3.3",
     "gm": "^1.23.1",
     "material-ui-popup-state": "^2.0.1",
     "mdb-react-ui-kit": "^3.0.0",
