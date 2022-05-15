@@ -74,7 +74,7 @@ const checkDisplayName = async (name) => {
 
 const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
   const storiesCollection = await stories();
-  const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).take(take).toArray();
+  const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).limit(take).toArray();
   return userStories;
 };
 

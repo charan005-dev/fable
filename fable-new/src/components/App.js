@@ -23,7 +23,7 @@ import ManageAllStories from "./Stories/ManageAllStories";
 import EditStory1 from "./Stories/EditStory1";
 import MyStories from "./Stories/MyStories";
 import AllStories from "./Stories/AllStories";
-
+import PublicProfileStories from "./Stories/PublicProfileStories";
 import Footer from "./Footer";
 import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
@@ -65,6 +65,9 @@ function App() {
             </Route>
             <Route path="/users/:profileUserId" element={<PrivateRoute />}>
               <Route path="/users/:profileUserId" element={<PublicProfile />} />
+            </Route>
+            <Route path="/users/:profileUserId/stories" element={<PrivateRoute />}>
+              <Route path="/users/:profileUserId/stories" element={<PublicProfileStories />} />
             </Route>
             <Route exact path="/users/:userId/edit" element={<PrivateRoute />}>
               <Route exact path="/users/:userId/edit" element={<EditUser />} />

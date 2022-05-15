@@ -150,9 +150,7 @@ const MyStories = () => {
   useEffect(() => {
     async function getMyStories() {
       try {
-        const take = 5;
-        const skip = take * pageNum;
-        const { data } = await axios.get(`/api/stories/all/me?skip=${skip}&take=${take}`, {
+        const { data } = await axios.get(`/api/stories/all/me?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
         console.log("my stories", data);
@@ -162,7 +160,27 @@ const MyStories = () => {
       }
     }
     getMyStories();
-  }, [pageNum]);
+  }, []);
+
+  const getNewData = async () => {
+    try {
+      let pageNo = pageNum + 1;
+      const take = 5;
+      const skip = take * pageNo;
+      const { data } = await axios.get(`/api/stories/all/me?skip=${skip}&take=${take}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      const copyState = myStories;
+      for (const story of data.stories) {
+        copyState.push(story);
+      }
+      console.log("next set", data);
+      setMyStories(copyState);
+      setPageNum(pageNo);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   if (myStories) {
     return (
@@ -228,15 +246,7 @@ const MyStories = () => {
           })}
         {/* </Stack> */}
 
-        <Stack direction="row" spacing={3}>
-          <Button className={classes.nextButton} onClick={() => setPageNum(pageNum - 1)}>
-            Previous
-          </Button>
-          <Button className={classes.nextButton} onClick={() => setPageNum(pageNum + 1)}>
-            Next
-          </Button>
-          <br />
-        </Stack>
+        <Button onClick={getNewData}>View More</Button>
       </div>
     );
   }
