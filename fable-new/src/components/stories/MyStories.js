@@ -191,7 +191,11 @@ const MyStories = () => {
           </Typography>
         </div>
         <br />
-
+        {myStories.length === 0 && (
+          <Typography variant="h4" component="h1">
+            You haven't posted any stories yet!
+          </Typography>
+        )}
         {/* <Stack direction="row"> */}
         {myStories &&
           myStories.map((myStory) => {

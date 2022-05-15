@@ -404,17 +404,12 @@ const PublicProfile = () => {
                         </Fab>
                       </Typography>
 
-                      {profileData && profileData.profile.storiesCreated.length === 0 && (
-                        <Typography variant="body2">
-                          The user haven't posted any stories yet! <Link to={`/stories/create_story`}>Click here</Link>{" "}
-                          to post a story
-                        </Typography>
-                      )}
-
                       <br />
                       <Divider />
                       <br />
-
+                      {profileData && profileData.profile.storiesCreated.length === 0 && (
+                        <Typography variant="body2">The user haven't posted any stories yet!</Typography>
+                      )}
                       <br />
                       <br />
                       <Stack direction={"column"} spacing={2}>
