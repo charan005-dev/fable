@@ -103,18 +103,10 @@ function CarouselImage() {
             />
 }
            
-              {/* Welcome Home
-
-      <Chip
-      label={currentUser.displayName}
-      size={"large"}
-      color="info"
-      onClick={() => navigate(`/`)}
-    /> */}
             </div>
             <br />
 
-            {/* <Dots  className="dots"length={10} active={5} /> */}
+        
           </div>
         </div>
   
