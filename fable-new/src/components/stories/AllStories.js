@@ -20,7 +20,6 @@ import {
 } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
