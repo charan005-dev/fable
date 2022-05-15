@@ -184,7 +184,6 @@ const useStyles = makeStyles({
     width: 35,
     backgroundColor: "black",
     color: "white",
-
     "&:hover": {
       backgroundColor: "white",
       color: "black",
