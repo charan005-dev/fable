@@ -5,6 +5,7 @@ const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 const { all } = require("../routes/stories");
+const { validateRequired, validateUserId, validateUuid } = require("../helpers/validator");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
@@ -55,14 +56,7 @@ const getFromRedis = async (key) => {
   return val;
 };
 
-const createStory = async (
-  creatorId,
-  title,
-  shortDescription,
-  contentHtml,
-  genres,
-  filePath
-) => {
+const createStory = async (creatorId, title, shortDescription, contentHtml, genres, filePath) => {
   genres = genres.length > 0 ? genres.split(",") : [];
   for (const genre of genres) {
     if (!validGenres.includes(genre))
@@ -101,15 +95,7 @@ const createStory = async (
   return result;
 };
 
-const updateStory = async (
-  storyId,
-  owner,
-  title,
-  shortDescription,
-  contentHtml,
-  genres,
-  coverImage
-) => {
+const updateStory = async (storyId, owner, title, shortDescription, contentHtml, genres, coverImage) => {
   genres = genres.length > 0 ? genres.split(",") : [];
   for (const genre of genres) {
     if (!validGenres.includes(genre))
@@ -120,8 +106,7 @@ const updateStory = async (
     _id: storyId,
     creatorId: owner,
   });
-  if (!findUpdatable)
-    throw `Either the story does not exist or you do not have permission to perform this action.`;
+  if (!findUpdatable) throw `Either the story does not exist or you do not have permission to perform this action.`;
   let updatedStory = {
     title,
     shortDescription,
@@ -131,10 +116,7 @@ const updateStory = async (
     coverImage: coverImage ? coverImage : findUpdatable.coverImage,
     updatedAt: Date.now(),
   };
-  await storiesCollection.updateOne(
-    { _id: storyId, creatorId: owner },
-    { $set: updatedStory }
-  );
+  await storiesCollection.updateOne({ _id: storyId, creatorId: owner }, { $set: updatedStory });
   try {
     await client.updateDocuments(elasticEngineName, [
       {
@@ -162,27 +144,24 @@ const updateStory = async (
 };
 
 const getAllStories = async (required, genres) => {
+  validateRequired(required);
+  // validateGenres(genres)
   const storiesCollection = await stories();
   required = parseInt(required);
-  if (isNaN(required))
-    throw `Invalid parameter for required. Expecting a number.`;
-  if (!Array.isArray(genres))
-    throw `Invalid parameter for genres. Expecting an array of valid genres.`;
+  if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
+  if (!Array.isArray(genres)) throw `Invalid parameter for genres. Expecting an array of valid genres.`;
   const allStories = await storiesCollection
-    .aggregate([
-      { $match: { genres: { $in: genres } } },
-      { $sample: { size: required } },
-    ])
+    .aggregate([{ $match: { genres: { $in: genres } } }, { $sample: { size: required } }])
     .toArray();
   let result = { success: true, allStories };
   return result;
 };
 
 const getAllHotStories = async (required) => {
-  const storiesCollection = await stories();
   required = parseInt(required);
-  if (isNaN(required))
-    throw `Invalid parameter for required. Expecting a number.`;
+  validateRequired(required);
+  const storiesCollection = await stories();
+  if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   const allStories = await storiesCollection
     .aggregate([
       { $addFields: { visitedLength: { $size: "$visitedBy" } } },
@@ -204,12 +183,8 @@ const getStoryById = async (storyId, accessor) => {
   if (!story) throw `No story present with that id.`;
   const creator = await usersCollection.findOne({ _id: story.creatorId });
   const accessorDetails = await usersCollection.findOne({ _id: accessor });
-  if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0)
-    story.accessorReadTime = 1;
-  else
-    story.accessorReadTime = Math.ceil(
-      story.contentText.split(" ").length / accessorDetails.wpm
-    );
+  if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
+  else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   try {
     await saveToRedis(storyId, story);
   } catch (e) {
@@ -223,17 +198,13 @@ const getStoryById = async (storyId, accessor) => {
 
 const recordUserVisit = async (accessor, storyId) => {
   const storiesCollection = await stories();
+  validateUserId(accessor);
+  validateUuid(storyId);
   const story = await storiesCollection.findOne({ _id: storyId });
   if (!story) throw `No story present with that id.`;
-  await storiesCollection.updateOne(
-    { _id: storyId },
-    { $addToSet: { visitedBy: accessor } }
-  );
+  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   // writethrough redis cache or else you'll get stale data to frontend
-  await writethroughRedisCache(
-    storyId,
-    await storiesCollection.findOne({ _id: storyId })
-  );
+  await writethroughRedisCache(storyId, await storiesCollection.findOne({ _id: storyId }));
   return true;
 };
 
@@ -272,15 +243,9 @@ const toggleLike = async (storyId, userId) => {
   const findUser = await usersCollection.findOne({ _id: userId });
   if (!findUser) throw `No user found with the given id.`;
   if (findStory.likedBy.includes(userId)) {
-    await storiesCollection.updateOne(
-      { _id: storyId },
-      { $pull: { likedBy: userId } }
-    );
+    await storiesCollection.updateOne({ _id: storyId }, { $pull: { likedBy: userId } });
   } else {
-    await storiesCollection.updateOne(
-      { _id: storyId },
-      { $addToSet: { likedBy: userId } }
-    );
+    await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { likedBy: userId } });
   }
   let afterLike = await storiesCollection.findOne({ _id: storyId });
   // writethrough redis cache
@@ -297,13 +262,12 @@ const toggleLike = async (storyId, userId) => {
 
 const getNRandom = async (n) => {
   const storiesCollection = await stories();
-  let nRandom = await storiesCollection
-    .aggregate([{ $match: {} }, { $sample: { size: n } }])
-    .toArray();
+  let nRandom = await storiesCollection.aggregate([{ $match: {} }, { $sample: { size: n } }]).toArray();
   return { randomStories: nRandom };
 };
 
 const getUserStoriesByGenres = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres);
   let myStories = await storiesCollection
@@ -317,29 +281,24 @@ const getUserStoriesByGenres = async (genres, authorId) => {
 };
 
 const getUserStoriesByGenresNonExact = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres); // [ 'Drama', 'Thriller' ]
-  let myStories = await storiesCollection
-    .find({ creatorId: authorId, genres: { $in: genres } })
-    .toArray();
+  let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $in: genres } }).toArray();
   return { selectStories: myStories, success: true };
 };
 
 const getALLStoriesByGenres = async (genres) => {
   const storiesCollection = await stories();
   console.log(genres);
-  let allStories = await storiesCollection
-    .find({ genres: { $size: genres.length, $all: genres } })
-    .toArray();
+  let allStories = await storiesCollection.find({ genres: { $size: genres.length, $all: genres } }).toArray();
   console.log(allStories);
   return { selectStories: allStories, success: true };
 };
 const getAllStoriesByGenresNonExact = async (genres) => {
   const storiesCollection = await stories();
   console.log(genres);
-  let allStories = await storiesCollection
-    .find({ genres: { $in: genres } })
-    .toArray();
+  let allStories = await storiesCollection.find({ genres: { $in: genres } }).toArray();
   return { selectStories: allStories, success: true };
 };
 
@@ -348,19 +307,13 @@ const getRecommendations = async (userId, genres) => {
   genres = genres.length > 0 ? genres.split(",") : [];
   console.log(genres);
   let recommendations = await storiesCollection
-    .aggregate([
-      { $match: { visitedBy: { $nin: [userId] }, genres: { $in: genres } } },
-      { $sample: { size: 5 } },
-    ])
+    .aggregate([{ $match: { visitedBy: { $nin: [userId] }, genres: { $in: genres } } }, { $sample: { size: 5 } }])
     .toArray();
   // if recommendations are empty, we simply send in some random 5 stories
   if (recommendations.length === 0) {
     console.log("Recommendations are empty");
     recommendations = await storiesCollection
-      .aggregate([
-        { $match: { genres: { $in: genres } } },
-        { $sample: { size: 5 } },
-      ])
+      .aggregate([{ $match: { genres: { $in: genres } } }, { $sample: { size: 5 } }])
       .toArray();
   }
   return { success: true, recommendations };
@@ -398,9 +351,7 @@ const deleteStory = async (accessor, storyId) => {
     console.log("Performing Bulk actions...");
     let bulk = librariesCollection.initializeUnorderedBulkOp();
     // remove story from any user's library too
-    bulk
-      .find({ stories: { $in: [storyId] } })
-      .update({ $pull: { stories: storyId } });
+    bulk.find({ stories: { $in: [storyId] } }).update({ $pull: { stories: storyId } });
     bulk.execute();
     console.log("Done with Bulk actions...");
   } catch (e) {
@@ -423,10 +374,7 @@ const addComment = async (storyId, commenter, comment) => {
     comment,
     createdAt: new Date(),
   };
-  await storiesCollection.updateOne(
-    { _id: storyId },
-    { $push: { comments: newComment } }
-  );
+  await storiesCollection.updateOne({ _id: storyId }, { $push: { comments: newComment } });
   let story = await storiesCollection.findOne({ _id: storyId });
   let friendlyComments = [];
   for (const x of story.comments) {
@@ -435,8 +383,7 @@ const addComment = async (storyId, commenter, comment) => {
       comment: x.comment,
       commenterId: x.commenter,
       addedTime: x.createdAt,
-      commenterName: (await usersCollection.findOne({ _id: x.commenter }))
-        .displayName,
+      commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
     };
     friendlyComments.push(cont);
   }
@@ -457,8 +404,7 @@ const getCommentsFromStory = async (storyId) => {
       comment: x.comment,
       commenterId: x.commenter,
       addedTime: x.createdAt,
-      commenterName: (await usersCollection.findOne({ _id: x.commenter }))
-        .displayName,
+      commenterName: (await usersCollection.findOne({ _id: x.commenter })).displayName,
     };
     friendlyComments.push(cont);
   }
