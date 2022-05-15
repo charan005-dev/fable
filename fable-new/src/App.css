@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-
 }
 
 .App-logo {
@@ -28,7 +27,7 @@ a:hover {
   text-decoration: #ececec;
 }
 .container {
-  margin-right:auto;
+  margin-right: auto;
   margin-left: auto;
   padding-left: 0px;
   padding-right: 0px;
@@ -501,9 +500,9 @@ h1 {
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: #ffffff;
-  text-shadow: #ffffff;
-  text-transform: #ffffff;
+  text-decoration: #fff;
+  /* text-shadow: #fff;
+  text-transform: #fff; */
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
