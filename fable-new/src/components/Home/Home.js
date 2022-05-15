@@ -27,9 +27,6 @@ const Home = () => {
       <Typography variant="h5" component={"h1"} className={classes.storyLink}>
         &nbsp;&nbsp; &nbsp;&nbsp; {currentUser.displayName && currentUser.displayName + "!"}
       </Typography>
-      <Button variant="outlined" onClick={() => navigate(`/stories/all`)}>
-        Click here to view all stories
-      </Button>
       <br />
       <HomeImage />
       {/* <HomeTest /> */}

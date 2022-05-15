@@ -177,12 +177,14 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
+
   },
   logo: {
     marginLeft: "30%",
     marginTop: "8%",
     border: "20px",
   },
+
 });
 
 const EditStory1 = () => {
@@ -391,7 +393,7 @@ const EditStory1 = () => {
       });
       console.log(data);
       toast.success("Successfully deleted the story.");
-      setTimeout(() => navigate(`/stories`), 400);
+      setTimeout(() => navigate(`/home`), 400);
     } catch (e) {
       console.log(e);
       toast.error("Cannot perform delete operation. " + e, {
