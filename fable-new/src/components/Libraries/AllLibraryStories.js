@@ -20,7 +20,7 @@ import { Skeleton } from "@mui/material";
 import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
-import { typography } from "@mui/system";
+
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -172,7 +172,9 @@ const AllLibraryStories = () => {
       <div>
         <div>
           <Typography className={classes.title} subtitle={""}>
+
             {libraryData && libraryData.libraryName}
+
           </Typography>
         </div>
         <br />
@@ -187,11 +189,17 @@ const AllLibraryStories = () => {
                       <Grid className={classes.stories}>
                         <Card className={classes.card1}>
                           <div>
-                            <div className={classes.card3} elevation={15}>
-                              <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+
+                            <div className={classes.card3} elevation={0}>
+                              <Link to={`/stories/${libraryStory._id}`}>
+                                <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+                              </Link>
                             </div>
                             <div className={classes.card4}>
-                              <Typography className={classes.content}> {libraryStory.title} </Typography>
+                              <Link to={`/stories/${libraryStory._id}`}>
+                                <Typography className={classes.content}> {libraryStory.title} </Typography>
+                              </Link>
+
                             </div>
                             <div>
                               <Typography>
@@ -201,6 +209,24 @@ const AllLibraryStories = () => {
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
                             </div>
+
+                            <br />
+
+                            <Stack direction="row" spacing={1}>
+                              {libraryStory &&
+                                libraryStory.genres &&
+                                libraryStory.genres.map((genre) => {
+                                  return (
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+
                           </div>
                         </Card>
                       </Grid>

@@ -197,7 +197,7 @@ function HomeImage() {
                                     <CardMedia
                                       className={classes.media}
                                       component="img"
-                                      image={image.coverImage}
+                                      image={image.coverImage ? image.coverImage : `/public/noImage/noImage.jpeg`}
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
@@ -455,9 +455,10 @@ function HomeImage() {
 )}
        
 
-       
+
         
 {thrillerData && thrillerData.length !== 0 && <Paper
+
           elevation={15}
           className={classes.paper}
           sx={{
@@ -527,8 +528,10 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
+
    }  
 )
+
 
       </>
     );
