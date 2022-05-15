@@ -196,7 +196,8 @@ function HomeImage() {
                               <CardActionArea>
                                 {/* <Typography>{hover && image.title} </Typography> */}
                                 <ImageListItem>
-                                  <Link to={`/stories/${image._id}`}>
+                                  <Link sx={{color:"#fff"
+                                    }} to={`/stories/${image._id}`}>
                                     <CardMedia
                                       className={classes.media}
                                       component="img"
@@ -204,7 +205,7 @@ function HomeImage() {
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
-                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                    <ImageListItemBar title ={image.title} ></ImageListItemBar>
                                   </Link>
                                 </ImageListItem>
                               </CardActionArea>

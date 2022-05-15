@@ -20,15 +20,14 @@ html,body
 
 
 a {
-
-  text-decoration: #ececec;
-  color: black;
+ 
+  color: #000;
 }
 a:hover {
-  text-decoration: #ececec;
+  text-decoration:#ffffff;
 }
 .container {
-  margin-right:auto;
+  margin-right: auto;
   margin-left: auto;
   padding-left: 0px;
   padding-right: 0px;
@@ -434,6 +433,7 @@ h1 {
 
 .row_poster {
   object-fit: contain;
+ 
   max-height: 100px;
 }
  
@@ -491,6 +491,7 @@ h1 {
 /* ------------------------ */
 
 .tox {
+  box-shadow: rgb(18, 18, 18);
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
@@ -501,9 +502,9 @@ h1 {
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: #ffffff;
-  text-shadow: #ffffff;
-  text-transform: #ffffff;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
@@ -511,7 +512,7 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-
+  box-shadow: rgb(15, 15, 15) ;
   box-sizing: border-box;
   
   flex-direction: column;
