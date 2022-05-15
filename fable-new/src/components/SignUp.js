@@ -14,8 +14,19 @@ import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
 import firebase from "firebase";
 import { toast } from "react-toastify";
-import { Card, CardContent, Grid, makeStyles, Typography, TextField, Paper } from "@material-ui/core";
-import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
+import {
+  Card,
+  CardContent,
+  Grid,
+  makeStyles,
+  Typography,
+  TextField,
+  Paper,
+} from "@material-ui/core";
+import {
+  doSignInWithEmailAndPassword,
+  doPasswordReset,
+} from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
 // axios.defaults.baseURL = "http://localhost:4000";
 
@@ -59,6 +70,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
     fontWeight: "bold",
     marginLeft: "10.5%",
+    marginTop: "4%",
     "&:hover": {
       backgroundColor: "black",
       color: "white",
@@ -79,6 +91,7 @@ const useStyles = makeStyles({
     color: "black",
     textDecoration: "none",
     fontWeight: "bold",
+    marginTop: "4%",
 
     "&:hover": {
       backgroundColor: "black",
@@ -90,6 +103,10 @@ const useStyles = makeStyles({
     marginLeft: "35%",
     marginRight: "35%",
     paddingBottom: "1%",
+  },
+  typog: {
+    marginTop: "7%", 
+    paddingTop:"5%"
   },
 });
 
@@ -134,13 +151,19 @@ function SignUp() {
     }
     let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
     if (!uNameRegex.test(name.value)) {
-      toast.error("It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).", {
-        theme: "dark",
-        position: "top-center",
-      });
+      toast.error(
+        "It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).",
+        {
+          theme: "dark",
+          position: "top-center",
+        }
+      );
       return;
     }
-    if (passwordOne.value.trim().length === 0 || passwordOne.value.trim().length < 6) {
+    if (
+      passwordOne.value.trim().length === 0 ||
+      passwordOne.value.trim().length < 6
+    ) {
       toast.error("Your password format is invalid", {
         theme: "dark",
         position: "top-center",
@@ -148,7 +171,11 @@ function SignUp() {
       return;
     }
     try {
-      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
+      await doCreateUserWithEmailAndPassword(
+        email.value,
+        passwordOne.value,
+        name.value
+      );
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
       let username = name.value;
@@ -192,7 +219,12 @@ function SignUp() {
             <Typography component="h1" variant="h4">
               Sign-Up
             </Typography>
-            <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              onSubmit={handleSignUp}
+              noValidate
+              sx={{ mt: 1 }}
+            >
               <TextField
                 margin="normal"
                 required
@@ -243,11 +275,22 @@ function SignUp() {
                 variant="outlined"
                 sx={{ border: "4px bold black" }}
               />
-              <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                className={classes.button}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
                 Sign-Up
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Typography component="h11" variant="h11">
+              <Typography
+                component="h11"
+                variant="h11"
+                className={classes.typog}
+              > 
+              
                 Already Have an Account?
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
