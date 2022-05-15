@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-
 }
 
 .App-logo {
@@ -26,7 +25,7 @@ a:hover {
   text-decoration: #ececec;
 }
 .container {
-  margin-right:auto;
+  margin-right: auto;
   margin-left: auto;
   padding-left: 0px;
   padding-right: 0px;
@@ -491,16 +490,16 @@ h1 {
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: #ffffff;
-  text-shadow: #ffffff;
-  text-transform: #ffffff;
+  text-decoration: #fff;
+  /* text-shadow: #fff;
+  text-transform: #fff; */
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
@@ -511,8 +510,8 @@ h1 {
   box-sizing: border-box;
 
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   overflow: hidden;
   position: absolute;
   visibility: inherit !important;

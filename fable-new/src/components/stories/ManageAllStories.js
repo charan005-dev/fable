@@ -112,7 +112,7 @@ const useStyles = makeStyles({
     marginRight: "10%",
     marginBottom: "5%",
     paddingBottom: "2%",
-    height: "2%",
+    height: "15vw",
   },
   images1: {
     // display: "inline-block",
@@ -136,9 +136,12 @@ const useStyles = makeStyles({
     width: "10vw",
   },
   paper:{
+    width:"65vw",
+    height: "20vw",
     marginTop: "-3%",
     marginRight: "15%",
-    marginBottom: "5%"
+    marginBottom: "5%",
+    marginLeft: "1%"
   }
 });
 const ManageAllStories = () => {
