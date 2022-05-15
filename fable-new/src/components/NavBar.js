@@ -9,13 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import {
-  makeStyles,
-  Button,
-  Logout,
-  ListItemIcon,
-  Image,
-} from "@material-ui/core";
+import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
@@ -24,9 +18,9 @@ import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateIcon from "@mui/icons-material/Create";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import AutoStoriesSharpIcon from '@mui/icons-material/AutoStoriesSharp';
+import AutoStoriesSharpIcon from "@mui/icons-material/AutoStoriesSharp";
 import { Avatar } from "@material-ui/core";
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -116,9 +110,9 @@ const useStyles = makeStyles({
       marginLeft: "-100%",
     },
   },
-  search:{
-    marginLeft: "100vw"
-  }
+  search: {
+    marginLeft: "100vw",
+  },
 });
 
 export default function NavBar() {
@@ -172,13 +166,7 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
+          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
@@ -190,23 +178,18 @@ export default function NavBar() {
             <Typography
               variant="h3"
               component="div"
-              sx={{ textDecoration: "none", color: "white", paddingRight:"25vw" }}
+              sx={{ textDecoration: "none", color: "white", paddingRight: "25vw" }}
             >
               Fable
             </Typography>{" "}
           </Link>
-          <SearchBox className={classes.search}>
-          </SearchBox>
+          <SearchBox className={classes.search}></SearchBox>
           {auth && (
             <div className={classes.accountbutton}>
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
                   <React.Fragment>
-                    <Avatar
-                      sx={{ width: 64, height: 64 }}
-                      {...bindTrigger(popupState)}
-                      variant="contained"
-                    ></Avatar>
+                    <Avatar sx={{ width: 64, height: 64 }} {...bindTrigger(popupState)} variant="contained"></Avatar>
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         component={Link}
@@ -230,6 +213,18 @@ export default function NavBar() {
                         to={`/stories/filter`}
                       >
                         Filter &nbsp; <FilterListIcon />
+                      </MenuItem>
+                      <br />
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
+                        className={classes.menuitem}
+                        component={Link}
+                        to={`/stories/me`}
+                      >
+                        My Stories &nbsp; <AutoStoriesSharpIcon />
                       </MenuItem>
                       <br />
                       <MenuItem
@@ -268,10 +263,7 @@ export default function NavBar() {
                         Library &nbsp; <LibraryAddIcon />
                       </MenuItem>
                       <br />
-                      <MenuItem
-                        onClick={doSignOut}
-                        className={classes.menuitem}
-                      >
+                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
                         Logout &nbsp; <LogoutIcon />
                       </MenuItem>
                       <br />

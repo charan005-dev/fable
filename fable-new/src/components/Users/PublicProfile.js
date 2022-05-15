@@ -484,7 +484,7 @@ const PublicProfile = () => {
                           <Button className={classes.buttoncreate}>Create new library</Button>{" "}
                         </Link>
                       )}
-                      {currentUser.uid !== profileUserId && (
+                      {currentUser.uid !== profileUserId && libraryData.length === 0 && (
                         <div className={classes.center}>This user has not added any public libraries yet.</div>
                       )}
                       <Stack direction="column" spacing={2}>
