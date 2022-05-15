@@ -2,6 +2,7 @@ const { stories, users, libraries } = require("../config/mongoCollections");
 const uuid = require("uuid");
 const { convert } = require("html-to-text");
 const axios = require("axios").default;
+const redisClient = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
@@ -127,19 +128,24 @@ const getAllHotStories = async (required) => {
 const getStoryById = async (storyId, accessor) => {
   const storiesCollection = await stories();
   const usersCollection = await users();
-  console.log(accessor);
   const story = await storiesCollection.findOne({ _id: storyId });
   if (!story) throw `No story present with that id.`;
   const creator = await usersCollection.findOne({ _id: story.creatorId });
   const accessorDetails = await usersCollection.findOne({ _id: accessor });
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
   else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
-  // recording user visits
-  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
   return {
     story,
     creator: creator,
   };
+};
+
+const recordUserVisit = async (accessor, storyId) => {
+  const storiesCollection = await stories();
+  const story = await storiesCollection.findOne({ _id: storyId });
+  if (!story) throw `No story present with that id.`;
+  await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
+  return true;
 };
 
 const searchStory = async (searchTerm) => {
@@ -340,4 +346,5 @@ module.exports = {
   getCommentsFromStory,
   getAllHotStories,
   getMyStories,
+  recordUserVisit,
 };
