@@ -64,8 +64,8 @@ const useStyles = makeStyles({
     color: "black",
     justifyContent: "center",
     fontSize: "300%",
-    paddingLeft: "40%", 
-    marginTop:"3%"
+    paddingLeft: "40%",
+    marginTop: "3%",
   },
   paper1: {
     height: "10%",
@@ -160,12 +160,11 @@ const useStyles = makeStyles({
       textDecoration: "white",
       fontWeight: "bold",
     },
+  },
 
   typo: {
-    marginLeft: "33%", 
-    marginTop: "5%", 
-
-
+    marginLeft: "33%",
+    marginTop: "5%",
   },
 });
 
@@ -183,7 +182,7 @@ const MyStories = () => {
         const { data } = await axios.get(`/api/stories/all/me?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
-        console.log("my stories", data.next);
+        console.log("my stories", data);
         setMyStories(data.stories);
         setNext(data.next);
       } catch (e) {
@@ -198,12 +197,9 @@ const MyStories = () => {
       let pageNo = pageNum + 1;
       const take = 5;
       const skip = take * pageNo;
-      const { data } = await axios.get(
-        `/api/stories/all/me?skip=${skip}&take=${take}`,
-        {
-          headers: { authtoken: await currentUser.getIdToken() },
-        }
-      );
+      const { data } = await axios.get(`/api/stories/all/me?skip=${skip}&take=${take}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
       const copyState = myStories;
       for (const story of data.stories) {
         copyState.push(story);
@@ -243,27 +239,19 @@ const MyStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${myStory._id}`}>
-                              <CardMedia
-                                className={classes.images}
-                                component="img"
-                                image={myStory.coverImage}
-                              />
+                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
                             </Link>
                           </div>
                           <div className={classes.card4}>
                             <Link to={`/stories/${myStory._id}`}>
-                              <Typography className={classes.content}>
-                                {" "}
-                                {myStory.title}{" "}
-                              </Typography>
+                              <Typography className={classes.content}> {myStory.title} </Typography>
                             </Link>
                           </div>
                           <div>
                             <Typography>
                               {" "}
                               {myStory.shortDescription.length > 500
-                                ? myStory.shortDescription.substring(0, 500) +
-                                  "..."
+                                ? myStory.shortDescription.substring(0, 500) + "..."
                                 : myStory.shortDescription}{" "}
                             </Typography>
                           </div>
@@ -278,9 +266,7 @@ const MyStories = () => {
                                     label={genre}
                                     size={"small"}
                                     color="info"
-                                    onClick={() =>
-                                      navigate(`/stories/choose/${genre}`)
-                                    }
+                                    onClick={() => navigate(`/stories/choose/${genre}`)}
                                   />
                                 );
                               })}
