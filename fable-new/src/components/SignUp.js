@@ -79,10 +79,10 @@ const useStyles = makeStyles({
   },
 
   textbox: {
-    border: "5px black",
+    border: "1px black",
     "&:hover": {
       backgroundColor: "#ececec",
-      border: "5px bold black",
+      borderRadius: "4px",
     },
   },
 
@@ -105,8 +105,8 @@ const useStyles = makeStyles({
     paddingBottom: "1%",
   },
   typog: {
-    marginTop: "7%", 
-    paddingTop:"5%"
+    marginTop: "7%",
+    paddingTop: "5%",
   },
 });
 
@@ -260,7 +260,7 @@ function SignUp() {
                 id="passwordOne"
                 autoComplete="current-password"
                 variant="outlined"
-                sx={{ border: "4px bold black" }}
+                sx={{ border: "1px solid black" }}
               />
               <TextField
                 margin="normal"
@@ -273,7 +273,7 @@ function SignUp() {
                 id="passwordTwo"
                 autoComplete="current-password"
                 variant="outlined"
-                sx={{ border: "4px bold black" }}
+                sx={{ border: "1px solid black" }}
               />
               <Button
                 className={classes.button}
@@ -289,8 +289,7 @@ function SignUp() {
                 component="h11"
                 variant="h11"
                 className={classes.typog}
-              > 
-              
+              >
                 Already Have an Account?
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
