@@ -190,7 +190,8 @@ const useStyles = makeStyles({
   {
       marginLeft:"30%",
       marginTop: "8%", 
-      border: "20px"
+      border: "20px",
+      color:"black"
   }
 });
 
