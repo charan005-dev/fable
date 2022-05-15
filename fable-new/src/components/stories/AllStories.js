@@ -20,7 +20,6 @@ import {
 } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
-
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -33,40 +32,21 @@ const useStyles = makeStyles({
     height: "50%",
     marginLeft: "0%",
   },
-  title: {
-    border: " 0px #fff",
-    width: "auto",
-    paddingRight: "100%",
-  },
-  stack: {
-    width: "auto",
-    height: "auto",
-    paddingRight: "auto",
-  },
-  media: {
-    height: "300px",
-    width: "100%",
-  },
-
   card1: {
-    // maxWidth: "60%",
-    // maxHeight: "60%",
     marginBottom: "2%",
-    paddingBottom: "2%"
+    paddingBottom: "2%",
   },
   text: {
-    color: "grey",
+    color: "#A19D9D",
     justifyContent: "center",
     marginLeft: "44%",
-    marginRight: "auto",
   },
   box: {
-    paddingLeft: "auto",
     marginLeft: "44%",
     marginRight: "100%",
   },
   title: {
-    color: "black",
+    color: "#000000",
     justifyContent: "center",
     fontSize: "300%",
     paddingLeft: "45%",
@@ -75,9 +55,8 @@ const useStyles = makeStyles({
     height: "10%",
     width: "5%",
     marginLeft: "5%",
-    marginRight: "auto",
     borderRadius: 5,
-    border: "0px solid #000",
+    border: "0% solid #000",
     marginBottom: "10%",
     marginTop: "10%",
   },
@@ -85,31 +64,11 @@ const useStyles = makeStyles({
   paper2: {
     width: "13%",
     marginLeft: "43.5%",
-    paddingLeft: "auto",
-    paddingRight: "auto",
-  },
-  paperfirst: {
-    height: "350px",
-    width: "auto",
-    marginLeft: "60%",
-    marginRight: "auto",
-    borderRadius: 5,
-    border: "0px solid #000",
-    marginBottom: "1%",
-    marginTop: "7%",
-    maxHeight: "29vw",
-    maxWidth: "10vw",
   },
   paper: {
     marginLeft: "10%",
     maxWidth: "80%",
     maxHeight: "60vw",
-  },
-  media: {
-    marginTop: "10%",
-    marginBottom: "10%",
-    height: "20%",
-    width: "20%",
   },
   card3: {
     width: "5vw",
@@ -126,9 +85,8 @@ const useStyles = makeStyles({
     display: "inline-block",
     verticalAlign: "top",
     margin: "30%",
-    border: "solid 1px black",
-    borderRadius: "5px",
-    //boxShadow: " 0px 5px 10px",
+    border: "solid 1% #000000",
+    borderRadius: "5%",
     float: "left",
     width: "10vw",
     height: "15vw",
@@ -141,36 +99,34 @@ const useStyles = makeStyles({
     marginBottom: "5%",
     marginTop: "0% !important",
     fontWeight: "bold",
-    fontSize: "25px",
+    fontSize: "140%",
   },
   button1: {
-    backgroundColor: "black",
-    color: "white",
-    // maxWidth: "500px",
-    // maxHeight: "200px",
+    backgroundColor: "#000000",
+    color: "#FFFFFF",
     marginTop: "1%",
     marginLeft: "45%",
     marginBottom: "10%",
-    paddingTop: "15px",
-    paddingBottom: "15px",
-    paddingRight: "40px",
-    paddingLeft: "40px",
-    borderRadius: "35px",
-    // fontSize: "16px",
-    textDecoration: "white",
+    paddingTop: "1%",
+    paddingBottom: "1%",
+    paddingRight: "3%",
+    paddingLeft: "3%",
+    borderRadius: "4vw",
+    textDecoration: "#FFFFFF",
     "&:hover": {
-      backgroundColor: "white",
-      color: "black",
-      textDecoration: "white",
+      backgroundColor: "#FFFFFF",
+      color: "#000000",
+      textDecoration: "#FFFFFF",
       fontWeight: "bold",
     },
-  }
+  },
 });
 
 const AllStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [allStories, setAllStories] = useState(null);
+  const [next, setNext] = useState(null);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -182,6 +138,7 @@ const AllStories = () => {
         });
         console.log("all stories", data);
         setAllStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
@@ -224,6 +181,7 @@ const AllStories = () => {
       console.log("next set", data);
       setAllStories(copyState);
       setPageNum(pageNo);
+      setNext(data.next);
     } catch (e) {
       console.log(e);
     }
@@ -249,6 +207,11 @@ const AllStories = () => {
             flexDirection: "column-reverse",
           }}
         > */}
+        {allStories && allStories.length === 0 && (
+          <Typography variant="h4" component="h1">
+            There are no stories yet!
+          </Typography>
+        )}
         {allStories &&
           allStories.map((allStory) => {
             if (allStory) {
@@ -260,11 +223,15 @@ const AllStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${allStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={allStory.coverImage} />
+                              <CardMedia
+                                className={classes.images}
+                                component="img"
+                                image={allStory.coverImage ? allStory.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Link to={`/stories/${allStory._id}`} class="text-decoration-none">
+                            <Link to={`/stories/${allStory._id}`}>
                               <Typography className={classes.content}> {allStory.title} </Typography>
                             </Link>
                           </div>
@@ -300,7 +267,12 @@ const AllStories = () => {
               );
             }
           })}
-        <Button className={classes.button1} onClick={getNewData}>View More</Button>
+        {next && (
+          <Button className={classes.button1} onClick={getNewData}>
+            View More
+          </Button>
+        )}
+
         {/* </div> */}
       </div>
     );

@@ -16,6 +16,10 @@ const createLibrary = async (userId, libraryName, private) => {
     private,
     stories: [],
   };
+  const existingLibraries = await librariesCollection.find({ owner: userId }).toArray();
+  console.log(existingLibraries.length);
+  if (existingLibraries.length >= 10)
+    throw `You've already created the maximum amount of allowed libraries (10). Please delete an existing library and try recreating.`;
   const { insertedId } = await librariesCollection.insertOne(newLibrary);
   return { success: true, library: await librariesCollection.findOne({ _id: insertedId }) };
 };
@@ -30,6 +34,10 @@ const addStoryToUserLibrary = async (userId, storyId, libraryId) => {
   if (!story) throw `No such story exists.`;
   const library = await librariesCollection.findOne({ owner: userId, _id: libraryId });
   if (!library) throw `Either the library doesn't exist or the user does not have permission to access this library`;
+  let existingStories = library.stories;
+  if (existingStories.length >= 3) {
+    throw `You've already added the maximum amount of stories to this library (10). Please remove an existing story and try adding a new one.`;
+  }
   await librariesCollection.updateOne({ _id: libraryId, owner: userId }, { $addToSet: { stories: storyId } });
   return { success: true, library: await librariesCollection.findOne({ _id: libraryId, owner: userId }) };
 };
@@ -41,7 +49,7 @@ const getAllMyLibraries = async (owner) => {
   return allLibraries;
 };
 
-const getAllMyLibraryStories = async (userId, libraryId) => {
+const getAllMyLibraryStories = async (userId, libraryId, accessor) => {
   const usersCollection = await users();
   const librariesCollection = await libraries();
   const storiesCollection = await stories();
@@ -49,6 +57,10 @@ const getAllMyLibraryStories = async (userId, libraryId) => {
   if (!owner) throw `No such user exists.`;
   let libraryStories = await librariesCollection.findOne({ _id: libraryId });
   if (!libraryStories) throw `No such library exists.`;
+  console.log(accessor, libraryStories);
+  if (libraryStories.private && accessor !== libraryStories.owner) {
+    throw `You don't have access to view this resource.`;
+  }
   let allLibStory = [];
   for (const libStories of libraryStories.stories) {
     allLibStory.push(await storiesCollection.findOne({ _id: libStories }));
@@ -115,6 +127,17 @@ const getPublicLibrariesOfUser = async (userId) => {
   return allMyLibraries;
 };
 
+const removeStoryFromLibrary = async (libraryId, storyId, owner) => {
+  const librariesCollection = await libraries();
+  const findLibrary = await librariesCollection.findOne({ owner, _id: libraryId });
+  if (!findLibrary) {
+    throw `Either the library does not exist or you don't have access to perform this action.`;
+  }
+  await librariesCollection.updateOne({ owner, _id: libraryId }, { $pull: { stories: storyId } });
+  // after deletion we'll return the updated library
+  return { success: true, library: await librariesCollection.findOne({ owner, _id: libraryId }) };
+};
+
 module.exports = {
   createLibrary,
   addStoryToUserLibrary,
@@ -125,4 +148,5 @@ module.exports = {
   updateLibrary,
   deleteLibrary,
   getPublicLibrariesOfUser,
+  removeStoryFromLibrary,
 };

@@ -235,17 +235,15 @@ const useStyles = makeStyles({
   },
   pen: {
     fontSize: "larger",
-  }, 
-
-  bold: 
-  {
-    fontWeight:"bolder"
   },
 
-  pen:{
-     fontSize:"larger"
-   }
+  bold: {
+    fontWeight: "bolder",
+  },
 
+  pen: {
+    fontSize: "larger",
+  },
 });
 
 const Story = () => {
@@ -282,9 +280,7 @@ const Story = () => {
     async function getRecommendations() {
       if (storyData) {
         const { data } = await axios.get(
-          `/api/stories/recommendations?genres=${
-            storyData.story.genres ? storyData.story.genres : ""
-          }`,
+          `/api/stories/recommendations?genres=${storyData.story.genres ? storyData.story.genres : ""}`,
           {
             headers: {
               authtoken: await currentUser.getIdToken(),
@@ -330,15 +326,12 @@ const Story = () => {
                 <CardMedia
                   className={classes.mainImage}
                   component="img"
-                  image={storyData.story.coverImage}
+                  image={storyData.story.coverImage ? storyData.story.coverImage : "/images/noimage.jpeg"}
                 />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
-                  <Tooltip
-                    placement="right"
-                    title={buildFriendlyDate(storyData.story.createdAt)}
-                  >
+                  <Tooltip placement="right" title={buildFriendlyDate(storyData.story.createdAt)}>
                     <Typography variant="h2" className={classes.title1}>
                       {storyData.story.title.length > 35
                         ? storyData.story.title.substring(0, 40) + "..."
@@ -358,10 +351,7 @@ const Story = () => {
                     {" " + storyData.story.visitedBy.length}
                   </Typography>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                  <Tooltip
-                    placement="right"
-                    title="Average time it'll take for you to read this story"
-                  >
+                  <Tooltip placement="right" title="Average time it'll take for you to read this story">
                     <Typography variant="inherit">
                       {" "}
                       <AutoStoriesIcon />
@@ -379,18 +369,13 @@ const Story = () => {
                     {currentUser.uid === storyData.story.creatorId && (
                       <Fab
                         className={classes.editButton}
-                        onClick={() =>
-                          navigate(`/stories/${storyData.story._id}/edit`)
-                        }
+                        onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
                       >
                         <Edit />
                       </Fab>
                     )}
                   </span>
-                  <Fab
-                    className={classes.editButton}
-                    onClick={() => setCommentsModal(true)}
-                  >
+                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
                     <ForumIcon />
                   </Fab>
                 </CardContent>
@@ -415,10 +400,7 @@ const Story = () => {
                     Description
                   </Typography>
                   <br />
-                  <Typography variant="subtitle">
-                    {storyData.story.shortDescription}
-                  </Typography>{" "}
-                  <br />
+                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
@@ -460,26 +442,14 @@ const Story = () => {
                   <br />
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && (
-                    <Typography>
-                      No stories available.
-                    </Typography>
-                  )}
+                  {recommendations && recommendations.length === 0 && <Typography>No stories available.</Typography>}
                   {recommendations &&
                     recommendations.map((recommendation, idx) => {
                       if (recommendation._id !== id) {
                         return (
                           <div>
-                            <Link
-                              to={`/stories/${recommendation._id}`}
-                              className={classes.td}
-                            >
-                              <Card
-                                sx={{ display: "flex" }}
-                                className={classes.recommendation}
-                                elevation={2}
-                                to
-                              >
+                            <Link to={`/stories/${recommendation._id}`} className={classes.td}>
+                              <Card sx={{ display: "flex" }} className={classes.recommendation} elevation={2} to>
                                 <Box
                                   sx={{
                                     display: "flex",
@@ -490,11 +460,7 @@ const Story = () => {
                                   <CardMedia
                                     className={classes.similarImages}
                                     component="img"
-                                    image={
-                                      recommendation.coverImage
-                                        ? recommendation.coverImage
-                                        : "/fablefinal.png"
-                                    }
+                                    image={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
                                   />
                                   <Box className={classes.box2}>
                                     <CardContent>
@@ -507,16 +473,9 @@ const Story = () => {
                                       </Link>
                                     </CardContent>
 
-                                    <Typography
-                                      variant="caption"
-                                      className={classes.description}
-                                    >
-                                      {recommendation.shortDescription.length >
-                                      50
-                                        ? recommendation.shortDescription.substring(
-                                            0,
-                                            50
-                                          ) + "..."
+                                    <Typography variant="caption" className={classes.description}>
+                                      {recommendation.shortDescription.length > 50
+                                        ? recommendation.shortDescription.substring(0, 50) + "..."
                                         : recommendation.shortDescription}
                                     </Typography>
                                   </Box>
@@ -529,11 +488,10 @@ const Story = () => {
                       if (idx === recommendations.length - 1) {
                         return (
                           <div>
-                            <Typography>
-                              No stories available.
-                            </Typography>
+                            <Typography>No stories available.</Typography>
                           </div>
-                        )}
+                        );
+                      }
                     })}
                 </CardContent>
               </Card>

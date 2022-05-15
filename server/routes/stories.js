@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const xss = require("xss");
 const gm = require("gm");
+const { validateRequired, validateHot, validateUuid, validateUserId, validateExact } = require("../helpers/validator");
 
 let winpath = "";
 let basePath = process.env.GM_FS_COVER_PATH;
@@ -34,20 +35,21 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-const validGenres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { validGenres } = require("../genres").validGenres;
+// const validGenres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 router.get("/all", async (req, res) => {
   try {
@@ -55,18 +57,36 @@ router.get("/all", async (req, res) => {
     if (!required) required = 12;
     if (genres && genres.length > 0) genres = genres.split(",");
     else genres = [];
+    try {
+      validateRequired(required);
+      // validateGenres(genres);
+      validateHot(hot);
+    } catch (e) {
+      res.status(200).json({ success: false, message: e });
+      return;
+    }
     if (hot) {
       hot = hot === "true";
       // don't filter by genres for hot stories - but apply sorting
-      const { success, allStories } = await stories.getAllHotStories(required);
-      if (success) {
-        res.status(200).json({ success, stories: allStories });
+      try {
+        const { success, allStories } = await stories.getAllHotStories(required);
+        if (success) {
+          res.status(200).json({ success, stories: allStories });
+          return;
+        }
+      } catch (e) {
+        res.status(400).json({ success: false, message: e });
         return;
       }
     } else {
-      const { success, allStories } = await stories.getAllStories(required, genres);
-      if (success) {
-        res.status(200).json({ success, stories: allStories });
+      try {
+        const { success, allStories } = await stories.getAllStories(required, genres);
+        if (success) {
+          res.status(200).json({ success, stories: allStories });
+          return;
+        }
+      } catch (e) {
+        res.status(400).json({ success: false, message: e });
         return;
       }
     }
@@ -81,6 +101,13 @@ router.get("/:storyId/hit", async (req, res) => {
   try {
     let { storyId } = req.params;
     let accessor = req.authenticatedUser;
+    try {
+      validateUuid(storyId);
+      validateUserId(accessor);
+    } catch (e) {
+      res.status(200).json({ success: false, message: e });
+      return;
+    }
     try {
       await stories.recordUserVisit(accessor, storyId);
       res.status(200).json({ success: true });
@@ -100,6 +127,17 @@ router.get("/me", async (req, res) => {
     let selectedGenres = req.query.genres;
     let authorId = req.query.authorId;
     let exact = req.query.exact === "true";
+    try {
+      validateUserId(authorId);
+      validateExact(exact);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({
+        success: false,
+        error: e,
+      });
+      return;
+    }
     console.log(authorId, req.authenticatedUser);
     if (!authorId || authorId !== req.authenticatedUser) {
       res.status(403).json({
@@ -109,6 +147,7 @@ router.get("/me", async (req, res) => {
       return;
     }
     selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
+    // validateGenres(selectedGenres)
     if (exact) {
       const { selectStories } = await stories.getUserStoriesByGenres(selectedGenres, authorId);
       res.status(200).json({ success: true, stories: selectStories });
@@ -127,6 +166,16 @@ router.get("/me", async (req, res) => {
 router.get("/filter", async (req, res) => {
   try {
     let selectedGenres = req.query.genres;
+    try {
+      validateExact(req.query.exact);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({
+        success: false,
+        error: e,
+      });
+      return;
+    }
     let exact = req.query.exact === "true";
     selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
     if (exact) {
@@ -152,7 +201,7 @@ router.get("/all/me", async (req, res) => {
     if (take) take = parseInt(take);
     const storiesData = await stories.getMyStories(accessor, skip, take);
     if (storiesData.success) {
-      res.status(200).json({ success: true, stories: storiesData.stories });
+      res.status(200).json({ success: true, stories: storiesData.stories, next: storiesData.next });
       return;
     }
   } catch (e) {
@@ -169,7 +218,7 @@ router.get("/all_stories", async (req, res) => {
     if (take) take = parseInt(take);
     const allStoriesData = await stories.getAllPaginatedStories(skip, take);
     if (allStoriesData.success) {
-      res.status(200).json({ success: true, stories: allStoriesData.stories });
+      res.status(200).json({ success: true, stories: allStoriesData.stories, next: allStoriesData.next });
       return;
     }
   } catch (e) {

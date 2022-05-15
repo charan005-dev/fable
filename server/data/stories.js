@@ -5,24 +5,29 @@ const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 
+const { all } = require("../routes/stories");
+const { validateRequired, validateUserId, validateUuid } = require("../helpers/validator");
+
+
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
 const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
-const validGenres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { validGenres } = require("../genres");
+// const validGenres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const saveToRedis = async (key, value) => {
   const redisClient = createClient();
@@ -100,7 +105,10 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
       throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
   }
   const storiesCollection = await stories();
-  const findUpdatable = await storiesCollection.findOne({ _id: storyId, creatorId: owner });
+  const findUpdatable = await storiesCollection.findOne({
+    _id: storyId,
+    creatorId: owner,
+  });
   if (!findUpdatable) throw `Either the story does not exist or you do not have permission to perform this action.`;
   let updatedStory = {
     title,
@@ -124,7 +132,10 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
     // errors in pushing to elastic search could be caught here. logging them for reference
     console.log(e);
   }
-  let updatedObj = await storiesCollection.findOne({ _id: storyId, creatorId: owner });
+  let updatedObj = await storiesCollection.findOne({
+    _id: storyId,
+    creatorId: owner,
+  });
   // reset things at redis end
   try {
     await writethroughRedisCache(storyId, updatedObj);
@@ -136,6 +147,8 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
 };
 
 const getAllStories = async (required, genres) => {
+  validateRequired(required);
+  // validateGenres(genres)
   const storiesCollection = await stories();
   required = parseInt(required);
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
@@ -148,8 +161,10 @@ const getAllStories = async (required, genres) => {
 };
 
 const getAllHotStories = async (required) => {
-  const storiesCollection = await stories();
   required = parseInt(required);
+  validateRequired(required);
+  const storiesCollection = await stories();
+
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   const allStories = await storiesCollection
     .aggregate([
@@ -194,6 +209,8 @@ const getStoryById = async (storyId, accessor) => {
 
 const recordUserVisit = async (accessor, storyId) => {
   const storiesCollection = await stories();
+  validateUserId(accessor);
+  validateUuid(storyId);
   const story = await storiesCollection.findOne({ _id: storyId });
   if (!story) throw `No story present with that id.`;
   await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
@@ -205,15 +222,16 @@ const recordUserVisit = async (accessor, storyId) => {
 const searchStory = async (searchTerm) => {
   let searchResults = [];
   try {
-    searchResults = await client.search(elasticEngineName, searchTerm);
+    searchResults = await client.search(elasticEngineName, searchTerm, {});
   } catch (e) {
     // logging errors in elasticsearch retrieval.
     console.log(e);
   }
   let results = [];
-  // show only results that have a relevance score > 0.1
+  // show only results that have a relevance score > 0.2
   searchResults.results.forEach((result) => {
-    if (result._meta < 0.1) {
+    console.log(result._meta.score);
+    if (result._meta && result._meta.score > 0.2) {
       let newObj = {};
       for (let obj in result) {
         if (obj === "_meta") {
@@ -260,16 +278,21 @@ const getNRandom = async (n) => {
 };
 
 const getUserStoriesByGenres = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres);
   let myStories = await storiesCollection
-    .find({ creatorId: authorId, genres: { $size: genres.length, $all: genres } })
+    .find({
+      creatorId: authorId,
+      genres: { $size: genres.length, $all: genres },
+    })
     .toArray();
   console.log(myStories);
   return { selectStories: myStories, success: true };
 };
 
 const getUserStoriesByGenresNonExact = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres); // [ 'Drama', 'Thriller' ]
   let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $in: genres } }).toArray();
@@ -310,11 +333,17 @@ const getRecommendations = async (userId, genres) => {
 const deleteStory = async (accessor, storyId) => {
   const storiesCollection = await stories();
   const librariesCollection = await libraries();
-  const findStoryToDelete = await storiesCollection.findOne({ _id: storyId, creatorId: accessor });
+  const findStoryToDelete = await storiesCollection.findOne({
+    _id: storyId,
+    creatorId: accessor,
+  });
   if (!findStoryToDelete) {
     throw `Either the story does not exist or the user does not have access to perform this action.`;
   }
-  let deleted = await storiesCollection.deleteOne({ _id: storyId, creatorId: accessor });
+  let deleted = await storiesCollection.deleteOne({
+    _id: storyId,
+    creatorId: accessor,
+  });
   // performing deletion on elasticsearch
   try {
     await client.destroyDocuments(elasticEngineName, [storyId]);
@@ -396,12 +425,22 @@ const getCommentsFromStory = async (storyId) => {
 const getMyStories = async (accessor, skip = 0, take = 20) => {
   const storiesCollection = await stories();
   let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
-  return { success: true, stories: myStories };
+  let next = await storiesCollection
+    .find({ creatorId: accessor })
+    .skip(skip + take)
+    .limit(take)
+    .tryNext();
+  return { success: true, stories: myStories, next: next ? true : false };
 };
 const getAllPaginatedStories = async (skip = 0, take = 20) => {
   const storiesCollection = await stories();
   let allStories = await storiesCollection.find({}).skip(skip).limit(take).toArray();
-  return { success: true, stories: allStories };
+  let next = await storiesCollection
+    .find({})
+    .skip(skip + take)
+    .limit(take)
+    .tryNext();
+  return { success: true, stories: allStories, next: next ? true : false };
 };
 
 module.exports = {

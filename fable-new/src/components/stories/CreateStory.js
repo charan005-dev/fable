@@ -11,23 +11,25 @@ import { useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from '../Assets/5.gif'
+import logo from "../Assets/5.gif";
+const { genres } = require("../genres");
 const axios = require("axios").default;
 
-const genres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-]; 
+console.log(genres);
+// const genres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const useStyles = makeStyles({
   card1: {
@@ -99,12 +101,11 @@ const useStyles = makeStyles({
       backgroundColor: "black",
       color: "black",
     },
-  }, 
-  logo: 
-  {
-      marginLeft:"30%",
-      marginTop: "8%", 
-      border: "20px"
+  },
+  logo: {
+    marginLeft: "30%",
+    marginTop: "8%",
+    border: "20px",
   },
 
   headertext: {
@@ -156,7 +157,7 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
-  }, 
+  },
 });
 
 const CreateStory = () => {
@@ -207,7 +208,7 @@ const CreateStory = () => {
         setDesc(e.target.value.length !== 0 ? e.target.value : "");
         break;
       case "file":
-        setCoverImage(e.target.files[0]);
+        setCoverImage(e.target.files[0] ? e.target.files[0] : "/images/noimage.jpeg");
         let imageAsBlob = URL.createObjectURL(e.target.files[0]);
         setUploadedImageUrl(imageAsBlob);
         break;
@@ -327,9 +328,7 @@ const CreateStory = () => {
   };
 
   if (creationStarted) {
-    return (
-      <img src={logo} alt="loading..." className={classes.logo} />
-    );
+    return <img src={logo} alt="loading..." className={classes.logo} />;
   }
 
   return (
