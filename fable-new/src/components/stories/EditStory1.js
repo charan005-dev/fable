@@ -393,7 +393,7 @@ const EditStory1 = () => {
       });
       console.log(data);
       toast.success("Successfully deleted the story.");
-      setTimeout(() => navigate(`/stories`), 400);
+      setTimeout(() => navigate(`/home`), 400);
     } catch (e) {
       console.log(e);
       toast.error("Cannot perform delete operation. " + e, {

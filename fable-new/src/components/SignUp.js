@@ -152,7 +152,7 @@ function SignUp() {
     let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
     if (!uNameRegex.test(name.value)) {
       toast.error(
-        "It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).",
+        "It's really catchy but make sure your username contains only alphanumerics and hyphens (can't end with one).",
         {
           theme: "dark",
           position: "top-center",

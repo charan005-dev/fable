@@ -229,6 +229,11 @@ const recordUserVisit = async (accessor, storyId) => {
     { _id: storyId },
     { $addToSet: { visitedBy: accessor } }
   );
+  // writethrough redis cache or else you'll get stale data to frontend
+  await writethroughRedisCache(
+    storyId,
+    await storiesCollection.findOne({ _id: storyId })
+  );
   return true;
 };
 
@@ -276,9 +281,16 @@ const toggleLike = async (storyId, userId) => {
       { $addToSet: { likedBy: userId } }
     );
   }
+  let afterLike = await storiesCollection.findOne({ _id: storyId });
+  // writethrough redis cache
+  try {
+    await writethroughRedisCache(storyId, afterLike);
+  } catch (e) {
+    console.log(e);
+  }
   return {
     success: true,
-    story: await storiesCollection.findOne({ _id: storyId }),
+    story: afterLike,
   };
 };
 
@@ -489,8 +501,6 @@ module.exports = {
   getCommentsFromStory,
   getAllHotStories,
   getMyStories,
-
   getAllPaginatedStories,
-
   recordUserVisit,
 };
