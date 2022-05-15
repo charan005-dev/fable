@@ -67,10 +67,14 @@ function CarouselImage() {
   if (storyData)
     return (
       <div className="App">
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", backgroundColor:"white" }}>
           <div
             style={{
-              padding: "0 20px",
+              padding: " 1px",
+              marginbottom:"0%",
+              marginLeft:"0%"
+            
+            
             }}
           >
             {storyData.length >= 6 && <Carousel
@@ -80,15 +84,15 @@ function CarouselImage() {
               width="850px"
               height="300px"
               captionStyle={captionStyle}
-              radius="10px"
+              radius="15px"
               slideNumber={true}
               slideNumberStyle={slideNumberStyle}
               captionPosition="bottom"
               automatic={true}
-              dots={true}
+              dots ={true}
               swipeScrollTolerance={0}             
               transitiontime="100"
-              slideBackgroundColor="grey"
+              marginTop="0%"
               duration="0"  
               slideImageFit="cover"
               thumbnails={false}
@@ -98,6 +102,7 @@ function CarouselImage() {
                 maxWidth: "850px",
                 maxHeight: "500px",
                 margin: "40px auto",
+               
               }}
             />
 }

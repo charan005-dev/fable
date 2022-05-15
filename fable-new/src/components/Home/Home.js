@@ -12,6 +12,7 @@ const Home = () => {
       <div className="carousel">
         <CarouselImage />
       </div>
+      <br />
       <Typography variant="h5" component={"h1"}>
 
       {currentUser.displayName && "Welcome,  " + currentUser.displayName + "!"}
