@@ -116,14 +116,18 @@ const useStyles = makeStyles({
     marginTop: "-7%",
     height: "0%",
     width: "50%",
+    textDecoration: "none",
+    color: "black",
+    "&:hover": {
+      textDecoration: "none",
+      color: "black",
+    },
   },
   images: {
-    display: "inline-block",
     verticalAlign: "top",
     margin: "30%",
     border: "solid 1px black",
     borderRadius: "5px",
-    boxShadow: " 0px 5px 10px",
     float: "left",
     width: "10vw",
     height: "15vw",
@@ -134,9 +138,44 @@ const useStyles = makeStyles({
   content: {
     paddingLeft: "20%",
     marginBottom: "5%",
-    marginTop: "0% !important",
+    marginTop: "0%",
     fontWeight: "bold",
     fontSize: "25px",
+    textDecoration: "none",
+    color: "black",
+    "&:hover": {
+      textDecoration: "none",
+      color: "black",
+    },
+  },
+
+  button1: {
+    backgroundColor: "black",
+    color: "white",
+
+    marginTop: "1%",
+    marginLeft: "45%",
+    marginBottom: "10%",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+
+    textDecoration: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+
+  td: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
+    },
   },
 });
 
@@ -204,12 +243,12 @@ const MyStories = () => {
                       <Card className={classes.card1}>
                         <div>
                           <div className={classes.card3} elevation={0}>
-                            <Link to={`/stories/${myStory._id}`}>
+                            <Link to={`/stories/${myStory._id}`} className={classes.td}>
                               <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
                             </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Link to={`/stories/${myStory._id}`}>
+                            <Link to={`/stories/${myStory._id}`} className={classes.td}>
                               <Typography className={classes.content}> {myStory.title} </Typography>
                             </Link>
                           </div>
@@ -228,12 +267,15 @@ const MyStories = () => {
                               myStory.genres &&
                               myStory.genres.map((genre) => {
                                 return (
-                                  <Chip
-                                    label={genre}
-                                    size={"small"}
-                                    color="info"
-                                    onClick={() => navigate(`/stories/choose/${genre}`)}
-                                  />
+                                  <span>
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                    &nbsp;{" "}
+                                  </span>
                                 );
                               })}
                           </Stack>
@@ -247,7 +289,9 @@ const MyStories = () => {
           })}
         {/* </Stack> */}
 
-        <Button onClick={getNewData}>View More</Button>
+        <Button onClick={getNewData} className={classes.button1}>
+          View More
+        </Button>
       </div>
     );
   }

@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     // maxWidth: "60%",
     // maxHeight: "60%",
     marginBottom: "2%",
-    paddingBottom: "2%"
+    paddingBottom: "2%",
   },
   text: {
     color: "grey",
@@ -146,8 +146,7 @@ const useStyles = makeStyles({
   button1: {
     backgroundColor: "black",
     color: "white",
-    // maxWidth: "500px",
-    // maxHeight: "200px",
+
     marginTop: "1%",
     marginLeft: "45%",
     marginBottom: "10%",
@@ -156,7 +155,7 @@ const useStyles = makeStyles({
     paddingRight: "40px",
     paddingLeft: "40px",
     borderRadius: "35px",
-    // fontSize: "16px",
+
     textDecoration: "white",
     "&:hover": {
       backgroundColor: "white",
@@ -164,7 +163,7 @@ const useStyles = makeStyles({
       textDecoration: "white",
       fontWeight: "bold",
     },
-  }
+  },
 });
 
 const AllStories = () => {
@@ -249,6 +248,11 @@ const AllStories = () => {
             flexDirection: "column-reverse",
           }}
         > */}
+        {allStories && allStories.length === 0 && (
+          <Typography variant="h4" component="h1">
+            There are no stories yet!
+          </Typography>
+        )}
         {allStories &&
           allStories.map((allStory) => {
             if (allStory) {
@@ -300,7 +304,9 @@ const AllStories = () => {
               );
             }
           })}
-        <Button className={classes.button1} onClick={getNewData}>View More</Button>
+        <Button className={classes.button1} onClick={getNewData}>
+          View More
+        </Button>
         {/* </div> */}
       </div>
     );
