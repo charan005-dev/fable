@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import {
   Box,
@@ -21,13 +21,14 @@ import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBRow, 
 import Hero from "../Hero";
 import { Stack } from "react-bootstrap";
 import { typography } from "@mui/system";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   storyLink: {
     textDecoration: "none",
   },
   imageWrapper: {},
-  stories:{
+  stories: {
     marginLeft: "0%",
   },
   title: {
@@ -127,15 +128,15 @@ const useStyles = makeStyles({
     width: "10vw",
     height: "15vw",
     marginTop: "50%",
-    marginBottom:"40%",
+    marginBottom: "40%",
     marginLeft: "10%",
   },
-  content:{
+  content: {
     paddingLeft: "20%",
     marginBottom: "5%",
     marginTop: "0% !important",
     fontWeight: "bold",
-    fontSize: "25px"
+    fontSize: "25px",
   },
 });
 
@@ -143,28 +144,39 @@ const AllLibraryStories = () => {
   const { currentUser } = useContext(AuthContext);
   let { libraryId } = useParams();
   let [libraryData, setLibraryData] = useState(null);
+  const navigate = useNavigate();
   const classes = useStyles();
 
   useEffect(() => {
     async function getLibraryStories() {
-      const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
-      console.log(data.libraries);
-      setLibraryData(data.libraries);
+      try {
+        const { data } = await axios.get(`/api/libraries/library_stories/${libraryId}?owner=${currentUser.uid}`, {
+          headers: { authtoken: await currentUser.getIdToken() },
+        });
+        console.log(data.libraries);
+        setLibraryData(data.libraries);
+      } catch (e) {
+        console.log(e);
+        toast.error("Cannot find the library.", {
+          theme: "dark",
+        });
+        setTimeout(() => navigate(`/libraries/me`), 300);
+        return;
+      }
     }
     getLibraryStories();
   }, []);
 
-  return (
-    <div>
+  if (libraryData) {
+    return (
       <div>
-        <Typography className={classes.title} subtitle={""}>
-          {libraryData && libraryData.libraryName}'s Library
-        </Typography>
-      </div>
-      <br />
-      <Stack direction="column" >
+        <div>
+          <Typography className={classes.title} subtitle={""}>
+            {libraryData && libraryData.libraryName}
+          </Typography>
+        </div>
+        <br />
+        <Stack direction="column">
           {libraryData &&
             libraryData.stories &&
             libraryData.stories.map((libraryStory) => {
@@ -174,28 +186,33 @@ const AllLibraryStories = () => {
                     <Paper elevation={10} className={classes.paper}>
                       <Grid className={classes.stories}>
                         <Card className={classes.card1}>
-                        <div>
-                          <div className={classes.card3} elevation={15}>
-                            <CardMedia className={classes.images} component="img" image={libraryStory.coverImage}  />
-                          </div>
-                          <div className={classes.card4}>
-                            <Typography className={classes.content}> {libraryStory.title} </Typography>
-                          </div>
                           <div>
-                            <Typography > {libraryStory.shortDescription.length > 500 ? libraryStory.shortDescription.substring(0, 500) + "..." : libraryStory.shortDescription} </Typography>
+                            <div className={classes.card3} elevation={15}>
+                              <CardMedia className={classes.images} component="img" image={libraryStory.coverImage} />
+                            </div>
+                            <div className={classes.card4}>
+                              <Typography className={classes.content}> {libraryStory.title} </Typography>
+                            </div>
+                            <div>
+                              <Typography>
+                                {" "}
+                                {libraryStory.shortDescription.length > 500
+                                  ? libraryStory.shortDescription.substring(0, 500) + "..."
+                                  : libraryStory.shortDescription}{" "}
+                              </Typography>
+                            </div>
                           </div>
-                        </div>
                         </Card>
                       </Grid>
-                      </Paper>
+                    </Paper>
                   </div>
                 );
               }
             })}
-        
-      </Stack>
-    </div>
-  );
+        </Stack>
+      </div>
+    );
+  }
 };
 
 export default AllLibraryStories;

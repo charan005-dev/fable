@@ -24,6 +24,7 @@ import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CreateIcon from "@mui/icons-material/Create";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Avatar } from "@material-ui/core";
 
@@ -225,12 +226,23 @@ export default function NavBar() {
                         }}
                         className={classes.menuitem}
                         component={Link}
+                        to={`/stories/filter`}
+                      >
+                        Filter &nbsp; <FilterListIcon />
+                      </MenuItem>
+                      <br />
+                      <MenuItem
+                        onClick={() => {
+                          popupState.close();
+                          handleClick();
+                        }}
+                        className={classes.menuitem}
+                        component={Link}
                         to={`/users/${currentUser.uid}`}
                       >
                         Profile &nbsp; <AccountCircleIcon />
                       </MenuItem>
                       <br />
-
                       <MenuItem
                         onClick={() => {
                           popupState.close();

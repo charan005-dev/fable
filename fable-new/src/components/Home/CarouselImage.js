@@ -6,23 +6,20 @@ import { AuthContext } from "../../firebase/Auth";
 import { Link } from "react-router-dom";
 import { jsx } from "@emotion/react";
 import Slider from "react-slick";
-
 import { Chip, Typography } from "@material-ui/core";
-import {
-  makeStyles,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
-dots:{
-  marginLeft: "auto",
-  marginRight: "auto",
-},
-// username:{
-//   marginLeft:"100",
-//   paddingLeft:100,
-//   marginRight:100
+  dots: {
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  // username:{
+  //   marginLeft:"100",
+  //   paddingLeft:100,
+  //   marginRight:100
 
-// }
+  // }
 });
 
 function CarouselImage() {
@@ -63,7 +60,6 @@ function CarouselImage() {
     fontWeight: "bold",
   };
 
-
   if (storyData)
     return (
       <div className="App">
@@ -79,7 +75,7 @@ function CarouselImage() {
           >
             {storyData.length >= 6 && <Carousel
               data={storyData}
-               time={1000}
+              time={1000}
               interval={1000}
               width="850px"
               height="300px"
@@ -89,11 +85,11 @@ function CarouselImage() {
               slideNumberStyle={slideNumberStyle}
               captionPosition="bottom"
               automatic={true}
-              dots ={true}
-              swipeScrollTolerance={0}             
+              dots={true}
+              swipeScrollTolerance={0}
               transitiontime="100"
-              marginTop="0%"
-              duration="0"  
+              slideBackgroundColor="grey"
+              duration="0"
               slideImageFit="cover"
               thumbnails={false}
               thumbnailWidth="100px"
@@ -106,10 +102,8 @@ function CarouselImage() {
               }}
             />
 }
-            <div>
-
            
-{/* Welcome Home
+              {/* Welcome Home
 
       <Chip
       label={currentUser.displayName}
@@ -117,14 +111,13 @@ function CarouselImage() {
       color="info"
       onClick={() => navigate(`/`)}
     /> */}
-                                      
-      </div>
+            </div>
             <br />
-            
-           {/* <Dots  className="dots"length={10} active={5} /> */}
+
+            {/* <Dots  className="dots"length={10} active={5} /> */}
           </div>
         </div>
-      </div>
+  
     );
 }
 

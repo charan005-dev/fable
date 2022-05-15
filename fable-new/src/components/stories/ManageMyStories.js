@@ -2,7 +2,7 @@ import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Bo
 import { accordionSummaryClasses, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
@@ -134,6 +134,7 @@ const ManageAllStories = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [doExactMatch, setDoExactMatch] = useState(false);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAllStories([]);
@@ -198,6 +199,10 @@ const ManageAllStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
+          <Typography variant="h4" component="h3">
+            Filter My Stories
+          </Typography>
+          <br />
           {genres &&
             genres.map((genre, idx) => {
               //console.log(selectedGenres, genre);
@@ -268,6 +273,23 @@ const ManageAllStories = () => {
                                   ? story.shortDescription.substring(0, 197) + "..."
                                   : story.shortDescription}
                               </Typography>
+                              <Stack direction="row" spacing={1}>
+                                {story &&
+                                  story.genres &&
+                                  story.genres.map((genre, idx) => {
+                                    if (idx > 1) {
+                                      return <Typography> +{idx} more</Typography>;
+                                    }
+                                    return (
+                                      <Chip
+                                        label={genre}
+                                        size={"small"}
+                                        color="info"
+                                        onClick={() => navigate(`/stories/choose/${genre}`)}
+                                      />
+                                    );
+                                  })}
+                              </Stack>
                             </CardContent>
                           </Card>
                         </Stack>

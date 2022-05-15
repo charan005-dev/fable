@@ -50,36 +50,85 @@ const useStyles = makeStyles({
     paddingLeft: "0%",
   },
   card2: {
-    marginLeft: "0px",
+    paddingLeft: "5%",
+    paddingRight: "20%",
+    paddingTop: "1%",
+    paddingBottom: "2%"
   },
   card3: {
     width: "700%",
   },
   card4: {
     overflow: "inherit",
-
+    paddingTop: "10%",
     marginLeft: "3%",
     paddingRight: 10,
     width: "100%",
   },
   card5: {
+    paddingTop: "1%",
     overflow: "inherit",
     width: "100%",
     color: "red",
   },
   create: {
-    marginLeft: "50%",
-    height: "35px",
-    borderRadius: "0px",
+    marginLeft: "49%",
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 2px",
+    },
   },
   create1: {
-    marginLeft: "50%",
-    height: "auto",
+    marginLeft: "20%",
+    height: "auto%",
     width: "60%",
     maxWidth: "100%",
-    borderRadius: "0px",
   },
-  paper: { width: "80%", marginRight: "10%", paddingRight: "20%", paddingLeft: "0%", position: "absolute" },
+  paper: { 
+    width: "60%", 
+    // marginRight: "30%",
+    marginLeft: "20%", 
+    paddingBottom: "4%"
+    // paddingRight: "10%", 
+    // paddingLeft: "10%", 
+    // position: "absolute" 
+  },
+  libTitle:{
+    paddingLeft: "45%"
+  },
+  nolib:{
+    paddingLeft: "15%"
+  },
+  story:{
+    float:"right",
+    marginTop: "1vw",
+    paddingBottom: "2%"
+  },
+  link1:{
+    fontSize: 20,
+    // fontWeight: "bold",
+    textDecoration: "none"
+  },
+  edit:{
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
+    },
+  },delete:{
+    backgroundColor: "#ececec",
+    color: "black",
+    // "&:hover": {
+    //   backgroundColor: "red",
+    //   color: "black",
+    //   radius: "solid 1px",
+    // },
+  }
 });
 
 const style = {
@@ -111,8 +160,14 @@ const ViewLibrariesList = () => {
   });
   const openCreateLibModal = () => setCreateLib(true);
   const closeCreateLibModal = () => setCreateLib(false);
-  const openDelLibModal = () => setDelLib(true);
-  const closeDelLibModal = () => setDelLib(false);
+  const openDelLibModal = (libraryId) => {
+    setChosenLibrary(libraryId);
+    setDelLib(true);
+  };
+  const closeDelLibModal = () => {
+    setChosenLibrary("");
+    setDelLib(false);
+  };
   const openeditLibModal = (libraryId) => {
     setChosenLibrary(libraryId);
     seteditLib(true);
@@ -135,7 +190,7 @@ const ViewLibrariesList = () => {
     return { e: false };
   };
 
-  const createLibrary = async () => {
+  const performEditLibrary = async () => {
     let validity = isStateValid();
     if (validity.e) {
       toast.error(validity.text, {
@@ -165,7 +220,6 @@ const ViewLibrariesList = () => {
           }
           libraries.push(library);
         }
-        libraries.push(data.library);
         setLibraryData(libraries);
         closeeditLibModal();
         setCreationSuccess(true);
@@ -173,6 +227,62 @@ const ViewLibrariesList = () => {
     } catch (e) {
       console.log(e);
       toast.dark(e.response.data.error);
+    }
+  };
+
+  const createLibrary = async () => {
+    let validity = isStateValid();
+    if (validity.e) {
+      toast.error(validity.text, {
+        theme: "dark",
+      });
+      return;
+    }
+    try {
+      const { data } = await axios.post(
+        `/api/libraries/`,
+        {
+          userId: currentUser.uid,
+          libraryName: libraryName,
+          private: isPrivate,
+        },
+        { headers: { authtoken: await currentUser.getIdToken() } }
+      );
+      console.log(data);
+      if (data.success) {
+        setLibraryName("");
+        setIsPrivate(true);
+        let libraries = [];
+        for (const library of libraryData) {
+          libraries.push(library);
+        }
+        // pushing in the latest created library!
+        libraries.push(data.library);
+        setLibraryData(libraries);
+        closeCreateLibModal();
+        setCreationSuccess(true);
+      }
+    } catch (e) {
+      console.log(e);
+      toast.dark(e.response.data.error);
+    }
+  };
+
+  const performDelete = async () => {
+    try {
+      const { data } = await axios.delete(`/api/libraries/${chosenLibrary}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      // data will contain updated libraries state after deletion
+      console.log(data);
+      setChosenLibrary("");
+      setLibraryData(data.libraries);
+      closeDelLibModal();
+    } catch (e) {
+      setChosenLibrary("");
+      toast.error(e.message, {
+        theme: "dark",
+      });
     }
   };
 
@@ -198,7 +308,7 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2"> Library</Typography>
+        <Typography variant="h2"> LIBRARY</Typography>
       </div>
       <Divider />
 
@@ -206,7 +316,7 @@ const ViewLibrariesList = () => {
       <br />
 
       <Paper
-        elevation={0}
+        elevation={10}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -269,11 +379,11 @@ const ViewLibrariesList = () => {
             <Typography className={classes.story}>
               Want everyone to view your library? Make it public *
               <Switch
-                checked={isPrivate}
+                checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
-                label={isPrivate ? "Public" : "Private"}
+                label={!isPrivate ? "Public" : "Private"}
               />
             </Typography>
             <br />
@@ -317,16 +427,16 @@ const ViewLibrariesList = () => {
             <Typography className={classes.story}>
               Want everyone to view your library? Make it public *
               <Switch
-                checked={isPrivate}
+                checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
-                label={isPrivate ? "Public" : "Private"}
+                label={!isPrivate ? "Public" : "Private"}
               />
             </Typography>
             <br />
             <br />
-            <Button variant="contained" onClick={createLibrary} className={classes.button1}>
+            <Button variant="contained" onClick={performEditLibrary} className={classes.button1}>
               Edit Library
             </Button>
           </Box>
@@ -343,7 +453,9 @@ const ViewLibrariesList = () => {
                       <CardContent>
                         <Stack spacing={0} direction={"row"}>
                           <Card className={classes.card3} elevation={0}>
+                          <br />
                             <Stack direction="row" spacing={2}>
+                            <br />
                               <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                                 {lib.private ? (
                                   <Tooltip placement="left" arrow title="Private">
@@ -355,14 +467,14 @@ const ViewLibrariesList = () => {
                                   </Tooltip>
                                 )}
                               </Badge>
-                              <Link to={`/libraries/${lib._id}`}>
-                                <Typography variant="body1">
+                              <Link to={`/libraries/${lib._id}`} class="text-decoration-none" >
+                                <Typography variant="body1" className={classes.link1}>
                                   {lib.libraryName.length > 20
                                     ? lib.libraryName.length.substring(16) + "..."
                                     : lib.libraryName}
                                 </Typography>
                               </Link>
-                              <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
+                              <Typography variant="overline" className={classes.story}>({lib.stories.length} Stories Inside)</Typography>
                             </Stack>
                           </Card>
 
@@ -382,6 +494,7 @@ const ViewLibrariesList = () => {
                               <Button
                                 variant="contained"
                                 onClick={() => {
+                                  performDelete();
                                   handleClose();
                                 }}
                                 color="error"
@@ -393,7 +506,7 @@ const ViewLibrariesList = () => {
                               </Button>
                             </DialogActions>
                           </Dialog>
-
+                          &nbsp;&nbsp;
                           <Card className={classes.card5} elevation={0}>
                             <Fab className={classes.delete} color="inherit" onClick={() => openDelLibModal(lib._id)}>
                               <DeleteIcon />
@@ -409,7 +522,7 @@ const ViewLibrariesList = () => {
               );
             })}
           {libraryData && libraryData.length === 0 && (
-            <div>
+            <div className={classes.nolib}>
               Seems like you're missing out on so much fun!{" "}
               <Link to={`/libraries/create`} class="text-decoration-none">
                 Click here

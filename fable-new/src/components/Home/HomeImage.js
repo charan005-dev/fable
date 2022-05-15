@@ -169,8 +169,7 @@ function HomeImage() {
    {
     return (
       <>
-
-<Paper
+        <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -459,9 +458,9 @@ function HomeImage() {
 )}
        
 
-
-
-{thrillerData && thrillerData.length!==0 &&( <Paper
+       
+        
+{thrillerData && thrillerData.length !== 0 && <Paper
           elevation={15}
           className={classes.paper}
           sx={{
@@ -531,11 +530,8 @@ function HomeImage() {
             </div>
           </Grid>
         </Paper>
-)}
-       
-
-
-        
+   }  
+)
       </>
     );
   }
