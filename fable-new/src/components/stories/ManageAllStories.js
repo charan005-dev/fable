@@ -1,6 +1,6 @@
 import { Card, CardContent, Chip, Grid, Paper, Switch, Typography, CardMedia, Box } from "@material-ui/core";
 import { accordionSummaryClasses, Stack } from "@mui/material";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,24 +8,25 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
-const genres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-  "Techno",
-  "Steamy",
-  "Non-fiction",
-  "Medieval",
-];
+const { genres } = require("../genres");
+// const genres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+//   "Techno",
+//   "Steamy",
+//   "Non-fiction",
+//   "Medieval",
+// ];
 const useStyles = makeStyles({
   refinery: {
     padding: 10,
@@ -120,7 +121,7 @@ const useStyles = makeStyles({
     margin: "30%",
     border: "solid 1px black",
     borderRadius: "5px",
-    shapeOutside:"",
+    shapeOutside: "",
     //boxShadow: "0px 5px 10px",
     // float: "left",
     width: "10vw",
@@ -205,7 +206,7 @@ const ManageAllStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
-        <Typography variant="h4" component="h3">
+          <Typography variant="h4" component="h3">
             Filter My Stories
           </Typography>
           <br />
@@ -232,54 +233,58 @@ const ManageAllStories = () => {
         <br />
         <br />
         <div>
-        <Box
-          sx={{
-            flexGrow:1,
-            display: "flex",
-            flexWrap: "wrap",
-            "& > :not(style)": {
-              m: 1,
-              width: 1500,
-              height: "auto",
-              marginLeft: 320,
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              flexWrap: "wrap",
+              "& > :not(style)": {
+                m: 1,
+                width: 1500,
+                height: "auto",
+                marginLeft: 320,
               },
-          }}
-        >
-          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
-          {allStories.length > 0 &&
-            allStories.map((story) => {
-              return (
-                <Grid >
-                  <Paper
-                      elevation={20}
-                      className={classes.paper}
-                      sx={{
-                        bgcolor: "background.default",
-                        display: "grid",
-                        gridTemplateColumns: { md: "1fr 1fr" },
-                        gap: 2,
-                      }}
-                  >
-                      <Stack direction="row">
-                        <Card className={classes.card1} elevation={0}>
-                          <Link to={`/stories/${story._id}`}>
-                            <CardMedia className={classes.images1} component="img" image={story.coverImage} />
-                          </Link>
-                        </Card>
-                        <Card className={classes.card2} elevation={0}>
-                          <CardContent>
-                            <Link to={`/stories/${story._id}`} class="text-decoration-none">
-                              <Typography>{story.title}</Typography>
+            }}
+          >
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+              {allStories.length > 0 &&
+                allStories.map((story) => {
+                  return (
+                    <Grid>
+                      <Paper
+                        elevation={20}
+                        className={classes.paper}
+                        sx={{
+                          bgcolor: "background.default",
+                          display: "grid",
+                          gridTemplateColumns: { md: "1fr 1fr" },
+                          gap: 2,
+                        }}
+                      >
+                        <Stack direction="row">
+                          <Card className={classes.card1} elevation={0}>
+                            <Link to={`/stories/${story._id}`}>
+                              <CardMedia
+                                className={classes.images1}
+                                component="img"
+                                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
-                          </CardContent>
-                          
-                          <CardContent>
-                            <Typography>
-                              {story.shortDescription.length > 200
-                                ? story.shortDescription.substring(0, 197) + "..."
-                                : story.shortDescription}
-                            </Typography>
-                            <Stack direction="row" spacing={1}>
+                          </Card>
+                          <Card className={classes.card2} elevation={0}>
+                            <CardContent>
+                              <Link to={`/stories/${story._id}`} class="text-decoration-none">
+                                <Typography>{story.title}</Typography>
+                              </Link>
+                            </CardContent>
+
+                            <CardContent>
+                              <Typography>
+                                {story.shortDescription.length > 200
+                                  ? story.shortDescription.substring(0, 197) + "..."
+                                  : story.shortDescription}
+                              </Typography>
+                              <Stack direction="row" spacing={1}>
                                 {story &&
                                   story.genres &&
                                   story.genres.map((genre, idx) => {
@@ -296,18 +301,18 @@ const ManageAllStories = () => {
                                     );
                                   })}
                               </Stack>
-                          </CardContent>
-                        </Card>
-                      </Stack>
-                  </Paper>
-                </Grid>
-            );
-          })}
-          </Grid>
-        </Box>
+                            </CardContent>
+                          </Card>
+                        </Stack>
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </Box>
+        </div>
       </div>
-      </div>
-      </div>
+    </div>
   );
 };
 export default ManageAllStories;
