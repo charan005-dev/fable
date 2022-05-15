@@ -4,7 +4,6 @@ const { convert } = require("html-to-text");
 const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
-const { all } = require("../routes/stories");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
@@ -159,7 +158,6 @@ const getAllHotStories = async (required) => {
       { $limit: required },
     ])
     .toArray();
-  console.log(allStories);
   let result = { success: true, allStories };
   return result;
 };
@@ -167,7 +165,12 @@ const getAllHotStories = async (required) => {
 const getStoryById = async (storyId, accessor) => {
   const storiesCollection = await stories();
   const usersCollection = await users();
-  let story = JSON.parse(await getFromRedis(storyId));
+  let story = null;
+  try {
+  story = JSON.parse(await getFromRedis(storyId));
+} catch(e) {
+  console.log("Cannot get data from redis.")
+}
   if (!story) story = await storiesCollection.findOne({ _id: storyId });
   // even if the database doesn't contain the story throw
   if (!story) throw `No story present with that id.`;
@@ -176,8 +179,11 @@ const getStoryById = async (storyId, accessor) => {
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
   else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   try {
+    const redisClient = createClient();
+    if ((await redisClient.ping()) !== 'PONG')
     await saveToRedis(storyId, story);
   } catch (e) {
+    // simply log errors and do nothing
     console.log(e);
   }
   return {

@@ -8,22 +8,23 @@
   pointer-events: none;
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow-x: hidden;
-  background-color: #ececec;
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+    background-color: #ececec;
 }
 
+
 a {
-  text-decoration: "none";
-  color: "black";
+ 
+  color: #000;
 }
 a:hover {
-  text-decoration: "none";
+  text-decoration:#fff ;
 }
 .container {
   margin-right: auto;
@@ -303,9 +304,9 @@ h1 {
   transition: 0.5s;
 }
 
-/* .App-body {
+.App-body {
   padding-top: 1.6%;
-} */
+}
 
 .button1 span:after {
   content: "\00bb";
@@ -432,17 +433,17 @@ h1 {
 
 .row_poster {
   object-fit: contain;
-  width: "auto";
+ 
   max-height: 100px;
 }
-
+ 
 .row_poster::-webkit-scrollbar {
   display: none;
   overflow-x: hidden;
-}
-.scrollbar-hidden::-webkit-scrollbar {
+} 
+ .scrollbar-hidden::-webkit-scrollbar {
   display: none;
-}
+} 
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -453,6 +454,7 @@ h1 {
   /* overflow-x: hidden; */
   padding: 50px;
   padding-right: 10px;
+  
 }
 
 .row_poster:hover {
@@ -489,12 +491,12 @@ h1 {
 /* ------------------------ */
 
 .tox {
-  box-shadow: black;
+  box-shadow: rgb(18, 18, 18);
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -510,13 +512,12 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-  width: "auto";
-  box-shadow: black 5px;
+  box-shadow: black ;
   box-sizing: border-box;
-
+  
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   overflow: hidden;
   position: absolute;
   visibility: inherit !important;

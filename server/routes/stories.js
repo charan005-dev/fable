@@ -201,9 +201,9 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     }
     // graphicsmagick resize
     try {
-    if (gmPath) await resizeImage(gmPath);
-    } catch(e) {
-      console.log(e)
+      if (gmPath) await resizeImage(gmPath);
+    } catch (e) {
+      console.log(e);
     }
     const { success, story } = await stories.createStory(
       currentUser,
@@ -267,11 +267,10 @@ router.get("/:id", async (req, res) => {
     let accessor = req.authenticatedUser;
     try {
       let story = await stories.getStoryById(storyId, accessor);
-      console.log(story);
       res.status(200).json({ success: true, story: story.story, creator: story.creator });
       return;
     } catch (e) {
-      console.log(e);
+      console.log("Caufht here", e);
       res.status(404).json({ success: false, error: e });
       return;
     }
@@ -295,9 +294,9 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     // graphicsmagick resize only if gmPath is present
     try {
       if (gmPath) await resizeImage(gmPath);
-      } catch(e) {
-        console.log(e)
-      }
+    } catch (e) {
+      console.log(e);
+    }
     try {
       const { success, updatedStory } = await stories.updateStory(
         storyId,
