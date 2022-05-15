@@ -302,12 +302,14 @@ const PublicProfile = () => {
               <Card className={classes.subcard} elevation={0}>
                 <Typography variant="h6" component={"h2"} className={classes.text1}>
                   <MenuBookIcon />
+                  {profileData.profile.storiesCreated.length}
                 </Typography>
               </Card>
               &nbsp; &nbsp;
               <Card className={classes.subcard} elevation={0}>
                 <Typography variant="h6" component={"h2"} className={classes.text2}>
                   <LibraryAddIcon />
+                  {!libraryData.private && libraryData.length}
                 </Typography>
               </Card>
             </Stack>
@@ -331,7 +333,12 @@ const PublicProfile = () => {
                           <FilterListIcon />
                         </Fab>
                       </Typography>
-
+                      {profileData && profileData.profile.storiesCreated.length === 0 && (
+                        <Typography variant="body2">
+                          The user haven't posted any stories yet! <Link to={`/stories/create_story`}>Click here</Link>{" "}
+                          to post a story
+                        </Typography>
+                      )}
                       <br />
                       <br />
                       <Stack direction={"column"} spacing={2}>
@@ -355,12 +362,6 @@ const PublicProfile = () => {
                                       />
                                     </Link>
                                   </CardActionArea>
-                                </Card>
-
-                                <Card elevation={0}>
-                                  <Link to={`/stories/${profile._id}`} class="text-decoration-none">
-                                    <Typography style={{ textTransform: "uppercase" }}>{profile.title}</Typography>
-                                  </Link>
                                 </Card>
 
                                 <Card elevation={0}>
@@ -394,10 +395,11 @@ const PublicProfile = () => {
                             );
                           })}
                       </Stack>
-
-                      <Button className={classes.button1} onClick={() => navigate(`/stories/me`)}>
-                        View More
-                      </Button>
+                      {profileData.profile.storiesCreated.length > 3 && (
+                        <Button className={classes.button1} onClick={() => navigate(`/users/${profileUserId}/stories`)}>
+                          View More
+                        </Button>
+                      )}
                     </Card>
                   </Paper>
                   <Paper className={classes.cardpaper1} elevation={0}>

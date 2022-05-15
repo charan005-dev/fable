@@ -140,90 +140,63 @@ const useStyles = makeStyles({
   },
 });
 
-const AllStories = () => {
+const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
-  const [allStories, setAllStories] = useState(null);
+  const [myStories, setMyStories] = useState(null);
+  const { profileUserId } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function getAllPaginatedStories() {
+    async function getMyStories() {
       try {
-        const { data } = await axios.get(`/api/stories/all_stories?skip=0&take=5`, {
+        const { data } = await axios.get(`/api/users/${profileUserId}/stories?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
-        console.log("all stories", data);
-        setAllStories(data.stories);
+        console.log("my stories", data);
+        setMyStories(data.stories);
       } catch (e) {
         console.log(e);
       }
     }
-    getAllPaginatedStories();
+    getMyStories();
   }, []);
-
-  //   useEffect(() => {
-  //     async function getNewData() {
-  //       try {
-  //         const { data } = await axios.get(`/api/stories/all_stories?skip=0&take=`, {
-  //           headers: { authtoken: await currentUser.getIdToken() },
-  //         });
-  //         const copyState = allStories;
-  //         for (const story of data.stories) {
-  //           copyState.push(story);
-  //         }
-  //         console.log("next set", data);
-  //         setAllStories(copyState);
-  //         setPageNum(pageNo);
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-  //     getNewData();
-  //   }, []);
 
   const getNewData = async () => {
     try {
       let pageNo = pageNum + 1;
       const take = 5;
       const skip = take * pageNo;
-      const { data } = await axios.get(`/api/stories/all_stories?skip=${skip}&take=${take}`, {
+      const { data } = await axios.get(`/api/users/${profileUserId}/stories?skip=${skip}&take=${take}`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
-      const copyState = allStories;
+      const copyState = myStories;
       for (const story of data.stories) {
         copyState.push(story);
       }
       console.log("next set", data);
-      setAllStories(copyState);
+      setMyStories(copyState);
       setPageNum(pageNo);
     } catch (e) {
       console.log(e);
     }
-    // console.log("callingnext");
   };
 
-  if (allStories) {
+  if (myStories) {
     return (
-      <div id="scrollableDiv">
+      <div>
         <div>
           <Typography className={classes.title} subtitle={""}>
-            All Stories
+            Your Stories
           </Typography>
         </div>
         <br />
-        {/* <div
-          id="scrollableDiv"
-          style={{
-            height: 300,
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-        > */}
-        {allStories &&
-          allStories.map((allStory) => {
-            if (allStory) {
+
+        {/* <Stack direction="row"> */}
+        {myStories &&
+          myStories.map((myStory) => {
+            if (myStory) {
               return (
                 <div>
                   <Paper elevation={10} className={classes.paper}>
@@ -231,29 +204,29 @@ const AllStories = () => {
                       <Card className={classes.card1}>
                         <div>
                           <div className={classes.card3} elevation={0}>
-                            <Link to={`/stories/${allStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={allStory.coverImage} />
+                            <Link to={`/stories/${myStory._id}`}>
+                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
                             </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Link to={`/stories/${allStory._id}`}>
-                              <Typography className={classes.content}> {allStory.title} </Typography>
+                            <Link to={`/stories/${myStory._id}`}>
+                              <Typography className={classes.content}> {myStory.title} </Typography>
                             </Link>
                           </div>
                           <div>
                             <Typography>
                               {" "}
-                              {allStory.shortDescription.length > 500
-                                ? allStory.shortDescription.substring(0, 500) + "..."
-                                : allStory.shortDescription}{" "}
+                              {myStory.shortDescription.length > 500
+                                ? myStory.shortDescription.substring(0, 500) + "..."
+                                : myStory.shortDescription}{" "}
                             </Typography>
                           </div>
                           <br />
 
                           <Stack direction="row" spacing={1}>
-                            {allStory &&
-                              allStory.genres &&
-                              allStory.genres.map((genre) => {
+                            {myStory &&
+                              myStory.genres &&
+                              myStory.genres.map((genre) => {
                                 return (
                                   <Chip
                                     label={genre}
@@ -272,11 +245,12 @@ const AllStories = () => {
               );
             }
           })}
+        {/* </Stack> */}
+
         <Button onClick={getNewData}>View More</Button>
-        {/* </div> */}
       </div>
     );
   }
 };
 
-export default AllStories;
+export default MyStories;

@@ -200,7 +200,11 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
       filePath = "/public/covers/" + req.file.filename;
     }
     // graphicsmagick resize
-    if (gmPath) await resizeImage(gmPath);
+    try {
+      if (gmPath) await resizeImage(gmPath);
+    } catch (e) {
+      console.log(e);
+    }
     const { success, story } = await stories.createStory(
       currentUser,
       xss(title),
@@ -289,7 +293,11 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
       filePath = "/public/covers/" + req.file.filename;
     }
     // graphicsmagick resize only if gmPath is present
-    if (gmPath) await resizeImage(gmPath);
+    try {
+      if (gmPath) await resizeImage(gmPath);
+    } catch (e) {
+      console.log(e);
+    }
     try {
       const { success, updatedStory } = await stories.updateStory(
         storyId,
