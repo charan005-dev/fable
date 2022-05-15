@@ -302,11 +302,11 @@ function HomeImage() {
                 </div>
                 {/* </div> */}
               </div>
-
               {/* </div> */}
-            </div>
+            {/* </div> */}
           </Grid>
-        </Paper>)}
+        </Paper>
+        )}
        
 
 { mysteryData &&  mysteryData.length !== 0 && ( <Paper

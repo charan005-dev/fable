@@ -35,6 +35,7 @@
     "react-carousel-minimal": "^1.4.1",
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-notifications": "^1.7.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
