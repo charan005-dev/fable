@@ -159,7 +159,14 @@ const StoryBook = () => {
         setStory(data.story);
       }
     }
+    async function recordUserVisit() {
+      const { data } = await axios.get(`/api/stories/${storyId}/hit`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      console.log(data);
+    }
     getStoryData();
+    recordUserVisit();
   }, [storyId]);
 
   useEffect(() => {
@@ -223,8 +230,8 @@ const StoryBook = () => {
             display: "grid",
             gridTemplateColumns: { md: "1fr 1fr" },
             gap: 2,
-            paddingBottom:"2%",
-            paddingTop:"1%"
+            paddingBottom: "2%",
+            paddingTop: "1%",
           }}
         >
           <Grid container justifyContent="center" direction="row">

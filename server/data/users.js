@@ -67,9 +67,16 @@ const checkDisplayName = async (name) => {
   return { isAvailable: true };
 };
 
+const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
+  const storiesCollection = await stories();
+  const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).take(take).toArray();
+  return userStories;
+};
+
 module.exports = {
   createUser,
   getPublicProfile,
   updateUser,
   checkDisplayName,
+  getStoriesOfUser,
 };
