@@ -77,6 +77,24 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/:storyId/hit", async (req, res) => {
+  try {
+    let { storyId } = req.params;
+    let accessor = req.authenticatedUser;
+    try {
+      await stories.recordUserVisit(accessor, storyId);
+      res.status(200).json({ success: true });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, message: "Sorry, something went wrong." });
+  }
+});
+
 router.get("/me", async (req, res) => {
   try {
     let selectedGenres = req.query.genres;
