@@ -235,17 +235,15 @@ const useStyles = makeStyles({
   },
   pen: {
     fontSize: "larger",
-  }, 
-
-  bold: 
-  {
-    fontWeight:"bolder"
   },
 
-  pen:{
-     fontSize:"larger"
-   }
+  bold: {
+    fontWeight: "bolder",
+  },
 
+  pen: {
+    fontSize: "larger",
+  },
 });
 
 const Story = () => {
@@ -330,7 +328,8 @@ const Story = () => {
                 <CardMedia
                   className={classes.mainImage}
                   component="img"
-                  image={storyData.story.coverImage}
+                  image={storyData.story.coverImage} 
+                  alt="img"
                 />
               </Card>
               <Card className={classes.title} elevation={0}>
@@ -339,7 +338,11 @@ const Story = () => {
                     placement="right"
                     title={buildFriendlyDate(storyData.story.createdAt)}
                   >
-                    <Typography variant="h2" className={classes.title1}>
+                    <Typography
+                      variant="h2"
+                      component={"h1"}
+                      className={classes.title1}
+                    >
                       {storyData.story.title.length > 35
                         ? storyData.story.title.substring(0, 40) + "..."
                         : storyData.story.title}
@@ -376,18 +379,28 @@ const Story = () => {
                     </Button>
                   </Link>
                   <span>
-                    {currentUser.uid === storyData.story.creatorId && (
-                      <Fab
+                    {currentUser.uid === storyData.story.creatorId && (  
+                      <span>
+                       <label hidden for="edit">
+                       edit
+                     </label>
+                      <Fab 
+                      id="edit"
                         className={classes.editButton}
                         onClick={() =>
                           navigate(`/stories/${storyData.story._id}/edit`)
                         }
                       >
                         <Edit />
-                      </Fab>
+                      </Fab> 
+                      </span>
                     )}
                   </span>
+                  <label hidden for="forum">
+                    Forum
+                  </label>
                   <Fab
+                    id="forum"
                     className={classes.editButton}
                     onClick={() => setCommentsModal(true)}
                   >
@@ -411,11 +424,15 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="h4" className={classes.bold}>
+                  <Typography
+                    variant="h4"
+                    component={"h2"}
+                    className={classes.bold}
+                  >
                     Description
                   </Typography>
                   <br />
-                  <Typography variant="subtitle">
+                  <Typography variant="h6" component={"h2"}>
                     {storyData.story.shortDescription}
                   </Typography>{" "}
                   <br />
@@ -454,16 +471,18 @@ const Story = () => {
 
               <Card className={classes.card2} elevation={0}>
                 <CardContent>
-                  <Typography variant="h5" className={classes.typo}>
+                  <Typography
+                    variant="h5"
+                    component={"h2"}
+                    className={classes.typo}
+                  >
                     You might also like
                   </Typography>
                   <br />
                   <Divider />
                   <br />
                   {recommendations && recommendations.length === 0 && (
-                    <Typography>
-                      No stories available.
-                    </Typography>
+                    <Typography>No stories available.</Typography>
                   )}
                   {recommendations &&
                     recommendations.map((recommendation, idx) => {
@@ -493,8 +512,9 @@ const Story = () => {
                                     image={
                                       recommendation.coverImage
                                         ? recommendation.coverImage
-                                        : "/fablefinal.png"
-                                    }
+                                        : "/fablefinal.png" 
+                                    } 
+                                    alt="img"
                                   />
                                   <Box className={classes.box2}>
                                     <CardContent>
@@ -529,11 +549,10 @@ const Story = () => {
                       if (idx === recommendations.length - 1) {
                         return (
                           <div>
-                            <Typography>
-                              No stories available.
-                            </Typography>
+                            <Typography>No stories available.</Typography>
                           </div>
-                        )}
+                        );
+                      }
                     })}
                 </CardContent>
               </Card>
