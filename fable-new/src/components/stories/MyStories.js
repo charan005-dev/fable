@@ -65,6 +65,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "300%",
     paddingLeft: "40%",
+    marginTop: "3%",
   },
   paper1: {
     height: "10%",
@@ -138,31 +139,79 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "25px",
   },
+
+  button1: {
+    backgroundColor: "black",
+    color: "white",
+
+    marginTop: "1%",
+    marginLeft: "45%",
+    marginBottom: "10%",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+
+    textDecoration: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+
+  typo: {
+    marginLeft: "33%",
+    marginTop: "5%",
+  },
 });
 
 const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [myStories, setMyStories] = useState(null);
+  const [next, setNext] = useState(null);
   const classes = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function getMyStories() {
       try {
-        const take = 5;
-        const skip = take * pageNum;
-        const { data } = await axios.get(`/api/stories/all/me?skip=${skip}&take=${take}`, {
+        const { data } = await axios.get(`/api/stories/all/me?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
         console.log("my stories", data);
         setMyStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
     }
     getMyStories();
-  }, [pageNum]);
+  }, []);
+
+  const getNewData = async () => {
+    try {
+      let pageNo = pageNum + 1;
+      const take = 5;
+      const skip = take * pageNo;
+      const { data } = await axios.get(`/api/stories/all/me?skip=${skip}&take=${take}`, {
+        headers: { authtoken: await currentUser.getIdToken() },
+      });
+      const copyState = myStories;
+      for (const story of data.stories) {
+        copyState.push(story);
+      }
+      console.log("next set", data);
+      setMyStories(copyState);
+      setPageNum(pageNo);
+      setNext(data.next);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   if (myStories) {
     return (
@@ -173,7 +222,11 @@ const MyStories = () => {
           </Typography>
         </div>
         <br />
-
+        {myStories.length === 0 && (
+          <Typography variant="h4" component="h1" className={classes.typo}>
+            You haven't posted any stories yet!
+          </Typography>
+        )}
         {/* <Stack direction="row"> */}
         {myStories &&
           myStories.map((myStory) => {
@@ -227,16 +280,11 @@ const MyStories = () => {
             }
           })}
         {/* </Stack> */}
-
-        <Stack direction="row" spacing={3}>
-          <Button className={classes.nextButton} onClick={() => setPageNum(pageNum - 1)}>
-            Previous
+        {next && (
+          <Button className={classes.button1} onClick={getNewData}>
+            View More
           </Button>
-          <Button className={classes.nextButton} onClick={() => setPageNum(pageNum + 1)}>
-            Next
-          </Button>
-          <br />
-        </Stack>
+        )}
       </div>
     );
   }

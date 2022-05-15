@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
+
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -28,35 +29,50 @@ const useStyles = makeStyles({
   },
   imageWrapper: {},
   stories: {
-    width: "100%",
-    height: "50%",
     marginLeft: "0%",
   },
+  title: {
+    border: " 0px #fff",
+    width: "auto",
+    paddingRight: "100%",
+  },
+  stack: {
+    width: "auto",
+    height: "auto",
+    paddingRight: "auto",
+  },
+  media: {
+    height: "300px",
+    width: "100%",
+  },
+
   card1: {
-    marginBottom: "2%",
-    paddingBottom: "2%",
+    marginBottom: "1%",
   },
   text: {
-    color: "#A19D9D",
+    color: "grey",
     justifyContent: "center",
     marginLeft: "44%",
+    marginRight: "auto",
   },
   box: {
+    paddingLeft: "auto",
     marginLeft: "44%",
     marginRight: "100%",
   },
   title: {
-    color: "#000000",
+    color: "black",
     justifyContent: "center",
     fontSize: "300%",
-    paddingLeft: "45%",
+    paddingLeft: "40%",
   },
   paper1: {
     height: "10%",
     width: "5%",
     marginLeft: "5%",
+    marginRight: "auto",
     borderRadius: 5,
-    border: "0% solid #000",
+    border: "0px solid #000",
     marginBottom: "10%",
     marginTop: "10%",
   },
@@ -64,11 +80,31 @@ const useStyles = makeStyles({
   paper2: {
     width: "13%",
     marginLeft: "43.5%",
+    paddingLeft: "auto",
+    paddingRight: "auto",
+  },
+  paperfirst: {
+    height: "350px",
+    width: "auto",
+    marginLeft: "60%",
+    marginRight: "auto",
+    borderRadius: 5,
+    border: "0px solid #000",
+    marginBottom: "1%",
+    marginTop: "7%",
+    maxHeight: "29vw",
+    maxWidth: "10vw",
   },
   paper: {
     marginLeft: "10%",
-    maxWidth: "80%",
-    maxHeight: "60vw",
+    width: "80%",
+    height: "100%",
+  },
+  media: {
+    marginTop: "10%",
+    marginBottom: "10%",
+    height: "20%",
+    width: "20%",
   },
   card3: {
     width: "5vw",
@@ -80,13 +116,18 @@ const useStyles = makeStyles({
     marginTop: "-7%",
     height: "0%",
     width: "50%",
+    textDecoration: "none",
+    color: "black",
+    "&:hover": {
+      textDecoration: "none",
+      color: "black",
+    },
   },
   images: {
-    display: "inline-block",
     verticalAlign: "top",
     margin: "30%",
-    border: "solid 1% #000000",
-    borderRadius: "5%",
+    border: "solid 1px black",
+    borderRadius: "5px",
     float: "left",
     width: "10vw",
     height: "15vw",
@@ -97,124 +138,107 @@ const useStyles = makeStyles({
   content: {
     paddingLeft: "20%",
     marginBottom: "5%",
-    marginTop: "0% !important",
+    marginTop: "0%",
     fontWeight: "bold",
-    fontSize: "140%",
+    fontSize: "25px",
+    textDecoration: "none",
+    color: "black",
+    "&:hover": {
+      textDecoration: "none",
+      color: "black",
+    },
   },
+
   button1: {
-    backgroundColor: "#000000",
-    color: "#FFFFFF",
+    backgroundColor: "black",
+    color: "white",
+
     marginTop: "1%",
     marginLeft: "45%",
     marginBottom: "10%",
-    paddingTop: "1%",
-    paddingBottom: "1%",
-    paddingRight: "3%",
-    paddingLeft: "3%",
-    borderRadius: "4vw",
-    textDecoration: "#FFFFFF",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+
+    textDecoration: "white",
     "&:hover": {
-      backgroundColor: "#FFFFFF",
-      color: "#000000",
-      textDecoration: "#FFFFFF",
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
       fontWeight: "bold",
+    },
+  },
+
+  td: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
     },
   },
 });
 
-const AllStories = () => {
+const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
-  const [allStories, setAllStories] = useState(null);
+  const [myStories, setMyStories] = useState(null);
   const [next, setNext] = useState(null);
+  const { profileUserId } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function getAllPaginatedStories() {
+    async function getMyStories() {
       try {
-        const { data } = await axios.get(`/api/stories/all_stories?skip=0&take=5`, {
+        const { data } = await axios.get(`/api/users/${profileUserId}/stories?skip=0&take=5`, {
           headers: { authtoken: await currentUser.getIdToken() },
         });
-        console.log("all stories", data);
-        setAllStories(data.stories);
+        console.log("my stories", data);
+        setMyStories(data.stories);
         setNext(data.next);
       } catch (e) {
         console.log(e);
       }
     }
-    getAllPaginatedStories();
+    getMyStories();
   }, []);
-
-  //   useEffect(() => {
-  //     async function getNewData() {
-  //       try {
-  //         const { data } = await axios.get(`/api/stories/all_stories?skip=0&take=`, {
-  //           headers: { authtoken: await currentUser.getIdToken() },
-  //         });
-  //         const copyState = allStories;
-  //         for (const story of data.stories) {
-  //           copyState.push(story);
-  //         }
-  //         console.log("next set", data);
-  //         setAllStories(copyState);
-  //         setPageNum(pageNo);
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-  //     getNewData();
-  //   }, []);
 
   const getNewData = async () => {
     try {
       let pageNo = pageNum + 1;
       const take = 5;
       const skip = take * pageNo;
-      const { data } = await axios.get(`/api/stories/all_stories?skip=${skip}&take=${take}`, {
+      const { data } = await axios.get(`/api/users/${profileUserId}/stories?skip=${skip}&take=${take}`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
-      const copyState = allStories;
+      const copyState = myStories;
       for (const story of data.stories) {
         copyState.push(story);
       }
       console.log("next set", data);
-      setAllStories(copyState);
+      setMyStories(copyState);
       setPageNum(pageNo);
       setNext(data.next);
     } catch (e) {
       console.log(e);
     }
-    // console.log("callingnext");
   };
 
-  if (allStories) {
+  if (myStories) {
     return (
-      <div id="scrollableDiv">
+      <div>
         <div>
-          <br />
           <Typography className={classes.title} subtitle={""}>
-            All Stories
+            Your Stories
           </Typography>
         </div>
         <br />
-        {/* <div
-          id="scrollableDiv"
-          style={{
-            height: 300,
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-        > */}
-        {allStories && allStories.length === 0 && (
-          <Typography variant="h4" component="h1">
-            There are no stories yet!
-          </Typography>
-        )}
-        {allStories &&
-          allStories.map((allStory) => {
-            if (allStory) {
+
+        {/* <Stack direction="row"> */}
+        {myStories &&
+          myStories.map((myStory) => {
+            if (myStory) {
               return (
                 <div>
                   <Paper elevation={10} className={classes.paper}>
@@ -222,36 +246,39 @@ const AllStories = () => {
                       <Card className={classes.card1}>
                         <div>
                           <div className={classes.card3} elevation={0}>
-                            <Link to={`/stories/${allStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={allStory.coverImage} />
+                            <Link to={`/stories/${myStory._id}`} className={classes.td}>
+                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
                             </Link>
                           </div>
                           <div className={classes.card4}>
-                            <Link to={`/stories/${allStory._id}`}>
-                              <Typography className={classes.content}> {allStory.title} </Typography>
+                            <Link to={`/stories/${myStory._id}`} className={classes.td}>
+                              <Typography className={classes.content}> {myStory.title} </Typography>
                             </Link>
                           </div>
                           <div>
                             <Typography>
                               {" "}
-                              {allStory.shortDescription.length > 400
-                                ? allStory.shortDescription.substring(0, 400) + "..."
-                                : allStory.shortDescription}{" "}
+                              {myStory.shortDescription.length > 500
+                                ? myStory.shortDescription.substring(0, 500) + "..."
+                                : myStory.shortDescription}{" "}
                             </Typography>
                           </div>
                           <br />
 
                           <Stack direction="row" spacing={1}>
-                            {allStory &&
-                              allStory.genres &&
-                              allStory.genres.map((genre) => {
+                            {myStory &&
+                              myStory.genres &&
+                              myStory.genres.map((genre) => {
                                 return (
-                                  <Chip
-                                    label={genre}
-                                    size={"small"}
-                                    color="info"
-                                    onClick={() => navigate(`/stories/choose/${genre}`)}
-                                  />
+                                  <span>
+                                    <Chip
+                                      label={genre}
+                                      size={"small"}
+                                      color="info"
+                                      onClick={() => navigate(`/stories/choose/${genre}`)}
+                                    />
+                                    &nbsp;{" "}
+                                  </span>
                                 );
                               })}
                           </Stack>
@@ -263,16 +290,15 @@ const AllStories = () => {
               );
             }
           })}
+        {/* </Stack> */}
         {next && (
-          <Button className={classes.button1} onClick={getNewData}>
+          <Button onClick={getNewData} className={classes.button1}>
             View More
           </Button>
         )}
-
-        {/* </div> */}
       </div>
     );
   }
 };
 
-export default AllStories;
+export default MyStories;

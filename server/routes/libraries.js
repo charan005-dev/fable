@@ -75,8 +75,9 @@ router.get("/library_stories/:libraryId", async (req, res) => {
     let owner = req.query.owner;
     // let storyId = req.query.storyId;
     let library = req.params.libraryId;
+    let accessor = req.authenticatedUser;
     try {
-      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library);
+      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library, accessor);
       res.status(200).json({ success: true, libraries: allLibraryStories });
       return;
     } catch (e) {
@@ -161,6 +162,30 @@ router.delete("/:libraryId", async (req, res) => {
     } catch (e) {
       console.log(e);
       res.status(400).json({ success: false, error: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong." });
+  }
+});
+
+router.put("/:libraryId/removeStory", async (req, res) => {
+  try {
+    let { libraryId } = req.params;
+    let accessor = req.authenticatedUser;
+    let { storyId } = req.body;
+    if (!storyId) {
+      res.status(400).json({ success: false, message: "Story Id is mandatory in the params for performing removal." });
+      return;
+    }
+    try {
+      let afterRemoval = await libraries.removeStoryFromLibrary(libraryId, storyId, accessor);
+      res.status(200).json({ success: true, library: afterRemoval.library });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, message: e });
+      return;
     }
   } catch (e) {
     console.log(e);

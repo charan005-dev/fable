@@ -1,4 +1,5 @@
 const { users, stories } = require("../config/mongoCollections");
+const { firebaseApp } = require("../initFirebaseAdmin");
 
 const createUser = async (userId, emailAddress, displayName) => {
   const usersCollection = await users();
@@ -46,6 +47,10 @@ const updateUser = async (userId, displayName, wpm, filePath) => {
   if (checkUsername && userId !== checkUsername._id) {
     throw `Username is already taken!`;
   }
+  // propagate update across firebase & mongodb
+  await firebaseApp.auth().updateUser(userId, {
+    displayName,
+  });
   let updatedUser = {
     displayName,
     wpm,
@@ -69,8 +74,13 @@ const checkDisplayName = async (name) => {
 
 const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
   const storiesCollection = await stories();
-  const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).take(take).toArray();
-  return userStories;
+  const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).limit(take).toArray();
+  let next = await storiesCollection
+    .find({})
+    .skip(skip + take)
+    .limit(take)
+    .tryNext();
+  return { succes: true, stories: userStories, next: next ? true : false };
 };
 
 module.exports = {
