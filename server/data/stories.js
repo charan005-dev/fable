@@ -5,6 +5,7 @@ const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 const { all } = require("../routes/stories");
+const { validateRequired, validateUserId, validateUuid } = require("../helpers/validator");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
@@ -144,6 +145,8 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
 };
 
 const getAllStories = async (required, genres) => {
+  validateRequired(required);
+  // validateGenres(genres)
   const storiesCollection = await stories();
   required = parseInt(required);
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
@@ -156,8 +159,10 @@ const getAllStories = async (required, genres) => {
 };
 
 const getAllHotStories = async (required) => {
-  const storiesCollection = await stories();
   required = parseInt(required);
+  validateRequired(required);
+  const storiesCollection = await stories();
+
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   const allStories = await storiesCollection
     .aggregate([
@@ -195,6 +200,8 @@ const getStoryById = async (storyId, accessor) => {
 
 const recordUserVisit = async (accessor, storyId) => {
   const storiesCollection = await stories();
+  validateUserId(accessor);
+  validateUuid(storyId);
   const story = await storiesCollection.findOne({ _id: storyId });
   if (!story) throw `No story present with that id.`;
   await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
@@ -262,6 +269,7 @@ const getNRandom = async (n) => {
 };
 
 const getUserStoriesByGenres = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres);
   let myStories = await storiesCollection
@@ -275,6 +283,7 @@ const getUserStoriesByGenres = async (genres, authorId) => {
 };
 
 const getUserStoriesByGenresNonExact = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres); // [ 'Drama', 'Thriller' ]
   let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $in: genres } }).toArray();
