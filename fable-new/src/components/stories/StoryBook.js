@@ -48,10 +48,17 @@ const useStyles = makeStyles({
     borderRadius: 4,
   },
   fab: {
-    marginLeft: "10%",
+    marginLeft: "0%",
   },
   fablib: {
     marginLeft: "5%",
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
+    },
   },
   fab1: {
     marginLeft: "1%",
@@ -84,6 +91,7 @@ const useStyles = makeStyles({
     marginLeft: "-10%",
     marginRight: "60%",
     paddingBottom: "10%",
+    paddingLeft: "5%",
     paddingTop: "8%",
     fontSize: "40px",
     padding: "5%",
@@ -95,7 +103,7 @@ const useStyles = makeStyles({
     maxWidth: "100%",
   },
   title: {
-    border: " 0px #fff",
+    border: "0px #fff",
     width: "auto",
     height: "auto",
     marginTop: "1px",
@@ -225,9 +233,8 @@ const StoryBook = () => {
             </Card>
           </Grid>
           <Grid container justifyContent="center" direction="row">
-            <Card className={classes.cardnew} elevation={10}>
+            <Card className={classes.cardnew} elevation={0}>
               <Typography variant={"h3"}>{story.title}</Typography>
-              
               <span className={classes.fab}>
                 {!story.likedBy.includes(currentUser.uid) && (
                   <Fab variant="circular" color="default" onClick={handleLike}>

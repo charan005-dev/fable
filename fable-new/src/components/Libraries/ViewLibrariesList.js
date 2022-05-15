@@ -50,36 +50,85 @@ const useStyles = makeStyles({
     paddingLeft: "0%",
   },
   card2: {
-    marginLeft: "0px",
+    paddingLeft: "5%",
+    paddingRight: "20%",
+    paddingTop: "1%",
+    paddingBottom: "2%"
   },
   card3: {
     width: "700%",
   },
   card4: {
     overflow: "inherit",
-
+    paddingTop: "10%",
     marginLeft: "3%",
     paddingRight: 10,
     width: "100%",
   },
   card5: {
+    paddingTop: "1%",
     overflow: "inherit",
     width: "100%",
     color: "red",
   },
   create: {
-    marginLeft: "50%",
-    height: "35px",
-    borderRadius: "0px",
+    marginLeft: "49%",
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 2px",
+    },
   },
   create1: {
-    marginLeft: "50%",
-    height: "auto",
+    marginLeft: "20%",
+    height: "auto%",
     width: "60%",
     maxWidth: "100%",
-    borderRadius: "0px",
   },
-  paper: { width: "80%", marginRight: "10%", paddingRight: "20%", paddingLeft: "0%", position: "absolute" },
+  paper: { 
+    width: "60%", 
+    // marginRight: "30%",
+    marginLeft: "20%", 
+    paddingBottom: "4%"
+    // paddingRight: "10%", 
+    // paddingLeft: "10%", 
+    // position: "absolute" 
+  },
+  libTitle:{
+    paddingLeft: "45%"
+  },
+  nolib:{
+    paddingLeft: "15%"
+  },
+  story:{
+    float:"right",
+    marginTop: "1vw",
+    paddingBottom: "2%"
+  },
+  link1:{
+    fontSize: 20,
+    // fontWeight: "bold",
+    textDecoration: "none"
+  },
+  edit:{
+    backgroundColor: "black",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      radius: "solid 1px",
+    },
+  },delete:{
+    backgroundColor: "#ececec",
+    color: "black",
+    // "&:hover": {
+    //   backgroundColor: "red",
+    //   color: "black",
+    //   radius: "solid 1px",
+    // },
+  }
 });
 
 const style = {
@@ -259,7 +308,7 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2"> Library</Typography>
+        <Typography variant="h2"> LIBRARY</Typography>
       </div>
       <Divider />
 
@@ -267,7 +316,7 @@ const ViewLibrariesList = () => {
       <br />
 
       <Paper
-        elevation={0}
+        elevation={10}
         className={classes.paper}
         sx={{
           bgcolor: "background.default",
@@ -404,7 +453,9 @@ const ViewLibrariesList = () => {
                       <CardContent>
                         <Stack spacing={0} direction={"row"}>
                           <Card className={classes.card3} elevation={0}>
+                          <br />
                             <Stack direction="row" spacing={2}>
+                            <br />
                               <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                                 {lib.private ? (
                                   <Tooltip placement="left" arrow title="Private">
@@ -416,14 +467,14 @@ const ViewLibrariesList = () => {
                                   </Tooltip>
                                 )}
                               </Badge>
-                              <Link to={`/libraries/${lib._id}`}>
-                                <Typography variant="body1">
+                              <Link to={`/libraries/${lib._id}`} class="text-decoration-none" >
+                                <Typography variant="body1" className={classes.link1}>
                                   {lib.libraryName.length > 20
                                     ? lib.libraryName.length.substring(16) + "..."
                                     : lib.libraryName}
                                 </Typography>
                               </Link>
-                              <Typography variant="overline">({lib.stories.length} Stories Inside)</Typography>
+                              <Typography variant="overline" className={classes.story}>({lib.stories.length} Stories Inside)</Typography>
                             </Stack>
                           </Card>
 
@@ -455,7 +506,7 @@ const ViewLibrariesList = () => {
                               </Button>
                             </DialogActions>
                           </Dialog>
-
+                          &nbsp;&nbsp;
                           <Card className={classes.card5} elevation={0}>
                             <Fab className={classes.delete} color="inherit" onClick={() => openDelLibModal(lib._id)}>
                               <DeleteIcon />
@@ -471,7 +522,7 @@ const ViewLibrariesList = () => {
               );
             })}
           {libraryData && libraryData.length === 0 && (
-            <div>
+            <div className={classes.nolib}>
               Seems like you're missing out on so much fun!{" "}
               <Link to={`/libraries/create`} class="text-decoration-none">
                 Click here
