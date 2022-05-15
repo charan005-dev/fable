@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   card: {
     margin: 6,
     float: "left",
-    backgroundColor: "#2f2f2f",
+    backgroundColor: "#2F2F2F",
     color: "#fff",
     paddingLeft: 30,
     padding: 10,
@@ -75,7 +75,6 @@ const useStyles = makeStyles({
     margin: "3px",
     padding: "3px",
   },
-
   cards: {
     width: "500px",
     height: "600px",
@@ -102,23 +101,35 @@ const useStyles = makeStyles({
     paddingLeft: "43.5%",
   },
   card1: {
-    width: "100%",
-    height: "8%",
-    marginLeft: "10%",
+    width: "20%",
+    height: "40%",
+    marginLeft: "5%",
     paddingLeft: "0%",
-    paddingRight: "0%",
-    marginRight: "2%",
-    paddingBottom: "0%",
-    marginBottom: "1%",
-    fontSize: "25px",
+    paddingRight: "10%",
+    marginRight: "5%",
   },
   card2: {
     width: "100%",
     marginTop: "5%",
     marginRight: "10%",
-    marginBottom: "10%",
+    marginBottom: "5%",
     paddingBottom: "2%",
     height: "2%",
+  },
+  images1: {
+    // display: "inline-block",
+    // verticalAlign: "top",
+    margin: "30%",
+    border: "solid 1px black",
+    borderRadius: "5px",
+    shapeOutside:"",
+    //boxShadow: "0px 5px 10px",
+    // float: "left",
+    width: "10vw",
+    height: "15vw",
+    marginTop: "50%",
+    marginBottom: "40%",
+    marginLeft: "10%",
   },
   media: {
     marginTop: "10%",
@@ -126,6 +137,11 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
+  paper:{
+    marginTop: "-3%",
+    marginRight: "15%",
+    marginBottom: "5%"
+  }
 });
 
 const ManageAllStories = () => {
@@ -213,6 +229,7 @@ const ManageAllStories = () => {
               }
             })}
           <br />
+          <br />
           <Card className={classes.card}>
             Individual Filter
             <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
@@ -242,7 +259,7 @@ const ManageAllStories = () => {
               {allStories.length > 0 &&
                 allStories.map((story) => {
                   return (
-                    <Grid item xs={5}>
+                    <Grid >
                       <Paper
                         elevation={20}
                         className={classes.paper}
@@ -256,17 +273,17 @@ const ManageAllStories = () => {
                         <Stack direction="row">
                           <Card className={classes.card1} elevation={0}>
                             <Link to={`/stories/${story._id}`}>
-                              <CardMedia className={classes.media} component="img" image={story.coverImage} />
+                              <CardMedia className={classes.images1} component="img" image={story.coverImage} />
                             </Link>
                           </Card>
 
                           <Card className={classes.card2} elevation={0}>
                             <CardContent>
-                              <Link to={`/stories/${story._id}`}>
+                              <Link to={`/stories/${story._id}`} class="text-decoration-none">
                                 <Typography>{story.title}</Typography>
                               </Link>
                             </CardContent>
-                            <br />
+                            
                             <CardContent>
                               <Typography>
                                 {story.shortDescription.length > 200

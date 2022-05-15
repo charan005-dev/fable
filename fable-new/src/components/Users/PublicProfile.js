@@ -214,7 +214,6 @@ const useStyles = makeStyles({
     width: 35,
     backgroundColor: "black",
     color: "white",
-
     "&:hover": {
       backgroundColor: "white",
       color: "black",
@@ -322,7 +321,7 @@ const PublicProfile = () => {
 
   useEffect(() => {
     async function getOwnerLibraries() {
-      const { data } = await axios.get(`/api/libraries/me`, {
+      const { data } = await axios.get(`/api/libraries/user/${profileUserId}`, {
         headers: { authtoken: await currentUser.getIdToken() },
       });
       console.log("Content", data);
@@ -432,6 +431,7 @@ const PublicProfile = () => {
                       <br />
                       <Stack direction={"column"} spacing={2}>
                         {profileData &&
+
                           profileData.profile.storiesCreated.map(
                             (profile, idx) => {
                               if (idx > 2) {
@@ -458,6 +458,7 @@ const PublicProfile = () => {
                                       </Typography>
                                     </Link>
                                     <br />
+
 
                                     <Typography>
                                       {profile.shortDescription.length > 50
@@ -493,15 +494,14 @@ const PublicProfile = () => {
                           )}
                       </Stack>
 
-                      <Button
-                        className={classes.button1}
-                        onClick={() => navigate(`/stories/manage`)}
-                      >
+                      <Button className={classes.button1} onClick={() => navigate(`/stories/me`)}>
+
                         View More
                       </Button>
                     </Card>
                   </Paper>
                   <Paper className={classes.cardpaper1} elevation={0}>
+
                     <Card className={classes.cardpaper2} elevation={10}>
                       <Typography
                         variant="h3"

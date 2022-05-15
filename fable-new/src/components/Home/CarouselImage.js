@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 
 function CarouselImage() {
   const { currentUser } = useContext(AuthContext);
-  const [storyData, setStoryData] = useState(null);
+  const [storyData, setStoryData] = useState([]);
   const [storyIds, setStoryIds] = useState([]);
   const navigate = useNavigate();
   const classes = useStyles();
@@ -61,20 +61,25 @@ function CarouselImage() {
   if (storyData)
     return (
       <div className="App">
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", backgroundColor:"white" }}>
           <div
             style={{
-              padding: "0 20px",
+              padding: " 1px",
+              marginbottom:"0%",
+              marginLeft:"0%"
+            
+            
             }}
           >
-            <Carousel
+
+            {storyData.length >= 6 && <Carousel
               data={storyData}
               time={1000}
               interval={1000}
               width="850px"
               height="300px"
               captionStyle={captionStyle}
-              radius="10px"
+              radius="15px"
               slideNumber={true}
               slideNumberStyle={slideNumberStyle}
               captionPosition="bottom"
@@ -92,24 +97,20 @@ function CarouselImage() {
                 maxWidth: "850px",
                 maxHeight: "500px",
                 margin: "40px auto",
+               
               }}
             />
-            <div>
-              {/* Welcome Home
+}
+           
+            
+              </div>
+              <br />
 
-      <Chip
-      label={currentUser.displayName}
-      size={"large"}
-      color="info"
-      onClick={() => navigate(`/`)}
-    /> */}
+            
             </div>
-            <br />
-
-            {/* <Dots  className="dots"length={10} active={5} /> */}
           </div>
-        </div>
-      </div>
+       
+  
     );
 }
 

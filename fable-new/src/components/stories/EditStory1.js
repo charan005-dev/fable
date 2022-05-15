@@ -11,15 +11,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@material-ui/core";
-import {
-  Button,
-  TextField,
-  FormControl,
-  Alert,
-  Stack,
-  Backdrop,
- 
-} from "@mui/material";
+import { Button, TextField, FormControl, Alert, Stack, Backdrop } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -29,9 +21,9 @@ import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
-import axios from "axios"; 
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react' 
-import logo from '../Assets/5.gif'
+import axios from "axios";
+
+import logo from "../Assets/5.gif";
 
 const genres = [
   "Horror",
@@ -185,14 +177,14 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
-  }, 
-  logo: 
-  {
-      marginLeft:"30%",
-      marginTop: "8%", 
-      border: "20px",
-      color:"black"
-  }
+
+  },
+  logo: {
+    marginLeft: "30%",
+    marginTop: "8%",
+    border: "20px",
+  },
+
 });
 
 const EditStory1 = () => {
@@ -305,8 +297,7 @@ const EditStory1 = () => {
     )
       return {
         e: true,
-        message:
-          "Your title value is invalid or contains more than the expected amount of characters.",
+        message: "Your title value is invalid or contains more than the expected amount of characters.",
       };
     if (
       !changingState.desc ||
@@ -318,8 +309,7 @@ const EditStory1 = () => {
     )
       return {
         e: true,
-        message:
-          "Your description is invalid or contains more than the expected amount of characters.",
+        message: "Your description is invalid or contains more than the expected amount of characters.",
       };
     let content = editorRef.current.getContent();
     if (
@@ -332,8 +322,7 @@ const EditStory1 = () => {
     )
       return {
         e: true,
-        message:
-          "Your story content is invalid or contains more than the expected amount of characters.",
+        message: "Your story content is invalid or contains more than the expected amount of characters.",
       };
     if (
       !Array.isArray(changingState.genres) ||
@@ -344,9 +333,7 @@ const EditStory1 = () => {
         e: true,
         message:
           "The selected genres are invalid. " +
-          (changingState.genres.length === 0
-            ? "Please select at least one genre for your story"
-            : ""),
+          (changingState.genres.length === 0 ? "Please select at least one genre for your story" : ""),
       };
     }
     return { e: false };
@@ -365,10 +352,7 @@ const EditStory1 = () => {
     formData.append("title", changingState.title);
     formData.append("shortDescription", changingState.desc);
     formData.append("genres", changingState.genres);
-    formData.append(
-      "contentHtml",
-      editorRef.current ? editorRef.current.getContent() : ""
-    );
+    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", changingState.coverImage);
     try {
       setUpdateStarted(true);
@@ -419,13 +403,13 @@ const EditStory1 = () => {
   };
 
   if (updateStarted) {
-    return ( 
-        <img src={logo} alt="loading..." className={classes.logo} />
-    //   <Backdrop open={updateStarted}>
-    //     <Typography variant="body1">updating...</Typography>
-    //     <br />
-    //     <CircularProgress isIndeterminate color='green.300' />
-    //   </Backdrop>
+    return (
+      <img src={logo} alt="loading..." className={classes.logo} />
+      //   <Backdrop open={updateStarted}>
+      //     <Typography variant="body1">updating...</Typography>
+      //     <br />
+      //     <CircularProgress isIndeterminate color='green.300' />
+      //   </Backdrop>
     );
   }
 
@@ -435,11 +419,7 @@ const EditStory1 = () => {
         <br />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            <Button
-              variant="contained"
-              component="label"
-              className={classes.button2}
-            >
+            <Button variant="contained" component="label" className={classes.button2}>
               Upload a cover photo for your story
               <input
                 type="file"
@@ -452,11 +432,7 @@ const EditStory1 = () => {
                 <Grid container justifyContent="center">
                   <Typography variant="overline">Preview</Typography>
                   <br />
-                  <img
-                    className={classes.imagePreview}
-                    src={uploadedImageUrl}
-                    alt="preview of uploaded"
-                  />
+                  <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
                 </Grid>
               </Paper>
             )}
@@ -466,11 +442,7 @@ const EditStory1 = () => {
             <br />
 
             <Grid container elevation={25} className={classes.grid}>
-              <Typography
-                variant="h3"
-                component={"h1"}
-                className={classes.headertext}
-              >
+              <Typography variant="h3" component={"h1"} className={classes.headertext}>
                 Use this place to edit and fine-tune your story!
               </Typography>
             </Grid>
@@ -479,8 +451,7 @@ const EditStory1 = () => {
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
               <Typography variant={"h4"} className={classes.title}>
-                Title{" "}
-                <Typography variant="overline">(6 - 30 characters)</Typography>
+                Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
 
@@ -503,10 +474,7 @@ const EditStory1 = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story{" "}
-                <Typography variant="overline">
-                  (30 - 5000 characters)
-                </Typography>
+                Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
               </Typography>
               <br />
 
@@ -533,19 +501,14 @@ const EditStory1 = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Your Story Goes Here!{" "}
-                <Typography variant="overline">
-                  (200 - 1M characters)
-                </Typography>
+                Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
               </Typography>
               <br />
               <Editor
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
-                    let close = document.getElementsByClassName(
-                      "tox-notification__dismiss"
-                    )[0];
+                    let close = document.getElementsByClassName("tox-notification__dismiss")[0];
                     if (close) close.click();
                   }, 20);
                 }}
@@ -556,8 +519,7 @@ const EditStory1 = () => {
               <br />
               <br />
               <Typography variant={"h4"} className={classes.title}>
-                Select All Genres that Apply!{" "}
-                <Typography variant="overline">(At least 1)</Typography>
+                Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />
 
@@ -591,17 +553,11 @@ const EditStory1 = () => {
                   Update Story
                 </Button>
 
-                <Button
-                  className={classes.buttondelete}
-                  onClick={requestDeletionConfirmation}
-                >
+                <Button className={classes.buttondelete} onClick={requestDeletionConfirmation}>
                   Delete Story
                 </Button>
 
-                <Button
-                  onClick={() => window.history.back()}
-                  className={classes.buttonback}
-                >
+                <Button onClick={() => window.history.back()} className={classes.buttonback}>
                   back
                 </Button>
               </span>
@@ -611,9 +567,7 @@ const EditStory1 = () => {
         </Stack>
         <Dialog open={deleteModal}>
           <DialogTitle id="title-text-conf">
-            {
-              "Are you sure you want to delete this story? This action cannot be reversed."
-            }
+            {"Are you sure you want to delete this story? This action cannot be reversed."}
           </DialogTitle>
           <DialogActions>
             <Button

@@ -89,6 +89,24 @@ router.get("/library_stories/:libraryId", async (req, res) => {
   }
 });
 
+// return only userId's public libraries
+router.get("/user/:userId", async (req, res) => {
+  try {
+    let { userId } = req.params;
+    try {
+      let publicLibraries = await libraries.getPublicLibrariesOfUser(userId);
+      res.status(200).json({ success: true, libraries: publicLibraries });
+      return;
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, error: e });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ success: false, error: "Sorry, something went wrong" });
+  }
+});
+
 router.post("/add", async (req, res) => {
   try {
     let owner = req.body.owner;
