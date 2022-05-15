@@ -177,12 +177,14 @@ const useStyles = makeStyles({
   imagePreview: {
     backgroundColor: "#808080",
     width: "19.8vw",
+
   },
   logo: {
     marginLeft: "30%",
     marginTop: "8%",
     border: "20px",
   },
+
 });
 
 const EditStory1 = () => {
