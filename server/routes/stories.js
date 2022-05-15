@@ -35,20 +35,21 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-const validGenres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { validGenres } = require("../genres").validGenres;
+// const validGenres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 router.get("/all", async (req, res) => {
   try {

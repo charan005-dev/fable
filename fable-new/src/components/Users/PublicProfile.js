@@ -176,8 +176,17 @@ const useStyles = makeStyles({
     // color: "black",
   },
   subcard: {
+    width: "4%",
+    marginLeft: "26.2%",
+    fontSize: "23px",
+  },
+  subcard1: {
     width: "6%",
-    marginLeft: "23%",
+    marginLeft: "5%",
+    fontSize: "23px",
+  },
+  mbi: {
+    color: "grey",
   },
   cardpaper: {
     width: "55vw",
@@ -370,23 +379,19 @@ const PublicProfile = () => {
             <br />
             <Stack direction="row" className={classes.card3} spacing={5}>
               <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text1}>
-                  <MenuBookIcon />
-                  {profileData.profile.storiesCreated.length}
-                </Typography>
+                <MenuBookIcon className={classes.mbi} /> &nbsp;&nbsp;
+                {profileData.profile.storiesCreated.length}
               </Card>
               &nbsp; &nbsp;
-              <Card className={classes.subcard} elevation={0}>
-                <Typography variant="h6" component={"h2"} className={classes.text2}>
-                  <LibraryAddIcon />
-                  {!libraryData.private && libraryData.length}
-                </Typography>
+              <Card className={classes.subcard1} elevation={0}>
+                <LibraryAddIcon className={classes.mbi} /> &nbsp;&nbsp;
+                {!libraryData.private && libraryData.length}
               </Card>
             </Stack>
           </Card>
 
           <br />
-          {/* <Grid> */}
+
           <Stack direction="row" className={classes.libraryCol} spacing={2}>
             <span>
               <div>
@@ -423,7 +428,11 @@ const PublicProfile = () => {
                                 <Card className={classes.imagecard}>
                                   <CardActionArea>
                                     <Link to={`/stories/${profile._id}`}>
-                                      <CardMedia className={classes.media} component="img" image={profile.coverImage} />
+                                      <CardMedia
+                                        className={classes.media}
+                                        component="img"
+                                        image={profile.coverImage ? profile.coverImage : "/images/noimage.jpeg"}
+                                      />
                                     </Link>
                                   </CardActionArea>
                                 </Card>

@@ -183,6 +183,7 @@ const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [myStories, setMyStories] = useState(null);
+  const [next, setNext] = useState(null);
   const { profileUserId } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
@@ -195,6 +196,7 @@ const MyStories = () => {
         });
         console.log("my stories", data);
         setMyStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
@@ -217,6 +219,7 @@ const MyStories = () => {
       console.log("next set", data);
       setMyStories(copyState);
       setPageNum(pageNo);
+      setNext(data.next);
     } catch (e) {
       console.log(e);
     }
@@ -244,7 +247,11 @@ const MyStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${myStory._id}`} className={classes.td}>
-                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
+                              <CardMedia
+                                className={classes.images}
+                                component="img"
+                                image={myStory.coverImage ? myStory.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </div>
                           <div className={classes.card4}>
@@ -288,10 +295,11 @@ const MyStories = () => {
             }
           })}
         {/* </Stack> */}
-
-        <Button onClick={getNewData} className={classes.button1}>
-          View More
-        </Button>
+        {next && (
+          <Button onClick={getNewData} className={classes.button1}>
+            View More
+          </Button>
+        )}
       </div>
     );
   }

@@ -29,6 +29,7 @@ import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
 import ShowByGenres from "./Stories/ShowByGenres";
 import CreateStory1 from "./Stories/CreateStory";
+import Error404page from "./Error404page"; 
 
 function App() {
   const context = useContext(ThemeContext);
@@ -104,13 +105,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-      {/* <div className="page-container">
-
-        <footer className="App-footer">
-
-          <Footer />
-        </footer>
-      </div> */}
+ 
     </AuthProvider>
   );
 }

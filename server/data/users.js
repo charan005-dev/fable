@@ -94,7 +94,12 @@ const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
   validatePaginationParams(skip, take);
   const storiesCollection = await stories();
   const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).limit(take).toArray();
-  return userStories;
+  let next = await storiesCollection
+    .find({})
+    .skip(skip + take)
+    .limit(take)
+    .tryNext();
+  return { succes: true, stories: userStories, next: next ? true : false };
 };
 
 module.exports = {

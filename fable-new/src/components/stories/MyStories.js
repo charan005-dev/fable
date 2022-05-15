@@ -65,6 +65,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "300%",
     paddingLeft: "40%",
+    marginTop: "3%",
   },
   paper1: {
     height: "10%",
@@ -138,12 +139,40 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "25px",
   },
+
+  button1: {
+    backgroundColor: "black",
+    color: "white",
+
+    marginTop: "1%",
+    marginLeft: "45%",
+    marginBottom: "10%",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    paddingRight: "40px",
+    paddingLeft: "40px",
+    borderRadius: "35px",
+
+    textDecoration: "white",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+      textDecoration: "white",
+      fontWeight: "bold",
+    },
+  },
+
+  typo: {
+    marginLeft: "33%",
+    marginTop: "5%",
+  },
 });
 
 const MyStories = () => {
   const { currentUser } = useContext(AuthContext);
   const [pageNum, setPageNum] = useState(0);
   const [myStories, setMyStories] = useState(null);
+  const [next, setNext] = useState(null);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -155,6 +184,7 @@ const MyStories = () => {
         });
         console.log("my stories", data);
         setMyStories(data.stories);
+        setNext(data.next);
       } catch (e) {
         console.log(e);
       }
@@ -177,6 +207,7 @@ const MyStories = () => {
       console.log("next set", data);
       setMyStories(copyState);
       setPageNum(pageNo);
+      setNext(data.next);
     } catch (e) {
       console.log(e);
     }
@@ -192,7 +223,7 @@ const MyStories = () => {
         </div>
         <br />
         {myStories.length === 0 && (
-          <Typography variant="h4" component="h1">
+          <Typography variant="h4" component="h1" className={classes.typo}>
             You haven't posted any stories yet!
           </Typography>
         )}
@@ -208,7 +239,11 @@ const MyStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${myStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
+                              <CardMedia
+                                className={classes.images}
+                                component="img"
+                                image={myStory.coverImage ? myStory.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </div>
                           <div className={classes.card4}>
@@ -249,8 +284,11 @@ const MyStories = () => {
             }
           })}
         {/* </Stack> */}
-
-        <Button onClick={getNewData}>View More</Button>
+        {next && (
+          <Button className={classes.button1} onClick={getNewData}>
+            View More
+          </Button>
+        )}
       </div>
     );
   }

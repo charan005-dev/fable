@@ -11,20 +11,21 @@ const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
 const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
-const validGenres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { validGenres } = require("../genres");
+// const validGenres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const saveToRedis = async (key, value) => {
   const redisClient = createClient();
@@ -161,6 +162,7 @@ const getAllHotStories = async (required) => {
   required = parseInt(required);
   validateRequired(required);
   const storiesCollection = await stories();
+
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   const allStories = await storiesCollection
     .aggregate([

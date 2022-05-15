@@ -153,7 +153,8 @@ router.get("/:userId/stories", async (req, res) => {
       return;
     }
     let userStories = await users.getStoriesOfUser(userId, skip, take);
-    res.status(200).json({ success: true, stories: userStories });
+
+    res.status(200).json({ success: true, stories: userStories.stories, next: userStories.next });
     return;
   } catch (e) {
     console.log(e);
