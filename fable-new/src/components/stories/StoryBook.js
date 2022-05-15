@@ -197,19 +197,34 @@ const StoryBook = () => {
   const addToLibrary = async () => {
     async function addToMyLibrary() {
       if (currentUser.uid && selectedLib.length > 0) {
-        const { data } = await axios.post(
-          `/api/libraries/add`,
-          {
-            owner: currentUser.uid,
-            libraryId: selectedLib,
-            storyId: storyId,
-          },
-          { headers: { authtoken: await currentUser.getIdToken() } }
-        );
-        console.log(data);
-        setLibSelectModal(false);
-        toast.dark("Successfully added to library " + data.library.library.libraryName);
-        setAdded(added + 1);
+        try {
+          const { data } = await axios.post(
+            `/api/libraries/add`,
+            {
+              owner: currentUser.uid,
+              libraryId: selectedLib,
+              storyId: storyId,
+            },
+            { headers: { authtoken: await currentUser.getIdToken() } }
+          );
+          console.log(data);
+          setLibSelectModal(false);
+          toast.dark("Successfully added to library " + data.library.library.libraryName);
+          setAdded(added + 1);
+        } catch (e) {
+          console.log(e);
+          if (e.response && e.response.data && e.response.data.error) {
+            toast.error(e.response.data.error, {
+              theme: "dark",
+              autoClose: 2000,
+            });
+            return;
+          }
+          toast.error("Cannot perform the action. Please try again.", {
+            theme: "dark",
+          });
+          return;
+        }
       }
     }
     addToMyLibrary();

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import CarouselImage from "./CarouselImage";
 import HomeImage from "./HomeImage";
+import Greeting from "./Greeting";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -16,17 +18,14 @@ const useStyles = makeStyles({
 const Home = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-
   let { currentUser } = useContext(AuthContext);
+
   return (
     <div>
       <div className="carousel">
         <CarouselImage />
       </div>
-      &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Welcome
-      <Typography variant="h5" component={"h1"} className={classes.storyLink}>
-        &nbsp;&nbsp; &nbsp;&nbsp; {currentUser.displayName && currentUser.displayName + "!"}
-      </Typography>
+      <Greeting />
       <br />
       <HomeImage />
       {/* <HomeTest /> */}

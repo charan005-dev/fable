@@ -467,21 +467,23 @@ const getCommentsFromStory = async (storyId) => {
 
 const getMyStories = async (accessor, skip = 0, take = 20) => {
   const storiesCollection = await stories();
-  let myStories = await storiesCollection
+  let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
+  let next = await storiesCollection
     .find({ creatorId: accessor })
-    .skip(skip)
+    .skip(skip + take)
     .limit(take)
-    .toArray();
-  return { success: true, stories: myStories };
+    .tryNext();
+  return { success: true, stories: myStories, next: next ? true : false };
 };
 const getAllPaginatedStories = async (skip = 0, take = 20) => {
   const storiesCollection = await stories();
-  let allStories = await storiesCollection
+  let allStories = await storiesCollection.find({}).skip(skip).limit(take).toArray();
+  let next = await storiesCollection
     .find({})
-    .skip(skip)
+    .skip(skip + take)
     .limit(take)
-    .toArray();
-  return { success: true, stories: allStories };
+    .tryNext();
+  return { success: true, stories: allStories, next: next ? true : false };
 };
 
 module.exports = {
