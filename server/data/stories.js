@@ -19,7 +19,6 @@ const {
   validatePaginationParams,
 } = require("../helpers/validator");
 
-
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
@@ -201,10 +200,10 @@ const getStoryById = async (storyId, accessor) => {
   const usersCollection = await users();
   let story = null;
   try {
-  story = JSON.parse(await getFromRedis(storyId));
-} catch(e) {
-  console.log("Cannot get data from redis.")
-}
+    story = JSON.parse(await getFromRedis(storyId));
+  } catch (e) {
+    console.log("Cannot get data from redis.");
+  }
   if (!story) story = await storiesCollection.findOne({ _id: storyId });
   // even if the database doesn't contain the story throw
   if (!story) throw `No story present with that id.`;
@@ -214,8 +213,8 @@ const getStoryById = async (storyId, accessor) => {
   else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   try {
     const redisClient = createClient();
-    if ((await redisClient.ping()) !== 'PONG')
-    await saveToRedis(storyId, story);
+    if (!redisClient.isOpen) await redisClient.connect();
+    if ((await redisClient.ping()) !== "PONG") await saveToRedis(storyId, story);
   } catch (e) {
     // simply log errors and do nothing
     console.log(e);

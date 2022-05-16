@@ -100,7 +100,7 @@ router.get("/library_stories/:libraryId", async (req, res) => {
     let accessor = req.authenticatedUser;
     try {
       validateUserId(owner);
-      validateUuid(libraryId);
+      validateUuid(library);
       validateUserId(accessor);
     } catch (e) {
       res.status(400).json({ success: false, message: e, error: e });
