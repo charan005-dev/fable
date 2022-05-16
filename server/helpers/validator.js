@@ -5,16 +5,14 @@ const { validGenres } = require("../genres");
 const _ = require("lodash");
 
 const validateUuid = (id) => {
+  console.log(id, uuid.validate(id));
   if (!uuid.validate(id)) throw `Invalid id parameter provided.`;
 };
 
-const validateString = (strings) => {
-  for (const str of strings) {
-    if (!str || typeof str !== "string" || str.length === 0 || str.trim().length === 0) {
-      return false;
-    }
+const validateSearchQ = (str) => {
+  if (!str || typeof str !== "string" || str.length === 0 || str.trim().length === 0) {
+    throw `Invalid string parameter provided.`;
   }
-  return true;
 };
 
 const validateUserId = (uid) => {
@@ -103,6 +101,60 @@ const validateExact = (exact) => {
   }
 };
 
+const validateStoryTitle = (title) => {
+  if (
+    !title ||
+    typeof title !== "string" ||
+    title.length === 0 ||
+    title.trim().length === 0 ||
+    title.length < 6 ||
+    title.length > 30
+  )
+    throw `Your title value is invalid or contains more/less than the expected amount of characters.`;
+};
+
+const validateStoryDesc = (desc) => {
+  if (
+    !desc ||
+    typeof desc !== "string" ||
+    desc.length === 0 ||
+    desc.trim().length === 0 ||
+    desc.length < 30 ||
+    desc.length > 5000
+  )
+    throw `Your description is invalid or contains more/less than the expected amount of characters.`;
+};
+
+const validateStoryContent = (content) => {
+  if (
+    !content ||
+    typeof content !== "string" ||
+    content.length === 0 ||
+    content.trim().length === 0 ||
+    content.length < 200 ||
+    content.length > 1000000
+  )
+    throw `Your story content is invalid or contains more/less than the expected amount of characters.`;
+};
+
+const validateComment = (comment) => {
+  if (
+    !comment ||
+    typeof comment !== "string" ||
+    comment.length === 0 ||
+    comment.trim().length === 0 ||
+    comment.length < 6 ||
+    comment.length > 250
+  )
+    throw `Your comment text is invalid. Enter less than 250 characters and more than 6 characters.`;
+};
+
+const validateLibraryName = (lname) => {
+  if (!lname || typeof lname !== "string" || lname.trim().length === 0) {
+    throw `Please make sure that you enter a valid library name(only characters)`;
+  }
+};
+
 module.exports = {
   validateUuid,
   validateDisplayName,
@@ -114,4 +166,10 @@ module.exports = {
   validateHot,
   validateExact,
   validateGenres,
+  validateStoryContent,
+  validateStoryDesc,
+  validateStoryTitle,
+  validateSearchQ,
+  validateComment,
+  validateLibraryName,
 };

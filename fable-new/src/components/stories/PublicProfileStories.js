@@ -20,7 +20,7 @@ import {
 } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
-
+import noImage from "../Assets/noimage.jpeg";
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -250,7 +250,7 @@ const MyStories = () => {
                               <CardMedia
                                 className={classes.images}
                                 component="img"
-                                image={myStory.coverImage ? myStory.coverImage : "/images/noimage.jpeg"}
+                                image={myStory.coverImage ? myStory.coverImage : noImage}
                               />
                             </Link>
                           </div>

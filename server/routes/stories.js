@@ -13,6 +13,12 @@ const {
   validateUserId,
   validateExact,
   validatePaginationParams,
+  validateStoryContent,
+  validateStoryTitle,
+  validateStoryDesc,
+  validateSearchQ,
+  validateComment,
+  validateGenres,
 } = require("../helpers/validator");
 
 let winpath = "";
@@ -66,8 +72,8 @@ router.get("/all", async (req, res) => {
     else genres = [];
     try {
       validateRequired(required);
-      validGenres;
-      validateHot(hot);
+      validateGenres(genres);
+      // validateHot(hot);
     } catch (e) {
       res.status(200).json({ success: false, message: e });
       return;
@@ -263,7 +269,19 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
       return;
     }
     const { title, shortDescription, contentHtml, genres } = req.body;
-    // TODO validate incoming parameters
+    // validate incoming parameters
+    try {
+      validateStoryTitle(title);
+      validateStoryDesc(shortDescription);
+      validateStoryContent(contentHtml);
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        error: e,
+        message: e,
+      });
+      return;
+    }
     let filePath = null;
     let gmPath = null;
     if (req.file) {
@@ -298,7 +316,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
 router.get("/random", async (req, res) => {
   try {
     let required = parseInt(req.query.required);
-    if (required <= 0 || required > 20 || isNaN(required)) {
+    if (isNaN(required) || required <= 0 || required > 20) {
       res.status(400).json({
         success: false,
         error: "The required parameter should only be a number, greater than 0 and less than 20",
@@ -321,6 +339,12 @@ router.get("/recommendations", async (req, res) => {
     let userId = req.authenticatedUser;
     if (!userId) {
       res.status(401).json({ success: false, message: "You'd have to be logged in to perform this action." });
+      return;
+    }
+    try {
+      validateUserId(userId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
       return;
     }
     const { recommendations } = await stories.getRecommendations(userId, genres);
@@ -356,6 +380,14 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     let owner = req.authenticatedUser;
     let storyId = req.params.id;
     let { title, shortDescription, genres, contentHtml } = req.body;
+    try {
+      validateStoryTitle(title);
+      validateStoryDesc(shortDescription);
+      validateStoryContent(contentHtml);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json({ success: false, error: e, message: e });
+    }
     let filePath = null;
     let gmPath = null;
     if (req.file) {
@@ -397,6 +429,12 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
 router.post("/search", async (req, res) => {
   try {
     let q = req.query.q;
+    try {
+      validateSearchQ(q);
+    } catch (e) {
+      res.status(400).json({ success: false, error: e, message: e });
+      return;
+    }
     if (!q) {
       res.status(200).json({ success: true, results: [] });
       return;
@@ -419,6 +457,13 @@ router.post("/:id/like", async (req, res) => {
       res.status(403).json({ success: false, message: "You don't have permission to access this resource." });
       return;
     }
+    try {
+      validateUserId(userId);
+      validateUuid(storyId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     let afterLike = await stories.toggleLike(storyId, userId);
     if (afterLike.success) {
       res.status(200).json(afterLike);
@@ -435,6 +480,14 @@ router.post("/:storyId/comment", async (req, res) => {
     let storyId = req.params.storyId;
     let commenter = req.authenticatedUser;
     let comment = req.body.comment;
+    try {
+      validateUuid(storyId);
+      validateUserId(commenter);
+      validateComment(comment);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     let { success, story } = await stories.addComment(storyId, commenter, comment);
     res.status(200).json({ success, story });
     return;
@@ -447,6 +500,12 @@ router.post("/:storyId/comment", async (req, res) => {
 router.get("/:storyId/comments", async (req, res) => {
   try {
     let { storyId } = req.params;
+    try {
+      validateUuid(storyId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     let existingComments = await stories.getCommentsFromStory(storyId);
     res.status(200).json(existingComments);
   } catch (e) {
@@ -459,6 +518,13 @@ router.delete("/:storyId", async (req, res) => {
   try {
     let accessor = req.authenticatedUser;
     let { storyId } = req.params;
+    try {
+      validateUuid(storyId);
+      validateUserId(accessor);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     let { success } = await stories.deleteStory(accessor, storyId);
     if (success) {
       res.status(204).json({ success: true });

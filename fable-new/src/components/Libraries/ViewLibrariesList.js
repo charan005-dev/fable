@@ -53,7 +53,7 @@ const useStyles = makeStyles({
     paddingLeft: "5%",
     paddingRight: "20%",
     paddingTop: "1%",
-    paddingBottom: "2%"
+    paddingBottom: "2%",
   },
   card3: {
     width: "700%",
@@ -87,32 +87,32 @@ const useStyles = makeStyles({
     width: "60%",
     maxWidth: "100%",
   },
-  paper: { 
-    width: "60%", 
+  paper: {
+    width: "60%",
     // marginRight: "30%",
-    marginLeft: "20%", 
-    paddingBottom: "4%"
-    // paddingRight: "10%", 
-    // paddingLeft: "10%", 
-    // position: "absolute" 
+    marginLeft: "20%",
+    paddingBottom: "4%",
+    // paddingRight: "10%",
+    // paddingLeft: "10%",
+    // position: "absolute"
   },
-  libTitle:{
-    paddingLeft: "45%"
+  libTitle: {
+    paddingLeft: "45%",
   },
-  nolib:{
-    paddingLeft: "15%"
+  nolib: {
+    paddingLeft: "15%",
   },
-  story:{
-    float:"right",
+  story: {
+    float: "right",
     marginTop: "1vw",
-    paddingBottom: "2%"
+    paddingBottom: "2%",
   },
-  link1:{
+  link1: {
     fontSize: 20,
     // fontWeight: "bold",
-    textDecoration: "none"
+    textDecoration: "none",
   },
-  edit:{
+  edit: {
     backgroundColor: "black",
     color: "white",
     "&:hover": {
@@ -120,7 +120,8 @@ const useStyles = makeStyles({
       color: "black",
       radius: "solid 1px",
     },
-  },delete:{
+  },
+  delete: {
     backgroundColor: "#ececec",
     color: "black",
     // "&:hover": {
@@ -128,7 +129,7 @@ const useStyles = makeStyles({
     //   color: "black",
     //   radius: "solid 1px",
     // },
-  }
+  },
 });
 
 const style = {
@@ -278,9 +279,12 @@ const ViewLibrariesList = () => {
       setChosenLibrary("");
       setLibraryData(data.libraries);
       closeDelLibModal();
+      toast.success("Deleted Successfully.", {
+        theme: "dark",
+      });
     } catch (e) {
       setChosenLibrary("");
-      toast.error(e.message, {
+      toast.error("Cannot perform delete. Please try again.", {
         theme: "dark",
       });
     }
@@ -453,9 +457,9 @@ const ViewLibrariesList = () => {
                       <CardContent>
                         <Stack spacing={0} direction={"row"}>
                           <Card className={classes.card3} elevation={0}>
-                          <br />
-                            <Stack direction="row" spacing={2}>
                             <br />
+                            <Stack direction="row" spacing={2}>
+                              <br />
                               <Badge anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
                                 {lib.private ? (
                                   <Tooltip placement="left" arrow title="Private">
@@ -467,17 +471,18 @@ const ViewLibrariesList = () => {
                                   </Tooltip>
                                 )}
                               </Badge>
-                              <Link to={`/libraries/${lib._id}`} class="text-decoration-none" >
+                              <Link to={`/libraries/${lib._id}`} class="text-decoration-none">
                                 <Typography variant="body1" className={classes.link1}>
                                   {lib.libraryName.length > 20
                                     ? lib.libraryName.length.substring(16) + "..."
                                     : lib.libraryName}
                                 </Typography>
                               </Link>
-                              <Typography variant="overline" className={classes.story}>({lib.stories.length} Stories Inside)</Typography>
+                              <Typography variant="overline" className={classes.story}>
+                                ({lib.stories.length} Stories Inside)
+                              </Typography>
                             </Stack>
                           </Card>
-
                           <Stack spacing={1} direction={"row"}>
                             <Card className={classes.card4} elevation={0}>
                               <Fab className={classes.edit} color="primary" onClick={() => openeditLibModal(lib._id)}>
@@ -485,7 +490,6 @@ const ViewLibrariesList = () => {
                               </Fab>
                             </Card>
                           </Stack>
-
                           <Dialog open={delLib}>
                             <DialogTitle id="title-text-conf">
                               {"Are you sure you want to delete this story? This action cannot be reversed."}
