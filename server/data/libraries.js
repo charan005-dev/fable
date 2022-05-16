@@ -1,8 +1,11 @@
 const { stories, users, libraries } = require("../config/mongoCollections");
 const uuid = require("uuid");
+const { validateUserId, validateLibraryName, validatePaginationParams, validateUuid } = require("../helpers/validator");
 const axios = require("axios").default;
 
 const createLibrary = async (userId, libraryName, private) => {
+  validateUserId(userId);
+  validateLibraryName(libraryName);
   const librariesCollection = await libraries();
   const existingLibraryName = await librariesCollection.findOne({
     libraryName: { $regex: new RegExp("^" + libraryName + "$", "i") },
@@ -25,6 +28,9 @@ const createLibrary = async (userId, libraryName, private) => {
 };
 
 const addStoryToUserLibrary = async (userId, storyId, libraryId) => {
+  validateUserId(userId);
+  validateUuid(storyId);
+  validateUuid(libraryId);
   const usersCollection = await users();
   const storiesCollection = await stories();
   const librariesCollection = await libraries();
@@ -43,6 +49,7 @@ const addStoryToUserLibrary = async (userId, storyId, libraryId) => {
 };
 
 const getAllMyLibraries = async (owner) => {
+  validateUserId(owner);
   const usersCollection = await users();
   const librariesCollection = await libraries();
   const allLibraries = await librariesCollection.find({ owner }).toArray();
@@ -50,6 +57,9 @@ const getAllMyLibraries = async (owner) => {
 };
 
 const getAllMyLibraryStories = async (userId, libraryId, accessor) => {
+  validateUserId(userId);
+  validateUuid(libraryId);
+  validateUserId(accessor);
   const usersCollection = await users();
   const librariesCollection = await libraries();
   const storiesCollection = await stories();
@@ -71,6 +81,8 @@ const getAllMyLibraryStories = async (userId, libraryId, accessor) => {
 };
 
 const getMyNonAddedLibraries = async (owner, storyId) => {
+  validateUserId(owner);
+  validateUuid(storyId);
   const librariesCollection = await libraries();
   const allNonAddedLibs = await librariesCollection.find({ owner, stories: { $nin: [storyId] } }).toArray();
   console.log("NonAdded", allNonAddedLibs);
@@ -78,6 +90,8 @@ const getMyNonAddedLibraries = async (owner, storyId) => {
 };
 
 const getMyPrivateLibraries = async (accessor, skip = 0, take = 20) => {
+  validateUserId(accessor);
+  validatePaginationParams(skip, take);
   const librariesCollection = await libraries();
   const privateLibraries = await librariesCollection
     .find({ owner: accessor, private: true })
@@ -88,6 +102,9 @@ const getMyPrivateLibraries = async (accessor, skip = 0, take = 20) => {
 };
 
 const updateLibrary = async (accessor, libraryId, libraryName, private) => {
+  validateUserId(accessor);
+  validateUuid(libraryId);
+  validateLibraryName(libraryName);
   const librariesCollection = await libraries();
   const findLibrary = await librariesCollection.findOne({ owner: accessor, _id: libraryId });
   if (!findLibrary) {
@@ -112,6 +129,8 @@ const updateLibrary = async (accessor, libraryId, libraryName, private) => {
 };
 
 const deleteLibrary = async (accessor, libraryId) => {
+  validateUserId(accessor);
+  validateUuid(libraryId);
   const librariesCollection = await libraries();
   const existingLibrary = await librariesCollection.findOne({ owner: accessor, _id: libraryId });
   if (!existingLibrary) {
@@ -122,12 +141,16 @@ const deleteLibrary = async (accessor, libraryId) => {
 };
 
 const getPublicLibrariesOfUser = async (userId) => {
+  validateUserId(userId);
   const librariesCollection = await libraries();
   const allMyLibraries = await librariesCollection.find({ owner: userId, private: false }).toArray();
   return allMyLibraries;
 };
 
 const removeStoryFromLibrary = async (libraryId, storyId, owner) => {
+  validateUuid(libraryId);
+  validateUuid(storyId);
+  validateUserId(owner);
   const librariesCollection = await libraries();
   const findLibrary = await librariesCollection.findOne({ owner, _id: libraryId });
   if (!findLibrary) {

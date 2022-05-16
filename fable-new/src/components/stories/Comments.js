@@ -115,12 +115,13 @@ const Comments = ({ open, handleClose, storyId }) => {
       typeof comment !== "string" ||
       comment.length === 0 ||
       comment.trim().length === 0 ||
+      comment.length < 6 ||
       comment.length > 250
     ) {
       setComment(comment);
       setCommentError({
         error: true,
-        text: "Your comment text is invalid. Enter less than 250 characters.",
+        text: "Your comment text is invalid. Enter less than 250 characters and more than 6 characters.",
       });
       return;
     }

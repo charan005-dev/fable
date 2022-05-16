@@ -1,7 +1,8 @@
-import { Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import logo from "./Assets/404.png";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   storyBook: {
@@ -13,11 +14,9 @@ const useStyles = makeStyles({
     paddingBottom: "1%",
     bgcolor: "blanchedalmond",
   },
-
   background: {
     backgroundColor: "blanchedalmond",
   },
-
   logo: {
     width: "30vw",
     marginLeft: "35%",
@@ -25,13 +24,22 @@ const useStyles = makeStyles({
     marginBottom: "20%",
     height: "100%",
   },
+  headText: {
+    paddingTop: 100,
+  },
 });
 
-const Error404page = ({ title, subtitle }) => {
+const Error404page = () => {
   const classes = useStyles();
   return (
     <Paper className={classes.sizing}>
-      <img src={logo} alt="loading..." className={classes.logo} />
+      <Grid className={classes.headText} container justifyContent="center">
+        <Typography variant="overline">
+          (You've reached the void. <Link to={`/home`}>Click here</Link> to go to safety.)
+        </Typography>
+      </Grid>
+      <img src={logo} alt="error 404" className={classes.logo} />
+      <br />
     </Paper>
   );
 };
