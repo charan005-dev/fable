@@ -26,6 +26,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { doSignOut } from "../../firebase/FirebaseFunctions";
 import { useNavigate } from "react-router-dom";
+import noImage from "../Assets/noimage.jpeg";
 
 const useStyles = makeStyles({
   card: {
@@ -207,8 +208,10 @@ function HomeImage() {
                                     }} to={`/stories/${image._id}`}>
                                     <CardMedia
                                       className={classes.media}
+
                                       component="img" alt="image"
-                                      image={image.coverImage}
+                                      image={image.coverImage ? image.coverImage : noImage}
+
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
@@ -279,7 +282,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -353,7 +356,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage ? image.coverImage : "/images/noimage.jpeg"}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -424,7 +427,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -496,7 +499,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />

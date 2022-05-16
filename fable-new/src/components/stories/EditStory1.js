@@ -302,7 +302,7 @@ const EditStory1 = () => {
       typeof changingState.desc !== "string" ||
       changingState.desc.length === 0 ||
       changingState.desc.trim().length === 0 ||
-      changingState.desc.length < 30 ||
+      changingState.desc.length < 100 ||
       changingState.desc.length > 5000
     )
       return {

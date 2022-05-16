@@ -21,6 +21,7 @@ import {
 import { Chip } from "@material-ui/core";
 import { Button, Stack } from "react-bootstrap";
 import { toast } from "react-toastify";
+import noImage from "../Assets/noimage.jpeg";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -225,8 +226,10 @@ const AllStories = () => {
                             <Link to={`/stories/${allStory._id}`}>
                               <CardMedia
                                 className={classes.images}
+
                                 component="img" alt="image"
-                                image={allStory.coverImage ? allStory.coverImage : "/images/noimage.jpeg"}
+                                image={allStory.coverImage ? allStory.coverImage : noImage}
+
                               />
                             </Link>
                           </div>

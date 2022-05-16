@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Hero from "../Hero";
 import DOMPurify from "dompurify";
 import { makeStyles } from "@material-ui/styles";
@@ -27,7 +27,7 @@ import Backdrop from "@mui/material/Backdrop";
 import { Paper, Stack, CardContent, Grid } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { toast } from "react-toastify";
-
+import noImage from "../Assets/noimage.jpeg";
 const useStyles = makeStyles({
   card: {
     maxWidth: "200px",
@@ -149,6 +149,7 @@ const StoryBook = () => {
   const closeLibrarySelectModal = () => setLibSelectModal(false);
 
   const classes = useStyles();
+  const navigate = useNavigate();
   useEffect(() => {
     async function getStoryData() {
       const { data } = await axios.get(`/api/stories/${storyId}`, {
@@ -171,9 +172,12 @@ const StoryBook = () => {
 
   useEffect(() => {
     async function getMyLibraries() {
-      const { data } = await axios.get(`/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`, {
-        headers: { authtoken: await currentUser.getIdToken() },
-      });
+      const { data } = await axios.get(
+        `/api/libraries/me?owner=${currentUser.uid}&storyId=${storyId}`,
+        {
+          headers: { authtoken: await currentUser.getIdToken() },
+        }
+      );
 
       console.log(data);
       setMyLibraries(data.libraries);
@@ -191,7 +195,8 @@ const StoryBook = () => {
       { headers: { authtoken: await currentUser.getIdToken() } }
     );
     setStory(data.story);
-    if (data.story.likedBy.includes(currentUser.uid)) toast.dark("Thanks for your like!");
+    if (data.story.likedBy.includes(currentUser.uid))
+      toast.dark("Thanks for your like!");
   };
 
   const addToLibrary = async () => {
@@ -209,7 +214,9 @@ const StoryBook = () => {
           );
           console.log(data);
           setLibSelectModal(false);
-          toast.dark("Successfully added to library " + data.library.library.libraryName);
+          toast.dark(
+            "Successfully added to library " + data.library.library.libraryName
+          );
           setAdded(added + 1);
         } catch (e) {
           console.log(e);
@@ -254,22 +261,43 @@ const StoryBook = () => {
               <CardMedia
                 className={classes.media}
                 component="img"
-                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+
+                alt="img"
+                image={
+                  story.coverImage ? story.coverImage : "/images/noimage.jpeg"
+                }
+
               />
             </Card>
           </Grid>
           <Grid container justifyContent="center" direction="row">
             <Card className={classes.cardnew} elevation={0}>
-              <Typography variant={"h3"}>{story.title}</Typography>
+              <Typography variant={"h3"} component={"h1"}>
+                {story.title}
+              </Typography>
               <span className={classes.fab}>
+                <label hidden for="like">
+                  like
+                </label>
                 {!story.likedBy.includes(currentUser.uid) && (
-                  <Fab variant="circular" color="default" onClick={handleLike}>
+                  <Fab
+                    variant="circular"
+                    color="default"
+                    onClick={handleLike}
+                    id="like"
+                  >
                     {/* Liked the story? */}
                     <FavoriteIcon />
                   </Fab>
                 )}
                 {story.likedBy.includes(currentUser.uid) && (
-                  <Fab variant="circular" color="secondary" onClick={handleLike} elevation={11}>
+                  <Fab
+                    variant="circular"
+                    color="secondary"
+                    onClick={handleLike}
+                    elevation={11}
+                    id="like"
+                  >
                     {/* Did not like the story? Let us know! */}
                     <FavoriteIcon />
                   </Fab>
@@ -277,7 +305,12 @@ const StoryBook = () => {
                 {"   "}
                 &nbsp;
               </span>
-              <Fab className={classes.fablib} variant="extended" color="inherit" onClick={openLibrarySelectModal}>
+              <Fab
+                className={classes.fablib}
+                variant="extended"
+                color="inherit"
+                onClick={openLibrarySelectModal}
+              >
                 <AddIcon />
                 Add to my library
               </Fab>
@@ -308,10 +341,13 @@ const StoryBook = () => {
               Select a library
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You can add this story to one of your libraries and share it with others...
+              You can add this story to one of your libraries and share it with
+              others...
               <br />
               <Typography className={classes.inModalHead} variant="overline">
-                Want to create a new library? <Link to={`/libraries/create`}>Click here</Link>
+                Want to create a new library?{" "}
+                <Link to={`/libraries/create`}>Click here</Link> 
+           
               </Typography>
             </Typography>
             <br />
@@ -327,19 +363,23 @@ const StoryBook = () => {
                 label={"Libraries"}
                 onChange={selectLibrary}
               >
-                {myLibraries.length === 0 && <MenuItem disabled>No libraries available.</MenuItem>}
+                {myLibraries.length === 0 && (
+                  <MenuItem disabled>No libraries available.</MenuItem>
+                )}
                 {myLibraries.length > 0 &&
                   myLibraries.map((lib, idx) => {
                     if (idx === 0)
                       return (
                         <MenuItem key={idx} selected value={lib._id}>
-                          {lib.libraryName} ({lib.private ? "Private" : "Public"})
+                          {lib.libraryName} (
+                          {lib.private ? "Private" : "Public"})
                         </MenuItem>
                       );
                     else
                       return (
                         <MenuItem key={idx} value={lib._id}>
-                          {lib.libraryName} ({lib.private ? "Private" : "Public"})
+                          {lib.libraryName} (
+                          {lib.private ? "Private" : "Public"})
                         </MenuItem>
                       );
                   })}
@@ -347,7 +387,11 @@ const StoryBook = () => {
               <br />
 
               {myLibraries.length > 0 && (
-                <Button className={classes.libSubmitBtn} variant="contained" onClick={addToLibrary}>
+                <Button
+                  className={classes.libSubmitBtn}
+                  variant="contained"
+                  onClick={addToLibrary}
+                >
                   Add To Library
                 </Button>
               )}
