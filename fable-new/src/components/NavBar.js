@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     color: "blanchedalmond",
     marginLeft: "10px",
     marginRight: "10px",
-    width: "100rm",
+    width: "100%",
     paddingLeft: "10px",
     paddingRight: "10px",
     borderRadius: "4px",
@@ -60,13 +60,13 @@ const useStyles = makeStyles({
       backgroundColor: "blanchedalmond",
       color: "black",
     },
+  },
     textbox: {
       border: "5px black",
       "&:hover": {
         backgroundColor: "#5dc2a6",
-        border: "5px bold black",
+        border: "5px black",
       },
-    },
   },
   menuitem: {
     width: "100%",
@@ -91,7 +91,6 @@ const useStyles = makeStyles({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
-    paddingDown: 7,
     borderRadius: "4px",
     textDecoration: "none",
     "&:hover": {
@@ -99,16 +98,16 @@ const useStyles = makeStyles({
       backgroundColor: "blanchedalmond",
       color: "black",
     },
+  },
     textbox: {
       border: "5px black",
       "&:hover": {
         backgroundColor: "#5dc2a6",
-        border: "5px bold black",
+        border: "5px black",
       },
-    },
-    accountbutton: {
-      marginLeft: "-100%",
-    },
+    // accountbutton: {
+    //   marginLeft: "-100%",
+    // },
   },
   search: {
     marginLeft: "100vw",
@@ -185,11 +184,11 @@ export default function NavBar() {
           </Link>
           <SearchBox className={classes.search}></SearchBox>
           {auth && (
-            <div className={classes.accountbutton}>
+            <div>
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
                   <React.Fragment>
-                    <Avatar sx={{ width: 64, height: 64 }} {...bindTrigger(popupState)} variant="contained"></Avatar>
+                    <Avatar {...bindTrigger(popupState)} variant="contained"></Avatar>
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         component={Link}

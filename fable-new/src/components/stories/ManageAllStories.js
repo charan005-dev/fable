@@ -58,18 +58,11 @@ const useStyles = makeStyles({
   },
   title: {
     border: " 0px #fff",
-    width: "auto",
     paddingRight: "100%",
-  },
-  stack: {
-    width: "auto",
-    height: "auto",
-    paddingRight: "auto",
   },
   media: {
     width: "50%",
     height: "120px",
-    height: "auto",
     float: "left",
     margin: "3px",
     padding: "3px",
@@ -86,10 +79,8 @@ const useStyles = makeStyles({
     color: "grey",
     justifyContent: "center",
     marginLeft: "11.5%",
-    marginRight: "auto",
   },
   box: {
-    paddingLeft: "auto",
     marginLeft: "44%",
     marginRight: "100%",
   },
@@ -121,7 +112,6 @@ const useStyles = makeStyles({
     margin: "30%",
     border: "solid 1px black",
     borderRadius: "5px",
-    shapeOutside: "",
     //boxShadow: "0px 5px 10px",
     // float: "left",
     width: "10vw",
@@ -142,7 +132,7 @@ const useStyles = makeStyles({
     marginTop: "-3%",
     marginRight: "15%",
     marginBottom: "5%",
-    marginLeft: "1%"
+    marginLeft: "25%"
   }
 });
 const ManageAllStories = () => {
@@ -227,26 +217,25 @@ const ManageAllStories = () => {
           </Card>
         </Paper>
       </Grid>
-      <div>
         <br />
         <br />
         <br />
         <br />
         <div>
           <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              flexWrap: "wrap",
-              "& > :not(style)": {
-                m: 1,
-                width: 1500,
-                height: "auto",
-                marginLeft: 320,
-              },
-            }}
+            // sx={{
+            //   flexGrow: 1,
+            //   display: "flex",
+            //   flexWrap: "wrap",
+            //   "& > :not(style)": {
+            //     m: 1,
+            //     width: 1500,
+            //     height: "auto",
+            //     marginLeft: 320,
+            //   },
+            // }}
           >
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5}>
+            <Grid container>
               {allStories.length > 0 &&
                 allStories.map((story) => {
                   return (
@@ -254,12 +243,12 @@ const ManageAllStories = () => {
                       <Paper
                         elevation={20}
                         className={classes.paper}
-                        sx={{
-                          bgcolor: "background.default",
-                          display: "grid",
-                          gridTemplateColumns: { md: "1fr 1fr" },
-                          gap: 2,
-                        }}
+                        // sx={{
+                        //   bgcolor: "background.default",
+                        //   display: "grid",
+                        //   gridTemplateColumns: { md: "1fr 1fr" },
+                        //   gap: 2,
+                        // }}
                       >
                         <Stack direction="row">
                           <Card className={classes.card1} elevation={0}>
@@ -268,6 +257,7 @@ const ManageAllStories = () => {
                                 className={classes.images1}
                                 component="img"
                                 image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+                                alt="coverimage"
                               />
                             </Link>
                           </Card>
@@ -311,7 +301,6 @@ const ManageAllStories = () => {
             </Grid>
           </Box>
         </div>
-      </div>
     </div>
   );
 };
