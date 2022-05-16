@@ -41,8 +41,8 @@ const useStyles = makeStyles({
     },
   },
   buttonback: {
-    backgroundColor: "#000000",
-    color: "#ececec",
+    backgroundColor: "#ececec",
+    color: "grey",
     width: "auto",
     marginLeft: "1%",
     marginRight: "auto",
@@ -293,19 +293,16 @@ const EditUser = () => {
         <br />
         <br />
         <FormGroup>
-          <Typography variant="h3" component={"h1"} className={classes.headertext1}>
+          <Typography variant="h3" component={"h4"} className={classes.headertext1}>
             Edit Your Details Here!
           </Typography>
           <br /> <br /> <br />
-          <Typography variant="h3" component={"h2"} className={classes.headertext}>
+          <Typography variant="h3" component={"h4"} className={classes.headertext}>
             Display Name
           </Typography>
-          <br /> 
-          <label hidden for="name">name</label>
+          <br />
           <TextField
-            fullWidth 
-            id="name" 
-            label=" "
+            fullWidth
             value={changingState.displayName}
             className={classes.textfield}
             error={nameError.error}
@@ -313,7 +310,7 @@ const EditUser = () => {
             id="displayName"
             variant="outlined"
             InputLabelProps={{ shrink: false }}
-           
+            required
             onChange={(e) => handleDispNameChange(e)}
           />
           <br />
@@ -323,19 +320,16 @@ const EditUser = () => {
             placement="right"
             title="Number of words that you usually read per minute. Enter a value within 30 and 500 (the human average is 200)."
           >
-            <Typography variant="h3" component={"h2"} className={classes.headertext}>
+            <Typography variant="h3" component={"h4"} className={classes.headertext}>
               Words Per Minute ⓘ
             </Typography>
           </Tooltip>
           <br />
-          <label hidden for="wpm">name</label>
           <TextField
-            fullWidth 
-            id="wpm"
+            fullWidth
             value={changingState.wpm}
             className={classes.textfield}
-            type={"number"} 
-            label=" "
+            type={"number"}
             error={wpmError.error}
             helperText={wpmError.error ? wpmError.text : ""}
             id="wordsPerMinute"
@@ -345,7 +339,7 @@ const EditUser = () => {
           />
           <br />
           <br />
-          <Typography variant="h3" component={"h2"} className={classes.headertext}>
+          <Typography variant="h3" component={"h4"} className={classes.headertext}>
             Upload Your Avatar
           </Typography>
           <br />
