@@ -19,12 +19,11 @@ html,body
 
 
 a {
-
-  text-decoration: #ececec;
-  color: black;
+ 
+  color: #000;
 }
 a:hover {
-  text-decoration: #ececec;
+  text-decoration:#ffffff;
 }
 .container {
   margin-right: auto;
@@ -433,6 +432,7 @@ h1 {
 
 .row_poster {
   object-fit: contain;
+ 
   max-height: 100px;
 }
  
@@ -490,6 +490,7 @@ h1 {
 /* ------------------------ */
 
 .tox {
+  box-shadow: rgb(18, 18, 18);
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
@@ -510,7 +511,7 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-
+  box-shadow: rgb(15, 15, 15) ;
   box-sizing: border-box;
   
   flex-direction: column;

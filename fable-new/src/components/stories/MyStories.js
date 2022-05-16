@@ -61,7 +61,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "300%",
     paddingLeft: "40%",
-    paddingTop: "5%",
+    paddingTop: "1%",
   },
   paper1: {
     height: "10%",
@@ -238,7 +238,10 @@ const MyStories = () => {
                               <CardMedia
                                 className={classes.images}
                                 component="img"
-                                image={myStory.coverImage ? myStory.coverImage : noImage}
+
+                                image={myStory.coverImage ? myStory.coverImage : "/images/noimage.jpeg"}
+                                alt="img"
+
                               />
                             </Link>
                           </div>

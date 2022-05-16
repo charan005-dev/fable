@@ -38,10 +38,10 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="container">
-          <header className="App-header">
+          <div className="App-header">
             <ToastContainer autoClose={1000} />
             <Navigation />
-          </header>
+          </div>
         </div>
         <div className="App-body">
           <Routes>

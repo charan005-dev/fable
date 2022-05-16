@@ -226,8 +226,10 @@ const AllStories = () => {
                             <Link to={`/stories/${allStory._id}`}>
                               <CardMedia
                                 className={classes.images}
-                                component="img"
+
+                                component="img" alt="image"
                                 image={allStory.coverImage ? allStory.coverImage : noImage}
+
                               />
                             </Link>
                           </div>

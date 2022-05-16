@@ -9,7 +9,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Logout,
+  ListItemIcon,
+  Image,
+} from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
@@ -39,10 +45,10 @@ const useStyles = makeStyles({
 
   title1: {
     textDecoration: "none",
-    color: "black",
+    color: "white",
     "&:hover": {
       textDecoration: "none",
-      color: "black",
+      color: "white",
     },
   },
 
@@ -51,7 +57,7 @@ const useStyles = makeStyles({
     color: "blanchedalmond",
     marginLeft: "10px",
     marginRight: "10px",
-    width: "100rm",
+    width: "100%",
     paddingLeft: "10px",
     paddingRight: "10px",
     borderRadius: "4px",
@@ -60,13 +66,13 @@ const useStyles = makeStyles({
       backgroundColor: "blanchedalmond",
       color: "black",
     },
+  },
     textbox: {
       border: "5px black",
       "&:hover": {
         backgroundColor: "#5dc2a6",
-        border: "5px bold black",
+        border: "5px black",
       },
-    },
   },
   menuitem: {
     width: "100%",
@@ -91,7 +97,6 @@ const useStyles = makeStyles({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
-    paddingDown: 7,
     borderRadius: "4px",
     textDecoration: "none",
     "&:hover": {
@@ -99,16 +104,16 @@ const useStyles = makeStyles({
       backgroundColor: "blanchedalmond",
       color: "black",
     },
+  },
     textbox: {
       border: "5px black",
       "&:hover": {
         backgroundColor: "#5dc2a6",
-        border: "5px bold black",
+        border: "5px black",
       },
-    },
-    accountbutton: {
-      marginLeft: "-100%",
-    },
+    // accountbutton: {
+    //   marginLeft: "-100%",
+    // },
   },
   search: {
     marginLeft: "100vw",
@@ -166,30 +171,43 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup>
 
       <AppBar position="absolute" className={classes.card}>
         <Toolbar>
-          <Link to="/home" className={classes.title1}>
-            {" "}
+          
+            
             <Typography
               variant="h3"
               component="div"
-              sx={{ textDecoration: "none", color: "white", paddingRight: "25vw" }}
-            >
-              Fable
-            </Typography>{" "}
-          </Link>
+              sx={{
+                textDecoration: "none",
+                color: "white",
+                paddingRight: "25vw",
+              }}
+            > 
+            <Link to="/home" className={classes.title1}>
+              Fable 
+              </Link>
+            </Typography>
+          
           <SearchBox className={classes.search}></SearchBox>
           {auth && (
-            <div className={classes.accountbutton}>
+            <div>
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
                   <React.Fragment>
-                    <Avatar sx={{ width: 64, height: 64 }} {...bindTrigger(popupState)} variant="contained"></Avatar>
+                    <Avatar {...bindTrigger(popupState)} variant="contained"></Avatar>
+
                     <Menu {...bindMenu(popupState)}>
                       <MenuItem
                         component={Link}
@@ -263,7 +281,10 @@ export default function NavBar() {
                         Library &nbsp; <LibraryAddIcon />
                       </MenuItem>
                       <br />
-                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
+                      <MenuItem
+                        onClick={doSignOut}
+                        className={classes.menuitem}
+                      >
                         Logout &nbsp; <LogoutIcon />
                       </MenuItem>
                       <br />
