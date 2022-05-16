@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
+import noImage from "../Assets/noimage.jpeg";
 
 const useStyles = makeStyles({
   storyLink: {
@@ -232,7 +233,7 @@ const AllLibraryStories = () => {
                                 <CardMedia
                                   className={classes.images}
                                   component="img"
-                                  image={libraryStory.coverImage ? libraryStory.coverImage : "/images/noimage.jpeg"}
+                                  image={libraryStory.coverImage ? libraryStory.coverImage : noImage}
                                 />
                               </Link>
                             </div>
