@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     paddingLeft: "0px",
   },
   button: {
-    backgroundColor: "blanchedalmond",
+    backgroundColor: "black",
     color: "black",
     border: "4px solid",
   },
@@ -94,13 +94,13 @@ const useStyles = makeStyles({
   },
 
   button3: {
-    backgroundColor: "blanchedalmond",
+    backgroundColor: "black",
     color: "black",
     marginLeft: "auto",
     marginRight: "auto",
     "&:hover": {
       backgroundColor: "black",
-      color: "blanchedalmond",
+      color: "black",
     },
   },
   logo: {

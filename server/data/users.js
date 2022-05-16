@@ -1,10 +1,21 @@
 const { users, stories } = require("../config/mongoCollections");
+const {
+  validateDisplayName,
+  validateUserId,
+  validateWpm,
+  validateFilePath,
+  validatePaginationParams,
+} = require("../helpers/validator");
 const { firebaseApp } = require("../initFirebaseAdmin");
 
 const createUser = async (userId, emailAddress, displayName) => {
+  validateDisplayName(displayName);
+  validateUserId(userId);
+
   const usersCollection = await users();
   const findUser = await usersCollection.findOne({ _id: userId });
-  if (findUser) {
+  const namedUser = await usersCollection.findOne({ displayName });
+  if (findUser || namedUser) {
     throw `User already exists with given displayName / id.`;
   }
   let user = {
@@ -20,6 +31,7 @@ const createUser = async (userId, emailAddress, displayName) => {
 };
 
 const getPublicProfile = async (userId) => {
+  validateUserId(userId);
   const usersCollection = await users();
   const storiesCollection = await stories();
   const findUser = await usersCollection.findOne({ _id: userId });
@@ -33,6 +45,10 @@ const getPublicProfile = async (userId) => {
 };
 
 const updateUser = async (userId, displayName, wpm, filePath) => {
+  validateUserId(userId);
+  validateDisplayName(displayName);
+  validateWpm(wpm);
+  validateFilePath(filePath);
   const usersCollection = await users();
   if (wpm < 30 || wpm > 500) {
     throw "Invalid wpm count. Should be more than 30 and less than 500.";
@@ -62,6 +78,7 @@ const updateUser = async (userId, displayName, wpm, filePath) => {
 };
 
 const checkDisplayName = async (name) => {
+  validateDisplayName(name);
   const usersCollection = await users();
   const findUser = await usersCollection.findOne({
     displayName: { $regex: new RegExp("^" + name + "$", "i") },
@@ -73,6 +90,8 @@ const checkDisplayName = async (name) => {
 };
 
 const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
+  validateUserId(userId);
+  validatePaginationParams(skip, take);
   const storiesCollection = await stories();
   const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).limit(take).toArray();
   let next = await storiesCollection

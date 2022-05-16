@@ -100,9 +100,7 @@ function CarouselImage() {
                
               }}
             />
-}
-           
-            
+}  
               </div>
               <br />
 

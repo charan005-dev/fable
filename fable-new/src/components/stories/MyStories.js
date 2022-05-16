@@ -32,11 +32,6 @@ const useStyles = makeStyles({
   stories: {
     marginLeft: "0%",
   },
-  title: {
-    border: " 0px #fff",
-    width: "auto",
-    paddingRight: "100%",
-  },
   stack: {
     width: "auto",
     height: "auto",
@@ -66,7 +61,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "300%",
     paddingLeft: "40%",
-    marginTop: "3%",
+    paddingTop: "5%",
   },
   paper1: {
     height: "10%",

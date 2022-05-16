@@ -87,7 +87,7 @@ const useStyles = makeStyles({
   button1: {
     backgroundColor: "black",
     color: "blanchedalmond",
-    width: "100rm",
+    width: "100%",
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,

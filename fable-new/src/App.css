@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-
 }
 
 .App-logo {
@@ -8,22 +7,24 @@
   pointer-events: none;
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow-x: hidden;
-  background-color: #ececec;
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+    background-color: #ececec;
 }
 
+
 a {
-  text-decoration: "none";
-  color: "black";
+
+  text-decoration: #ececec;
+  color: black;
 }
 a:hover {
-  text-decoration: "none";
+  text-decoration: #ececec;
 }
 .container {
   margin-right: auto;
@@ -303,9 +304,9 @@ h1 {
   transition: 0.5s;
 }
 
-/* .App-body {
+.App-body {
   padding-top: 1.6%;
-} */
+}
 
 .button1 span:after {
   content: "\00bb";
@@ -432,17 +433,16 @@ h1 {
 
 .row_poster {
   object-fit: contain;
-  width: "auto";
   max-height: 100px;
 }
-
+ 
 .row_poster::-webkit-scrollbar {
   display: none;
   overflow-x: hidden;
-}
-.scrollbar-hidden::-webkit-scrollbar {
+} 
+ .scrollbar-hidden::-webkit-scrollbar {
   display: none;
-}
+} 
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -453,6 +453,7 @@ h1 {
   /* overflow-x: hidden; */
   padding: 50px;
   padding-right: 10px;
+  
 }
 
 .row_poster:hover {
@@ -489,20 +490,19 @@ h1 {
 /* ------------------------ */
 
 .tox {
-  box-shadow: black;
   box-sizing: content-box;
   color: #222f3e;
   cursor: auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
+  text-decoration: #fff;
+  /* text-shadow: #fff;
+  text-transform: #fff; */
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
@@ -510,13 +510,12 @@ h1 {
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;
-  width: "auto";
-  box-shadow: black 5px;
-  box-sizing: border-box;
 
+  box-sizing: border-box;
+  
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   overflow: hidden;
   position: absolute;
   visibility: inherit !important;

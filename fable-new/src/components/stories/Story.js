@@ -327,13 +327,27 @@ const Story = () => {
                 <CardMedia
                   className={classes.mainImage}
                   component="img"
+
                   image={storyData.story.coverImage ? storyData.story.coverImage : noImage}
+
+    
+                  alt="img"
+
+ 
                 />
               </Card>
               <Card className={classes.title} elevation={0}>
                 <CardContent>
-                  <Tooltip placement="right" title={buildFriendlyDate(storyData.story.createdAt)}>
-                    <Typography variant="h2" className={classes.title1}>
+
+                  <Tooltip
+                    placement="right"
+                    title={buildFriendlyDate(storyData.story.createdAt)}
+                  >
+                    <Typography
+                      variant="h2"
+                      component={"h1"}
+                      className={classes.title1}
+                    >
                       {storyData.story.title.length > 35
                         ? storyData.story.title.substring(0, 40) + "..."
                         : storyData.story.title}
@@ -367,16 +381,31 @@ const Story = () => {
                     </Button>
                   </Link>
                   <span>
-                    {currentUser.uid === storyData.story.creatorId && (
-                      <Fab
+                    {currentUser.uid === storyData.story.creatorId && (  
+                      <span>
+                       <label hidden for="edit">
+                       edit
+                     </label>
+                      <Fab 
+                      id="edit"
                         className={classes.editButton}
                         onClick={() => navigate(`/stories/${storyData.story._id}/edit`)}
                       >
                         <Edit />
-                      </Fab>
+                      </Fab> 
+                      </span>
                     )}
                   </span>
-                  <Fab className={classes.editButton} onClick={() => setCommentsModal(true)}>
+
+                  <label hidden for="forum">
+                    Forum
+                  </label>
+                  <Fab
+                    id="forum"
+                    className={classes.editButton}
+                    onClick={() => setCommentsModal(true)}
+                  >
+
                     <ForumIcon />
                   </Fab>
                 </CardContent>
@@ -397,11 +426,20 @@ const Story = () => {
                 <br />
                 <CardContent>
                   {" "}
-                  <Typography variant="h4" className={classes.bold}>
+                  <Typography
+                    variant="h4"
+                    component={"h2"}
+                    className={classes.bold}
+                  >
                     Description
                   </Typography>
                   <br />
-                  <Typography variant="subtitle">{storyData.story.shortDescription}</Typography> <br />
+
+                  <Typography variant="h6" component={"h2"}>
+                    {storyData.story.shortDescription}
+                  </Typography>{" "}
+                  <br />
+
                   <br />
                   <br />
                   <Stack direction="row" spacing={1}>
@@ -437,13 +475,21 @@ const Story = () => {
 
               <Card className={classes.card2} elevation={0}>
                 <CardContent>
-                  <Typography variant="h5" className={classes.typo}>
+                  <Typography
+                    variant="h5"
+                    component={"h2"}
+                    className={classes.typo}
+                  >
                     You might also like
                   </Typography>
                   <br />
                   <Divider />
                   <br />
-                  {recommendations && recommendations.length === 0 && <Typography>No stories available.</Typography>}
+
+                  {recommendations && recommendations.length === 0 && (
+                    <Typography>No stories available.</Typography>
+                  )}
+
                   {recommendations &&
                     recommendations.map((recommendation, idx) => {
                       if (recommendation._id !== id) {
@@ -461,7 +507,14 @@ const Story = () => {
                                   <CardMedia
                                     className={classes.similarImages}
                                     component="img"
-                                    image={recommendation.coverImage ? recommendation.coverImage : "/fablefinal.png"}
+
+                                    image={
+                                      recommendation.coverImage
+                                        ? recommendation.coverImage
+                                        : "/fablefinal.png" 
+                                    } 
+                                    alt="img"
+
                                   />
                                   <Box className={classes.box2}>
                                     <CardContent>
