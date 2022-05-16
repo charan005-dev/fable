@@ -508,6 +508,13 @@ h1 {
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
 }
+
+.titleword {
+  background-color: #000000 !important;
+
+  opacity: 0.8;
+}
+
 .tox-tinymce {
   border: 5px solid rgb(0, 0, 0);
   border-radius: 10px;

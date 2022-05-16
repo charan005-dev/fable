@@ -215,7 +215,7 @@ function HomeImage() {
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
-                                    <ImageListItemBar  className ="titleword" title ={image.title} ></ImageListItemBar>
+                                    <ImageListItemBar className="titleword" title={image.title}></ImageListItemBar>
                                   </Link>
                                 </ImageListItem>
                               </CardActionArea>
