@@ -1,0 +1,37 @@
+[{
+  "_id": "b08412de-6951-4ce7-a128-7f1ab7654344",
+  "owner": "qS1Ecx2yxzPAXWEnhZXL2InwBkf1",
+  "libraryName": "Must Reads",
+  "private": false,
+  "stories": [
+    "b8849d6d-96a8-4f56-af00-efd9babadaa9"
+  ]
+},{
+  "_id": "4f5ba2ba-2114-4a7d-94b2-86c0cccf3411",
+  "owner": "U7rmWnuD0kb2c5yVZyo12Pd2QGf1",
+  "libraryName": "Only for me",
+  "private": true,
+  "stories": []
+},{
+  "_id": "409540c1-c65a-4885-860f-86e8f9f2e34e",
+  "owner": "U7rmWnuD0kb2c5yVZyo12Pd2QGf1",
+  "libraryName": "Shared space",
+  "private": false,
+  "stories": [
+    "fbb6c200-6253-4f4c-a8a4-9fa39263849b"
+  ]
+},{
+  "_id": "801d9918-ab3e-44bb-abf4-15c48de6b2e4",
+  "owner": "qS1Ecx2yxzPAXWEnhZXL2InwBkf1",
+  "libraryName": "Only for me",
+  "private": true,
+  "stories": []
+},{
+  "_id": "059e0b49-9451-485b-b51f-88dd79d2e81e",
+  "owner": "DSWE9Dp3uRc2Ps7ELDQZTuK2EjO2",
+  "libraryName": "New Library",
+  "private": false,
+  "stories": [
+    "db5a3df0-0fce-44b4-92fc-1ec8d487aab8"
+  ]
+}]

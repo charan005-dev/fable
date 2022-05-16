@@ -1,0 +1,46 @@
+[{
+  "_id": "qS1Ecx2yxzPAXWEnhZXL2InwBkf1",
+  "emailAddress": "authorone@fable.co",
+  "wpm": 200,
+  "displayName": "AuthorOne",
+  "storiesPosted": []
+},{
+  "_id": "kFdqnksbKzctPEyCKrEgHpvhQxi2",
+  "emailAddress": "aspiringauthor@fable.co",
+  "wpm": 200,
+  "displayName": "aspiring-author",
+  "storiesPosted": []
+},{
+  "_id": "EWF2pCKVWhaUCJ9EI9wY7pmxTSr2",
+  "emailAddress": "koushal@fable.co",
+  "wpm": 200,
+  "displayName": "Koushal",
+  "storiesPosted": []
+},{
+  "_id": "MzHZtc5QaKPWGHC2VFiCeqESdud2",
+  "emailAddress": "test@fable.com",
+  "wpm": 200,
+  "displayName": "testUser",
+  "storiesPosted": []
+},{
+  "_id": "U7rmWnuD0kb2c5yVZyo12Pd2QGf1",
+  "emailAddress": "jesh@fable.co",
+  "wpm": 200,
+  "displayName": "hesson-13",
+  "storiesPosted": [],
+  "userAvatar": null
+},{
+  "_id": "E7gWWdxpYCTemkOc4Ps4cSC8t3v2",
+  "emailAddress": "testauthor@fable.co",
+  "wpm": "400",
+  "displayName": "testAuthor",
+  "storiesPosted": [],
+  "userAvatar": null
+},{
+  "_id": "DSWE9Dp3uRc2Ps7ELDQZTuK2EjO2",
+  "emailAddress": "aspire@fable.co",
+  "wpm": "400",
+  "displayName": "newAspiringAuthor",
+  "storiesPosted": [],
+  "userAvatar": null
+}]
