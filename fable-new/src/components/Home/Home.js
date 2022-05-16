@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../firebase/Auth";
 import CarouselImage from "./CarouselImage";
 import HomeImage from "./HomeImage";
-import Greeting from "./Greeting";
 import { useEffect } from "react";
 
 const useStyles = makeStyles({
@@ -25,7 +24,7 @@ const Home = () => {
       <div className="carousel">
         <CarouselImage />
       </div>
-      <Greeting />
+   
       <br />
       <HomeImage />
       {/* <HomeTest /> */}
