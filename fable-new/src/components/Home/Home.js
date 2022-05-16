@@ -21,14 +21,6 @@ const Home = () => {
       <div className="carousel">
         <CarouselImage />
       </div>
-       
-      &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Welcome 
-      <Typography variant="h5" component={"h1"} className={classes.storyLink}>
-        
-      &nbsp;&nbsp; &nbsp;&nbsp; {currentUser.displayName &&
-          currentUser.displayName + "!"}
-      </Typography>
-      <br />
       <HomeImage />
       {/* <HomeTest /> */}
     </div>
