@@ -133,7 +133,6 @@ const CreateLibrary = () => {
       if (data.success) {
         setLibraryName("");
         setIsPrivate(true);
-
         toast.success("A new library has been created", {
           theme: "dark",
           position: "top-center",

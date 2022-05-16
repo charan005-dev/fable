@@ -26,6 +26,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { doSignOut } from "../../firebase/FirebaseFunctions";
 import { useNavigate } from "react-router-dom";
+import noImage from "../Assets/noimage.jpeg";
 
 const useStyles = makeStyles({
   card: {
@@ -37,9 +38,16 @@ const useStyles = makeStyles({
     border: "1px solid #ffff",
     boxShadow: "0 19px 38px rgba(0,0,0,0.5), 0 15px 12px rgba(0,0,0,0);",
   },
+
+  
+ titleword :{
+  fontWeight: "bold",
+  color: "#fff",
+},
+
   titleHead: {
     fontWeight: "bold",
-    color: "white",
+    color: "#fff",
   },
   grid: {
     flexGrow: 5,
@@ -196,15 +204,18 @@ function HomeImage() {
                               <CardActionArea>
                                 {/* <Typography>{hover && image.title} </Typography> */}
                                 <ImageListItem>
-                                  <Link to={`/stories/${image._id}`}>
+                                  <Link sx={{color:"#fff"
+                                    }} to={`/stories/${image._id}`}>
                                     <CardMedia
                                       className={classes.media}
-                                      component="img"
-                                      image={image.coverImage}
+
+                                      component="img" alt="image"
+                                      image={image.coverImage ? image.coverImage : noImage}
+
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
-                                    <ImageListItemBar title={image.title}></ImageListItemBar>
+                                    <ImageListItemBar  className ="titleword" title ={image.title} ></ImageListItemBar>
                                   </Link>
                                 </ImageListItem>
                               </CardActionArea>
@@ -271,7 +282,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -345,7 +356,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage ? image.coverImage : "/images/noimage.jpeg"}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -416,7 +427,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />
@@ -488,7 +499,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={image.coverImage}
+                                        image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                       />

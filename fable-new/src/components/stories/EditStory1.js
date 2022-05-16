@@ -113,7 +113,7 @@ const useStyles = makeStyles({
     backgroundColor: "#ececec",
     color: "black",
     width: "auto",
-    marginLeft: "auto",
+    marginLeft: "12vw",
 
     paddingRight: "30px",
     paddingLeft: "30px",
@@ -302,7 +302,7 @@ const EditStory1 = () => {
       typeof changingState.desc !== "string" ||
       changingState.desc.length === 0 ||
       changingState.desc.trim().length === 0 ||
-      changingState.desc.length < 30 ||
+      changingState.desc.length < 100 ||
       changingState.desc.length > 5000
     )
       return {
@@ -441,14 +441,14 @@ const EditStory1 = () => {
 
             <Grid container elevation={25} className={classes.grid}>
               <Typography variant="h3" component={"h1"} className={classes.headertext}>
-                Use this place to edit and fine-tune your story!
+                Edit your story here!
               </Typography>
             </Grid>
             <br />
             <br />
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
@@ -471,7 +471,7 @@ const EditStory1 = () => {
               <br />
               <br />
 
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
               </Typography>
               <br />
@@ -498,7 +498,7 @@ const EditStory1 = () => {
 
               <br />
               <br />
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
               </Typography>
               <br />
@@ -516,7 +516,7 @@ const EditStory1 = () => {
               />
               <br />
               <br />
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
                 Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />

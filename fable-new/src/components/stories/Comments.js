@@ -115,12 +115,13 @@ const Comments = ({ open, handleClose, storyId }) => {
       typeof comment !== "string" ||
       comment.length === 0 ||
       comment.trim().length === 0 ||
+      comment.length < 6 ||
       comment.length > 250
     ) {
       setComment(comment);
       setCommentError({
         error: true,
-        text: "Your comment text is invalid. Enter less than 250 characters.",
+        text: "Your comment text is invalid. Enter less than 250 characters and more than 6 characters.",
       });
       return;
     }
@@ -179,11 +180,13 @@ const Comments = ({ open, handleClose, storyId }) => {
           <br />
           <div>
             <FormControl className={classes.form}>
+              <label hidden for="comment">comment box</label>
               <TextField
                 fullWidth
                 className={classes.textfield}
                 variant="outlined"
-                value={comment}
+                value={comment} 
+                id="comment"
                 label=" "
                 placeholder="Join the discussion!"
                 onChange={(e) => handleCommentInput(e)}

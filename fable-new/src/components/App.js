@@ -29,7 +29,7 @@ import EditStory from "./Stories/EditStory";
 import { ToastContainer } from "react-toastify";
 import ShowByGenres from "./Stories/ShowByGenres";
 import CreateStory1 from "./Stories/CreateStory";
-import Error404page from "./Error404page"; 
+import Error404page from "./Error404page";
 
 function App() {
   const context = useContext(ThemeContext);
@@ -102,10 +102,10 @@ function App() {
             </Route>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<Signin />} />
+            <Route path="*" element={<Error404page />} />
           </Routes>
         </div>
       </Router>
- 
     </AuthProvider>
   );
 }

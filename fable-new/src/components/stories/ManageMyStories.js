@@ -8,6 +8,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
+import noImage from "../Assets/noimage.jpeg";
 const { genres } = require("../genres");
 // const genres = [
 //   "Horror",
@@ -127,8 +128,8 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
-  paper:{
-    width:"65vw",
+  paper: {
+    width: "65vw",
     height: "20vw",
     marginTop: "-3%",
     marginRight: "15%",
@@ -291,9 +292,6 @@ const ManageAllStories = () => {
                                 {story &&
                                   story.genres &&
                                   story.genres.map((genre, idx) => {
-                                    if (idx > 1) {
-                                      return <Typography> +{idx} more</Typography>;
-                                    }
                                     return (
                                       <Chip
                                         label={genre}

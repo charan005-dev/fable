@@ -7,6 +7,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
+import noImage from "../Assets/noimage.jpeg";
 const { genres } = require("../genres");
 // const genres = [
 //   "Horror",
@@ -126,8 +127,8 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
-  paper:{
-    width:"65vw",
+  paper: {
+    width: "65vw",
     height: "20vw",
     marginTop: "-3%",
     marginRight: "15%",
@@ -212,7 +213,7 @@ const ManageMyStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
-          <Typography variant="h3" component="h3">
+          <Typography variant="h3" component="h1">
             Filter Stories
           </Typography>
           <br />
@@ -227,9 +228,10 @@ const ManageMyStories = () => {
             })}
           <br />
           <br />
+          <label hidden for="switch" >Filter </label>
           <Card className={classes.card}>
             Filter individually
-            <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
+            <Switch id="switch" onChange={() => setDoExactMatch(!doExactMatch)} />
           </Card>
         </Paper>
       </Grid>
@@ -294,9 +296,6 @@ const ManageMyStories = () => {
                                 {story &&
                                   story.genres &&
                                   story.genres.map((genre, idx) => {
-                                    if (idx > 1) {
-                                      return <Typography> +{idx} more</Typography>;
-                                    }
                                     return (
                                       <Chip
                                         label={genre}

@@ -29,6 +29,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
+import noImage from "../Assets/noimage.jpeg";
 
 /* This component will take care of displaying
     - a user's public profile
@@ -345,15 +346,17 @@ const PublicProfile = () => {
             <br />
             <Grid container justifyContent="center">
               {!profileData.profile.userAvatar && (
-                <Avatar sx={{ width: 84, height: 84 }} className={classes.avatar}>
-                  {profileData.profile.displayName.substring(0, 2)}
+                <Avatar sx={{ width: 84, height: 84 }} className={classes.avatar}  alt="avatar">
+                  {profileData.profile.displayName.substring(0, 2)} 
+                 
                 </Avatar>
               )}
               {profileData.profile.userAvatar && (
                 <Avatar
                   sx={{ width: 84, height: 84 }}
                   src={profileData.profile.userAvatar}
-                  className={classes.avatar}
+                  className={classes.avatar} 
+                  alt="avatar"
                 ></Avatar>
               )}
             </Grid>
@@ -361,7 +364,7 @@ const PublicProfile = () => {
             <Divider />
             <br />
             <Grid container justifyContent="center">
-              <Typography variant="h2" component={"h2"}>
+              <Typography variant="h2" component={"h1"}>
                 {profileData.profile.displayName}
               </Typography>
               {currentUser.uid === profileData.profile._id && (
@@ -401,10 +404,15 @@ const PublicProfile = () => {
                 <Stack direction="row">
                   <Paper className={classes.cardpaper} elevation={0}>
                     <Card elevation={10}>
-                      <br />
+                      <br /> 
+
                       <Typography variant="h4" component={"h2"} className={classes.textstory}>
-                        Stories Written &nbsp;
-                        <Fab className={classes.filter} onClick={() => navigate(`/stories/manage`)}>
+                        Stories Written &nbsp; 
+
+                        <label hidden for="filter">
+                    filter
+                  </label>
+                        <Fab className={classes.filter} onClick={() => navigate(`/stories/manage`)} id="filter">
                           <FilterListIcon />
                         </Fab>
                       </Typography>
@@ -431,7 +439,10 @@ const PublicProfile = () => {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
-                                        image={profile.coverImage ? profile.coverImage : "/images/noimage.jpeg"}
+
+                                        image={profile.coverImage ? profile.coverImage : "/images/noimage.jpeg"} 
+                                        alt="img"
+
                                       />
                                     </Link>
                                   </CardActionArea>
