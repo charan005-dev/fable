@@ -94,12 +94,12 @@ const useStyles = makeStyles({
     paddingBottom: "1%",
   },
   typog: {
-    float:"left",
+    float: "left",
     marginTop: "1%",
     paddingTop: "5%",
     marginLeft: "2%",
     paddingLeft: "5%",
-    marginBottom: "5%"
+    marginBottom: "5%",
   },
 });
 
@@ -274,18 +274,13 @@ function SignUp() {
                 Sign-Up
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Typography
-                component="h6"
-                variant="h6"
-                className={classes.typog}
-              >
+              <Typography component="h6" variant="h6" className={classes.typog}>
                 Already Have an Account?
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Button onClick={() => navigate(`/signin`)} className={classes.button1}> 
+              <Button onClick={() => navigate(`/signin`)} className={classes.button1}>
                 &nbsp; Login &nbsp;
               </Button>
-
               {/* <NavLink to="/signin" className={classes.textdecoration}>
                 <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
                   &nbsp; Login &nbsp;
