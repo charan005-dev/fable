@@ -130,7 +130,7 @@ router.put("/:userId", upload.single("userAvatar"), async (req, res) => {
       res.status(400).json({ success: false, error: "User id not provided " });
       return;
     }
-    const updatedUser = await users.updateUser(xss(userId), xss(displayName), xss(wpm), xss(filePath));
+    const updatedUser = await users.updateUser(xss(userId), xss(displayName), xss(wpm), filePath);
     res.status(200).json({ success: true, user: updatedUser });
     return;
   } catch (e) {

@@ -83,7 +83,7 @@ router.get("/me/private", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(xss(accessor), xss(skip), xss(take));
+    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(xss(accessor), skip, take);
     console.log(privateLibraries);
     res.status(200).json({ success, libraries: privateLibraries });
     return;
@@ -189,12 +189,7 @@ router.put("/:libraryId", async (req, res) => {
       return;
     }
     try {
-      const updatedLibrary = await libraries.updateLibrary(
-        xss(accessor),
-        xss(libraryId),
-        xss(libraryName),
-        xss(private)
-      );
+      const updatedLibrary = await libraries.updateLibrary(xss(accessor), xss(libraryId), xss(libraryName), private);
       res.status(200).json(updatedLibrary);
       return;
     } catch (e) {
