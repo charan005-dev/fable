@@ -5,6 +5,7 @@ const { validGenres } = require("../genres");
 const _ = require("lodash");
 
 const validateUuid = (id) => {
+  console.log(id, uuid.validate(id));
   if (!uuid.validate(id)) throw `Invalid id parameter provided.`;
 };
 

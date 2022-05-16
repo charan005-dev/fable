@@ -42,7 +42,7 @@ router.get("/me", async (req, res) => {
     let storyId = req.query.storyId;
     try {
       validateUserId(owner);
-      validateUuid(storyId);
+      if (storyId) validateUuid(storyId);
     } catch (e) {
       res.status(400).json({ success: false, message: e, error: e });
       return;
