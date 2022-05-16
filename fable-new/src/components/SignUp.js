@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { doCreateUserWithEmailAndPassword } from "../firebase/FirebaseFunctions";
-
 import { collapseClasses, fabClasses } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -91,8 +90,9 @@ const useStyles = makeStyles({
     color: "black",
     textDecoration: "none",
     fontWeight: "bold",
-    marginTop: "4%",
-
+    marginTop: "5%",
+    marginLeft: "-10%",
+    marginBottom: "5%",
     "&:hover": {
       backgroundColor: "black",
       color: "white",
@@ -105,8 +105,12 @@ const useStyles = makeStyles({
     paddingBottom: "1%",
   },
   typog: {
-    marginTop: "7%",
+    float:"left",
+    marginTop: "1%",
     paddingTop: "5%",
+    marginLeft: "2%",
+    paddingLeft: "5%",
+    marginBottom: "5%"
   },
 });
 
@@ -115,6 +119,7 @@ function SignUp() {
   const { currentUser } = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState("");
   const [token, setToken] = useState("");
+  const navigate = useNavigate();
   const handleSignUp = async (e) => {
     e.preventDefault();
     const { name, email, passwordOne, passwordTwo } = e.target.elements;
@@ -286,18 +291,22 @@ function SignUp() {
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Typography
-                component="h11"
-                variant="h11"
+                component="h6"
+                variant="h6"
                 className={classes.typog}
               >
                 Already Have an Account?
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <NavLink to="/signin" className={classes.textdecoration}>
+              <Button onClick={() => navigate(`/signin`)} className={classes.button1}> 
+                &nbsp; Login &nbsp;
+              </Button>
+
+              {/* <NavLink to="/signin" className={classes.textdecoration}>
                 <Button sx={{ mt: 3, mb: 2 }} className={classes.button1}>
                   &nbsp; Login &nbsp;
                 </Button>
-              </NavLink>
+              </NavLink> */}
             </Box>
           </Box>
         </Container>
