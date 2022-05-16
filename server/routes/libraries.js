@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
       return;
     }
     try {
-      const createdLibrary = await libraries.createLibrary(xss(creatorId), xss(libraryName), xss(private));
+      const createdLibrary = await libraries.createLibrary(xss(creatorId), xss(libraryName), private);
       res.status(200).json({ success: true, library: createdLibrary.library });
     } catch (e) {
       console.log(e);
@@ -132,7 +132,7 @@ router.get("/user/:userId", async (req, res) => {
       return;
     }
     try {
-      let publicLibraries = await libraries.getPublicLibrariesOfUser(xss(userId));
+      let publicLibraries = await libraries.getPublicLibrariesOfUser(userId);
       res.status(200).json({ success: true, libraries: publicLibraries });
       return;
     } catch (e) {
