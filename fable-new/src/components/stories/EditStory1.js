@@ -472,7 +472,7 @@ const EditStory1 = () => {
               <br />
 
               <Typography variant={"h4"} className={classes.title}>
-                Short Description of the Story <Typography variant="overline">(30 - 5000 characters)</Typography>
+                Short Description of the Story <Typography variant="overline">(100 - 5000 characters)</Typography>
               </Typography>
               <br />
 

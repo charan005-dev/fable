@@ -144,13 +144,24 @@ const EditUser = () => {
       });
       return;
     }
-    let dnameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
-    if (!dnameRegex.test(displayName)) {
-      setNameError({
-        error: true,
-        text: "It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).",
-      });
-      return;
+    var isSafari =
+      navigator.vendor &&
+      navigator.vendor.indexOf("Apple") > -1 &&
+      navigator.userAgent &&
+      navigator.userAgent.indexOf("CriOS") == -1 &&
+      navigator.userAgent.indexOf("FxiOS") == -1;
+    if (!isSafari) {
+      // Safari doesn't support lookbehind in regex yet (?<=\/).
+      // https://stackoverflow.com/questions/51568821/works-in-chrome-but-breaks-in-safari-invalid-regular-expression-invalid-group
+      // in this case, skip frontend check - will be caught in backend anyway
+      let dnameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+      if (!dnameRegex.test(displayName)) {
+        setNameError({
+          error: true,
+          text: "It's really catchy but make sure it contains only alphanumerics and hyphens (can't end with one).",
+        });
+        return;
+      }
     }
     console.log(existingName, displayName);
     if (existingName === displayName) {
