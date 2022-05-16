@@ -138,14 +138,14 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
-  paper:{
-    width:"65vw",
+  paper: {
+    width: "65vw",
     height: "20vw",
     marginTop: "-3%",
     marginRight: "15%",
     marginBottom: "5%",
-    marginLeft: "1%"
-  }
+    marginLeft: "1%",
+  },
 });
 
 const ManageAllStories = () => {
@@ -302,9 +302,6 @@ const ManageAllStories = () => {
                                 {story &&
                                   story.genres &&
                                   story.genres.map((genre, idx) => {
-                                    if (idx > 1) {
-                                      return <Typography> +{idx} more</Typography>;
-                                    }
                                     return (
                                       <Chip
                                         label={genre}

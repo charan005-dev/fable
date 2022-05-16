@@ -142,7 +142,7 @@ router.get("/me", async (req, res) => {
     let exact = req.query.exact === "true";
     try {
       validateUserId(authorId);
-      validateExact(exact);
+      // validateExact(exact);
     } catch (e) {
       console.log(e);
       res.status(400).json({
@@ -179,16 +179,16 @@ router.get("/me", async (req, res) => {
 router.get("/filter", async (req, res) => {
   try {
     let selectedGenres = req.query.genres;
-    try {
-      validateExact(req.query.exact);
-    } catch (e) {
-      console.log(e);
-      res.status(400).json({
-        success: false,
-        error: e,
-      });
-      return;
-    }
+    // try {
+    //   validateExact(req.query.exact);
+    // } catch (e) {
+    //   console.log(e);
+    //   res.status(400).json({
+    //     success: false,
+    //     error: e,
+    //   });
+    //   return;
+    // }
     let exact = req.query.exact === "true";
     selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
     if (exact) {
