@@ -12,6 +12,7 @@ import { NotificationManager } from "react-notifications";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../Assets/5.gif";
+import noImage from "../Assets/noimage.jpeg";
 const { genres } = require("../genres");
 const axios = require("axios").default;
 
@@ -208,7 +209,7 @@ const CreateStory = () => {
         setDesc(e.target.value.length !== 0 ? e.target.value : "");
         break;
       case "file":
-        setCoverImage(e.target.files[0] ? e.target.files[0] : "/images/noimage.jpeg");
+        setCoverImage(e.target.files[0] ? e.target.files[0] : noImage);
         let imageAsBlob = URL.createObjectURL(e.target.files[0]);
         setUploadedImageUrl(imageAsBlob);
         break;
@@ -237,7 +238,7 @@ const CreateStory = () => {
       typeof desc !== "string" ||
       desc.length === 0 ||
       desc.trim().length === 0 ||
-      desc.length < 30 ||
+      desc.length < 100 ||
       desc.length > 5000
     )
       return {

@@ -7,6 +7,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
+import noImage from "../Assets/noimage.jpeg";
 const { genres } = require("../genres");
 // const genres = [
 //   "Horror",
@@ -281,7 +282,7 @@ const ManageMyStories = () => {
                               <CardMedia
                                 className={classes.images1}
                                 component="img"
-                                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+                                image={story.coverImage ? story.coverImage : noImage}
                               />
                             </Link>
                           </Card>

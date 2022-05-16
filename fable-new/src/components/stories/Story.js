@@ -36,6 +36,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Sugar from "sugar";
 import CreateIcon from "@mui/icons-material/Create";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import noImage from "../Assets/noimage.jpeg";
 
 const useStyles = makeStyles({
   card: {
@@ -326,7 +327,7 @@ const Story = () => {
                 <CardMedia
                   className={classes.mainImage}
                   component="img"
-                  image={storyData.story.coverImage ? storyData.story.coverImage : "/images/noimage.jpeg"}
+                  image={storyData.story.coverImage ? storyData.story.coverImage : noImage}
                 />
               </Card>
               <Card className={classes.title} elevation={0}>
