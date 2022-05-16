@@ -133,8 +133,8 @@ const useStyles = makeStyles({
     marginTop: "-3%",
     marginRight: "15%",
     marginBottom: "5%",
-    marginLeft: "25%"
-  }
+    marginLeft: "25%",
+  },
 });
 
 const ManageMyStories = () => {
@@ -228,80 +228,82 @@ const ManageMyStories = () => {
             })}
           <br />
           <br />
-          <label hidden for="switch" >Filter </label>
+          <label hidden for="switch">
+            Filter{" "}
+          </label>
           <Card className={classes.card}>
             Filter individually
             <Switch id="switch" onChange={() => setDoExactMatch(!doExactMatch)} />
           </Card>
         </Paper>
       </Grid>
-        <br />
-        <br />
-        <br />
-        <br />
-        <div>
-          <Box
-            // sx={{
-            //   flexGrow: 1,
-            //   display: "flex",
-            //   flexWrap: "wrap",
-            //   "& > :not(style)": {
-            //     m: 1,
-            //     width: 1500,
-            //     marginLeft: 320,
-            //   },
-            // }}
-          >
-            <Grid container>
-              {myStories.length > 0 &&
-                myStories.map((story) => {
-                  return (
-                    <Grid>
-                      <Paper
-                        elevation={10}
-                        className={classes.paper}
-                        // sx={{
-                        //   bgcolor: "background.default",
-                        //   display: "grid",
-                        //   gridTemplateColumns: { md: "1fr 1fr" },
-                        //   gap: 2,
-                        // }}
-                      >
-                        <Stack direction="row">
-                          <Card className={classes.card1} elevation={0}>
-                            <Link to={`/stories/${story._id}`}>
-                              <CardMedia
-                                className={classes.images1}
-                                component="img"
-                                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
-                                alt="coverimage"
-                              />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div>
+        <Box
+        // sx={{
+        //   flexGrow: 1,
+        //   display: "flex",
+        //   flexWrap: "wrap",
+        //   "& > :not(style)": {
+        //     m: 1,
+        //     width: 1500,
+        //     marginLeft: 320,
+        //   },
+        // }}
+        >
+          <Grid container>
+            {myStories.length > 0 &&
+              myStories.map((story) => {
+                return (
+                  <Grid>
+                    <Paper
+                      elevation={10}
+                      className={classes.paper}
+                      // sx={{
+                      //   bgcolor: "background.default",
+                      //   display: "grid",
+                      //   gridTemplateColumns: { md: "1fr 1fr" },
+                      //   gap: 2,
+                      // }}
+                    >
+                      <Stack direction="row">
+                        <Card className={classes.card1} elevation={0}>
+                          <Link to={`/stories/${story._id}`}>
+                            <CardMedia
+                              className={classes.images1}
+                              component="img"
+                              image={story.coverImage ? story.coverImage : noImage}
+                              alt="coverimage"
+                            />
+                          </Link>
+                        </Card>
+
+                        <Card className={classes.card2} elevation={0}>
+                          <CardContent>
+                            <Link to={`/stories/${story._id}`} class="text-decoration-none">
+                              <Typography>{story.title}</Typography>
                             </Link>
-                          </Card>
+                          </CardContent>
 
-                          <Card className={classes.card2} elevation={0}>
-                            <CardContent>
-                              <Link to={`/stories/${story._id}`} class="text-decoration-none">
-                                <Typography>{story.title}</Typography>
-                              </Link>
-                            </CardContent>
-
-                            <CardContent>
-                              <Typography>
-                                {story.shortDescription.length > 200
-                                  ? story.shortDescription.substring(0, 197) + "..."
-                                  : story.shortDescription}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Stack>
-                      </Paper>
-                    </Grid>
-                  );
-                })}
-            </Grid>
-          </Box>
-        </div>
+                          <CardContent>
+                            <Typography>
+                              {story.shortDescription.length > 200
+                                ? story.shortDescription.substring(0, 197) + "..."
+                                : story.shortDescription}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Stack>
+                    </Paper>
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Box>
+      </div>
     </div>
   );
 };
