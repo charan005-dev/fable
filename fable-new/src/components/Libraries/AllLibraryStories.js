@@ -232,7 +232,7 @@ const AllLibraryStories = () => {
                               <Link to={`/stories/${libraryStory._id}`}>
                                 <CardMedia
                                   className={classes.images}
-                                  component="img"
+                                  component="img" alt="image"
                                   image={libraryStory.coverImage ? libraryStory.coverImage : noImage}
                                 />
                               </Link>
@@ -249,8 +249,10 @@ const AllLibraryStories = () => {
                                   ? libraryStory.shortDescription.substring(0, 500) + "..."
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
+                            
                               {currentUser.uid === libraryData.owner && (
-                                <Fab variant="circular" onClick={() => removeStory(libraryStory._id)}>
+                                <Fab  id = " delete" variant="circular" onClick={() => removeStory(libraryStory._id)}>
+                                    <label hidden for="delete">delete</label>
                                   <DeleteIcon />
                                 </Fab>
                               )}
