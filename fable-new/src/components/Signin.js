@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import SocialSignIn from "./SocialSignIn";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
 import {
@@ -122,6 +122,7 @@ const useStyles = makeStyles({
 
 function Signin() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
   console.log(currentUser);
   const handleLogin = async (event) => {
@@ -236,12 +237,17 @@ function Signin() {
               </Button>
               <br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-              <NavLink to="/signup" className={classes.textdecoration}>
+              <Button onClick={() => navigate(`/signup`)} className={classes.button1}> 
+                &nbsp; Sign Up &nbsp;
+              </Button>
+
+
+              {/* <NavLink to="/signup" className={classes.textdecoration}>
                 {" "}
                 <Button className={classes.button1}>
                   &nbsp; Sign Up &nbsp;
                 </Button>
-              </NavLink>
+              </NavLink> */}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Button className={classes.button2} onClick={passwordReset}>
                 &nbsp; Forgot Password &nbsp;
