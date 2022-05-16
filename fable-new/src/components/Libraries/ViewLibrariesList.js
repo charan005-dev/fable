@@ -312,7 +312,7 @@ const ViewLibrariesList = () => {
       <br />
 
       <div className={classes.libTitle}>
-        <Typography variant="h2"> LIBRARY</Typography>
+        <Typography variant="h1"> LIBRARY</Typography>
       </div>
       <Divider />
 
@@ -363,30 +363,38 @@ const ViewLibrariesList = () => {
             <InputLabel style={{ color: "#fff" }} id="lib-select-label">
               Library Name
             </InputLabel>
-            <Input
+            <label hidden for="tb">tb</label>
+            <Input 
+            
               sx={{
+                
                 width: "30%",
                 marginLeft: "auto",
                 marginRight: "auto",
                 paddingTop: "35px",
                 border: "4px black",
               }}
-              id="libraryName"
-              label="Enter a name for your library"
+              id="tb"
               variant="filled"
               value={libraryName}
               required
-              onChange={(e) => {
+              onChange ={(e) => {
                 setLibraryName(e.target.value);
               }}
             />
-            <Typography className={classes.story}>
+             
+             <label hidden for="lk">lk</label>
+            
+            <Typography className={classes.story} >
+              
               Want everyone to view your library? Make it public *
-              <Switch
+          
+              <Switch 
                 checked={!isPrivate}
                 onChange={() => {
                   setIsPrivate(!isPrivate);
-                }}
+                }} 
+               id='lk'
                 label={!isPrivate ? "Public" : "Private"}
               />
             </Typography>
@@ -484,9 +492,10 @@ const ViewLibrariesList = () => {
                             </Stack>
                           </Card>
                           <Stack spacing={1} direction={"row"}>
+                          <label hidden for="switch" >Filter </label>
                             <Card className={classes.card4} elevation={0}>
-                              <Fab className={classes.edit} color="primary" onClick={() => openeditLibModal(lib._id)}>
-                                <EditIcon />
+                              <Fab className={classes.edit} id ="switch" color="primary" onClick={() => openeditLibModal(lib._id)}>
+                                <EditIcon  />
                               </Fab>
                             </Card>
                           </Stack>
@@ -511,8 +520,9 @@ const ViewLibrariesList = () => {
                             </DialogActions>
                           </Dialog>
                           &nbsp;&nbsp;
+                          <label hidden for="switch" >Filter </label>
                           <Card className={classes.card5} elevation={0}>
-                            <Fab className={classes.delete} color="inherit" onClick={() => openDelLibModal(lib._id)}>
+                            <Fab className={classes.delete} id ="switch" color="inherit" onClick={() => openDelLibModal(lib._id)}>
                               <DeleteIcon />
                             </Fab>
                           </Card>
