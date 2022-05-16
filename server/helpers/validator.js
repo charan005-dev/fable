@@ -79,8 +79,9 @@ const validateRequired = (required) => {
 
 const validateGenres = (genres) => {
   if (!genres || !Array.isArray(genres)) throw `genres is not an array.`;
-  let diff = _.difference(validGenres, genres);
-  if (diff.length !== 0) throw `Invalid values [ ${diff} ] in request. Expected:[ ${validGenres} ]`;
+  for (const genre of genres) {
+    if (!validGenres.includes(genre)) throw `Invalid value ${genre} in request. Expected:[ ${validGenres} ]`;
+  }
 };
 
 const validateHot = (hot) => {
