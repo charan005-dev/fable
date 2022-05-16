@@ -41,7 +41,7 @@ const addStoryToUserLibrary = async (userId, storyId, libraryId) => {
   const library = await librariesCollection.findOne({ owner: userId, _id: libraryId });
   if (!library) throw `Either the library doesn't exist or the user does not have permission to access this library`;
   let existingStories = library.stories;
-  if (existingStories.length >= 3) {
+  if (existingStories.length >= 10) {
     throw `You've already added the maximum amount of stories to this library (10). Please remove an existing story and try adding a new one.`;
   }
   await librariesCollection.updateOne({ _id: libraryId, owner: userId }, { $addToSet: { stories: storyId } });
