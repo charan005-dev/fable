@@ -2,11 +2,19 @@ const express = require("express");
 const router = express.Router();
 const libraries = require("../data/libraries");
 const path = require("path");
+const { validateUserId, validateLibraryName, validateUuid, validatePaginationParams } = require("../helpers/validator");
 router.post("/", async (req, res) => {
   try {
     let creatorId = req.body.userId;
     let libraryName = req.body.libraryName;
     let private = req.body.private;
+    try {
+      validateUserId(creatorId);
+      validateLibraryName(libraryName);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     if (!creatorId) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
       return;
@@ -32,6 +40,13 @@ router.get("/me", async (req, res) => {
   try {
     let owner = req.authenticatedUser;
     let storyId = req.query.storyId;
+    try {
+      validateUserId(owner);
+      validateUuid(storyId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     if (req.authenticatedUser !== owner) {
       res.status(401).json({ success: false, error: "You must be logged in to perform this action." });
       return;
@@ -60,6 +75,13 @@ router.get("/me/private", async (req, res) => {
     let { skip, take } = req.query;
     if (skip) skip = parseInt(skip);
     if (take) take = parseInt(take);
+    try {
+      validateUserId(accessor);
+      validatePaginationParams(skip, take);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     const { success, privateLibraries } = await libraries.getMyPrivateLibraries(accessor, skip, take);
     console.log(privateLibraries);
     res.status(200).json({ success, libraries: privateLibraries });
@@ -76,6 +98,14 @@ router.get("/library_stories/:libraryId", async (req, res) => {
     // let storyId = req.query.storyId;
     let library = req.params.libraryId;
     let accessor = req.authenticatedUser;
+    try {
+      validateUserId(owner);
+      validateUuid(libraryId);
+      validateUserId(accessor);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     try {
       let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library, accessor);
       res.status(200).json({ success: true, libraries: allLibraryStories });
@@ -95,6 +125,12 @@ router.get("/user/:userId", async (req, res) => {
   try {
     let { userId } = req.params;
     try {
+      validateUserId(userId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
+    try {
       let publicLibraries = await libraries.getPublicLibrariesOfUser(userId);
       res.status(200).json({ success: true, libraries: publicLibraries });
       return;
@@ -113,6 +149,14 @@ router.post("/add", async (req, res) => {
     let owner = req.body.owner;
     let storyId = req.body.storyId;
     let libraryId = req.body.libraryId;
+    try {
+      validateUserId(owner);
+      validateUuid(storyId);
+      validateUuid(libraryId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     if (req.authenticatedUser !== owner) {
       res.status(401).json({ success: false, message: "You must be logged in to perform this action." });
       return;
@@ -136,6 +180,14 @@ router.put("/:libraryId", async (req, res) => {
     let accessor = req.authenticatedUser;
     let { libraryName, private } = req.body;
     try {
+      validateUserId(accessor);
+      validateUuid(libraryId);
+      validateLibraryName(libraryName);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
+    try {
       const updatedLibrary = await libraries.updateLibrary(accessor, libraryId, libraryName, private);
       res.status(200).json(updatedLibrary);
       return;
@@ -154,6 +206,13 @@ router.delete("/:libraryId", async (req, res) => {
   try {
     let { libraryId } = req.params;
     let accessor = req.authenticatedUser;
+    try {
+      validateUserId(accessor);
+      validateUuid(libraryId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     try {
       // will return all user libraries after deletion
       const deletedResult = await libraries.deleteLibrary(accessor, libraryId);
@@ -174,6 +233,14 @@ router.put("/:libraryId/removeStory", async (req, res) => {
     let { libraryId } = req.params;
     let accessor = req.authenticatedUser;
     let { storyId } = req.body;
+    try {
+      validateUserId(accessor);
+      validateUuid(libraryId);
+      validateUuid(storyId);
+    } catch (e) {
+      res.status(400).json({ success: false, message: e, error: e });
+      return;
+    }
     if (!storyId) {
       res.status(400).json({ success: false, message: "Story Id is mandatory in the params for performing removal." });
       return;

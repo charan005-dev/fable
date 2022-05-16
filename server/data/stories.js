@@ -5,7 +5,18 @@ const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
 const { all } = require("../routes/stories");
-const { validateRequired, validateUserId, validateUuid } = require("../helpers/validator");
+const {
+  validateRequired,
+  validateUserId,
+  validateUuid,
+  validateStoryTitle,
+  validateStoryDesc,
+  validateStoryContent,
+  validateGenres,
+  validateComment,
+  validateSearchQ,
+  validatePaginationParams,
+} = require("../helpers/validator");
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
@@ -63,6 +74,11 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     if (!validGenres.includes(genre))
       throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
   }
+  validateStoryTitle(title);
+  validateStoryDesc(shortDescription);
+  validateStoryContent(contentHtml);
+  validateUserId(creatorId);
+  validateGenres(genres);
   let contentText = convert(contentHtml, { wordwrap: 130 });
   let story = {
     _id: uuid.v4(),
@@ -79,7 +95,6 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
     createdAt: Date.now(),
     updatedAt: Date.now(),
   };
-  console.log(story);
   const storiesCollection = await stories();
   await storiesCollection.insertOne(story);
   try {
@@ -98,10 +113,12 @@ const createStory = async (creatorId, title, shortDescription, contentHtml, genr
 
 const updateStory = async (storyId, owner, title, shortDescription, contentHtml, genres, coverImage) => {
   genres = genres.length > 0 ? genres.split(",") : [];
-  for (const genre of genres) {
-    if (!validGenres.includes(genre))
-      throw `Invalid genre ${genre} in request. Accepted genre values are [ ${validGenres} ]`;
-  }
+  validateUuid(storyId);
+  validateUserId(owner);
+  validateStoryTitle(title);
+  validateStoryDesc(shortDescription);
+  validateStoryContent(contentHtml);
+  validateGenres(genres);
   const storiesCollection = await stories();
   const findUpdatable = await storiesCollection.findOne({
     _id: storyId,
@@ -177,6 +194,8 @@ const getAllHotStories = async (required) => {
 };
 
 const getStoryById = async (storyId, accessor) => {
+  validateUuid(storyId);
+  validateUserId(accessor);
   const storiesCollection = await stories();
   const usersCollection = await users();
   let story = JSON.parse(await getFromRedis(storyId));
@@ -211,6 +230,7 @@ const recordUserVisit = async (accessor, storyId) => {
 };
 
 const searchStory = async (searchTerm) => {
+  validateSearchQ(searchTerm);
   let searchResults = [];
   try {
     searchResults = await client.search(elasticEngineName, searchTerm, {});
@@ -238,6 +258,8 @@ const searchStory = async (searchTerm) => {
 };
 
 const toggleLike = async (storyId, userId) => {
+  validateUuid(storyId);
+  validateUserId(userId);
   const storiesCollection = await stories();
   const usersCollection = await users();
   const findStory = await storiesCollection.findOne({ _id: storyId });
@@ -263,6 +285,7 @@ const toggleLike = async (storyId, userId) => {
 };
 
 const getNRandom = async (n) => {
+  validateRequired(n);
   const storiesCollection = await stories();
   let nRandom = await storiesCollection.aggregate([{ $match: {} }, { $sample: { size: n } }]).toArray();
   return { randomStories: nRandom };
@@ -291,13 +314,13 @@ const getUserStoriesByGenresNonExact = async (genres, authorId) => {
 };
 
 const getALLStoriesByGenres = async (genres) => {
+  validateGenres(genres);
   const storiesCollection = await stories();
-  console.log(genres);
   let allStories = await storiesCollection.find({ genres: { $size: genres.length, $all: genres } }).toArray();
-  console.log(allStories);
   return { selectStories: allStories, success: true };
 };
 const getAllStoriesByGenresNonExact = async (genres) => {
+  validateGenres(genres);
   const storiesCollection = await stories();
   console.log(genres);
   let allStories = await storiesCollection.find({ genres: { $in: genres } }).toArray();
@@ -306,8 +329,10 @@ const getAllStoriesByGenresNonExact = async (genres) => {
 
 const getRecommendations = async (userId, genres) => {
   const storiesCollection = await stories();
+  if (typeof genres !== "string") throw `Expecting a string for genres.`;
   genres = genres.length > 0 ? genres.split(",") : [];
-  console.log(genres);
+  validateUserId(userId);
+  validateGenres(genres);
   let recommendations = await storiesCollection
     .aggregate([{ $match: { visitedBy: { $nin: [userId] }, genres: { $in: genres } } }, { $sample: { size: 5 } }])
     .toArray();
@@ -322,6 +347,8 @@ const getRecommendations = async (userId, genres) => {
 };
 
 const deleteStory = async (accessor, storyId) => {
+  validateUserId(accessor);
+  validateUuid(storyId);
   const storiesCollection = await stories();
   const librariesCollection = await libraries();
   const findStoryToDelete = await storiesCollection.findOne({
@@ -364,6 +391,9 @@ const deleteStory = async (accessor, storyId) => {
 };
 
 const addComment = async (storyId, commenter, comment) => {
+  validateUuid(storyId);
+  validateComment(comment);
+  validateUserId(commenter);
   const storiesCollection = await stories();
   const usersCollection = await users();
   const findStory = await storiesCollection.findOne({ _id: storyId });
@@ -395,6 +425,7 @@ const addComment = async (storyId, commenter, comment) => {
 };
 
 const getCommentsFromStory = async (storyId) => {
+  validateUuid(storyId);
   const storiesCollection = await stories();
   const usersCollection = await users();
   let story = await storiesCollection.findOne({ _id: storyId });
@@ -414,6 +445,8 @@ const getCommentsFromStory = async (storyId) => {
 };
 
 const getMyStories = async (accessor, skip = 0, take = 20) => {
+  validateUserId(accessor);
+  validatePaginationParams(skip, take);
   const storiesCollection = await stories();
   let myStories = await storiesCollection.find({ creatorId: accessor }).skip(skip).limit(take).toArray();
   let next = await storiesCollection
@@ -424,6 +457,7 @@ const getMyStories = async (accessor, skip = 0, take = 20) => {
   return { success: true, stories: myStories, next: next ? true : false };
 };
 const getAllPaginatedStories = async (skip = 0, take = 20) => {
+  validatePaginationParams(skip, take);
   const storiesCollection = await stories();
   let allStories = await storiesCollection.find({}).skip(skip).limit(take).toArray();
   let next = await storiesCollection
