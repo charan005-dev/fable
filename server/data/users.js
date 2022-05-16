@@ -95,11 +95,11 @@ const getStoriesOfUser = async (userId, skip = 0, take = 20) => {
   const storiesCollection = await stories();
   const userStories = await storiesCollection.find({ creatorId: userId }).skip(skip).limit(take).toArray();
   let next = await storiesCollection
-    .find({})
+    .find({ creatorId: userId })
     .skip(skip + take)
     .limit(take)
     .tryNext();
-  return { succes: true, stories: userStories, next: next ? true : false };
+  return { success: true, stories: userStories, next: next ? true : false };
 };
 
 module.exports = {

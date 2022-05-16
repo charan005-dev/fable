@@ -29,6 +29,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ViewLibrariesList from "../Libraries/ViewLibrariesList";
+import noImage from "../Assets/noimage.jpeg";
 
 /* This component will take care of displaying
     - a user's public profile
@@ -438,8 +439,10 @@ const PublicProfile = () => {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
+
                                         image={profile.coverImage ? profile.coverImage : "/images/noimage.jpeg"} 
                                         alt="img"
+
                                       />
                                     </Link>
                                   </CardActionArea>

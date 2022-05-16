@@ -27,7 +27,7 @@ import Backdrop from "@mui/material/Backdrop";
 import { Paper, Stack, CardContent, Grid } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { toast } from "react-toastify";
-
+import noImage from "../Assets/noimage.jpeg";
 const useStyles = makeStyles({
   card: {
     maxWidth: "200px",
@@ -261,10 +261,12 @@ const StoryBook = () => {
               <CardMedia
                 className={classes.media}
                 component="img"
+
                 alt="img"
                 image={
                   story.coverImage ? story.coverImage : "/images/noimage.jpeg"
                 }
+
               />
             </Card>
           </Grid>

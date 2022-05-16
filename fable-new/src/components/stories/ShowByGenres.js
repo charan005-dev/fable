@@ -7,6 +7,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
+import noImage from "../Assets/noimage.jpeg";
 const { genres } = require("../genres");
 // const genres = [
 //   "Horror",
@@ -113,7 +114,7 @@ const useStyles = makeStyles({
     marginRight: "10%",
     marginBottom: "5%",
     paddingBottom: "2%",
-    height: "2%",
+    height: "15vw",
   },
   images1: {
     // display: "inline-block",
@@ -136,11 +137,14 @@ const useStyles = makeStyles({
     height: "15vw",
     width: "10vw",
   },
-  paper: {
+  paper:{
+    width:"65vw",
+    height: "20vw",
     marginTop: "-3%",
     marginRight: "15%",
     marginBottom: "5%",
-  },
+    marginLeft: "1%"
+  }
 });
 
 const ManageMyStories = () => {
@@ -281,7 +285,7 @@ const ManageMyStories = () => {
                               <CardMedia
                                 className={classes.images1}
                                 component="img"
-                                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+                                image={story.coverImage ? story.coverImage : noImage}
                               />
                             </Link>
                           </Card>
