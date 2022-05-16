@@ -404,7 +404,7 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
         xss(shortDescription),
         xss(contentHtml),
         xss(genres),
-        xss(filePath)
+        filePath
       );
       if (success) {
         res.status(200).json({ success: true, updatedStory });
