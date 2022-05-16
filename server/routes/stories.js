@@ -21,11 +21,7 @@ const {
   validateGenres,
 } = require("../helpers/validator");
 
-let winpath = "";
 let basePath = process.env.GM_FS_COVER_PATH;
-if (process.platform == "win32") {
-  winpath = "C:\\Users\\jeshn\\Desktop\\CS554_Fable\\fable\\server";
-}
 
 const resizeImage = (gmPath) => {
   return new Promise((resolve, reject) => {
