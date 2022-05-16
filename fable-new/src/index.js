@@ -3,12 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import { ThemeProvider } from "./components/ThemeContext";
+//import { ThemeProvider } from "./components/ThemeContext";
 
 ReactDOM.render(
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>,
+    <App />,
   document.getElementById("root")
 );
 

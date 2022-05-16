@@ -132,7 +132,7 @@ router.get("/user/:userId", async (req, res) => {
       return;
     }
     try {
-      let publicLibraries = await libraries.getPublicLibrariesOfUser(xss(userId));
+      let publicLibraries = await libraries.getPublicLibrariesOfUser(userId);
       res.status(200).json({ success: true, libraries: publicLibraries });
       return;
     } catch (e) {
