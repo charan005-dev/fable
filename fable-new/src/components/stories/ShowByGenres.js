@@ -303,20 +303,6 @@ const ManageMyStories = () => {
                                   ? story.shortDescription.substring(0, 197) + "..."
                                   : story.shortDescription}
                               </Typography>
-                              <Stack direction="row" spacing={1}>
-                                {story &&
-                                  story.genres &&
-                                  story.genres.map((genre, idx) => {
-                                    return (
-                                      <Chip
-                                        label={genre}
-                                        size={"small"}
-                                        color="info"
-                                        onClick={() => navigate(`/stories/choose/${genre}`)}
-                                      />
-                                    );
-                                  })}
-                              </Stack>
                             </CardContent>
                           </Card>
                         </Stack>

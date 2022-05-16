@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const users = require("../data/users");
 const multer = require("multer");
+const xss = require("xss");
 const path = require("path");
 const {
   validateDisplayName,
@@ -43,7 +44,7 @@ router.post("/", async (req, res) => {
       res.status(400).json({ success: false, error: "User id not provided. " });
       return;
     }
-    const createdUser = await users.createUser(userId, emailAddress, displayName);
+    const createdUser = await users.createUser(xss(userId), xss(emailAddress), xss(displayName));
     res.status(200).json({ success: true, createdUser });
     return;
   } catch (e) {
@@ -63,7 +64,7 @@ router.get("/check", async (req, res) => {
       return;
     }
     try {
-      const { isAvailable } = await users.checkDisplayName(displayName);
+      const { isAvailable } = await users.checkDisplayName(xss(displayName));
       if (isAvailable) {
         res.status(200).json({ success: true, isAvailable: true });
         return;
@@ -93,7 +94,7 @@ router.get("/public_profile/:userId", async (req, res) => {
       res.status(400).json({ success: false, error: "User id not provided. " });
       return;
     }
-    const userProfile = await users.getPublicProfile(userId);
+    const userProfile = await users.getPublicProfile(xss(userId));
     res.status(200).json({ success: true, profile: userProfile });
     return;
   } catch (e) {
@@ -129,7 +130,7 @@ router.put("/:userId", upload.single("userAvatar"), async (req, res) => {
       res.status(400).json({ success: false, error: "User id not provided " });
       return;
     }
-    const updatedUser = await users.updateUser(userId, displayName, wpm, filePath);
+    const updatedUser = await users.updateUser(xss(userId), xss(displayName), xss(wpm), xss(filePath));
     res.status(200).json({ success: true, user: updatedUser });
     return;
   } catch (e) {
@@ -152,7 +153,7 @@ router.get("/:userId/stories", async (req, res) => {
       res.status(400).json({ success: false, error: e });
       return;
     }
-    let userStories = await users.getStoriesOfUser(userId, skip, take);
+    let userStories = await users.getStoriesOfUser(xss(userId), xss(skip), xss(take));
 
     res.status(200).json({ success: true, stories: userStories.stories, next: userStories.next });
     return;

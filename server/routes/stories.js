@@ -118,7 +118,7 @@ router.get("/:storyId/hit", async (req, res) => {
       return;
     }
     try {
-      await stories.recordUserVisit(accessor, storyId);
+      await stories.recordUserVisit(xss(accessor), xss(storyId));
       res.status(200).json({ success: true });
       return;
     } catch (e) {
@@ -158,11 +158,11 @@ router.get("/me", async (req, res) => {
     selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
     // validateGenres(selectedGenres)
     if (exact) {
-      const { selectStories } = await stories.getUserStoriesByGenres(selectedGenres, authorId);
+      const { selectStories } = await stories.getUserStoriesByGenres(xss(selectedGenres), xss(authorId));
       res.status(200).json({ success: true, stories: selectStories });
       return;
     } else {
-      const { selectStories } = await stories.getUserStoriesByGenresNonExact(selectedGenres, authorId);
+      const { selectStories } = await stories.getUserStoriesByGenresNonExact(xss(selectedGenres), xss(authorId));
       res.status(200).json({ success: true, stories: selectStories });
       return;
     }
@@ -216,7 +216,7 @@ router.get("/all/me", async (req, res) => {
       res.status(400).json({ success: false, message: e });
       return;
     }
-    const storiesData = await stories.getMyStories(accessor, skip, take);
+    const storiesData = await stories.getMyStories(xss(accessor), skip, take);
     if (storiesData.success) {
       res.status(200).json({ success: true, stories: storiesData.stories, next: storiesData.next });
       return;
@@ -343,7 +343,7 @@ router.get("/recommendations", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    const { recommendations } = await stories.getRecommendations(userId, genres);
+    const { recommendations } = await stories.getRecommendations(xss(userId), xss(genres));
     res.status(200).json({ success: true, recommendations });
     return;
   } catch (e) {
@@ -357,7 +357,7 @@ router.get("/:id", async (req, res) => {
     let storyId = req.params.id;
     let accessor = req.authenticatedUser;
     try {
-      let story = await stories.getStoryById(storyId, accessor);
+      let story = await stories.getStoryById(xss(storyId), xss(accessor));
       res.status(200).json({ success: true, story: story.story, creator: story.creator });
       return;
     } catch (e) {
@@ -392,19 +392,19 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     }
     // graphicsmagick resize only if gmPath is present
     try {
-      if (gmPath) await resizeImage(gmPath);
+      if (gmPath) await resizeImage(xss(gmPath));
     } catch (e) {
       console.log(e);
     }
     try {
       const { success, updatedStory } = await stories.updateStory(
-        storyId,
-        owner,
-        title,
-        shortDescription,
-        contentHtml,
-        genres,
-        filePath
+        xss(storyId),
+        xss(owner),
+        xss(title),
+        xss(shortDescription),
+        xss(contentHtml),
+        xss(genres),
+        xss(filePath)
       );
       if (success) {
         res.status(200).json({ success: true, updatedStory });
@@ -435,7 +435,7 @@ router.post("/search", async (req, res) => {
       res.status(200).json({ success: true, results: [] });
       return;
     }
-    let results = await stories.searchStory(q);
+    let results = await stories.searchStory(xss(q));
     res.status(200).json({ success: true, results });
   } catch (e) {
     console.log(e);
@@ -460,7 +460,7 @@ router.post("/:id/like", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    let afterLike = await stories.toggleLike(storyId, userId);
+    let afterLike = await stories.toggleLike(xss(storyId), xss(userId));
     if (afterLike.success) {
       res.status(200).json(afterLike);
       return;
@@ -484,7 +484,7 @@ router.post("/:storyId/comment", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    let { success, story } = await stories.addComment(storyId, commenter, comment);
+    let { success, story } = await stories.addComment(xss(storyId), xss(commenter), xss(comment));
     res.status(200).json({ success, story });
     return;
   } catch (e) {
@@ -502,7 +502,7 @@ router.get("/:storyId/comments", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    let existingComments = await stories.getCommentsFromStory(storyId);
+    let existingComments = await stories.getCommentsFromStory(xss(storyId));
     res.status(200).json(existingComments);
   } catch (e) {
     console.log(e);
@@ -521,7 +521,7 @@ router.delete("/:storyId", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    let { success } = await stories.deleteStory(accessor, storyId);
+    let { success } = await stories.deleteStory(xss(accessor), xss(storyId));
     if (success) {
       res.status(204).json({ success: true });
       return;

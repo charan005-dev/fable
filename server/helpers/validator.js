@@ -78,6 +78,7 @@ const validateRequired = (required) => {
 };
 
 const validateGenres = (genres) => {
+  console.log("Genres", genres);
   if (!genres || !Array.isArray(genres)) throw `genres is not an array.`;
   for (const genre of genres) {
     if (!validGenres.includes(genre)) throw `Invalid value ${genre} in request. Expected:[ ${validGenres} ]`;
