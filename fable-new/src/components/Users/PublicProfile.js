@@ -368,8 +368,12 @@ const PublicProfile = () => {
               </Typography>
               {currentUser.uid === profileData.profile._id && (
                 <>
+                  <label hidden for="profileId">
+                    {" "}
+                  </label>
                   <Fab
                     className={classes.editButton}
+                    id="profileId"
                     onClick={() => navigate(`/users/${profileData.profile._id}/edit`)}
                   >
                     <Edit />

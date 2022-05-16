@@ -1,20 +1,5 @@
-import {
-  Grid,
-  OutlinedInput,
-  Paper,
-  Select,
-  Typography,
-  MenuItem,
-  CircularProgress,
-} from "@material-ui/core";
-import {
-  Button,
-  TextField,
-  FormControl,
-  Alert,
-  Stack,
-  Backdrop,
-} from "@mui/material";
+import { Grid, OutlinedInput, Paper, Select, Typography, MenuItem, CircularProgress } from "@material-ui/core";
+import { Button, TextField, FormControl, Alert, Stack, Backdrop } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useContext } from "react";
@@ -246,8 +231,7 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message:
-          "Your title value is invalid or contains more/less than the expected amount of characters.",
+        message: "Your title value is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !desc ||
@@ -259,8 +243,7 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message:
-          "Your description is invalid or contains more/less than the expected amount of characters.",
+        message: "Your description is invalid or contains more/less than the expected amount of characters.",
       };
     let content = editorRef.current.getContent();
     if (
@@ -273,8 +256,7 @@ const CreateStory = () => {
     )
       return {
         e: true,
-        message:
-          "Your story content is invalid or contains more/less than the expected amount of characters.",
+        message: "Your story content is invalid or contains more/less than the expected amount of characters.",
       };
     if (
       !Array.isArray(selectedGenres) ||
@@ -285,9 +267,7 @@ const CreateStory = () => {
         e: true,
         message:
           "The selected genres are invalid. " +
-          (selectedGenres.length === 0
-            ? "Please select at least one genre for your story"
-            : ""),
+          (selectedGenres.length === 0 ? "Please select at least one genre for your story" : ""),
       };
     }
     return { e: false };
@@ -306,10 +286,7 @@ const CreateStory = () => {
     formData.append("title", title);
     formData.append("shortDescription", desc);
     formData.append("genres", selectedGenres);
-    formData.append(
-      "contentHtml",
-      editorRef.current ? editorRef.current.getContent() : ""
-    );
+    formData.append("contentHtml", editorRef.current ? editorRef.current.getContent() : "");
     formData.append("coverImage", coverImage);
     setCreationStarted(true);
     try {
@@ -362,11 +339,7 @@ const CreateStory = () => {
         <ToastContainer />
         <Stack direction="row" spacing={2}>
           <Paper className={classes.paperright} elevation={24}>
-            <Button
-              variant="contained"
-              component="label"
-              className={classes.button2}
-            >
+            <Button variant="contained" component="label" className={classes.button2}>
               Upload a cover photo for your story
               <input
                 type="file"
@@ -378,11 +351,7 @@ const CreateStory = () => {
               <Paper elevation={1}>
                 <Grid container justifyContent="center">
                   <Typography variant="overline">Preview</Typography>
-                  <img
-                    className={classes.imagePreview}
-                    src={uploadedImageUrl}
-                    alt="preview of uploaded"
-                  />
+                  <img className={classes.imagePreview} src={uploadedImageUrl} alt="preview of uploaded" />
                 </Grid>
               </Paper>
             )}
@@ -391,17 +360,8 @@ const CreateStory = () => {
           <Paper className={classes.paper} elevation={20}>
             <br />
 
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              elevation={25}
-            >
-              <Typography
-                variant="h3"
-                component={"h1"}
-                className={classes.headertext}
-              >
+            <Grid container justifyContent="center" alignItems="center" elevation={25}>
+              <Typography variant="h3" component={"h1"} className={classes.headertext}>
                 Create your story here!
               </Typography>
             </Grid>
@@ -409,13 +369,8 @@ const CreateStory = () => {
             <br />
             <br />
             <FormControl variant="standard" sx={{ m: 2, minWidth: "98.5%" }}>
-              <Typography
-                variant={"h4"}
-                component={"h2"}
-                className={classes.title}
-              >
-                Title{" "}
-                <Typography variant="overline">(6 - 30 characters)</Typography>
+              <Typography variant={"h4"} component={"h2"} className={classes.title}>
+                Title <Typography variant="overline">(6 - 30 characters)</Typography>
               </Typography>
               <br />
 
@@ -437,9 +392,8 @@ const CreateStory = () => {
               <br />
               <br />
 
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h2"} className={classes.title}>
                 Short Description of the Story <Typography variant="overline">(100 - 5000 characters)</Typography>
-
               </Typography>
               <br />
 
@@ -466,19 +420,14 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} component={"h2"} className={classes.title}>
-                Your Story Goes Here!{" "}
-                <Typography variant="overline">
-                  (200 - 1M characters)
-                </Typography>
+                Your Story Goes Here! <Typography variant="overline">(200 - 1M characters)</Typography>
               </Typography>
               <br />
               <Editor
                 required
                 onLoadContent={() => {
                   setTimeout(() => {
-                    let close = document.getElementsByClassName(
-                      "tox-notification__dismiss"
-                    )[0];
+                    let close = document.getElementsByClassName("tox-notification__dismiss")[0];
                     if (close) close.click();
                   }, 20);
                 }}
@@ -489,8 +438,7 @@ const CreateStory = () => {
               <br />
               <br />
               <Typography variant={"h4"} component={"h2"} className={classes.title}>
-                Select All Genres that Apply!{" "}
-                <Typography variant="overline">(At least 1)</Typography>
+                Select All Genres that Apply! <Typography variant="overline">(At least 1)</Typography>
               </Typography>
               <br />
 
@@ -524,10 +472,7 @@ const CreateStory = () => {
                 <Button onClick={createStory} className={classes.button1}>
                   Create Story
                 </Button>
-                <Button
-                  onClick={() => window.history.back()}
-                  className={classes.buttonback}
-                >
+                <Button onClick={() => window.history.back()} className={classes.buttonback}>
                   back
                 </Button>
               </span>
