@@ -1,4 +1,4 @@
-import { ThemeContext } from "./ThemeContext";
+//import { ThemeContext } from "./ThemeContext";
 import React, { useContext } from "react";
 import "../App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -32,7 +32,7 @@ import CreateStory1 from "./Stories/CreateStory";
 import Error404page from "./Error404page";
 
 function App() {
-  const context = useContext(ThemeContext);
+  //const context = useContext(ThemeContext);
   //const darkMode = context.theme.darkMode;
   return (
     <AuthProvider>

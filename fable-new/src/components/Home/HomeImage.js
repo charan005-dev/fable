@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Button,
 } from "@material-ui/core";
-import { ThemeContext } from "../ThemeContext";
+//import { ThemeContext } from "../ThemeContext";
 import { CardHeader, Stack, Tooltip } from "@mui/material";
 import { Chip } from "@material-ui/core";
 import { useParams, Link } from "react-router-dom";
@@ -88,8 +88,8 @@ const useStyles = makeStyles({
 });
 
 function HomeImage() {
-  const context = useContext(ThemeContext);
-  const darkMode = context.theme.darkMode;
+  //const context = useContext(ThemeContext);
+  //const darkMode = context.theme.darkMode;
   //--------------------------------------------------------------------------------------------------------------------------------//
 
   // let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
@@ -179,12 +179,12 @@ function HomeImage() {
         <Paper
           elevation={15}
           className={classes.paper}
-          sx={{
-            bgcolor: "background.default",
-            display: "grid",
-            gridTemplateColumns: { md: "1fr 1fr" },
-            gap: 2,
-          }}
+          // sx={{
+          //   bgcolor: "background.default",
+          //   display: "grid",
+          //   gridTemplateColumns: { md: "1fr 1fr" },
+          //   gap: 2,
+          // }}
         >
           <Grid item>
             <div>
@@ -204,8 +204,7 @@ function HomeImage() {
                               <CardActionArea>
                                 {/* <Typography>{hover && image.title} </Typography> */}
                                 <ImageListItem>
-                                  <Link sx={{color:"#fff"
-                                    }} to={`/stories/${image._id}`}>
+                                  <Link to={`/stories/${image._id}`}>
                                     <CardMedia
                                       className={classes.media}
 
@@ -253,12 +252,12 @@ function HomeImage() {
           <Paper
             elevation={15}
             className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
+            // sx={{
+            //   bgcolor: "background.default",
+            //   display: "grid",
+            //   gridTemplateColumns: { md: "1fr 1fr" },
+            //   gap: 2,
+            // }}
           >
             <Grid item>
               <div>
@@ -282,6 +281,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
+                                        alt="image"
                                         image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
@@ -327,12 +327,12 @@ function HomeImage() {
           <Paper
             elevation={15}
             className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
+            // sx={{
+            //   bgcolor: "background.default",
+            //   display: "grid",
+            //   gridTemplateColumns: { md: "1fr 1fr" },
+            //   gap: 2,
+            // }}
           >
             <Grid item>
               <div>
@@ -356,6 +356,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
+                                        alt="image"
                                         image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
@@ -398,12 +399,12 @@ function HomeImage() {
           <Paper
             elevation={15}
             className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
+            // sx={{
+            //   bgcolor: "background.default",
+            //   display: "grid",
+            //   gridTemplateColumns: { md: "1fr 1fr" },
+            //   gap: 2,
+            // }}
           >
             <Grid item>
               <div>
@@ -427,6 +428,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
+                                        alt="image"
                                         image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
@@ -470,12 +472,12 @@ function HomeImage() {
           <Paper
             elevation={15}
             className={classes.paper}
-            sx={{
-              bgcolor: "background.default",
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 2,
-            }}
+            // sx={{
+            //   bgcolor: "background.default",
+            //   display: "grid",
+            //   gridTemplateColumns: { md: "1fr 1fr" },
+            //   gap: 2,
+            // }}
           >
             <Grid item>
               <div>
@@ -499,6 +501,7 @@ function HomeImage() {
                                       <CardMedia
                                         className={classes.media}
                                         component="img"
+                                        alt="image"
                                         image={image.coverImage ? image.coverImage : noImage}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
