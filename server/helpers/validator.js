@@ -33,6 +33,10 @@ const validateDisplayName = (dname) => {
     // return { isValid: false, error: "Your display name should not be less than 6 or more than 30 characters long." };
     throw `Your display name should not be less than 6 or more than 30 characters long.`;
   }
+  let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+  if (!uNameRegex.test(dname)) {
+    throw "It's really catchy but make sure your username contains only alphanumerics and hyphens (can't end with one).";
+  }
 };
 
 const validateWpm = (wpm) => {
