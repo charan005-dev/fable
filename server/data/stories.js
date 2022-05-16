@@ -4,26 +4,30 @@ const { convert } = require("html-to-text");
 const axios = require("axios").default;
 const { createClient } = require("redis");
 const AppSearchClient = require("@elastic/app-search-node");
+
 const { all } = require("../routes/stories");
+const { validateRequired, validateUserId, validateUuid } = require("../helpers/validator");
+
 
 const apiKey = process.env.ELASTICSEARCH_API_KEY;
 const baseUrlFn = () => "http://localhost:3002/api/as/v1/";
 const client = new AppSearchClient(undefined, apiKey, baseUrlFn);
 const elasticEngineName = process.env.ELASTICSEARCH_ENGINE_NAME;
-const validGenres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-];
+const { validGenres } = require("../genres");
+// const validGenres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+// ];
 
 const saveToRedis = async (key, value) => {
   const redisClient = createClient();
@@ -143,6 +147,8 @@ const updateStory = async (storyId, owner, title, shortDescription, contentHtml,
 };
 
 const getAllStories = async (required, genres) => {
+  validateRequired(required);
+  // validateGenres(genres)
   const storiesCollection = await stories();
   required = parseInt(required);
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
@@ -155,8 +161,10 @@ const getAllStories = async (required, genres) => {
 };
 
 const getAllHotStories = async (required) => {
-  const storiesCollection = await stories();
   required = parseInt(required);
+  validateRequired(required);
+  const storiesCollection = await stories();
+
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   const allStories = await storiesCollection
     .aggregate([
@@ -165,7 +173,6 @@ const getAllHotStories = async (required) => {
       { $limit: required },
     ])
     .toArray();
-  console.log(allStories);
   let result = { success: true, allStories };
   return result;
 };
@@ -173,7 +180,12 @@ const getAllHotStories = async (required) => {
 const getStoryById = async (storyId, accessor) => {
   const storiesCollection = await stories();
   const usersCollection = await users();
-  let story = JSON.parse(await getFromRedis(storyId));
+  let story = null;
+  try {
+  story = JSON.parse(await getFromRedis(storyId));
+} catch(e) {
+  console.log("Cannot get data from redis.")
+}
   if (!story) story = await storiesCollection.findOne({ _id: storyId });
   // even if the database doesn't contain the story throw
   if (!story) throw `No story present with that id.`;
@@ -182,8 +194,11 @@ const getStoryById = async (storyId, accessor) => {
   if (!accessorDetails.wpm || parseInt(accessorDetails.wpm) === 0) story.accessorReadTime = 1;
   else story.accessorReadTime = Math.ceil(story.contentText.split(" ").length / accessorDetails.wpm);
   try {
+    const redisClient = createClient();
+    if ((await redisClient.ping()) !== 'PONG')
     await saveToRedis(storyId, story);
   } catch (e) {
+    // simply log errors and do nothing
     console.log(e);
   }
   return {
@@ -194,6 +209,8 @@ const getStoryById = async (storyId, accessor) => {
 
 const recordUserVisit = async (accessor, storyId) => {
   const storiesCollection = await stories();
+  validateUserId(accessor);
+  validateUuid(storyId);
   const story = await storiesCollection.findOne({ _id: storyId });
   if (!story) throw `No story present with that id.`;
   await storiesCollection.updateOne({ _id: storyId }, { $addToSet: { visitedBy: accessor } });
@@ -261,6 +278,7 @@ const getNRandom = async (n) => {
 };
 
 const getUserStoriesByGenres = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres);
   let myStories = await storiesCollection
@@ -274,6 +292,7 @@ const getUserStoriesByGenres = async (genres, authorId) => {
 };
 
 const getUserStoriesByGenresNonExact = async (genres, authorId) => {
+  validateUserId(authorId);
   const storiesCollection = await stories();
   console.log(genres); // [ 'Drama', 'Thriller' ]
   let myStories = await storiesCollection.find({ creatorId: authorId, genres: { $in: genres } }).toArray();

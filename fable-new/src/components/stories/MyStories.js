@@ -234,7 +234,11 @@ const MyStories = () => {
                         <div>
                           <div className={classes.card3} elevation={0}>
                             <Link to={`/stories/${myStory._id}`}>
-                              <CardMedia className={classes.images} component="img" image={myStory.coverImage} />
+                              <CardMedia
+                                className={classes.images}
+                                component="img"
+                                image={myStory.coverImage ? myStory.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </div>
                           <div className={classes.card4}>

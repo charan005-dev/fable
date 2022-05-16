@@ -7,25 +7,25 @@ import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { makeStyles } from "@material-ui/styles";
-
-const genres = [
-  "Horror",
-  "Romance",
-  "Mystery",
-  "Thriller",
-  "Sci-fi",
-  "Crime",
-  "Drama",
-  "Fantasy",
-  "Adventure",
-  "Comedy",
-  "Tragedy",
-  "Adult",
-  "Techno",
-  "Steamy",
-  "Non-fiction",
-  "Medieval",
-];
+const { genres } = require("../genres");
+// const genres = [
+//   "Horror",
+//   "Romance",
+//   "Mystery",
+//   "Thriller",
+//   "Sci-fi",
+//   "Crime",
+//   "Drama",
+//   "Fantasy",
+//   "Adventure",
+//   "Comedy",
+//   "Tragedy",
+//   "Adult",
+//   "Techno",
+//   "Steamy",
+//   "Non-fiction",
+//   "Medieval",
+// ];
 
 const useStyles = makeStyles({
   refinery: {
@@ -121,7 +121,7 @@ const useStyles = makeStyles({
     margin: "30%",
     border: "solid 1px black",
     borderRadius: "5px",
-    shapeOutside:"",
+    shapeOutside: "",
     //boxShadow: "0px 5px 10px",
     // float: "left",
     width: "10vw",
@@ -267,7 +267,7 @@ const ManageMyStories = () => {
               {myStories.length > 0 &&
                 myStories.map((story) => {
                   return (
-                    <Grid >
+                    <Grid>
                       <Paper
                         elevation={10}
                         className={classes.paper}
@@ -281,7 +281,11 @@ const ManageMyStories = () => {
                         <Stack direction="row">
                           <Card className={classes.card1} elevation={0}>
                             <Link to={`/stories/${story._id}`}>
-                              <CardMedia className={classes.images1} component="img" image={story.coverImage} />
+                              <CardMedia
+                                className={classes.images1}
+                                component="img"
+                                image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
+                              />
                             </Link>
                           </Card>
 
@@ -291,7 +295,7 @@ const ManageMyStories = () => {
                                 <Typography>{story.title}</Typography>
                               </Link>
                             </CardContent>
-                            
+
                             <CardContent>
                               <Typography>
                                 {story.shortDescription.length > 200
