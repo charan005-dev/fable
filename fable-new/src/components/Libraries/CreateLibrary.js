@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../firebase/Auth";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   card1: {
@@ -110,6 +111,7 @@ const CreateLibrary = () => {
   const [creationSuccess, setCreationSuccess] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const createLibrary = async () => {
     try {

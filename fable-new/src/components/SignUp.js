@@ -13,19 +13,8 @@ import { AuthContext } from "../firebase/Auth";
 import { NavLink } from "react-router-dom";
 import firebase from "firebase";
 import { toast } from "react-toastify";
-import {
-  Card,
-  CardContent,
-  Grid,
-  makeStyles,
-  Typography,
-  TextField,
-  Paper,
-} from "@material-ui/core";
-import {
-  doSignInWithEmailAndPassword,
-  doPasswordReset,
-} from "../firebase/FirebaseFunctions";
+import { Card, CardContent, Grid, makeStyles, Typography, TextField, Paper } from "@material-ui/core";
+import { doSignInWithEmailAndPassword, doPasswordReset } from "../firebase/FirebaseFunctions";
 const axios = require("axios").default;
 // axios.defaults.baseURL = "http://localhost:4000";
 
@@ -154,21 +143,30 @@ function SignUp() {
       });
       return;
     }
-    let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
-    if (!uNameRegex.test(name.value)) {
-      toast.error(
-        "It's really catchy but make sure your username contains only alphanumerics and hyphens (can't end with one).",
-        {
-          theme: "dark",
-          position: "top-center",
-        }
-      );
-      return;
+    var isSafari =
+      navigator.vendor &&
+      navigator.vendor.indexOf("Apple") > -1 &&
+      navigator.userAgent &&
+      navigator.userAgent.indexOf("CriOS") == -1 &&
+      navigator.userAgent.indexOf("FxiOS") == -1;
+    if (!isSafari) {
+      // Safari doesn't support lookbehind in regex yet (?<=\/).
+      // https://stackoverflow.com/questions/51568821/works-in-chrome-but-breaks-in-safari-invalid-regular-expression-invalid-group
+      // in this case, skip frontend check - will be caught in backend anyway
+      let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+      if (!uNameRegex.test(name.value)) {
+        toast.error(
+          "It's really catchy but make sure your username contains only alphanumerics and hyphens (can't end with one).",
+          {
+            theme: "dark",
+            position: "top-center",
+          }
+        );
+        return;
+      }
     }
-    if (
-      passwordOne.value.trim().length === 0 ||
-      passwordOne.value.trim().length < 6
-    ) {
+
+    if (passwordOne.value.trim().length === 0 || passwordOne.value.trim().length < 6) {
       toast.error("Your password format is invalid", {
         theme: "dark",
         position: "top-center",
@@ -176,11 +174,8 @@ function SignUp() {
       return;
     }
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        name.value
-      );
+      console.log("Firing firebase");
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, name.value);
       let userId = firebase.auth().currentUser.uid;
       let emailAddress = firebase.auth().currentUser.email;
       let username = name.value;
@@ -224,12 +219,7 @@ function SignUp() {
             <Typography component="h1" variant="h4">
               Sign-Up
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSignUp}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -280,13 +270,7 @@ function SignUp() {
                 variant="outlined"
                 sx={{ border: "1px solid black" }}
               />
-              <Button
-                className={classes.button}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button className={classes.button} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign-Up
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

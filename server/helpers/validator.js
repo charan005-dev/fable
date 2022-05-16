@@ -33,6 +33,10 @@ const validateDisplayName = (dname) => {
     // return { isValid: false, error: "Your display name should not be less than 6 or more than 30 characters long." };
     throw `Your display name should not be less than 6 or more than 30 characters long.`;
   }
+  let uNameRegex = new RegExp(`^(?![-])[- '0-9A-Za-z]+(?<![-])$`, "g");
+  if (!uNameRegex.test(dname)) {
+    throw "It's really catchy but make sure your username contains only alphanumerics and hyphens (can't end with one).";
+  }
 };
 
 const validateWpm = (wpm) => {
@@ -78,6 +82,7 @@ const validateRequired = (required) => {
 };
 
 const validateGenres = (genres) => {
+  console.log("Genres", genres);
   if (!genres || !Array.isArray(genres)) throw `genres is not an array.`;
   for (const genre of genres) {
     if (!validGenres.includes(genre)) throw `Invalid value ${genre} in request. Expected:[ ${validGenres} ]`;

@@ -169,6 +169,7 @@ const getAllStories = async (required, genres) => {
   required = parseInt(required);
   if (isNaN(required)) throw `Invalid parameter for required. Expecting a number.`;
   if (!Array.isArray(genres)) throw `Invalid parameter for genres. Expecting an array of valid genres.`;
+  console.log(required, genres);
   const allStories = await storiesCollection
     .aggregate([{ $match: { genres: { $in: genres } } }, { $sample: { size: required } }])
     .toArray();

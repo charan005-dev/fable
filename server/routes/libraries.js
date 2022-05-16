@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const libraries = require("../data/libraries");
+const xss = require("xss");
 const path = require("path");
 const { validateUserId, validateLibraryName, validateUuid, validatePaginationParams } = require("../helpers/validator");
 router.post("/", async (req, res) => {
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
       return;
     }
     try {
-      const createdLibrary = await libraries.createLibrary(creatorId, libraryName, private);
+      const createdLibrary = await libraries.createLibrary(xss(creatorId), xss(libraryName), xss(private));
       res.status(200).json({ success: true, library: createdLibrary.library });
     } catch (e) {
       console.log(e);
@@ -53,14 +54,14 @@ router.get("/me", async (req, res) => {
     }
     // if storyId is not present - get the user's libraries alone
     if (!storyId) {
-      let allMyLibraries = await libraries.getAllMyLibraries(owner);
+      let allMyLibraries = await libraries.getAllMyLibraries(xss(owner));
       res.status(200).json({ success: true, libraries: allMyLibraries });
       return;
     }
     // if I provide storyId - get the user's libraries to which this story was not added to
     if (storyId) {
       console.log("Getting the user's libraries to which this story was not added to.");
-      let allNonAddedLibs = await libraries.getMyNonAddedLibraries(owner, storyId);
+      let allNonAddedLibs = await libraries.getMyNonAddedLibraries(xss(owner), xss(storyId));
       res.status(200).json({ success: true, libraries: allNonAddedLibs });
     }
   } catch (e) {
@@ -82,7 +83,7 @@ router.get("/me/private", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(accessor, skip, take);
+    const { success, privateLibraries } = await libraries.getMyPrivateLibraries(xss(accessor), xss(skip), xss(take));
     console.log(privateLibraries);
     res.status(200).json({ success, libraries: privateLibraries });
     return;
@@ -107,7 +108,7 @@ router.get("/library_stories/:libraryId", async (req, res) => {
       return;
     }
     try {
-      let allLibraryStories = await libraries.getAllMyLibraryStories(owner, library, accessor);
+      let allLibraryStories = await libraries.getAllMyLibraryStories(xss(owner), xss(library), xss(accessor));
       res.status(200).json({ success: true, libraries: allLibraryStories });
       return;
     } catch (e) {
@@ -131,7 +132,7 @@ router.get("/user/:userId", async (req, res) => {
       return;
     }
     try {
-      let publicLibraries = await libraries.getPublicLibrariesOfUser(userId);
+      let publicLibraries = await libraries.getPublicLibrariesOfUser(xss(userId));
       res.status(200).json({ success: true, libraries: publicLibraries });
       return;
     } catch (e) {
@@ -162,7 +163,7 @@ router.post("/add", async (req, res) => {
       return;
     }
     try {
-      const addedToLib = await libraries.addStoryToUserLibrary(owner, storyId, libraryId);
+      const addedToLib = await libraries.addStoryToUserLibrary(xss(owner), xss(storyId), xss(libraryId));
       res.status(200).json({ success: true, library: addedToLib });
     } catch (e) {
       console.log(e);
@@ -188,7 +189,12 @@ router.put("/:libraryId", async (req, res) => {
       return;
     }
     try {
-      const updatedLibrary = await libraries.updateLibrary(accessor, libraryId, libraryName, private);
+      const updatedLibrary = await libraries.updateLibrary(
+        xss(accessor),
+        xss(libraryId),
+        xss(libraryName),
+        xss(private)
+      );
       res.status(200).json(updatedLibrary);
       return;
     } catch (e) {
@@ -215,7 +221,7 @@ router.delete("/:libraryId", async (req, res) => {
     }
     try {
       // will return all user libraries after deletion
-      const deletedResult = await libraries.deleteLibrary(accessor, libraryId);
+      const deletedResult = await libraries.deleteLibrary(xss(accessor), xss(libraryId));
       res.status(200).json({ success: true, libraries: deletedResult.libraries });
       return;
     } catch (e) {
@@ -246,7 +252,7 @@ router.put("/:libraryId/removeStory", async (req, res) => {
       return;
     }
     try {
-      let afterRemoval = await libraries.removeStoryFromLibrary(libraryId, storyId, accessor);
+      let afterRemoval = await libraries.removeStoryFromLibrary(xss(libraryId), xss(storyId), xss(accessor));
       res.status(200).json({ success: true, library: afterRemoval.library });
       return;
     } catch (e) {
