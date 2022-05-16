@@ -9,13 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import {
-  makeStyles,
-  Button,
-  Logout,
-  ListItemIcon,
-  Image,
-} from "@material-ui/core";
+import { makeStyles, Button, Logout, ListItemIcon, Image } from "@material-ui/core";
 import { doSignOut } from "../firebase/FirebaseFunctions";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
@@ -67,13 +61,13 @@ const useStyles = makeStyles({
       color: "black",
     },
   },
-    textbox: {
-      border: "5px black",
-      "&:hover": {
-        backgroundColor: "#5dc2a6",
-        border: "5px black",
-      },
-  },
+  // textbox: {
+  //   border: "5px black",
+  //   "&:hover": {
+  //     backgroundColor: "#5dc2a6",
+  //     border: "5px black",
+  //   },
+  // },
   menuitem: {
     width: "100%",
     paddingLeft: "20%",
@@ -105,16 +99,16 @@ const useStyles = makeStyles({
       color: "black",
     },
   },
-    textbox: {
-      border: "5px black",
-      "&:hover": {
-        backgroundColor: "#5dc2a6",
-        border: "5px black",
-      },
-    // accountbutton: {
-    //   marginLeft: "-100%",
-    // },
-  },
+  // textbox: {
+  //   border: "5px black",
+  //   "&:hover": {
+  //     backgroundColor: "#5dc2a6",
+  //     border: "5px black",
+  //   },
+  //   // accountbutton: {
+  //   //   marginLeft: "-100%",
+  //   // },
+  // },
   search: {
     marginLeft: "100vw",
   },
@@ -170,36 +164,25 @@ export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 0 }}>
       <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          
-        />
+        <FormControlLabel control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />} />
       </FormGroup>
 
       <AppBar position="absolute" className={classes.card}>
         <Toolbar>
-          
-            
-            <Typography
-              variant="h3"
-              component="div"
-              sx={{
-                textDecoration: "none",
-                color: "white",
-                paddingRight: "25vw",
-              }}
-            > 
+          <Typography
+            variant="h3"
+            component="div"
+            sx={{
+              textDecoration: "none",
+              color: "white",
+              paddingRight: "25vw",
+            }}
+          >
             <Link to="/home" className={classes.title1}>
-              Fable 
-              </Link>
-            </Typography>
-          
+              Fable
+            </Link>
+          </Typography>
+
           <SearchBox className={classes.search}></SearchBox>
           {auth && (
             <div>
@@ -281,10 +264,7 @@ export default function NavBar() {
                         Library &nbsp; <LibraryAddIcon />
                       </MenuItem>
                       <br />
-                      <MenuItem
-                        onClick={doSignOut}
-                        className={classes.menuitem}
-                      >
+                      <MenuItem onClick={doSignOut} className={classes.menuitem}>
                         Logout &nbsp; <LogoutIcon />
                       </MenuItem>
                       <br />

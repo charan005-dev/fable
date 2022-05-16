@@ -158,11 +158,11 @@ router.get("/me", async (req, res) => {
     selectedGenres = selectedGenres.length > 0 ? selectedGenres.split(",") : [];
     // validateGenres(selectedGenres)
     if (exact) {
-      const { selectStories } = await stories.getUserStoriesByGenres(xss(selectedGenres), xss(authorId));
+      const { selectStories } = await stories.getUserStoriesByGenres(selectedGenres, xss(authorId));
       res.status(200).json({ success: true, stories: selectStories });
       return;
     } else {
-      const { selectStories } = await stories.getUserStoriesByGenresNonExact(xss(selectedGenres), xss(authorId));
+      const { selectStories } = await stories.getUserStoriesByGenresNonExact(selectedGenres, xss(authorId));
       res.status(200).json({ success: true, stories: selectStories });
       return;
     }
