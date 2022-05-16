@@ -179,7 +179,7 @@ export default function NavBar() {
               aria-label="login switch"
             />
           }
-          label={auth ? "Logout" : "Login"}
+          
         />
       </FormGroup>
 
