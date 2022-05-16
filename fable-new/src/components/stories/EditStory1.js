@@ -75,8 +75,8 @@ const useStyles = makeStyles({
     },
   },
   buttondelete: {
-    backgroundColor: "red",
-    color: "white",
+    backgroundColor: "black",
+    color: "red",
     width: "auto",
     marginLeft: "1%",
     marginRight: "auto",
@@ -470,7 +470,7 @@ const EditStory1 = () => {
               />
               <br />
               <br />
-              <Typography variant={"h4"} className={classes.title}>
+              <Typography variant={"h2"} className={classes.title}>
                 Short Description of the Story <Typography variant="overline">(100 - 5000 characters)</Typography>
               </Typography>
               <br />
