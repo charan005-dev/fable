@@ -249,9 +249,11 @@ const AllLibraryStories = () => {
                                   ? libraryStory.shortDescription.substring(0, 500) + "..."
                                   : libraryStory.shortDescription}{" "}
                               </Typography>
-                              <Fab variant="circular" onClick={() => removeStory(libraryStory._id)}>
-                                <DeleteIcon />
-                              </Fab>
+                              {currentUser.uid === libraryData.owner && (
+                                <Fab variant="circular" onClick={() => removeStory(libraryStory._id)}>
+                                  <DeleteIcon />
+                                </Fab>
+                              )}
                             </div>
 
                             <br />
