@@ -37,9 +37,16 @@ const useStyles = makeStyles({
     border: "1px solid #ffff",
     boxShadow: "0 19px 38px rgba(0,0,0,0.5), 0 15px 12px rgba(0,0,0,0);",
   },
+
+  
+ titleword :{
+  fontWeight: "bold",
+  color: "#fff",
+},
+
   titleHead: {
     fontWeight: "bold",
-    color: "white",
+    color: "#fff",
   },
   grid: {
     flexGrow: 5,
@@ -200,12 +207,12 @@ function HomeImage() {
                                     }} to={`/stories/${image._id}`}>
                                     <CardMedia
                                       className={classes.media}
-                                      component="img"
+                                      component="img" alt="image"
                                       image={image.coverImage}
                                       onMouseEnter={onHover}
                                       onMouseLeave={onHover}
                                     />
-                                    <ImageListItemBar title ={image.title} ></ImageListItemBar>
+                                    <ImageListItemBar  className ="titleword" title ={image.title} ></ImageListItemBar>
                                   </Link>
                                 </ImageListItem>
                               </CardActionArea>

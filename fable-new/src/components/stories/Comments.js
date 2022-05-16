@@ -179,11 +179,13 @@ const Comments = ({ open, handleClose, storyId }) => {
           <br />
           <div>
             <FormControl className={classes.form}>
+              <label hidden for="comment">comment box</label>
               <TextField
                 fullWidth
                 className={classes.textfield}
                 variant="outlined"
-                value={comment}
+                value={comment} 
+                id="comment"
                 label=" "
                 placeholder="Join the discussion!"
                 onChange={(e) => handleCommentInput(e)}

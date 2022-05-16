@@ -219,7 +219,7 @@ const ManageMyStories = () => {
       <br />
       <Grid container justifyContent="center">
         <Paper variant="outlined" className={classes.refinery}>
-          <Typography variant="h3" component="h3">
+          <Typography variant="h3" component="h1">
             Filter Stories
           </Typography>
           <br />
@@ -234,9 +234,10 @@ const ManageMyStories = () => {
             })}
           <br />
           <br />
+          <label hidden for="switch" >Filter </label>
           <Card className={classes.card}>
             Filter individually
-            <Switch onChange={() => setDoExactMatch(!doExactMatch)} />
+            <Switch id="switch" onChange={() => setDoExactMatch(!doExactMatch)} />
           </Card>
         </Paper>
       </Grid>
@@ -280,7 +281,7 @@ const ManageMyStories = () => {
                             <Link to={`/stories/${story._id}`}>
                               <CardMedia
                                 className={classes.images1}
-                                component="img"
+                                component="img" alt="image"
                                 image={story.coverImage ? story.coverImage : "/images/noimage.jpeg"}
                               />
                             </Link>

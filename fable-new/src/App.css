@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-
 }
 
 .App-logo {
@@ -502,9 +501,9 @@ h1 {
   font-weight: 400;
   line-height: normal;
   -webkit-tap-highlight-color: transparent;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
+  text-decoration: #fff;
+  /* text-shadow: #fff;
+  text-transform: #fff; */
   vertical-align: initial;
   white-space: normal;
   border: 5px solid rgb(0, 0, 0);
