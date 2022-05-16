@@ -295,7 +295,7 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
       xss(title),
       xss(shortDescription),
       xss(contentHtml),
-      xss(genres),
+      genres,
       filePath
     );
     if (success) {
@@ -343,7 +343,7 @@ router.get("/recommendations", async (req, res) => {
       res.status(400).json({ success: false, message: e, error: e });
       return;
     }
-    const { recommendations } = await stories.getRecommendations(xss(userId), xss(genres));
+    const { recommendations } = await stories.getRecommendations(xss(userId), genres);
     res.status(200).json({ success: true, recommendations });
     return;
   } catch (e) {
@@ -392,7 +392,7 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
     }
     // graphicsmagick resize only if gmPath is present
     try {
-      if (gmPath) await resizeImage(xss(gmPath));
+      if (gmPath) await resizeImage(gmPath);
     } catch (e) {
       console.log(e);
     }
@@ -403,7 +403,7 @@ router.put("/:id", upload.single("coverImage"), async (req, res) => {
         xss(title),
         xss(shortDescription),
         xss(contentHtml),
-        xss(genres),
+        genres,
         filePath
       );
       if (success) {
