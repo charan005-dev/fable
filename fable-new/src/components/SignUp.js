@@ -274,7 +274,9 @@ function SignUp() {
                 Sign-Up
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
               <Typography component="h2" variant="h2" className={classes.typog}>
+
                 Already Have an Account?
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
