@@ -18,6 +18,7 @@ const {
   validateStoryDesc,
   validateSearchQ,
   validateComment,
+  validateGenres,
 } = require("../helpers/validator");
 
 let winpath = "";
@@ -71,8 +72,8 @@ router.get("/all", async (req, res) => {
     else genres = [];
     try {
       validateRequired(required);
-      validGenres;
-      validateHot(hot);
+      validateGenres(genres);
+      // validateHot(hot);
     } catch (e) {
       res.status(200).json({ success: false, message: e });
       return;
