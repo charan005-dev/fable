@@ -7,7 +7,7 @@ Fable is a web-enabled, web-ready, multi-browser compatible, ReactJS-powered web
 
 ## Features
 - Story lovers can find a sea of books written by various authors
-- Authors can have a quick story posting tool that will help them reaach global audience
+- Authors can have a quick story posting tool that will help them reach global audience
 - Users can create multiple libraries and can have the liberty to add their favorites in multiple libraries
 - Libraries can be made public for the global audience and private for themselves!
 - Our built-in elastic search engine will search through the title and content, and provide most relevant results
