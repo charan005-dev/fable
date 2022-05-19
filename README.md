@@ -4,8 +4,6 @@ Fable is a web-enabled, web-ready, multi-browser compatible, ReactJS-powered web
 ## walkthrough video: 
 - https://youtu.be/nHj-IwbZ5XI  
 
-## elastic search installation video (without audio)
-- https://youtu.be/dDyZ5UGHU_M 
 
 ## Features
 - Story lovers can find a sea of books written by various authors
@@ -49,7 +47,10 @@ What you'll need:
 - [Docker](https://www.docker.com/products/docker-desktop/)
 - [ElasticSearch](https://www.elastic.co/guide/en/enterprise-search/current/docker.html)
 
-### ElasticSearch installation
+### ElasticSearch installation 
+
+## Elastic Search Installation Video 
+- https://youtu.be/dDyZ5UGHU_M 
 
 - [Complete Reference](https://www.elastic.co/guide/en/enterprise-search/current/docker.html)
 > Some docker hub links mentioned in the above document are not available. Use these installation commands instead:
