@@ -1,5 +1,9 @@
 # Fable - a social story-telling platform
 Fable is a web-enabled, web-ready, multi-browser compatible, ReactJS-powered web application where users can post stories, read new stories written by other authors, add stories to library and share them across the community. Writing a story and publishing it through a publishing house is heavily bureaucratic and it adds a lot of stress to the author. We want to do away with those bureaucracies and give authors a free place to express themselves in the form of stories.
+ 
+#Tutorial: 
+- https://youtu.be/nHj-IwbZ5XI 
+
 
 ## Features
 - Story lovers can find a sea of books written by various authors
